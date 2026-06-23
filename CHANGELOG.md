@@ -3,6 +3,30 @@
 Формат — [Keep a Changelog](https://keepachangelog.com/ru/1.1.0/),
 версии — [SemVer](https://semver.org/lang/ru/).
 
+## [Unreleased]
+
+### Исправлено (безопасность)
+- **Дыра в safety-гейте: 4 мутирующих WB-метода были помечены `safety: read`**
+  (`wb_put_api_warehouses_warehouseid`,
+  `wb_put_api_dbw_warehouses_warehouseid_contacts`, `wb_patch_api_questions`,
+  `wb_patch_api_feedbacks_answer`). `call_method` гейтит по полю каталога, поэтому
+  эти PUT/PATCH выполнялись бы сразу, без `confirm_write`. Закрыто на четырёх
+  уровнях:
+  - проставлен `safety: write` четырём записям в `wb_mcp/endpoints.yaml`;
+  - `call_method` теперь пропускает `spec.safety` через `infer_safety(method, …)`
+    — мутирующий глагол нельзя понизить ниже `write` даже устаревшим `read`;
+  - эвристика импорта (`ingest_specs.py`, `ingest_ozon.py`) больше не применяет
+    READ-исключение к PUT/PATCH — оно осмысленно только для POST-with-body;
+  - тест-линтер `tests/test_safety_catalog.py` + CI падают, если в каталоге
+    появится PUT/PATCH/DELETE с `safety: read`.
+
+### Добавлено
+- **CI** (`.github/workflows/ci.yml`): pytest на Python 3.10–3.12 + selfcheck
+  трёх серверов на каждый push/PR.
+- Дистрибуция как плагин: `.claude-plugin/` (plugin + marketplace), `.mcp.json`,
+  `gemini-extension.json` (+ `GEMINI.md`), `.cursor-plugin/`, `.codex-plugin/`,
+  `PRIVACY_POLICY.md`, issue-шаблоны и dependabot.
+
 ## [0.2.0] — 2026-06-24
 
 Первый публичный релиз.

@@ -1,0 +1,5 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Безопасность / Security
+    url: https://github.com/ilyautov/marketplaces-mcp-ru/blob/main/SECURITY.md
+    about: Уязвимости (утечка ключей, обход safety-гейта) — НЕ публичный issue, см. SECURITY.md

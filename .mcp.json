@@ -1,0 +1,16 @@
+{
+  "mcpServers": {
+    "wildberries": {
+      "command": "python3",
+      "args": ["${CLAUDE_PLUGIN_ROOT}/serve.py", "wb"]
+    },
+    "ozon": {
+      "command": "python3",
+      "args": ["${CLAUDE_PLUGIN_ROOT}/serve.py", "ozon"]
+    },
+    "ozon-perf": {
+      "command": "python3",
+      "args": ["${CLAUDE_PLUGIN_ROOT}/serve.py", "ozon-perf"]
+    }
+  }
+}

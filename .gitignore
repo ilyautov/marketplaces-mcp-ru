@@ -22,3 +22,7 @@ venv/
 
 # OS / editor
 .DS_Store
+
+# internal dev docs — kept locally, not published
+HANDOFF.md
+CLAUDE_CODE_MISSION.md

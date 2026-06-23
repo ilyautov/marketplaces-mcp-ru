@@ -1,0 +1,20 @@
+{
+  "name": "marketplaces-mcp-ru",
+  "version": "0.2.0",
+  "description": "MCP-серверы для кабинетов Wildberries и Ozon: 793 метода Seller API, safety-гейт на запись, поиск по-русски. MCP servers for Wildberries & Ozon seller accounts.",
+  "mcpServers": {
+    "wildberries": {
+      "command": "python3",
+      "args": ["${extensionPath}/serve.py", "wb"]
+    },
+    "ozon": {
+      "command": "python3",
+      "args": ["${extensionPath}/serve.py", "ozon"]
+    },
+    "ozon-perf": {
+      "command": "python3",
+      "args": ["${extensionPath}/serve.py", "ozon-perf"]
+    }
+  },
+  "contextFileName": "GEMINI.md"
+}

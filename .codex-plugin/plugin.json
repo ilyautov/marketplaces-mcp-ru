@@ -1,0 +1,28 @@
+{
+  "name": "marketplaces-mcp-ru",
+  "version": "0.2.0",
+  "description": "MCP-серверы для кабинетов Wildberries и Ozon: 793 метода Seller API, safety-гейт на запись, авто-пагинация, мультикабинет, поиск по-русски. | MCP servers for Wildberries & Ozon seller accounts: 793 schema-driven methods, write safety gate.",
+  "author": {
+    "name": "Ilya Utov",
+    "email": "ilyautov@gmail.com",
+    "url": "https://github.com/ilyautov"
+  },
+  "homepage": "https://github.com/ilyautov/marketplaces-mcp-ru",
+  "repository": "https://github.com/ilyautov/marketplaces-mcp-ru",
+  "license": "MIT",
+  "keywords": ["mcp", "wildberries", "ozon", "seller-api", "marketplace", "ecommerce", "russia"],
+  "mcpServers": {
+    "wildberries": { "command": "python3", "args": ["serve.py", "wb"] },
+    "ozon": { "command": "python3", "args": ["serve.py", "ozon"] },
+    "ozon-perf": { "command": "python3", "args": ["serve.py", "ozon-perf"] }
+  },
+  "interface": {
+    "displayName": "Marketplaces MCP RU",
+    "shortDescription": "WB + Ozon Seller API для ИИ-агента",
+    "developerName": "Ilya Utov",
+    "category": "Productivity",
+    "capabilities": ["Read", "Write"],
+    "websiteURL": "https://github.com/ilyautov/marketplaces-mcp-ru",
+    "privacyPolicyURL": "https://github.com/ilyautov/marketplaces-mcp-ru/blob/main/PRIVACY_POLICY.md"
+  }
+}
