@@ -230,6 +230,9 @@ def test_serve_venv_python_per_os(monkeypatch):
     monkeypatch.setattr(serve.os, "name", "nt")
     assert serve._venv_python().name == "python.exe"
     assert "Scripts" in str(serve._venv_python())
+    # Windows site-packages lives under Lib\site-packages
+    sp = serve._venv_site_packages()
+    assert sp and str(sp[0]).replace("\\", "/").endswith("Lib/site-packages")
     monkeypatch.setattr(serve.os, "name", "posix")
     assert serve._venv_python().name == "python"
     assert "bin" in str(serve._venv_python())

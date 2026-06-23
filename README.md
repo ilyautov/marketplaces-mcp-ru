@@ -1,5 +1,7 @@
 # marketplaces-mcp-ru: AI-доступ к кабинетам Wildberries и Ozon для Claude Code, Cursor, Codex и Cowork
 
+> 🇬🇧 [English version](README.en.md)
+
 > **Продаёте на WB и Ozon — дайте ИИ прямой доступ к обоим кабинетам.** Два MCP-сервера над Seller API Wildberries и Ozon: **793 метода** (продажи, остатки, цены, финансы, отзывы, поставки, реклама), собранных schema-driven из официальных OpenAPI-спеков. Числа приходят из **реального API**, а не выдумываются моделью. **Safety-гейт** не даёт случайно изменить цену или остаток. Авто-пагинация, мультикабинет, поиск по-русски. Для Claude Code, Cursor, Codex, Cowork и Claude Desktop.
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)

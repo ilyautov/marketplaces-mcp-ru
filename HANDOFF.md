@@ -18,7 +18,9 @@ practical state-of-play and the exact commands to close the open follow-ups.
 > perf creds yet) — see follow-up (b).
 
 **Servers:** `serve.py wb --selfcheck` and `serve.py ozon --selfcheck` each report
-**19 tools** (8 meta-tools + typed convenience tools + cabinet/workflow tools).
+**19 tools** (8 meta-tools + typed convenience tools + cabinet/workflow tools);
+`serve.py ozon-perf --selfcheck` reports **14 tools** (meta-tools + perf-specific
+convenience tools). All three verified via Claude Code (`--selfcheck` exits 0).
 
 **Tests:** `21 passed` offline, in a clean env (no tokens). Command:
 `env -u OZON_CLIENT_ID -u OZON_API_KEY -u WB_API_TOKEN python3 -m pytest tests/ -q`.
