@@ -1,0 +1,4 @@
+# Ozon Performance has no curated workflows yet — the catalog (45 endpoints) is
+# reachable via the generic meta-tools (search / call / fetch_all). Placeholder
+# kept so register_workflow_tools has a file to load.
+workflows: []

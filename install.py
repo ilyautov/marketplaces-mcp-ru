@@ -46,17 +46,27 @@ def build_entries() -> dict:
     return {
         "wildberries": {"command": py, "args": [str(SERVE), "wb"]},
         "ozon": {"command": py, "args": [str(SERVE), "ozon"]},
+        # Ozon Performance (advertising) API — OAuth2, separate perf credentials.
+        "ozon-perf": {"command": py, "args": [str(SERVE), "ozon-perf"]},
     }
 
 
-def save_cabinet(cabinet: str, wb_token: str, oid: str, okey: str) -> None:
-    """Persist provided keys as a named cabinet in the local store."""
+def save_cabinet(cabinet: str, wb_token: str, oid: str, okey: str,
+                 perf_id: str = "", perf_secret: str = "") -> None:
+    """Persist provided keys as a named cabinet in the local store.
+
+    Ozon Performance (advertising) creds are SEPARATE from the Seller API keys
+    and entirely optional — only saved if both are provided."""
     store = CredentialStore()
     if wb_token:
         store.add_cabinet("wb", cabinet, {"token": wb_token}, make_active=True)
     if oid and okey:
         store.add_cabinet("ozon", cabinet,
                           {"client_id": oid, "api_key": okey}, make_active=True)
+    if perf_id and perf_secret:
+        store.add_cabinet("ozon_perf", cabinet,
+                          {"client_id": perf_id, "client_secret": perf_secret},
+                          make_active=True)
 
 
 def _ask(prompt: str, current: str) -> str:
@@ -75,6 +85,7 @@ def claude_code_commands() -> str:
     return (
         f'claude mcp add wildberries -- "{py}" "{SERVE}" wb\n'
         f'claude mcp add ozon -- "{py}" "{SERVE}" ozon\n'
+        f'claude mcp add ozon-perf -- "{py}" "{SERVE}" ozon-perf\n'
         "# then add a cabinet from chat: ozon_add_cabinet / wb_add_cabinet, "
         "or re-run: python3 install.py"
     )
@@ -86,6 +97,7 @@ def codex_commands() -> str:
     return (
         f'codex mcp add wildberries -- "{py}" "{SERVE}" wb\n'
         f'codex mcp add ozon -- "{py}" "{SERVE}" ozon\n'
+        f'codex mcp add ozon-perf -- "{py}" "{SERVE}" ozon-perf\n'
         "# then add a cabinet: python3 install.py  (keys -> ~/.marketplace-mcp)"
     )
 
@@ -101,6 +113,7 @@ def build_opencode_entries() -> dict:
     return {
         "wildberries": {"type": "local", "command": [py, str(SERVE), "wb"], "enabled": True},
         "ozon": {"type": "local", "command": [py, str(SERVE), "ozon"], "enabled": True},
+        "ozon-perf": {"type": "local", "command": [py, str(SERVE), "ozon-perf"], "enabled": True},
     }
 
 
@@ -115,6 +128,10 @@ def main() -> None:
     ap.add_argument("--wb-token", default="")
     ap.add_argument("--ozon-client-id", default="")
     ap.add_argument("--ozon-api-key", default="")
+    ap.add_argument("--ozon-perf-client-id", default="",
+                    help="Ozon Performance (ads) Client-Id — optional, OAuth2")
+    ap.add_argument("--ozon-perf-client-secret", default="",
+                    help="Ozon Performance (ads) Client-Secret — optional, OAuth2")
     ap.add_argument("--print", action="store_true", dest="print_only",
                     help="print the config block and exit (change nothing)")
     ap.add_argument("--claude-code", action="store_true",
@@ -146,9 +163,14 @@ def main() -> None:
     wb = _ask("Wildberries API token (Enter to skip): ", args.wb_token)
     oid = _ask("Ozon Client-Id (Enter to skip): ", args.ozon_client_id)
     okey = _ask("Ozon Api-Key (Enter to skip): ", args.ozon_api_key)
+    # Performance (ads) API — optional, separate OAuth2 credentials.
+    perf_id = _ask("Ozon Performance Client-Id (Enter to skip): ",
+                   args.ozon_perf_client_id)
+    perf_secret = _ask("Ozon Performance Client-Secret (Enter to skip): ",
+                       args.ozon_perf_client_secret)
 
     # 1) save credentials to the cabinet store
-    save_cabinet(args.cabinet, wb, oid, okey)
+    save_cabinet(args.cabinet, wb, oid, okey, perf_id, perf_secret)
 
     # 2) write the (secret-free) server entries to the target client config
     if client == "opencode":
@@ -170,7 +192,8 @@ def main() -> None:
     cfg_path.write_text(json.dumps(config, ensure_ascii=False, indent=2), encoding="utf-8")
 
     print(f"\n✅ Config → {cfg_path} ({client}: servers 'wildberries', 'ozon', no secrets in it)")
-    saved = [s for s, v in (("WB", wb), ("Ozon", oid and okey)) if v]
+    saved = [s for s, v in (("WB", wb), ("Ozon", oid and okey),
+                            ("Ozon-Perf", perf_id and perf_secret)) if v]
     print(f"✅ Cabinet '{args.cabinet}' saved for: {', '.join(saved) or '(nothing — keys skipped)'}")
     print("\n👉 Restart Claude / Cowork. First launch auto-installs dependencies, "
           "then the tools appear.")
