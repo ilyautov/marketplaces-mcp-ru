@@ -9,7 +9,7 @@
       "name": "marketplaces-mcp-ru",
       "source": "./",
       "description": "Два MCP-сервера над Seller API Wildberries (307 методов) и Ozon (441) + каталог Ozon Performance (45). Числа из реального API, safety-гейт на запись, авто-пагинация, мультикабинет, поиск по-русски. | Two MCP servers over the Wildberries & Ozon Seller APIs — 793 schema-driven methods, write safety gate, real-API numbers.",
-      "version": "0.2.0",
+      "version": "0.2.1",
       "author": {
         "name": "Ilya Utov",
         "email": "ilyautov@gmail.com"

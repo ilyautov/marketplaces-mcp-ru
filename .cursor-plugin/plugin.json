@@ -1,7 +1,7 @@
 {
   "name": "marketplaces-mcp-ru",
   "displayName": "Marketplaces MCP RU (WB + Ozon)",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "MCP servers for Wildberries & Ozon seller accounts via the Seller API: 793 schema-driven methods, write safety gate, auto-pagination, Russian-language search. Wire them in Cursor with `python3 serve.py wb|ozon|ozon-perf`.",
   "author": {
     "name": "Ilya Utov",
