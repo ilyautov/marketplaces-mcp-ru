@@ -80,6 +80,30 @@ def claude_code_commands() -> str:
     )
 
 
+def codex_commands() -> str:
+    """`codex mcp add` commands for OpenAI Codex CLI (config: ~/.codex/config.toml)."""
+    py = sys.executable
+    return (
+        f'codex mcp add wildberries -- "{py}" "{SERVE}" wb\n'
+        f'codex mcp add ozon -- "{py}" "{SERVE}" ozon\n'
+        "# then add a cabinet: python3 install.py  (keys -> ~/.marketplace-mcp)"
+    )
+
+
+def opencode_config_path() -> Path:
+    """Global OpenCode config (~/.config/opencode/opencode.json on every OS)."""
+    return Path.home() / ".config" / "opencode" / "opencode.json"
+
+
+def build_opencode_entries() -> dict:
+    """OpenCode 'mcp' entries: type local + command array, secret-free."""
+    py = sys.executable
+    return {
+        "wildberries": {"type": "local", "command": [py, str(SERVE), "wb"], "enabled": True},
+        "ozon": {"type": "local", "command": [py, str(SERVE), "ozon"], "enabled": True},
+    }
+
+
 def main() -> None:
     if sys.version_info < (3, 10):
         sys.exit(f"Python 3.10+ required, found {sys.version.split()[0]}. "
@@ -95,12 +119,17 @@ def main() -> None:
                     help="print the config block and exit (change nothing)")
     ap.add_argument("--claude-code", action="store_true",
                     help="print `claude mcp add` commands for Claude Code instead")
+    ap.add_argument("--client", choices=["claude-desktop","claude-code","codex","opencode"],
+                    default="", help="target client (default: claude-desktop). "
+                    "codex/claude-code print CLI commands; opencode writes opencode.json")
     ap.add_argument("--config", default="", help="override config file path")
     args = ap.parse_args()
 
-    if args.claude_code:
-        print(claude_code_commands())
-        return
+    client = args.client or ("claude-code" if args.claude_code else "claude-desktop")
+    if client == "claude-code":
+        print(claude_code_commands()); return
+    if client == "codex":
+        print(codex_commands()); return
 
     entries = build_entries()
     if args.print_only:
@@ -121,8 +150,11 @@ def main() -> None:
     # 1) save credentials to the cabinet store
     save_cabinet(args.cabinet, wb, oid, okey)
 
-    # 2) write the (secret-free) server entries to the Claude config
-    cfg_path = Path(args.config) if args.config else config_path()
+    # 2) write the (secret-free) server entries to the target client config
+    if client == "opencode":
+        cfg_path = opencode_config_path(); cfg_key = "mcp"; entries = build_opencode_entries()
+    else:  # claude-desktop
+        cfg_path = Path(args.config) if args.config else config_path(); cfg_key = "mcpServers"
     cfg_path.parent.mkdir(parents=True, exist_ok=True)
     config: dict = {}
     if cfg_path.exists():
@@ -133,11 +165,11 @@ def main() -> None:
         backup = cfg_path.with_suffix(f".json.bak-{datetime.now():%Y%m%d-%H%M%S}")
         shutil.copy2(cfg_path, backup)
         print(f"Backed up existing config → {backup.name}")
-    config.setdefault("mcpServers", {})
-    config["mcpServers"].update(entries)
+    config.setdefault(cfg_key, {})
+    config[cfg_key].update(entries)
     cfg_path.write_text(json.dumps(config, ensure_ascii=False, indent=2), encoding="utf-8")
 
-    print(f"\n✅ Config → {cfg_path} (servers 'wildberries', 'ozon', no secrets in it)")
+    print(f"\n✅ Config → {cfg_path} ({client}: servers 'wildberries', 'ozon', no secrets in it)")
     saved = [s for s, v in (("WB", wb), ("Ozon", oid and okey)) if v]
     print(f"✅ Cabinet '{args.cabinet}' saved for: {', '.join(saved) or '(nothing — keys skipped)'}")
     print("\n👉 Restart Claude / Cowork. First launch auto-installs dependencies, "
