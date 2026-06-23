@@ -1,0 +1,411 @@
+default_host: api-performance.ozon.ru
+_note: 'Ozon Performance (advertising) API. AUTH: OAuth2 client_credentials — POST
+  /api/client/token {client_id,client_secret,grant_type:client_credentials} -> Bearer.
+  SEPARATE creds from seller Client-Id/Api-Key. NOT wired/live-tested yet: needs a
+  perf ServiceConfig with token-fetch. Catalog only.'
+endpoints:
+- operation_id: ozonperf_get_api_client_campaign
+  section: Campaign
+  method: GET
+  host: api-performance.ozon.ru
+  scope: perf
+  path: /api/client/campaign
+  safety: read
+  summary: Список кампаний
+  doc: ''
+- operation_id: ozonperf_get_api_client_campaign_campaignid_objects
+  section: Campaign
+  method: GET
+  host: api-performance.ozon.ru
+  scope: perf
+  path: /api/client/campaign/{campaignId}/objects
+  safety: read
+  summary: Список продвигаемых объектов в кампании
+  doc: ''
+- operation_id: ozonperf_get_api_client_limits_list
+  section: Campaign
+  method: GET
+  host: api-performance.ozon.ru
+  scope: perf
+  path: /api/client/limits/list
+  safety: read
+  summary: Лимиты ставок для инструментов продвижения
+  doc: ''
+- operation_id: ozonperf_post_api_client_min_sku
+  section: Campaign
+  method: POST
+  host: api-performance.ozon.ru
+  scope: perf
+  path: /api/client/min/sku
+  safety: write
+  summary: Минимальная ставка для товаров по SKU
+  doc: ''
+- operation_id: ozonperf_get_api_client_products_with_bonuses
+  section: Campaign
+  method: GET
+  host: api-performance.ozon.ru
+  scope: perf
+  path: /api/client/products_with_bonuses
+  safety: read
+  summary: Список товаров с бонусами
+  doc: ''
+- operation_id: ozonperf_post_api_client_statistics
+  section: Statistics
+  method: POST
+  host: api-performance.ozon.ru
+  scope: perf
+  path: /api/client/statistics
+  safety: read
+  summary: Статистика по кампании
+  doc: ''
+- operation_id: ozonperf_post_api_client_statistics_video
+  section: Statistics
+  method: POST
+  host: api-performance.ozon.ru
+  scope: perf
+  path: /api/client/statistics/video
+  safety: read
+  summary: Статистика по показам видеобаннера
+  doc: ''
+- operation_id: ozonperf_post_api_client_statistics_attribution
+  section: Statistics
+  method: POST
+  host: api-performance.ozon.ru
+  scope: perf
+  path: /api/client/statistics/attribution
+  safety: read
+  summary: Отчёт по заказам
+  doc: ''
+- operation_id: ozonperf_get_api_client_statistics_uuid
+  section: Statistics
+  method: GET
+  host: api-performance.ozon.ru
+  scope: perf
+  path: /api/client/statistics/{UUID}
+  safety: read
+  summary: Cтатус отчёта
+  doc: ''
+- operation_id: ozonperf_get_api_client_statistics_list
+  section: Statistics
+  method: GET
+  host: api-performance.ozon.ru
+  scope: perf
+  path: /api/client/statistics/list
+  safety: read
+  summary: Список отчётов, сгенерированных через интерфейс
+  doc: ''
+- operation_id: ozonperf_get_api_client_statistics_externallist
+  section: Statistics
+  method: GET
+  host: api-performance.ozon.ru
+  scope: perf
+  path: /api/client/statistics/externallist
+  safety: read
+  summary: Список отчётов, сгенерированных через API
+  doc: ''
+- operation_id: ozonperf_get_api_client_statistics_report
+  section: Statistics
+  method: GET
+  host: api-performance.ozon.ru
+  scope: perf
+  path: /api/client/statistics/report
+  safety: read
+  summary: Получить отчёты
+  doc: ''
+- operation_id: ozonperf_get_api_client_statistics_campaign_media
+  section: Statistics
+  method: GET
+  host: api-performance.ozon.ru
+  scope: perf
+  path: /api/client/statistics/campaign/media
+  safety: read
+  summary: Статистика по медийным кампаниям
+  doc: ''
+- operation_id: ozonperf_get_api_client_statistics_campaign_product
+  section: Statistics
+  method: GET
+  host: api-performance.ozon.ru
+  scope: perf
+  path: /api/client/statistics/campaign/product
+  safety: read
+  summary: Статистика по кампании Оплата за клик
+  doc: ''
+- operation_id: ozonperf_get_api_client_statistics_expense
+  section: Statistics
+  method: GET
+  host: api-performance.ozon.ru
+  scope: perf
+  path: /api/client/statistics/expense
+  safety: read
+  summary: Статистика по расходу кампаний
+  doc: ''
+- operation_id: ozonperf_get_api_client_statistics_daily
+  section: Statistics
+  method: GET
+  host: api-performance.ozon.ru
+  scope: perf
+  path: /api/client/statistics/daily
+  safety: read
+  summary: Дневная статистика по кампаниям
+  doc: ''
+- operation_id: ozonperf_post_api_client_statistic_orders_generate
+  section: Statistics
+  method: POST
+  host: api-performance.ozon.ru
+  scope: perf
+  path: /api/client/statistic/orders/generate
+  safety: read
+  summary: Получить отчёт по заказам в оплате за заказ — выбранные товары
+  doc: ''
+- operation_id: ozonperf_post_api_client_statistic_products_generate
+  section: Statistics
+  method: POST
+  host: api-performance.ozon.ru
+  scope: perf
+  path: /api/client/statistic/products/generate
+  safety: read
+  summary: Получить отчёт по товарам в оплате за заказ — выбранные товары
+  doc: ''
+- operation_id: ozonperf_get_api_client_statistics_all_sku_promo_orders_gene
+  section: Statistics
+  method: GET
+  host: api-performance.ozon.ru
+  scope: perf
+  path: /api/client/statistics/all_sku_promo/orders/generate
+  safety: read
+  summary: Получить отчёт по заказам в оплате за заказ — все товары
+  doc: ''
+- operation_id: ozonperf_get_api_client_statistics_all_sku_promo_products_ge
+  section: Statistics
+  method: GET
+  host: api-performance.ozon.ru
+  scope: perf
+  path: /api/client/statistics/all_sku_promo/products/generate
+  safety: read
+  summary: Получить отчёт по товарам в оплате за заказ — все товары
+  doc: ''
+- operation_id: ozonperf_post_api_client_statistics_phrases
+  section: Statistics
+  method: POST
+  host: api-performance.ozon.ru
+  scope: perf
+  path: /api/client/statistics/phrases
+  safety: read
+  summary: Отчёт по поисковым запросам
+  doc: ''
+- operation_id: ozonperf_post_api_client_campaign_cpc_product
+  section: Ad
+  method: POST
+  host: api-performance.ozon.ru
+  scope: perf
+  path: /api/client/campaign/cpc/v2/product
+  safety: write
+  summary: Создать кампанию с оплатой за клики
+  doc: ''
+- operation_id: ozonperf_post_external_api_dynamic_budget
+  section: Ad
+  method: POST
+  host: api-performance.ozon.ru
+  scope: perf
+  path: /external/api/dynamic_budget
+  safety: write
+  summary: Рассчитать минимальный бюджет кампании
+  doc: ''
+- operation_id: ozonperf_post_api_client_campaign_campaignid_activate
+  section: Ad
+  method: POST
+  host: api-performance.ozon.ru
+  scope: perf
+  path: /api/client/campaign/{campaignId}/activate
+  safety: write
+  summary: Активировать кампанию
+  doc: ''
+- operation_id: ozonperf_post_api_client_campaign_campaignid_deactivate
+  section: Ad
+  method: POST
+  host: api-performance.ozon.ru
+  scope: perf
+  path: /api/client/campaign/{campaignId}/deactivate
+  safety: write
+  summary: Выключить кампанию
+  doc: ''
+- operation_id: ozonperf_post_api_client_campaign_campaignid_products
+  section: Product
+  method: POST
+  host: api-performance.ozon.ru
+  scope: perf
+  path: /api/client/campaign/{campaignId}/products
+  safety: write
+  summary: Добавить товары в кампанию
+  doc: ''
+- operation_id: ozonperf_put_api_client_campaign_campaignid_products
+  section: Product
+  method: PUT
+  host: api-performance.ozon.ru
+  scope: perf
+  path: /api/client/campaign/{campaignId}/products
+  safety: write
+  summary: Обновить ставки товаров
+  doc: ''
+- operation_id: ozonperf_get_api_client_campaign_campaignid_products
+  section: Product
+  method: GET
+  host: api-performance.ozon.ru
+  scope: perf
+  path: /api/client/campaign/{campaignId}/v2/products
+  safety: read
+  summary: Список товаров кампании
+  doc: ''
+- operation_id: ozonperf_post_api_client_campaign_campaignid_products_delete
+  section: Product
+  method: POST
+  host: api-performance.ozon.ru
+  scope: perf
+  path: /api/client/campaign/{campaignId}/products/delete
+  safety: destructive
+  summary: Удалить товары из кампании
+  doc: ''
+- operation_id: ozonperf_get_api_client_campaign_campaignid_products_bids_co
+  section: Product
+  method: GET
+  host: api-performance.ozon.ru
+  scope: perf
+  path: /api/client/campaign/{campaignId}/products/bids/competitive
+  safety: read
+  summary: Конкурентные ставки для товара
+  doc: ''
+- operation_id: ozonperf_post_api_client_campaign_search_promo_products
+  section: Search-Promo
+  method: POST
+  host: api-performance.ozon.ru
+  scope: perf
+  path: /api/client/campaign/search_promo/v2/products
+  safety: read
+  summary: Список товаров в продвижении в оплате за заказ
+  doc: ''
+- operation_id: ozonperf_post_api_client_search_promo_bids_recommendation
+  section: Search-Promo
+  method: POST
+  host: api-performance.ozon.ru
+  scope: perf
+  path: /api/client/search_promo/bids/recommendation
+  safety: write
+  summary: Рекомендованные ставки для товаров
+  doc: ''
+- operation_id: ozonperf_post_api_client_campaign_search_promo_bids_set
+  section: Search-Promo
+  method: POST
+  host: api-performance.ozon.ru
+  scope: perf
+  path: /api/client/campaign/search_promo/v2/bids/set
+  safety: write
+  summary: Установить ставку на товар
+  doc: ''
+- operation_id: ozonperf_post_api_client_search_promo_get_cpo_min_bids
+  section: Search-Promo
+  method: POST
+  host: api-performance.ozon.ru
+  scope: perf
+  path: /api/client/search_promo/get_cpo_min_bids
+  safety: read
+  summary: Получить фиксированные ставки для товаров
+  doc: ''
+- operation_id: ozonperf_post_api_client_search_promo_product_enable
+  section: Search-Promo
+  method: POST
+  host: api-performance.ozon.ru
+  scope: perf
+  path: /api/client/search_promo/product/enable
+  safety: write
+  summary: Включить продвижение товара в оплате за заказ
+  doc: ''
+- operation_id: ozonperf_post_api_client_search_promo_product_disable
+  section: Search-Promo
+  method: POST
+  host: api-performance.ozon.ru
+  scope: perf
+  path: /api/client/search_promo/product/disable
+  safety: write
+  summary: Отключить продвижение товара в оплате за заказ
+  doc: ''
+- operation_id: ozonperf_post_api_client_campaign_search_promo_bids_delete
+  section: Search-Promo
+  method: POST
+  host: api-performance.ozon.ru
+  scope: perf
+  path: /api/client/campaign/search_promo/v2/bids/delete
+  safety: destructive
+  summary: Удалить товар из продвижения в оплате за заказ
+  doc: ''
+- operation_id: ozonperf_get_api_client_campaign_all_sku_promo_activate
+  section: Search-Promo
+  method: GET
+  host: api-performance.ozon.ru
+  scope: perf
+  path: /api/client/campaign/all_sku_promo/activate
+  safety: read
+  summary: Включить продвижение в оплате за заказ — все товары
+  doc: ''
+- operation_id: ozonperf_get_api_client_campaign_all_sku_promo_deactivate
+  section: Search-Promo
+  method: GET
+  host: api-performance.ozon.ru
+  scope: perf
+  path: /api/client/campaign/all_sku_promo/deactivate
+  safety: read
+  summary: Выключить продвижение в оплате за заказ — все товары
+  doc: ''
+- operation_id: ozonperf_post_api_client_campaign_search_promo_carrots_enabl
+  section: Search-Promo
+  method: POST
+  host: api-performance.ozon.ru
+  scope: perf
+  path: /api/client/campaign/search_promo/carrots/enable
+  safety: write
+  summary: Включить продвижение товаров в акции «Морковск»
+  doc: ''
+- operation_id: ozonperf_post_api_client_campaign_search_promo_carrots_disab
+  section: Search-Promo
+  method: POST
+  host: api-performance.ozon.ru
+  scope: perf
+  path: /api/client/campaign/search_promo/carrots/disable
+  safety: write
+  summary: Отключить продвижение товаров в акции «Морковск»
+  doc: ''
+- operation_id: ozonperf_post_api_client_vendors_statistics
+  section: Vendor
+  method: POST
+  host: api-performance.ozon.ru
+  scope: perf
+  path: /api/client/vendors/statistics
+  safety: read
+  summary: Отчёт с аналитикой внешнего трафика
+  doc: ''
+- operation_id: ozonperf_get_api_client_vendors_statistics_list
+  section: Vendor
+  method: GET
+  host: api-performance.ozon.ru
+  scope: perf
+  path: /api/client/vendors/statistics/list
+  safety: read
+  summary: Список запрошенных отчётов с аналитикой внешнего трафика
+  doc: ''
+- operation_id: ozonperf_get_api_client_vendors_statistics_uuid
+  section: Vendor
+  method: GET
+  host: api-performance.ozon.ru
+  scope: perf
+  path: /api/client/vendors/statistics/{UUID}
+  safety: read
+  summary: Информация об отчёте по UUID
+  doc: ''
+- operation_id: ozonperf_get_api_client_organisation_vendor_tag
+  section: Vendor
+  method: GET
+  host: api-performance.ozon.ru
+  scope: perf
+  path: /api/client/organisation/vendor_tag
+  safety: read
+  summary: Метка организации для внешних рекламных кампаний
+  doc: ''
