@@ -66,6 +66,12 @@ EXCLUDE_PATTERNS = [
 ]
 
 
+def read_name() -> str:
+    text = (ROOT / "pyproject.toml").read_text(encoding="utf-8") if 'ROOT' in globals() else open("pyproject.toml").read_text(encoding="utf-8")
+    m = re.search(r'^name\s*=\s*["\']([^"\']+)["\']', text, re.MULTILINE)
+    return m.group(1) if m else "marketplaces-mcp-ru"
+
+
 def read_version() -> str:
     text = (ROOT / "pyproject.toml").read_text(encoding="utf-8")
     m = re.search(r'^version\s*=\s*["\']([^"\']+)["\']', text, re.MULTILINE)
@@ -144,11 +150,12 @@ def build(list_contents: bool) -> Path:
 
     dist = ROOT / "dist"
     dist.mkdir(exist_ok=True)
-    zip_path = dist / f"marketplace-mcp-v{version}.zip"
+    name = read_name()
+    zip_path = dist / f"{name}-v{version}.zip"
     if zip_path.exists():
         zip_path.unlink()
 
-    prefix = f"marketplace-mcp-v{version}"
+    prefix = f"{name}-v{version}"
     with zipfile.ZipFile(zip_path, "w", zipfile.ZIP_DEFLATED) as zf:
         for p in files:
             rel = p.relative_to(ROOT).as_posix()
