@@ -3,7 +3,7 @@
 Формат — [Keep a Changelog](https://keepachangelog.com/ru/1.1.0/),
 версии — [SemVer](https://semver.org/lang/ru/).
 
-## [Unreleased]
+## [0.2.2] — 2026-06-24
 
 ### Изменено (установка — по фрикшен-логу реальной сессии)
 - **Каноническая установка (F3).** `install.py` теперь копирует приложение в
@@ -83,5 +83,6 @@
   `call_raw`.
 - Контракт OAuth у Ozon Performance подключён, но не выверен боем (нужны perf-креды).
 
+[0.2.2]: https://github.com/ilyautov/marketplaces-mcp-ru/releases/tag/v0.2.2
 [0.2.1]: https://github.com/ilyautov/marketplaces-mcp-ru/releases/tag/v0.2.1
 [0.2.0]: https://github.com/ilyautov/marketplaces-mcp-ru/releases/tag/v0.2.0

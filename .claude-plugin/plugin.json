@@ -1,7 +1,7 @@
 {
   "name": "marketplaces-mcp-ru",
   "description": "MCP-серверы для кабинетов Wildberries и Ozon: продажи, остатки, цены, финансы, отзывы через Seller API напрямую, без браузера. 793 метода schema-driven, safety-гейт на запись, авто-пагинация, мультикабинет, поиск по-русски. | MCP servers for Wildberries & Ozon seller accounts via the Seller API: 793 schema-driven methods, write safety gate, auto-pagination, Russian-language search.",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "author": {
     "name": "Ilya Utov",
     "email": "ilyautov@gmail.com",

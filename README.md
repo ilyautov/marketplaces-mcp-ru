@@ -5,7 +5,7 @@
 > **Продаёте на WB и Ozon — дайте ИИ прямой доступ к обоим кабинетам.** Два MCP-сервера над Seller API Wildberries и Ozon: **793 метода** (продажи, остатки, цены, финансы, отзывы, поставки, реклама), собранных schema-driven из официальных OpenAPI-спеков. Числа приходят из **реального API**, а не выдумываются моделью. **Safety-гейт** не даёт случайно изменить цену или остаток. Авто-пагинация, мультикабинет, поиск по-русски. Для Claude Code, Cursor, Codex, Cowork и Claude Desktop.
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-[![Версия](https://img.shields.io/badge/%D0%B2%D0%B5%D1%80%D1%81%D0%B8%D1%8F-0.2.1-B5491F)](https://github.com/ilyautov/marketplaces-mcp-ru/commits/main)
+[![Версия](https://img.shields.io/badge/%D0%B2%D0%B5%D1%80%D1%81%D0%B8%D1%8F-0.2.2-B5491F)](https://github.com/ilyautov/marketplaces-mcp-ru/commits/main)
 [![Методов](https://img.shields.io/badge/%D0%BC%D0%B5%D1%82%D0%BE%D0%B4%D0%BE%D0%B2-793-2D7D4F)](#что-внутри)
 [![Клиентов](https://img.shields.io/badge/%D0%BA%D0%BB%D0%B8%D0%B5%D0%BD%D1%82%D0%BE%D0%B2-4-D97757)](#установка)
 [![Звёзды](https://img.shields.io/github/stars/ilyautov/marketplaces-mcp-ru?style=flat&label=%D0%B7%D0%B2%D1%91%D0%B7%D0%B4%D1%8B&color=B5491F&logo=github&logoColor=white)](https://github.com/ilyautov/marketplaces-mcp-ru/stargazers)
