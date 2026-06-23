@@ -27,12 +27,27 @@ _VERB_DEFAULT = {
     "DELETE": "destructive",
 }
 
+# Severity ordering so we can take "the stricter of" two safety levels.
+_RANK = {"read": 0, "write": 1, "destructive": 2}
+
+# Verbs that are ALWAYS mutating. A catalog `read` on one of these is a bug
+# (the spec importer can mislabel them), so we never honour a downgrade below
+# the verb's floor — only an *upgrade* (e.g. PUT declared destructive) sticks.
+# POST is deliberately NOT here: POST-with-body reads (search/list) are real and
+# the catalog's `read` must be trusted for them.
+_VERB_FLOOR = {"PUT": "write", "PATCH": "write", "DELETE": "write"}
+
 
 def infer_safety(method: str, declared: Optional[str]) -> str:
-    """Return the safety level, preferring the catalog's declared value."""
+    """Return the safety level, preferring the catalog's declared value — but
+    never letting a declared value drop a mutating verb below its floor."""
+    verb = method.upper() if method else ""
+    floor = _VERB_FLOOR.get(verb)
     if declared in SAFETY_LEVELS:
+        if floor and _RANK[declared] < _RANK[floor]:  # type: ignore[index]
+            return floor
         return declared  # type: ignore[return-value]
-    return _VERB_DEFAULT.get(method.upper(), "write")
+    return _VERB_DEFAULT.get(verb, "write")
 
 
 def check_gate(

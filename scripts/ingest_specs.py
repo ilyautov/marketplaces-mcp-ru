@@ -45,9 +45,13 @@ def safety_of(method, path, oid):
     m=method.lower()
     if m in ("get","head"): return "read"
     if m=="delete": return "destructive"
-    if m in ("post","put","patch"):
+    # Only POST may be a read-with-body (search/list/report). PUT and PATCH are
+    # always mutations — the READ_POST allow-list must NOT downgrade them, or a
+    # mutating endpoint slips past the safety gate in call_method.
+    if m=="post":
         if MUTATE.search(path+" "+oid): return "write"
         return "read" if READ_POST.search(path+" "+oid) else "write"
+    if m in ("put","patch"): return "write"
     return "write"
 
 def main():

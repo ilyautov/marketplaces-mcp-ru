@@ -12,7 +12,11 @@ HOST="api-seller.ozon.ru"
 READ=re.compile(r"(list|info|get|report|analytics|financ|rating|history|search|/stocks\b|/stock\b|description|timeslot|available|status|tree|attribute|certificate|/info/)",re.I)
 MUTATE=re.compile(r"(import|update|create|delete|/set|/add|ship|cancel|activate|deactivat|archive|move|send|confirm|reject|refund|/change|assign|generate|exemplar/set|unpublish|publish|upload|/act/|/draft/|register)",re.I)
 
-def safety(path,oid):
+def safety(method,path,oid):
+    m=(method or "").lower()
+    if m=="delete": return "destructive"
+    # PUT/PATCH always mutate — never let a read-ish path keyword downgrade them.
+    if m in ("put","patch"): return "write"
     t=path+" "+(oid or "")
     if MUTATE.search(t): return "destructive" if re.search(r"delete",t,re.I) else "write"
     if READ.search(t): return "read"
@@ -49,7 +53,7 @@ def main():
             oid=f"ozon_{method.lower()}_{slug}"[:60]; base=oid; i=2
             while oid in seen_oid: oid=f"{base}_{i}"; i+=1
             seen_oid.add(oid); seen_path.add((method.upper(),path))
-            sf = ov.get(swid) or safety(path,swid)
+            sf = ov.get(swid) or safety(method,path,swid)
             tags=op.get("tags") or []
             rec={"operation_id":oid,"section":(tags[0] if tags else "imported"),"method":method.upper(),
                  "host":HOST,"path":path,"scope":"seller","safety":sf,

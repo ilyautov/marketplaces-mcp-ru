@@ -890,7 +890,7 @@ endpoints:
   host: marketplace-api.wildberries.ru
   path: /api/v3/warehouses/{warehouseId}
   scope: marketplace
-  safety: read
+  safety: write
   summary: Обновить склад продавца
   doc: ''
   pagination: none
@@ -921,7 +921,7 @@ endpoints:
   host: marketplace-api.wildberries.ru
   path: /api/v3/dbw/warehouses/{warehouseId}/contacts
   scope: marketplace
-  safety: read
+  safety: write
   summary: Обновить список контактов
   doc: ''
   pagination: none
@@ -2326,7 +2326,7 @@ endpoints:
   host: feedbacks-api.wildberries.ru
   path: /api/v1/questions
   scope: feedbacks
-  safety: read
+  safety: write
   summary: Работа с вопросами
   doc: ''
   items_path: additionalErrors
@@ -2391,7 +2391,7 @@ endpoints:
   host: feedbacks-api.wildberries.ru
   path: /api/v1/feedbacks/answer
   scope: feedbacks
-  safety: read
+  safety: write
   summary: Отредактировать ответ на отзыв
   doc: ''
   pagination: none

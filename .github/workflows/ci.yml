@@ -1,0 +1,35 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.10", "3.11", "3.12"]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest pyyaml httpx "mcp>=1.2.0"
+      - name: Run tests (offline, no tokens)
+        # -u clears any inherited creds so tests run in a clean env.
+        # Includes the safety-catalog lint: fails if any PUT/PATCH/DELETE is
+        # marked safety:read (which would bypass the write gate in call_method).
+        run: env -u OZON_CLIENT_ID -u OZON_API_KEY -u WB_API_TOKEN python -m pytest tests/ -q
+      - name: Selfcheck all three servers
+        run: |
+          python serve.py wb --selfcheck
+          python serve.py ozon --selfcheck
+          python serve.py ozon-perf --selfcheck

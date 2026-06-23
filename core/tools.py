@@ -172,8 +172,10 @@ def register_generic_tools(
             hits = catalog.search(operation_id, limit=5)
             return _j({"error": "not_found", "operation_id": operation_id,
                        "did_you_mean": [s.operation_id for s in hits]})
+        # Defense in depth: never let a catalog `read` weaken the gate below the
+        # HTTP verb's floor (a mislabelled PUT/PATCH/DELETE must still be gated).
         gate = check_gate(
-            spec.safety, confirm_write=confirm_write,
+            infer_safety(spec.method, spec.safety), confirm_write=confirm_write,
             i_understand_this_modifies_data=i_understand_this_modifies_data,
             operation_id=spec.operation_id, endpoint=spec.path,
         )
