@@ -82,6 +82,30 @@ Marketplace keys move prices, stock and money. Every endpoint is classified
 
 The gate runs locally; if confirmations are missing, nothing is sent.
 
+## Install & distribution
+
+Full step-by-step for every audience lives in **[QUICKSTART.md](QUICKSTART.md)**.
+Three paths, same result — pick by comfort level:
+
+1. **Easiest — ask your AI (no terminal).** Open Claude/Cowork and say
+   *"install the WB + Ozon MCP"*; it walks you through the bundled
+   `install-skill/`. (Cowork's sandbox can't touch your machine, so the final
+   double-click stays with you — the skill just gets you there error-free.)
+2. **Download & click.** Grab `marketplace-mcp-v<version>.zip` from
+   **[GitHub Releases](https://github.com/<OWNER>/marketplace-mcp/releases)**,
+   unzip, double-click `install.command` (macOS) / `install.bat` (Windows),
+   paste your keys.
+3. **Technical.** `git clone https://github.com/<OWNER>/marketplace-mcp` then
+   `python3 install.py --client <your-client>`.
+
+<!-- TODO: create the public repo and replace <OWNER> with the real owner. -->
+
+Get keys: **WB** — seller.wildberries.ru → Settings → Access tokens; **Ozon** —
+seller.ozon.ru → Settings → API keys. Maintainers cut a release with
+`python3 scripts/package_release.py` (clean, secret-free, versioned zip).
+
+The mechanics below apply to every path.
+
 ## Install — works on Windows, macOS, Linux
 
 No `pip install`, no JSON editing. Dependencies install themselves on first
