@@ -23,6 +23,8 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 SERVE = HERE / "serve.py"
+sys.path.insert(0, str(HERE))
+from core.credentials import CredentialStore  # noqa: E402
 
 
 def config_path() -> Path:
@@ -37,20 +39,24 @@ def config_path() -> Path:
     return home / ".config" / "Claude" / "claude_desktop_config.json"
 
 
-def build_entries(wb_token: str, ozon_client_id: str, ozon_api_key: str) -> dict:
+def build_entries() -> dict:
+    """Server entries for the Claude config. No secrets here — credentials live
+    in the cabinet store (~/.marketplace-mcp/cabinets.json)."""
     py = sys.executable  # the interpreter that ran install.py
     return {
-        "wildberries": {
-            "command": py,
-            "args": [str(SERVE), "wb"],
-            "env": {"WB_API_TOKEN": wb_token},
-        },
-        "ozon": {
-            "command": py,
-            "args": [str(SERVE), "ozon"],
-            "env": {"OZON_CLIENT_ID": ozon_client_id, "OZON_API_KEY": ozon_api_key},
-        },
+        "wildberries": {"command": py, "args": [str(SERVE), "wb"]},
+        "ozon": {"command": py, "args": [str(SERVE), "ozon"]},
     }
+
+
+def save_cabinet(cabinet: str, wb_token: str, oid: str, okey: str) -> None:
+    """Persist provided keys as a named cabinet in the local store."""
+    store = CredentialStore()
+    if wb_token:
+        store.add_cabinet("wb", cabinet, {"token": wb_token}, make_active=True)
+    if oid and okey:
+        store.add_cabinet("ozon", cabinet,
+                          {"client_id": oid, "api_key": okey}, make_active=True)
 
 
 def _ask(prompt: str, current: str) -> str:
@@ -62,14 +68,15 @@ def _ask(prompt: str, current: str) -> str:
         return ""
 
 
-def claude_code_commands(wb_token: str, ozon_client_id: str, ozon_api_key: str) -> str:
-    """Equivalent `claude mcp add` commands for Claude Code (CLI) users."""
+def claude_code_commands() -> str:
+    """Equivalent `claude mcp add` commands for Claude Code (CLI) users.
+    Credentials come from the cabinet store, so no --env secrets are needed."""
     py = sys.executable
     return (
-        f'claude mcp add wildberries --env WB_API_TOKEN={wb_token or "YOUR_WB_TOKEN"} '
-        f'-- "{py}" "{SERVE}" wb\n'
-        f'claude mcp add ozon --env OZON_CLIENT_ID={ozon_client_id or "YOUR_ID"} '
-        f'--env OZON_API_KEY={ozon_api_key or "YOUR_KEY"} -- "{py}" "{SERVE}" ozon'
+        f'claude mcp add wildberries -- "{py}" "{SERVE}" wb\n'
+        f'claude mcp add ozon -- "{py}" "{SERVE}" ozon\n'
+        "# then add a cabinet from chat: ozon_add_cabinet / wb_add_cabinet, "
+        "or re-run: python3 install.py"
     )
 
 
@@ -78,6 +85,9 @@ def main() -> None:
         sys.exit(f"Python 3.10+ required, found {sys.version.split()[0]}. "
                  "Install from https://python.org and retry.")
     ap = argparse.ArgumentParser()
+    ap.add_argument("--cabinet", default="main",
+                    help="name for this cabinet (default 'main'); use different "
+                         "names for multiple shops")
     ap.add_argument("--wb-token", default="")
     ap.add_argument("--ozon-client-id", default="")
     ap.add_argument("--ozon-api-key", default="")
@@ -89,27 +99,31 @@ def main() -> None:
     args = ap.parse_args()
 
     if args.claude_code:
-        print(claude_code_commands(args.wb_token, args.ozon_client_id, args.ozon_api_key))
+        print(claude_code_commands())
         return
 
-    if not args.print_only:
-        print("Marketplace MCP installer — keys are stored in your local Claude "
-              "config only.\n"
-              "Get WB token: seller.wildberries.ru → Settings → Access tokens.\n"
-              "Get Ozon keys: seller.ozon.ru → Settings → API keys.\n")
-    wb = _ask("Wildberries API token (Enter to skip): ", args.wb_token) if not args.print_only else args.wb_token
-    oid = _ask("Ozon Client-Id (Enter to skip): ", args.ozon_client_id) if not args.print_only else args.ozon_client_id
-    okey = _ask("Ozon Api-Key (Enter to skip): ", args.ozon_api_key) if not args.print_only else args.ozon_api_key
-
-    entries = build_entries(wb, oid, okey)
-
+    entries = build_entries()
     if args.print_only:
         print(json.dumps({"mcpServers": entries}, ensure_ascii=False, indent=2))
         return
 
+    print("Marketplace MCP installer.\n"
+          f"Cabinet name: '{args.cabinet}' (run again with --cabinet NAME to add "
+          "more shops).\n"
+          "Keys are saved to ~/.marketplace-mcp/cabinets.json (local, chmod 600), "
+          "never to the repo.\n"
+          "Get WB token: seller.wildberries.ru → Settings → Access tokens.\n"
+          "Get Ozon keys: seller.ozon.ru → Settings → API keys.\n")
+    wb = _ask("Wildberries API token (Enter to skip): ", args.wb_token)
+    oid = _ask("Ozon Client-Id (Enter to skip): ", args.ozon_client_id)
+    okey = _ask("Ozon Api-Key (Enter to skip): ", args.ozon_api_key)
+
+    # 1) save credentials to the cabinet store
+    save_cabinet(args.cabinet, wb, oid, okey)
+
+    # 2) write the (secret-free) server entries to the Claude config
     cfg_path = Path(args.config) if args.config else config_path()
     cfg_path.parent.mkdir(parents=True, exist_ok=True)
-
     config: dict = {}
     if cfg_path.exists():
         try:
@@ -119,22 +133,17 @@ def main() -> None:
         backup = cfg_path.with_suffix(f".json.bak-{datetime.now():%Y%m%d-%H%M%S}")
         shutil.copy2(cfg_path, backup)
         print(f"Backed up existing config → {backup.name}")
-
     config.setdefault("mcpServers", {})
     config["mcpServers"].update(entries)
     cfg_path.write_text(json.dumps(config, ensure_ascii=False, indent=2), encoding="utf-8")
 
-    print(f"\n✅ Wrote config → {cfg_path}")
-    print("   Servers added: 'wildberries', 'ozon'.")
-    missing = [n for n, v in {"WB_API_TOKEN": wb, "OZON_CLIENT_ID": oid,
-                              "OZON_API_KEY": okey}.items() if not v]
-    if missing:
-        print(f"   ⚠️  Empty keys: {', '.join(missing)} — edit the config later or "
-              "re-run install.py.")
-    print("\n👉 Restart Claude / Cowork. First launch auto-installs dependencies "
-          "(a few seconds), then the tools appear.")
-    print("\n(Using Claude Code CLI instead? Run `python3 install.py --claude-code` "
-          "for the equivalent `claude mcp add` commands.)")
+    print(f"\n✅ Config → {cfg_path} (servers 'wildberries', 'ozon', no secrets in it)")
+    saved = [s for s, v in (("WB", wb), ("Ozon", oid and okey)) if v]
+    print(f"✅ Cabinet '{args.cabinet}' saved for: {', '.join(saved) or '(nothing — keys skipped)'}")
+    print("\n👉 Restart Claude / Cowork. First launch auto-installs dependencies, "
+          "then the tools appear.")
+    print("   Add another shop later: re-run with --cabinet shop2, or in chat say "
+          "'add an Ozon cabinet' (ozon_add_cabinet). Switch with ozon_use_cabinet.")
 
 
 if __name__ == "__main__":

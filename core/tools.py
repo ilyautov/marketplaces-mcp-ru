@@ -57,13 +57,17 @@ def register_generic_tools(
         Does NOT reveal secret values — only reports which variables are set.
         Returns JSON: {"ready": bool, "missing": [str], "required": [str]}.
         """
-        missing = client.config.missing_env()
+        creds, source = client.config.resolve_creds()
+        missing = [f for f in client.config.fields if not creds.get(f)]
+        cabinets = client.config.store.list_cabinets(client.config.name)
         return _j({
             "ready": not missing,
-            "required": client.config.required_env,
-            "missing": missing,
-            "hint": ("Credentials are read from the MCP server's env block. "
-                     "Run install.py to set them, or edit the Claude config."),
+            "active_cabinet": cabinets["active"],
+            "source": source,  # cabinet name, "env", or "none"
+            "cabinets": cabinets["cabinets"],
+            "missing_fields": missing,
+            "hint": (f"Add a cabinet with {svc}_add_cabinet, switch with "
+                     f"{svc}_use_cabinet, or run install.py."),
             "where_to_get_keys": key_help,
         })
 
@@ -260,3 +264,89 @@ def register_generic_tools(
             items_path=items_path, limit=limit, max_items=max_items,
         )
         return _j(resp)
+
+
+def register_cabinet_tools(mcp: FastMCP, *, svc: str, client: MarketplaceClient) -> None:
+    """Register cabinet-management tools so students can add/switch credentials
+    from chat without editing files. Keys are stored locally (chmod 600)."""
+    config = client.config
+
+    @mcp.tool(
+        name=f"{svc}_list_cabinets",
+        annotations={"title": f"{svc.upper()} list cabinets",
+                     "readOnlyHint": True, "openWorldHint": False},
+    )
+    async def list_cabinets() -> str:
+        """List configured cabinets for this marketplace and which one is active.
+
+        Returns JSON: {"active": str|null, "cabinets": [names], "fields_needed": [...]}.
+        Secret values are never returned.
+        """
+        info = config.store.list_cabinets(config.name)
+        return _j({**info, "fields_needed": config.fields})
+
+    @mcp.tool(
+        name=f"{svc}_add_cabinet",
+        annotations={"title": f"{svc.upper()} add cabinet",
+                     "readOnlyHint": False, "destructiveHint": False,
+                     "idempotentHint": True, "openWorldHint": False},
+    )
+    async def add_cabinet(name: str, credentials: dict,
+                          make_active: bool = True) -> str:
+        """Add or update a cabinet (a named set of API credentials).
+
+        Args:
+            name: a label for this cabinet, e.g. "main" or "shop2".
+            credentials: dict with the required fields for this service
+                ({fields}). For Ozon: {{"client_id": "...", "api_key": "..."}};
+                for WB: {{"token": "..."}}.
+            make_active: switch to this cabinet immediately (default true).
+        Returns JSON confirming the cabinet and active selection. Keys are saved
+        to ~/.marketplace-mcp/cabinets.json (local, chmod 600), never echoed back.
+        """
+        missing = [f for f in config.fields if not credentials.get(f)]
+        if missing:
+            return _j({"error": "invalid_params",
+                       "message": f"Missing required field(s): {', '.join(missing)}.",
+                       "fields_needed": config.fields})
+        clean = {f: str(credentials[f]) for f in config.fields}
+        config.store.add_cabinet(config.name, name, clean, make_active=make_active)
+        info = config.store.list_cabinets(config.name)
+        return _j({"ok": True, "added": name, "active": info["active"],
+                   "cabinets": info["cabinets"]})
+
+    @mcp.tool(
+        name=f"{svc}_use_cabinet",
+        annotations={"title": f"{svc.upper()} switch cabinet",
+                     "readOnlyHint": False, "idempotentHint": True,
+                     "openWorldHint": False},
+    )
+    async def use_cabinet(name: str) -> str:
+        """Switch the active cabinet. Subsequent API calls use its credentials.
+
+        Args:
+            name: the cabinet to activate (see {svc}_list_cabinets).
+        """
+        ok = config.store.set_active(config.name, name)
+        if not ok:
+            info = config.store.list_cabinets(config.name)
+            return _j({"error": "not_found", "name": name,
+                       "available": info["cabinets"]})
+        return _j({"ok": True, "active": name})
+
+    @mcp.tool(
+        name=f"{svc}_remove_cabinet",
+        annotations={"title": f"{svc.upper()} remove cabinet",
+                     "readOnlyHint": False, "destructiveHint": True,
+                     "openWorldHint": False},
+    )
+    async def remove_cabinet(name: str) -> str:
+        """Delete a stored cabinet. If it was active, another becomes active.
+
+        Args:
+            name: the cabinet to remove.
+        """
+        ok = config.store.remove_cabinet(config.name, name)
+        info = config.store.list_cabinets(config.name)
+        return _j({"ok": ok, "removed": name if ok else None,
+                   "active": info["active"], "cabinets": info["cabinets"]})

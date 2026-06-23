@@ -87,21 +87,54 @@ def test_status_classification():
 
 
 # ----------------------------- credentials / headers -----------------------------
-def test_missing_creds_envelope(monkeypatch):
-    monkeypatch.delenv("WB_API_TOKEN", raising=False)
+def test_missing_creds_envelope(monkeypatch, tmp_path):
+    from core.credentials import CredentialStore
     from wb_mcp.server import client as wb_client
+    monkeypatch.delenv("WB_API_TOKEN", raising=False)
+    monkeypatch.setattr(wb_client.config, "store", CredentialStore(tmp_path / "cab.json"))
     creds, err = wb_client._creds_or_error()
     assert creds is None and err["error"] == "auth"
 
 
-def test_header_building(monkeypatch):
-    monkeypatch.setenv("OZON_CLIENT_ID", "123")
-    monkeypatch.setenv("OZON_API_KEY", "secret-key")
+def test_header_building():
     from ozon_mcp.server import OZON_CONFIG
-    headers = OZON_CONFIG.build_headers(OZON_CONFIG.load_creds({
-        "OZON_CLIENT_ID": "123", "OZON_API_KEY": "secret-key"}))
+    headers = OZON_CONFIG.build_headers({"client_id": "123", "api_key": "secret-key"})
     assert headers["Client-Id"] == "123"
     assert headers["Api-Key"] == "secret-key"
+
+
+# ----------------------------- multi-cabinet store -----------------------------
+def test_cabinet_store_crud(tmp_path):
+    from core.credentials import CredentialStore
+    st = CredentialStore(tmp_path / "cab.json")
+    env_map = {"client_id": "OZON_CLIENT_ID", "api_key": "OZON_API_KEY"}
+    fields = ["client_id", "api_key"]
+    # empty -> missing all
+    assert st.missing("ozon", fields, env_map) == fields
+    # add two cabinets
+    st.add_cabinet("ozon", "main", {"client_id": "1", "api_key": "a"})
+    st.add_cabinet("ozon", "shop2", {"client_id": "2", "api_key": "b"})
+    info = st.list_cabinets("ozon")
+    assert info["active"] == "shop2"  # last added became active
+    assert set(info["cabinets"]) == {"main", "shop2"}
+    # active resolves to shop2 creds
+    creds, src = st.resolve("ozon", fields, env_map)
+    assert creds["client_id"] == "2" and src == "shop2"
+    # switch back to main
+    assert st.set_active("ozon", "main")
+    creds, src = st.resolve("ozon", fields, env_map)
+    assert creds["client_id"] == "1" and src == "main"
+    # remove main -> active falls back to remaining
+    assert st.remove_cabinet("ozon", "main")
+    assert st.list_cabinets("ozon")["active"] == "shop2"
+
+
+def test_cabinet_env_fallback(tmp_path, monkeypatch):
+    from core.credentials import CredentialStore
+    st = CredentialStore(tmp_path / "cab.json")  # empty store
+    monkeypatch.setenv("WB_API_TOKEN", "envtok")
+    creds, src = st.resolve("wb", ["token"], {"token": "WB_API_TOKEN"})
+    assert creds["token"] == "envtok" and src == "env"
 
 
 # ----------------------------- pagination (fake client) -----------------------------
@@ -155,8 +188,10 @@ def test_servers_register_tools():
     for t in ("ozon_search_methods", "ozon_call_method", "ozon_call_raw",
               "ozon_fetch_all", "ozon_get_products", "ozon_set_price"):
         assert t in ozon_tools, f"missing {t}"
-    assert len(wb_tools) >= 15 and len(ozon_tools) >= 15  # 8 generic + typed + 2 workflow
-    for t in ("ozon_list_workflows", "ozon_get_workflow"):
+    # 8 generic + typed + 2 workflow + 4 cabinet
+    assert len(wb_tools) >= 19 and len(ozon_tools) >= 19
+    for t in ("ozon_list_workflows", "ozon_get_workflow",
+              "ozon_add_cabinet", "ozon_use_cabinet", "ozon_list_cabinets"):
         assert t in ozon_tools
 
 
@@ -202,7 +237,7 @@ def test_serve_venv_python_per_os(monkeypatch):
 
 def test_claude_code_commands():
     import install
-    out = install.claude_code_commands("WBTOK", "CID", "AKEY")
+    out = install.claude_code_commands()
     assert "claude mcp add wildberries" in out
     assert "claude mcp add ozon" in out
-    assert "WBTOK" in out and "CID" in out and "AKEY" in out
+    assert "serve.py" in out or "serve" in out

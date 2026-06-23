@@ -21,18 +21,11 @@ from mcp.server.fastmcp import FastMCP
 from core.client import MarketplaceClient, ServiceConfig
 from core.registry import Catalog
 from core.safety import check_gate
-from core.tools import register_generic_tools
+from core.tools import register_cabinet_tools, register_generic_tools
 from core.workflows import Workflows, register_workflow_tools
 
 CATALOG_PATH = Path(__file__).with_name("endpoints.yaml")
 WORKFLOWS_PATH = Path(__file__).with_name("workflows.yaml")
-
-
-def _load_creds(env: dict[str, str]) -> dict[str, str]:
-    return {
-        "client_id": env.get("OZON_CLIENT_ID", ""),
-        "api_key": env.get("OZON_API_KEY", ""),
-    }
 
 
 def _build_headers(creds: dict[str, str]) -> dict[str, str]:
@@ -46,8 +39,8 @@ def _build_headers(creds: dict[str, str]) -> dict[str, str]:
 OZON_CONFIG = ServiceConfig(
     name="ozon",
     scheme="https",
-    required_env=["OZON_CLIENT_ID", "OZON_API_KEY"],
-    load_creds=_load_creds,
+    fields=["client_id", "api_key"],
+    env_map={"client_id": "OZON_CLIENT_ID", "api_key": "OZON_API_KEY"},
     build_headers=_build_headers,
 )
 
@@ -59,6 +52,7 @@ register_generic_tools(
     mcp, svc="ozon", client=client, catalog=catalog,
     key_help="seller.ozon.ru → Settings → API keys (Client-Id + Api-Key).",
 )
+register_cabinet_tools(mcp, svc="ozon", client=client)
 register_workflow_tools(mcp, svc="ozon", workflows=Workflows.from_yaml(WORKFLOWS_PATH))
 
 

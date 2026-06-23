@@ -22,15 +22,11 @@ from mcp.server.fastmcp import FastMCP
 
 from core.client import MarketplaceClient, ServiceConfig
 from core.registry import Catalog
-from core.tools import register_generic_tools
+from core.tools import register_cabinet_tools, register_generic_tools
 from core.workflows import Workflows, register_workflow_tools
 
 CATALOG_PATH = Path(__file__).with_name("endpoints.yaml")
 WORKFLOWS_PATH = Path(__file__).with_name("workflows.yaml")
-
-
-def _load_creds(env: dict[str, str]) -> dict[str, str]:
-    return {"token": env.get("WB_API_TOKEN", "")}
 
 
 def _build_headers(creds: dict[str, str]) -> dict[str, str]:
@@ -41,8 +37,8 @@ def _build_headers(creds: dict[str, str]) -> dict[str, str]:
 WB_CONFIG = ServiceConfig(
     name="wb",
     scheme="https",
-    required_env=["WB_API_TOKEN"],
-    load_creds=_load_creds,
+    fields=["token"],
+    env_map={"token": "WB_API_TOKEN"},
     build_headers=_build_headers,
 )
 
@@ -56,6 +52,7 @@ register_generic_tools(
     key_help="seller.wildberries.ru → Settings → Access tokens (one token, "
              "select the categories you need).",
 )
+register_cabinet_tools(mcp, svc="wb", client=client)
 register_workflow_tools(mcp, svc="wb", workflows=Workflows.from_yaml(WORKFLOWS_PATH))
 
 

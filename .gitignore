@@ -1,4 +1,6 @@
 .env
+cabinets.json
+.marketplace-mcp/
 __pycache__/
 *.pyc
 .pytest_cache/

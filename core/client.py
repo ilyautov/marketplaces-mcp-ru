@@ -16,11 +16,12 @@ import asyncio
 import email.utils
 import os
 import time
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Any, Callable, Optional
 
 import httpx
 
+from .credentials import CredentialStore
 from .errors import classify_status, error_from_exception, make_error
 from .registry import EndpointSpec
 
@@ -31,18 +32,33 @@ BACKOFF_BASE = 1.5  # seconds; * 2**attempt
 
 @dataclass
 class ServiceConfig:
-    """Per-service wiring. Keeps all WB/Ozon specifics out of the engine."""
+    """Per-service wiring. Keeps all WB/Ozon specifics out of the engine.
+
+    Credentials are resolved per service from the cabinet store (active cabinet),
+    falling back to environment variables for an env-only install.
+    """
     name: str                                   # "wb" | "ozon"
     scheme: str                                 # "https"
-    required_env: list[str]                     # env var names that must be set
-    # creds(env) -> dict of resolved credentials
-    load_creds: Callable[[dict[str, str]], dict[str, str]]
+    fields: list[str]                           # cabinet field names (e.g. ["client_id","api_key"])
+    env_map: dict[str, str]                      # field -> ENV var for fallback
     # headers(creds) -> dict of HTTP headers (auth)
     build_headers: Callable[[dict[str, str]], dict[str, str]]
+    store: CredentialStore = field(default_factory=CredentialStore)
     user_agent: str = "marketplace-mcp/0.1 (+https://github.com/)"
 
+    def resolve_creds(self) -> tuple[dict[str, str], str]:
+        return self.store.resolve(self.name, self.fields, self.env_map)
+
+    def missing_creds(self) -> list[str]:
+        return self.store.missing(self.name, self.fields, self.env_map)
+
+    # back-compat name used by some tools
     def missing_env(self) -> list[str]:
-        return [k for k in self.required_env if not os.environ.get(k)]
+        return self.missing_creds()
+
+    @property
+    def required_env(self) -> list[str]:
+        return [self.env_map.get(f, f) for f in self.fields]
 
 
 def _parse_retry_after(value: Optional[str]) -> Optional[float]:
@@ -64,15 +80,16 @@ class MarketplaceClient:
 
     # --- credential handling -------------------------------------------------
     def _creds_or_error(self) -> tuple[Optional[dict[str, str]], Optional[dict]]:
-        missing = self.config.missing_env()
+        creds, _source = self.config.resolve_creds()
+        missing = [f for f in self.config.fields if not creds.get(f)]
         if missing:
             return None, make_error(
                 "auth",
-                f"Missing credentials. Set environment variable(s): {', '.join(missing)}. "
-                "They are read from the environment only, never passed as tool arguments.",
+                f"Missing credentials for fields: {', '.join(missing)}. "
+                f"Add a cabinet with {self.config.name}_add_cabinet, run install.py, "
+                "or set the matching environment variables.",
                 retryable=False,
             )
-        creds = self.config.load_creds(dict(os.environ))
         return creds, None
 
     def _url(self, host: str, path: str) -> str:

@@ -118,16 +118,28 @@ Just want to see the config block without changing anything:
 python3 install.py --print
 ```
 
-### Credentials (stored only in your local Claude config)
+### Credentials & cabinets (multi-shop)
 
-- **Wildberries**: `WB_API_TOKEN` — seller.wildberries.ru → Settings → Access
-  tokens (one token, tick the categories you need). Sent in the `Authorization`
-  header as the raw value (no `Bearer` prefix).
-- **Ozon**: `OZON_CLIENT_ID` + `OZON_API_KEY` — seller.ozon.ru → Settings → API
-  keys. Sent as `Client-Id` / `Api-Key` headers.
+Keys are stored in `~/.marketplace-mcp/cabinets.json` (local, chmod 600, never
+in the repo or the Claude config). You can run **several cabinets** — e.g. two
+Ozon shops — and switch between them from chat.
 
-In chat you can always run `wb_check_auth` / `ozon_check_auth` to see whether
-keys are set and where to get them.
+- **Wildberries**: a token from seller.wildberries.ru → Settings → Access tokens
+  (tick the categories you need). Sent raw in the `Authorization` header.
+- **Ozon**: `Client-Id` + `Api-Key` from seller.ozon.ru → Settings → API keys.
+
+Manage cabinets from chat (no file editing):
+
+- `ozon_add_cabinet` / `wb_add_cabinet` — add or update a cabinet, e.g.
+  `add_cabinet(name="shop2", credentials={"client_id":"...", "api_key":"..."})`.
+- `ozon_use_cabinet(name)` — switch the active cabinet.
+- `ozon_list_cabinets` — see configured cabinets and which is active.
+- `ozon_remove_cabinet(name)` — delete one.
+- `ozon_check_auth` / `wb_check_auth` — show the active cabinet, what's missing,
+  and where to get keys.
+
+Add more shops at install time too: re-run `python3 install.py --cabinet shop2`.
+An env-only setup still works — environment variables act as a fallback cabinet.
 
 ### Manual config (if you prefer)
 
@@ -182,6 +194,12 @@ python -m pytest tests/ -q        # 11 offline tests, no tokens needed
   possible deprecation in favour of a new finance POST endpoint — confirm.
 - **Ozon versions drift silently** (list v3, attributes v4, prices v5, stocks
   v4/v2). If a call 404s, check the version; `sync_swagger.py` re-aligns paths.
+- **Imported endpoints (the 182 marked UNVERIFIED): paths are reliable, HTTP
+  verbs are NOT.** A live probe found imported GET-labelled endpoints that are
+  actually POST (405 Method Not Allowed). Treat imported entries as a discovery
+  map: confirm the verb/body in the docs, or call with the correct verb via
+  `call_raw`. The 13 live-verified core endpoints and the curated set are
+  trustworthy as-is.
 - Some WB write verbs (tag update, meta setters, supply deliver) were inferred
   where the docs stripped the verb badge — confirm before automating them.
 

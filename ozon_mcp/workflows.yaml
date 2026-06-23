@@ -12,8 +12,10 @@ workflows:
       - operation_id: ozon_stocks_info
         why: Cross-check current available/reserved quantity per product.
     interpret: >
-      Flag SKUs where idc (days of stock) < lead time + safety buffer, or where
-      turnover grade is DEFICIT/NO_SALES. Sort by idc ascending — lowest first.
+      Each row has idc (days of stock), ads (avg daily sales), idc_grade and
+      turnover_grade (live values use the GRADES_* enum: GRADES_GREEN/ YELLOW/
+      RED/ CRITICAL). Flag SKUs where turnover_grade is GRADES_CRITICAL/RED or
+      idc is very low. Sort by idc ascending — lowest first.
     common_mistakes:
       - Treating reserved stock as available — subtract reserved from present.
       - Ignoring FBO vs FBS split; resupply path differs.
