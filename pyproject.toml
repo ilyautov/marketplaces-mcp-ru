@@ -1,6 +1,6 @@
 [project]
 name = "marketplace-mcp"
-version = "0.1.0"
+version = "0.2.0"
 description = "MCP servers for Wildberries and Ozon Seller APIs (schema-driven, safety-gated)"
 readme = "README.md"
 requires-python = ">=3.10"
@@ -13,6 +13,7 @@ dependencies = [
 [project.scripts]
 wb-mcp = "wb_mcp.server:main"
 ozon-mcp = "ozon_mcp.server:main"
+ozon-perf-mcp = "ozon_perf_mcp.server:main"
 
 [project.optional-dependencies]
 dev = ["pytest>=8.0", "pytest-asyncio>=0.23"]
@@ -22,8 +23,11 @@ requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools]
-packages = ["core", "wb_mcp", "ozon_mcp"]
+packages = ["core", "wb_mcp", "ozon_mcp", "ozon_perf_mcp"]
 
 [tool.setuptools.package-data]
-wb_mcp = ["endpoints.yaml"]
-ozon_mcp = ["endpoints.yaml"]
+wb_mcp = ["endpoints.yaml", "workflows.yaml"]
+# perf_endpoints.yaml lives in ozon_mcp because ozon_perf_mcp/server.py loads
+# it from ../ozon_mcp/perf_endpoints.yaml — it MUST ship inside ozon_mcp.
+ozon_mcp = ["endpoints.yaml", "perf_endpoints.yaml", "workflows.yaml"]
+ozon_perf_mcp = ["workflows.yaml"]

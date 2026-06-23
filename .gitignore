@@ -1,10 +1,24 @@
+# Secrets & local credential store — NEVER commit
 .env
+*.env
 cabinets.json
 .marketplace-mcp/
+~/.marketplace-mcp/
+*.key
+*.pem
+*.secret
+*credentials.json
+
+# Python
 __pycache__/
 *.pyc
+*.pyo
 .pytest_cache/
 *.egg-info/
 build/
 dist/
 .venv/
+venv/
+
+# OS / editor
+.DS_Store
