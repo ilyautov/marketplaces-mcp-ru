@@ -13,8 +13,9 @@ practical state-of-play and the exact commands to close the open follow-ups.
 
 > Counts reproduced with:
 > `python3 -c "import sys;sys.path.insert(0,'.');from core.registry import Catalog;print(len(Catalog.from_yaml('wb_mcp/endpoints.yaml').all()),len(Catalog.from_yaml('ozon_mcp/endpoints.yaml').all()))"`
-> -> `307 441`. Perf is **catalog-only** — the server is wired up by a separate
-> agent; `serve.py` exposes only `wb` and `ozon` today.
+> -> `307 441`. The perf server **is now wired** (`serve.py` exposes `wb`, `ozon`,
+> `ozon-perf`), but its OAuth token-endpoint contract is **unverified live** (no
+> perf creds yet) — see follow-up (b).
 
 **Servers:** `serve.py wb --selfcheck` and `serve.py ozon --selfcheck` each report
 **19 tools** (8 meta-tools + typed convenience tools + cabinet/workflow tools).
