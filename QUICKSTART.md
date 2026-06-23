@@ -47,8 +47,8 @@
 
 1. Откройте страницу **Releases** на GitHub и скачайте свежий
    `marketplace-mcp-v<версия>.zip`:
-   **https://github.com/<OWNER>/marketplace-mcp/releases**
-   <!-- TODO: создать публичный репозиторий и заменить <OWNER> на реальное имя -->
+   **https://github.com/ilyautov/marketplaces-mcp-ru/releases**
+   <!-- TODO: создать публичный репозиторий ilyautov/marketplaces-mcp-ru -->
 2. **Распакуйте** архив в удобную папку (например, в «Документы»).
 3. Запустите установщик двойным кликом:
    - **macOS** — `install.command`
@@ -74,8 +74,8 @@ python serve.py wb   --selfcheck
 Для тех, кто живёт в терминале.
 
 ```bash
-git clone https://github.com/<OWNER>/marketplace-mcp
-cd marketplace-mcp
+git clone https://github.com/ilyautov/marketplaces-mcp-ru
+cd marketplaces-mcp-ru
 
 # выберите свой клиент:
 python3 install.py --client claude-desktop   # пишет claude_desktop_config.json
@@ -83,7 +83,7 @@ python3 install.py --client claude-code      # печатает готовые `
 python3 install.py --client codex            # печатает `codex mcp add`
 python3 install.py --client opencode         # пишет ~/.config/opencode/opencode.json
 ```
-<!-- TODO: заменить <OWNER> на реальное имя владельца после создания репо -->
+<!-- TODO: создать публичный репозиторий ilyautov/marketplaces-mcp-ru -->
 
 Ключи можно передать без интерактива:
 ```bash

@@ -1,269 +1,118 @@
-# marketplace-mcp
+# marketplaces-mcp-ru: AI-доступ к кабинетам Wildberries и Ozon для Claude Code, Cursor, Codex и Cowork
 
-Two MCP servers — **`wb_mcp`** (Wildberries Seller API) and **`ozon_mcp`**
-(Ozon Seller API) — built on one shared, schema-driven core. Connect any MCP
-client (Cowork, Claude Desktop, Claude Code, Cursor, …) to your marketplace
-cabinet.
+> **Продаёте на WB и Ozon — дайте ИИ прямой доступ к обоим кабинетам.** Два MCP-сервера над Seller API Wildberries и Ozon: **793 метода** (продажи, остатки, цены, финансы, отзывы, поставки, реклама), собранных schema-driven из официальных OpenAPI-спеков. Числа приходят из **реального API**, а не выдумываются моделью. **Safety-гейт** не даёт случайно изменить цену или остаток. Авто-пагинация, мультикабинет, поиск по-русски. Для Claude Code, Cursor, Codex, Cowork и Claude Desktop.
 
-Own code, best patterns: the architecture borrows the strongest ideas from
-mature marketplace MCP servers (schema-driven catalog, safety gating, unified
-errors, auto-pagination) without depending on anyone else's library.
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![Версия](https://img.shields.io/badge/%D0%B2%D0%B5%D1%80%D1%81%D0%B8%D1%8F-0.2.0-B5491F)](https://github.com/ilyautov/marketplaces-mcp-ru/commits/main)
+[![Методов](https://img.shields.io/badge/%D0%BC%D0%B5%D1%82%D0%BE%D0%B4%D0%BE%D0%B2-793-2D7D4F)](#что-внутри)
+[![Клиентов](https://img.shields.io/badge/%D0%BA%D0%BB%D0%B8%D0%B5%D0%BD%D1%82%D0%BE%D0%B2-4-D97757)](#установка)
+[![Звёзды](https://img.shields.io/github/stars/ilyautov/marketplaces-mcp-ru?style=flat&label=%D0%B7%D0%B2%D1%91%D0%B7%D0%B4%D1%8B&color=B5491F&logo=github&logoColor=white)](https://github.com/ilyautov/marketplaces-mcp-ru/stargazers)
 
-## Why this shape
+<!-- TODO: assets/social-preview.png + сайт marketplaces-mcp-ru.aifrontier.tech (как у humanizer-ru / small-business-ru) -->
 
-The naive approach — one MCP tool per endpoint — produces 300+ tools an agent
-can't reason over. Instead each server ships **8 generic meta-tools** over a
-**catalog** of endpoints, plus a few **typed convenience tools** for the
-everyday jobs. Full API coverage, small tool surface.
+## Зачем это нужно
+
+**Вы продаёте на двух маркетплейсах одновременно, а данные — в двух разных кабинетах.** Продажи, остатки, цены, финансы, отзывы — всё руками, через два браузера, по очереди. ИИ-ассистент тут обычно бесполезен: либо ходит через браузер и спотыкается о капчу, либо выдумывает цифры, которые звучат уверенно.
+
+`marketplaces-mcp-ru` заходит с другой стороны — даёт ИИ-агенту **прямой доступ к Seller API обоих кабинетов**:
+
+- **Числа из реального API, а не из головы модели.** Продажи, остатки, маржа, финотчёт — это ответ Wildberries и Ozon, с источником и полями, а не правдоподобная выдумка.
+- **Safety-гейт на всё, что трогает деньги.** Каждый метод помечен `read` / `write` / `destructive`; чтение идёт сразу, а смена цены или остатка требует явного подтверждения. Случайно «уронить цену в 3 раза» нельзя.
+- **Без браузера и капчи.** Прямые HTTPS-вызовы по токену кабинета.
+
+Скажите агенту обычными словами: «покажи продажи за неделю на обоих», «что пора дозаказать», «сравни цены с рынком» — он подберёт метод или готовый сценарий и проведёт по шагам.
+
+> ⚠️ **alpha.** Помогает с операционкой продавца, но это инструмент, а не замена аналитика. Курированное ядро выверено боем на реальных кабинетах; импортированные из спеков методы — карта для разведки (пути надёжны, HTTP-глаголы подтверждайте по докам). Подробности — в разделе «Оговорки» и `HANDOFF.md`.
+
+## Что внутри
+
+**Не «один тул на эндпоинт» (это 300+ тулов, в которых агент тонет), а 8 generic мета-тулов над каталогом** — полное покрытие API при маленькой поверхности.
 
 ```
-your AI agent
+ваш ИИ-агент
       │
       ▼
- 8 meta-tools  ──►  catalog (endpoints.yaml)  ──►  shared core
- search/describe/                                  client · safety · errors
- call/call_raw/                                     pagination · registry
- fetch_all/...                                            │
- + typed tools (wb_get_sales, ozon_get_prices, ...)       ▼
-                                            Wildberries / Ozon HTTPS API
+ 8 мета-тулов  ──►  каталог (endpoints.yaml)  ──►  общий core
+ search / describe /                                клиент · safety · ошибки
+ call / call_raw /                                  пагинация · реестр
+ fetch_all / ...                                          │
+ + типизированные тулы (wb_get_sales, ozon_get_prices, …)  ▼
+                                          Wildberries / Ozon HTTPS API
 ```
 
-## The tools (identical pattern per server, `wb_`/`ozon_` prefix)
+**Мета-тулы (одинаковый набор на оба сервера, префикс `wb_` / `ozon_`):**
 
-| Tool | Purpose |
+| Тул | Что делает |
 |---|---|
-| `*_check_auth` | Report whether credentials are set (never echoes secrets) |
-| `*_list_sections` | Browse the API by section |
-| `*_get_section` | List endpoints in one section |
-| `*_search_methods` | Keyword search — **Russian or English** |
-| `*_describe_method` | Full spec: method, host, path, scope, safety, rate limit, doc |
-| `*_call_method` | Execute any catalog endpoint (safety-gated) |
-| `*_call_raw` | Execute ANY path, even outside the catalog (full coverage) |
-| `*_fetch_all` | Auto-paginate a read endpoint (offset / last_id / page / WB date cursor) |
+| `*_check_auth` | Есть ли креды (секреты не печатает) |
+| `*_search_methods` | Поиск метода — **по-русски или по-английски** |
+| `*_describe_method` | Полная спека: метод, хост, путь, scope, safety, лимит, doc |
+| `*_call_method` | Вызвать любой метод каталога (через safety-гейт) |
+| `*_call_raw` | Вызвать **любой** путь, даже вне каталога (100% покрытие) |
+| `*_fetch_all` | Авто-пагинация (offset / last_id / cursor / WB date-курсор) |
 
-Typed convenience tools: `wb_get_sales`, `wb_get_stocks`, `wb_get_new_orders`,
-`wb_get_prices`, `wb_set_price`; `ozon_get_products`, `ozon_get_stocks`,
-`ozon_get_prices`, `ozon_get_fbs_unfulfilled`, `ozon_set_price`.
+Плюс типизированные удобные тулы (`wb_get_sales`, `wb_get_stocks`, `ozon_get_products`, `ozon_get_prices`, …) и тулы кабинетов.
 
-### Workflows — recipes, not just endpoints
+**Сценарии (workflows) — не сырые эндпоинты, а рецепты.** `*_list_workflows` / `*_get_workflow` выдают пошаговые рецепты с трактовкой и типичными ошибками. WB: `sales_pulse`, `stock_health`, `price_audit`, `reorder_planner`, `abc_analysis`, `reviews_pulse`. Ozon: `oos_risk_analysis`, `pricing_analysis`, `unit_economics`, `catalog_sync`, `content_quality_audit`, `abc_analysis`, `reviews_pulse`. Каждый шаг сверяется с каталогом.
 
-`*_list_workflows` / `*_get_workflow` expose curated, step-by-step recipes that
-turn raw endpoints into outcomes, each with interpretation guidance and common
-mistakes. Ozon: `oos_risk_analysis`, `pricing_analysis`, `unit_economics`,
-`catalog_sync`, `content_quality_audit`, `abc_analysis`, `reviews_pulse`. WB:
-`sales_pulse`, `stock_health`, `price_audit`, `reorder_planner`, `abc_analysis`,
-`reviews_pulse`. Every recipe step is integrity-checked against the catalog.
+**Покрытие — schema-driven из официальных OpenAPI-спеков:**
 
-### Coverage
-
-Catalogs are built schema-driven from the official OpenAPI specs:
-
-| Catalog | File | Endpoints | Sections |
+| Каталог | Файл | Методов | Секций |
 |---|---|---:|---|
 | Wildberries | `wb_mcp/endpoints.yaml` | **307** | 70 |
 | Ozon Seller | `ozon_mcp/endpoints.yaml` | **441** | 67 |
-| Ozon Performance | `ozon_mcp/perf_endpoints.yaml` | **45** | 6 |
+| Ozon Performance (реклама) | `ozon_mcp/perf_endpoints.yaml` | **45** | 6 |
 
-A curated, live-verified core has exact pagination/params; the rest are imported
-from the specs (paths reliable, HTTP verbs not guaranteed — see caveats below).
-`call_raw` reaches anything not catalogued. Ozon Performance is **catalog-only**
-today — the perf server is a separate follow-up (see `HANDOFF.md`); `serve.py`
-exposes `wb` and `ozon`.
+Курированное ядро (продажи/остатки/цены/финансы/отзывы) выверено вживую; остальное импортировано из спеков. `call_raw` достаёт всё, чего ещё нет в каталоге.
 
 ## Safety model
 
-Marketplace keys move prices, stock and money. Every endpoint is classified
-`read` / `write` / `destructive`:
+Ключи кабинета двигают цены, остатки и деньги. Каждый метод классифицирован:
 
-- **read** → runs immediately.
-- **write** → requires `confirm_write=true`.
-- **destructive** → requires `confirm_write=true` **and**
-  `i_understand_this_modifies_data=true`.
+- **read** → выполняется сразу;
+- **write** → требует `confirm_write=true`;
+- **destructive** → требует `confirm_write=true` **и** `i_understand_this_modifies_data=true`.
 
-The gate runs locally; if confirmations are missing, nothing is sent.
+Гейт работает локально — без подтверждений наружу ничего не уходит. Аудит каталога: **0 мутаций, помеченных как read** на обоих серверах.
 
-## Install & distribution
+## Установка
 
-Full step-by-step for every audience lives in **[QUICKSTART.md](QUICKSTART.md)**.
-Three paths, same result — pick by comfort level:
+Подробный пошаговый гайд под любую аудиторию — в **[QUICKSTART.md](QUICKSTART.md)**. Три пути, один результат:
 
-1. **Easiest — ask your AI (no terminal).** Open Claude/Cowork and say
-   *"install the WB + Ozon MCP"*; it walks you through the bundled
-   `install-skill/`. (Cowork's sandbox can't touch your machine, so the final
-   double-click stays with you — the skill just gets you there error-free.)
-2. **Download & click.** Grab `marketplace-mcp-v<version>.zip` from
-   **[GitHub Releases](https://github.com/<OWNER>/marketplace-mcp/releases)**,
-   unzip, double-click `install.command` (macOS) / `install.bat` (Windows),
-   paste your keys.
-3. **Technical.** `git clone https://github.com/<OWNER>/marketplace-mcp` then
-   `python3 install.py --client <your-client>`.
+1. **Проще всего — попроси своего ИИ (без терминала).** Открой Claude / Cowork и скажи: *«установи WB + Ozon MCP»* — агент проведёт по встроенному `install-skill/`. (Песочница Cowork не лезет на твою машину, поэтому финальный клик остаётся за тобой — скилл лишь доводит без ошибок. В Claude Code ставится полностью сам.)
+2. **Скачать и кликнуть.** Возьми `marketplaces-mcp-ru-v<версия>.zip` из [GitHub Releases](https://github.com/ilyautov/marketplaces-mcp-ru/releases), распакуй, двойной клик `install.command` (macOS) / `install.bat` (Windows), вставь ключи.
+3. **Технический.** `git clone https://github.com/ilyautov/marketplaces-mcp-ru` → `python3 install.py --client <твой-клиент>`.
 
-<!-- TODO: create the public repo and replace <OWNER> with the real owner. -->
+<!-- TODO: создать публичный репозиторий ilyautov/marketplaces-mcp-ru и выложить zip в Releases -->
 
-Get keys: **WB** — seller.wildberries.ru → Settings → Access tokens; **Ozon** —
-seller.ozon.ru → Settings → API keys. Maintainers cut a release with
-`python3 scripts/package_release.py` (clean, secret-free, versioned zip).
+Ни `pip install`, ни правки JSON: зависимости ставятся сами при первом запуске (локальный venv), от тебя — только ключи. **4 клиента** через `--client`: `claude-desktop` и `opencode` получают записанный конфиг, `claude-code` и `codex` — готовые `* mcp add` команды.
 
-The mechanics below apply to every path.
+**Где взять ключи:** Wildberries — seller.wildberries.ru → Настройки → Доступ к API; Ozon — seller.ozon.ru → Настройки → API-ключи. Ключи хранятся в `~/.marketplace-mcp/cabinets.json` (локально, chmod 600, никогда в репо). Поддержка **мультикабинета** — несколько магазинов с переключением из чата (`*_add_cabinet` / `*_use_cabinet`).
 
-## Install — works on Windows, macOS, Linux
-
-No `pip install`, no JSON editing. Dependencies install themselves on first
-launch (a local virtual environment), so the only thing you provide is your API
-keys.
-
-**Double-click (easiest):**
-- **macOS** — double-click `install.command`
-- **Windows** — double-click `install.bat` (it finds the `py` launcher or
-  `python` on PATH; if Python is missing it tells you to install it from
-  python.org with "Add to PATH" ticked)
-- **Linux** — run `bash install.sh`
-
-**Verify it works** (any OS), after install:
+**Проверка после установки:**
 
 ```bash
-python serve.py ozon --selfcheck     # -> "OK: ozon ready, 19 tools."
+python3 serve.py ozon --selfcheck
 ```
 
-The launcher self-installs its dependencies into a local virtual environment on
-first run and injects them into the running process — no `os.exec`, so the MCP
-stdio handshake is identical and reliable on Windows, macOS and Linux.
+## Скрипты и рост каталога
 
-**Or one command, any OS:**
+В `scripts/`: `ingest_specs.py` / `ingest_ozon.py` (сборка каталогов из официальных спеков), `derive_pagination.py` и `fix_items_path_from_examples.py` (пагинация и `items_path`), `validate_items_path.py` (**live**-валидатор, гонять локально), `package_release.py` (чистый версионный zip), `smoke_mcp.py`. Каталоги дорастают аддитивно и идемпотентно — курированные safety и описания не перетираются.
+
+## Тесты
 
 ```bash
-python3 install.py
+python3 -m pytest tests/ -q        # 21 офлайн-тест, токены не нужны
 ```
 
-**Four clients via `--client`.** `install.py` targets Claude Desktop, Claude
-Code, Codex and OpenCode. Server entries are secret-free (keys go to the cabinet
-store); Desktop/OpenCode get their config file written, Claude Code/Codex get
-ready-to-paste CLI commands:
+## Оговорки (сверяйте с живой докой)
 
-```bash
-python3 install.py                          # interactive, claude-desktop (default)
-python3 install.py --client claude-desktop  # writes claude_desktop_config.json
-python3 install.py --client claude-code     # prints `claude mcp add` commands
-python3 install.py --client codex           # prints `codex mcp add` commands
-python3 install.py --client opencode        # writes ~/.config/opencode/opencode.json
-```
+- **WB `Authorization`**: сервер шлёт **raw-токен без `Bearer`** (подтверждено боем). Если auth падает — первым делом проверьте это.
+- **Импортированные из спеков методы: пути надёжны, HTTP-глаголы — нет.** Live-проба нашла GET-помеченные методы, которые на деле POST (405). Считайте импортированные записи картой разведки: подтверждайте глагол/тело по докам или зовите через `call_raw`. Курированное ядро (WB 7 категорий, Ozon 4 секции) и live-выверенный набор — надёжны.
+- **Ozon дрейфует по версиям** (list v3, attributes v4, prices v5). При 404 — проверьте версию; `ingest_ozon.py` пере-выравнивает пути.
+- **Ozon Performance** — пока каталог-артефакт + OAuth-обвязка по докам (контракт токен-эндпоинта не выверен боем, нужны рекламные креды). Подробности — `HANDOFF.md`.
+- **Кабинет затеняет env**: активный кабинет в `cabinets.json` имеет приоритет над переменными окружения. Необъяснимый 401 / «Client-Id should be positive integer» — первым делом проверьте стор.
 
-(`--claude-code` is still accepted as a shorthand for `--client claude-code`.)
+---
 
-All paths route through `install.py`: it asks for your keys, finds the right
-config for your OS, writes both servers, and backs up the old config. Restart
-the client — done. `serve.py` then self-bootstraps its virtual environment on
-first run.
-
-> Note: Cowork's own sandbox can't install onto your machine for you (it's an
-> isolated Linux container, and typing into your terminal is blocked for safety).
-> Use the double-click installer, or Claude Code, which runs locally.
-
-Non-interactive (e.g. scripted):
-
-```bash
-python3 install.py --wb-token TOKEN --ozon-client-id ID --ozon-api-key KEY
-```
-
-Just want to see the config block without changing anything:
-
-```bash
-python3 install.py --print
-```
-
-### Credentials & cabinets (multi-shop)
-
-Keys are stored in `~/.marketplace-mcp/cabinets.json` (local, chmod 600, never
-in the repo or the Claude config). You can run **several cabinets** — e.g. two
-Ozon shops — and switch between them from chat.
-
-- **Wildberries**: a token from seller.wildberries.ru → Settings → Access tokens
-  (tick the categories you need). Sent raw in the `Authorization` header.
-- **Ozon**: `Client-Id` + `Api-Key` from seller.ozon.ru → Settings → API keys.
-
-Manage cabinets from chat (no file editing):
-
-- `ozon_add_cabinet` / `wb_add_cabinet` — add or update a cabinet, e.g.
-  `add_cabinet(name="shop2", credentials={"client_id":"...", "api_key":"..."})`.
-- `ozon_use_cabinet(name)` — switch the active cabinet.
-- `ozon_list_cabinets` — see configured cabinets and which is active.
-- `ozon_remove_cabinet(name)` — delete one.
-- `ozon_check_auth` / `wb_check_auth` — show the active cabinet, what's missing,
-  and where to get keys.
-
-Add more shops at install time too: re-run `python3 install.py --cabinet shop2`.
-An env-only setup still works — environment variables act as a fallback cabinet.
-
-### Manual config (if you prefer)
-
-```json
-{
-  "mcpServers": {
-    "wildberries": {
-      "command": "python3",
-      "args": ["/absolute/path/to/marketplace-mcp/serve.py", "wb"],
-      "env": { "WB_API_TOKEN": "your-wb-token" }
-    },
-    "ozon": {
-      "command": "python3",
-      "args": ["/absolute/path/to/marketplace-mcp/serve.py", "ozon"],
-      "env": { "OZON_CLIENT_ID": "your-client-id", "OZON_API_KEY": "your-api-key" }
-    }
-  }
-}
-```
-
-`serve.py` self-bootstraps its venv, so `command` can be any Python 3.10+.
-
-## Scripts and growing the catalog
-
-`scripts/`:
-
-- `ingest_specs.py` — build the WB catalog from the official OpenAPI specs.
-- `ingest_ozon.py` — build the Ozon Seller catalog from the official specs.
-- `sync_swagger.py` — additive, idempotent catalog sync from a local swagger.
-- `derive_pagination.py` — infer pagination style for catalog entries.
-- `validate_items_path.py` — **live** `items_path` validator/auto-fixer (needs
-  cabinet creds; run locally — see `HANDOFF.md`).
-- `smoke_mcp.py` — quick MCP smoke check.
-
-`*_call_raw` already reaches **any** endpoint not yet catalogued. To grow the
-typed catalog, run the swagger sync **locally** (WB/Ozon hosts block many non-RU
-IPs):
-
-```bash
-python scripts/sync_swagger.py --spec ozon_seller.json \
-    --catalog ozon_mcp/endpoints.yaml --service ozon
-```
-
-It's additive and idempotent — your curated safety levels and summaries are
-never overwritten.
-
-## Tests
-
-```bash
-pip install pytest pytest-asyncio
-python -m pytest tests/ -q        # 21 offline tests, no tokens needed
-```
-
-## Known caveats (verify against live docs before relying on them)
-
-- **WB `Authorization` header**: docs don't show whether the raw token or a
-  `Bearer` prefix is expected. This server sends the raw token (community
-  practice). If auth fails, that's the first thing to flip.
-- **WB finance host**: `wb_finance_balance` host (`common-api`) is unverified.
-- **WB realization report** (`/api/v5/.../reportDetailByPeriod`) was flagged for
-  possible deprecation in favour of a new finance POST endpoint — confirm.
-- **Ozon versions drift silently** (list v3, attributes v4, prices v5, stocks
-  v4/v2). If a call 404s, check the version; `sync_swagger.py` re-aligns paths.
-- **Imported (spec-derived) endpoints: paths are reliable, HTTP verbs are NOT.**
-  A live probe found imported GET-labelled endpoints that are actually POST (405
-  Method Not Allowed). Treat imported entries as a discovery map: confirm the
-  verb/body in the docs, or call with the correct verb via `call_raw`. The
-  live-verified core (WB 7 categories, Ozon 4 sections) and the curated set are
-  trustworthy as-is. A full live `items_path` sweep is an open follow-up — see
-  `HANDOFF.md`.
-- Some WB write verbs (tag update, meta setters, supply deliver) were inferred
-  where the docs stripped the verb badge — confirm before automating them.
-
-MIT-style usage; no third-party marketplace code is bundled.
+Собственный код, лучшие паттерны: архитектура берёт сильнейшие идеи зрелых marketplace-MCP (schema-driven каталог, safety-гейт, единые ошибки, авто-пагинация) без зависимости от чужих библиотек. Лицензия MIT.

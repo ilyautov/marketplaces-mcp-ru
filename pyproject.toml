@@ -1,5 +1,5 @@
 [project]
-name = "marketplace-mcp"
+name = "marketplaces-mcp-ru"
 version = "0.2.0"
 description = "MCP servers for Wildberries and Ozon Seller APIs (schema-driven, safety-gated)"
 readme = "README.md"

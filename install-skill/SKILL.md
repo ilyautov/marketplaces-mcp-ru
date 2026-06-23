@@ -7,7 +7,7 @@ description: "Установить MCP-серверы Wildberries + Ozon (market
 
 Цель скилла: пользователь сказал «поставь мне WB и Ozon MCP» — и через несколько минут в его ИИ-клиенте появились инструменты для работы с кабинетом селлера, без ручного редактирования JSON и без `pip install`. Зависимости ставит сам `serve.py` при первом запуске (локальный venv).
 
-**Репозиторий:** `https://github.com/<OWNER>/marketplace-mcp`
+**Репозиторий:** `https://github.com/ilyautov/marketplaces-mcp-ru`
 **TODO:** в репозитории нет git remote — подставь реальный URL, когда он появится. До тех пор используй локальную папку, если она уже есть на машине (см. Шаг 1).
 
 Что внутри: два MCP-сервера — `wb` (Wildberries Seller API) и `ozon` (Ozon Seller API), плюс опциональный `ozon-perf` (рекламный кабинет Ozon Performance). Ключи хранятся локально в `~/.marketplace-mcp/cabinets.json` (chmod 600), НЕ в конфиге клиента и НЕ в репозитории.
@@ -52,8 +52,8 @@ description: "Установить MCP-серверы Wildberries + Ozon (market
 
 **Вариант А — git clone (если git есть):**
 ```bash
-cd ~ && git clone https://github.com/<OWNER>/marketplace-mcp
-cd marketplace-mcp
+cd ~ && git clone https://github.com/ilyautov/marketplaces-mcp-ru && cd marketplaces-mcp-ru
+cd marketplaces-mcp-ru
 ```
 
 **Вариант Б — скачать release-zip (если git нет):**
