@@ -1,0 +1,80 @@
+# Ozon analytical workflows — curated recipes over the catalog.
+# Step operation_ids reference ozon_mcp/endpoints.yaml. Interpretation notes are
+# grounded in real response fields observed live (price_indexes, commissions, idc).
+
+workflows:
+  - name: oos_risk_analysis
+    category: analytics
+    when_to_use: Find products about to run out of stock so you can resupply in time.
+    steps:
+      - operation_id: ozon_turnover_stocks
+        why: Gives days-of-stock (idc) and ads (avg daily sales) per SKU.
+      - operation_id: ozon_stocks_info
+        why: Cross-check current available/reserved quantity per product.
+    interpret: >
+      Flag SKUs where idc (days of stock) < lead time + safety buffer, or where
+      turnover grade is DEFICIT/NO_SALES. Sort by idc ascending — lowest first.
+    common_mistakes:
+      - Treating reserved stock as available — subtract reserved from present.
+      - Ignoring FBO vs FBS split; resupply path differs.
+
+  - name: pricing_analysis
+    category: pricing
+    when_to_use: Find products with a non-competitive price index (red marker).
+    steps:
+      - operation_id: ozon_prices_get
+        why: Returns price, marketing_seller_price, min_price, commissions and price_indexes.
+    interpret: >
+      Inspect price_indexes.color_index per item. RED/red means your price is
+      above the market reference — candidate for a cut. Compare against
+      marketing_seller_price (the buyer-facing price), NOT the base price.
+      Use commissions.* to check margin before cutting.
+    common_mistakes:
+      - Comparing to base price instead of marketing_seller_price.
+      - Cutting below min_price or below commission-adjusted break-even.
+
+  - name: unit_economics
+    category: finance
+    when_to_use: Understand real per-order profitability after Ozon fees.
+    steps:
+      - operation_id: ozon_finance_transactions
+        why: Per-order accruals, commissions, logistics, returns (result.operations).
+      - operation_id: ozon_prices_get
+        why: Per-SKU commission percentages and current prices.
+    interpret: >
+      Net = sale amount − sales commission − logistics − returns − ads. Pull one
+      month at a time (API caps the window). Join transactions to SKU via
+      posting_number. Watch fbo vs fbs commission differences.
+    common_mistakes:
+      - Requesting more than one month per call (API rejects it).
+      - Forgetting returns and storage fees in the net.
+
+  - name: catalog_sync
+    category: catalog
+    when_to_use: Take a full snapshot of your catalog with stock and price.
+    steps:
+      - operation_id: ozon_product_list
+        why: All product_ids/offer_ids (use ozon_fetch_all — last_id pagination).
+      - operation_id: ozon_stocks_info
+        why: Stock per product (use ozon_fetch_all — cursor pagination).
+      - operation_id: ozon_prices_get
+        why: Price + commissions per product (use ozon_fetch_all — cursor pagination).
+    interpret: >
+      Join the three by product_id/offer_id. ozon_fetch_all handles each
+      pagination style automatically (last_id for the list, cursor for stocks/prices).
+    common_mistakes:
+      - Reading only the first page — use ozon_fetch_all, not a single call.
+
+  - name: content_quality_audit
+    category: content
+    when_to_use: Find cards with low content rating and what to improve.
+    steps:
+      - operation_id: ozon_product_list
+        why: Get SKUs to audit.
+      - operation_id: ozon_product_rating
+        why: Per-SKU content rating + the attributes that would raise it.
+    interpret: >
+      A higher content rating improves search ranking. Prioritise SKUs with the
+      lowest rating and fill the listed improve_attributes first.
+    common_mistakes:
+      - Auditing archived products — filter visibility to VISIBLE/IN_SALE.

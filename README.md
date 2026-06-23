@@ -45,6 +45,22 @@ Typed convenience tools: `wb_get_sales`, `wb_get_stocks`, `wb_get_new_orders`,
 `wb_get_prices`, `wb_set_price`; `ozon_get_products`, `ozon_get_stocks`,
 `ozon_get_prices`, `ozon_get_fbs_unfulfilled`, `ozon_set_price`.
 
+### Workflows — recipes, not just endpoints
+
+`*_list_workflows` / `*_get_workflow` expose curated, step-by-step recipes that
+turn raw endpoints into outcomes, each with interpretation guidance and common
+mistakes. Ozon: `oos_risk_analysis`, `pricing_analysis`, `unit_economics`,
+`catalog_sync`, `content_quality_audit`. WB: `sales_pulse`, `stock_health`,
+`price_audit`. Every recipe step is integrity-checked against the catalog.
+
+### Coverage
+
+The Ozon catalog carries **213 endpoints** across 27 sections; 13 read endpoints
+are live-verified, the curated core has exact pagination/params, and the rest
+are imported (marked UNVERIFIED — confirm bodies against the docs or via
+`call_raw`). WB ships ~31 curated endpoints. `call_raw` reaches anything not
+catalogued.
+
 ## Safety model
 
 Marketplace keys move prices, stock and money. Every endpoint is classified

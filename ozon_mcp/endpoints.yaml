@@ -424,3 +424,1823 @@ endpoints:
   - финотчёт
   pagination: none
   items_path: result.rows
+- operation_id: ozon_stock
+  section: analytics
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/analytics/manage/stocks
+  scope: seller
+  safety: write
+  summary: Stock (auto-imported from go-client; UNVERIFIED — confirm body/params in
+    docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_get_product_queries
+  section: analytics
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/analytics/product-queries
+  scope: seller
+  safety: write
+  summary: GetProductQueries (auto-imported from go-client; UNVERIFIED — confirm body/params
+    in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_generate
+  section: barcodes
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/barcode/generate
+  scope: seller
+  safety: write
+  summary: Generate (auto-imported from go-client; UNVERIFIED — confirm body/params
+    in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_bind
+  section: barcodes
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/barcode/add
+  scope: seller
+  safety: write
+  summary: Bind (auto-imported from go-client; UNVERIFIED — confirm body/params in
+    docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_list
+  section: brands
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/brand/company-certification/list
+  scope: seller
+  safety: write
+  summary: List (auto-imported from go-client; UNVERIFIED — confirm body/params in
+    docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_get_info
+  section: cancellations
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/conditional-cancellation/get
+  scope: seller
+  safety: write
+  summary: GetInfo (auto-imported from go-client; UNVERIFIED — confirm body/params
+    in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_list_2
+  section: cancellations
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/conditional-cancellation/list
+  scope: seller
+  safety: write
+  summary: List (auto-imported from go-client; UNVERIFIED — confirm body/params in
+    docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_approve
+  section: cancellations
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/conditional-cancellation/approve
+  scope: seller
+  safety: write
+  summary: Approve (auto-imported from go-client; UNVERIFIED — confirm body/params
+    in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_reject
+  section: cancellations
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/conditional-cancellation/reject
+  scope: seller
+  safety: write
+  summary: Reject (auto-imported from go-client; UNVERIFIED — confirm body/params
+    in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_attributes_dictionary
+  section: categories
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/description-category/attribute/values
+  scope: seller
+  safety: write
+  summary: AttributesDictionary (auto-imported from go-client; UNVERIFIED — confirm
+    body/params in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_search_attributes_dictionary
+  section: categories
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/description-category/attribute/values/search
+  scope: seller
+  safety: write
+  summary: SearchAttributesDictionary (auto-imported from go-client; UNVERIFIED —
+    confirm body/params in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_list_of_accordance_types
+  section: certificates
+  method: GET
+  host: api-seller.ozon.ru
+  path: /v2/product/certificate/accordance-types/list
+  scope: seller
+  safety: read
+  summary: ListOfAccordanceTypes (auto-imported from go-client; UNVERIFIED — confirm
+    body/params in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_directory_of_document_types
+  section: certificates
+  method: GET
+  host: api-seller.ozon.ru
+  path: /v1/product/certificate/types
+  scope: seller
+  safety: read
+  summary: DirectoryOfDocumentTypes (auto-imported from go-client; UNVERIFIED — confirm
+    body/params in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_list_of_certified_categories
+  section: certificates
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v2/product/certification/list
+  scope: seller
+  safety: write
+  summary: ListOfCertifiedCategories (auto-imported from go-client; UNVERIFIED — confirm
+    body/params in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_link_to_product
+  section: certificates
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/product/certificate/bind
+  scope: seller
+  safety: write
+  summary: LinkToProduct (auto-imported from go-client; UNVERIFIED — confirm body/params
+    in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_delete
+  section: certificates
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/product/certificate/delete
+  scope: seller
+  safety: write
+  summary: Delete (auto-imported from go-client; UNVERIFIED — confirm body/params
+    in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_get_info_2
+  section: certificates
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/product/certificate/info
+  scope: seller
+  safety: write
+  summary: GetInfo (auto-imported from go-client; UNVERIFIED — confirm body/params
+    in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_list_3
+  section: certificates
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/product/certificate/list
+  scope: seller
+  safety: write
+  summary: List (auto-imported from go-client; UNVERIFIED — confirm body/params in
+    docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_list_products_for_certificate
+  section: certificates
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/product/certificate/products/list
+  scope: seller
+  safety: write
+  summary: ListProductsForCertificate (auto-imported from go-client; UNVERIFIED —
+    confirm body/params in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_unlink_from_product
+  section: certificates
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/product/certificate/unbind
+  scope: seller
+  safety: write
+  summary: UnlinkFromProduct (auto-imported from go-client; UNVERIFIED — confirm body/params
+    in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_possible_reject_reasons
+  section: certificates
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/product/certificate/rejection_reasons/list
+  scope: seller
+  safety: write
+  summary: PossibleRejectReasons (auto-imported from go-client; UNVERIFIED — confirm
+    body/params in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_possible_statuses
+  section: certificates
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/product/certificate/status/list
+  scope: seller
+  safety: write
+  summary: PossibleStatuses (auto-imported from go-client; UNVERIFIED — confirm body/params
+    in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_add_for_products
+  section: certificates
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/product/certificate/create
+  scope: seller
+  safety: write
+  summary: AddForProducts (auto-imported from go-client; UNVERIFIED — confirm body/params
+    in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_list_4
+  section: chats
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v2/chat/list
+  scope: seller
+  safety: write
+  summary: List (auto-imported from go-client; UNVERIFIED — confirm body/params in
+    docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_send_message
+  section: chats
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/chat/send/message
+  scope: seller
+  safety: write
+  summary: SendMessage (auto-imported from go-client; UNVERIFIED — confirm body/params
+    in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_send_file
+  section: chats
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/chat/send/file
+  scope: seller
+  safety: write
+  summary: SendFile (auto-imported from go-client; UNVERIFIED — confirm body/params
+    in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_history
+  section: chats
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v3/chat/history
+  scope: seller
+  safety: write
+  summary: History (auto-imported from go-client; UNVERIFIED — confirm body/params
+    in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_update
+  section: chats
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/chat/updates
+  scope: seller
+  safety: write
+  summary: Update (auto-imported from go-client; UNVERIFIED — confirm body/params
+    in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_create
+  section: chats
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/chat/start
+  scope: seller
+  safety: write
+  summary: Create (auto-imported from go-client; UNVERIFIED — confirm body/params
+    in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_mark_as_read
+  section: chats
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v2/chat/read
+  scope: seller
+  safety: write
+  summary: MarkAsRead (auto-imported from go-client; UNVERIFIED — confirm body/params
+    in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_list_5
+  section: clusters
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/cluster/list
+  scope: seller
+  safety: write
+  summary: List (auto-imported from go-client; UNVERIFIED — confirm body/params in
+    docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_list_supply_requests
+  section: fbo
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v2/supply-order/list
+  scope: seller
+  safety: write
+  summary: ListSupplyRequests (auto-imported from go-client; UNVERIFIED — confirm
+    body/params in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_get_supply_request_info
+  section: fbo
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v2/supply-order/get
+  scope: seller
+  safety: write
+  summary: GetSupplyRequestInfo (auto-imported from go-client; UNVERIFIED — confirm
+    body/params in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_get_warehouse_workload
+  section: fbo
+  method: GET
+  host: api-seller.ozon.ru
+  path: /v1/supplier/available_warehouses
+  scope: seller
+  safety: read
+  summary: GetWarehouseWorkload (auto-imported from go-client; UNVERIFIED — confirm
+    body/params in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_get_supply_orders_by_status
+  section: fbo
+  method: GET
+  host: api-seller.ozon.ru
+  path: /v1/supply-order/status/counter
+  scope: seller
+  safety: read
+  summary: GetSupplyOrdersByStatus (auto-imported from go-client; UNVERIFIED — confirm
+    body/params in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_get_supply_timeslots
+  section: fbo
+  method: GET
+  host: api-seller.ozon.ru
+  path: /v1/supply-order/timeslot/get
+  scope: seller
+  safety: read
+  summary: GetSupplyTimeslots (auto-imported from go-client; UNVERIFIED — confirm
+    body/params in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_update_supply_timeslot
+  section: fbo
+  method: GET
+  host: api-seller.ozon.ru
+  path: /v1/supply-order/timeslot/update
+  scope: seller
+  safety: read
+  summary: UpdateSupplyTimeslot (auto-imported from go-client; UNVERIFIED — confirm
+    body/params in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_get_supply_timeslot_status
+  section: fbo
+  method: GET
+  host: api-seller.ozon.ru
+  path: /v1/supply-order/timeslot/status
+  scope: seller
+  safety: read
+  summary: GetSupplyTimeslotStatus (auto-imported from go-client; UNVERIFIED — confirm
+    body/params in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_create_pass
+  section: fbo
+  method: GET
+  host: api-seller.ozon.ru
+  path: /v1/supply-order/pass/create
+  scope: seller
+  safety: read
+  summary: CreatePass (auto-imported from go-client; UNVERIFIED — confirm body/params
+    in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_get_pass
+  section: fbo
+  method: GET
+  host: api-seller.ozon.ru
+  path: /v1/supply-order/pass/status
+  scope: seller
+  safety: read
+  summary: GetPass (auto-imported from go-client; UNVERIFIED — confirm body/params
+    in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_get_supply_content
+  section: fbo
+  method: GET
+  host: api-seller.ozon.ru
+  path: /v1/supply-order/bundle
+  scope: seller
+  safety: read
+  summary: GetSupplyContent (auto-imported from go-client; UNVERIFIED — confirm body/params
+    in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_create_supply_draft
+  section: fbo
+  method: GET
+  host: api-seller.ozon.ru
+  path: /v1/draft/create
+  scope: seller
+  safety: read
+  summary: CreateSupplyDraft (auto-imported from go-client; UNVERIFIED — confirm body/params
+    in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_get_supply_draft_info
+  section: fbo
+  method: GET
+  host: api-seller.ozon.ru
+  path: /v1/draft/create/info
+  scope: seller
+  safety: read
+  summary: GetSupplyDraftInfo (auto-imported from go-client; UNVERIFIED — confirm
+    body/params in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_create_supply_from_draft
+  section: fbo
+  method: GET
+  host: api-seller.ozon.ru
+  path: /v1/draft/supply/create
+  scope: seller
+  safety: read
+  summary: CreateSupplyFromDraft (auto-imported from go-client; UNVERIFIED — confirm
+    body/params in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_get_draft_timeslots
+  section: fbo
+  method: GET
+  host: api-seller.ozon.ru
+  path: /v1/draft/timeslot/info
+  scope: seller
+  safety: read
+  summary: GetDraftTimeslots (auto-imported from go-client; UNVERIFIED — confirm body/params
+    in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_cancel_suppy_order
+  section: fbo
+  method: GET
+  host: api-seller.ozon.ru
+  path: /v1/supply-order/cancel
+  scope: seller
+  safety: read
+  summary: CancelSuppyOrder (auto-imported from go-client; UNVERIFIED — confirm body/params
+    in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_status_cancelled_supply_order
+  section: fbo
+  method: GET
+  host: api-seller.ozon.ru
+  path: /v1/supply-order/cancel/status
+  scope: seller
+  safety: read
+  summary: StatusCancelledSupplyOrder (auto-imported from go-client; UNVERIFIED —
+    confirm body/params in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_validate_labeling_codes
+  section: fbs
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v5/fbs/posting/product/exemplar/validate
+  scope: seller
+  safety: write
+  summary: ValidateLabelingCodes (auto-imported from go-client; UNVERIFIED — confirm
+    body/params in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_get_shipment_data_by_barcode
+  section: fbs
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v2/posting/fbs/get-by-barcode
+  scope: seller
+  safety: write
+  summary: GetShipmentDataByBarcode (auto-imported from go-client; UNVERIFIED — confirm
+    body/params in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_add_tracking_numbers
+  section: fbs
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v2/fbs/posting/tracking-number/set
+  scope: seller
+  safety: write
+  summary: AddTrackingNumbers (auto-imported from go-client; UNVERIFIED — confirm
+    body/params in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_list_of_shipment_certificates
+  section: fbs
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v2/posting/fbs/act/list
+  scope: seller
+  safety: write
+  summary: ListOfShipmentCertificates (auto-imported from go-client; UNVERIFIED —
+    confirm body/params in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_change_status_to_delivering
+  section: fbs
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v2/fbs/posting/delivering
+  scope: seller
+  safety: write
+  summary: ChangeStatusToDelivering (auto-imported from go-client; UNVERIFIED — confirm
+    body/params in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_change_status_to_last_mile
+  section: fbs
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v2/fbs/posting/last-mile
+  scope: seller
+  safety: write
+  summary: ChangeStatusToLastMile (auto-imported from go-client; UNVERIFIED — confirm
+    body/params in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_change_status_to_delivered
+  section: fbs
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v2/fbs/posting/delivered
+  scope: seller
+  safety: write
+  summary: ChangeStatusToDelivered (auto-imported from go-client; UNVERIFIED — confirm
+    body/params in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_change_status_to_send_by_seller
+  section: fbs
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v2/fbs/posting/sent-by-seller
+  scope: seller
+  safety: write
+  summary: ChangeStatusToSendBySeller (auto-imported from go-client; UNVERIFIED —
+    confirm body/params in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_pass_shipment_to_shipping
+  section: fbs
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v2/posting/fbs/awaiting-delivery
+  scope: seller
+  safety: write
+  summary: PassShipmentToShipping (auto-imported from go-client; UNVERIFIED — confirm
+    body/params in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_create_act
+  section: fbs
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v2/posting/fbs/act/create
+  scope: seller
+  safety: write
+  summary: CreateAct (auto-imported from go-client; UNVERIFIED — confirm body/params
+    in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_get_labeling
+  section: fbs
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/posting/fbs/package-label/get
+  scope: seller
+  safety: write
+  summary: GetLabeling (auto-imported from go-client; UNVERIFIED — confirm body/params
+    in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_create_task_for_generating_label
+  section: fbs
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v2/posting/fbs/package-label/create
+  scope: seller
+  safety: write
+  summary: CreateTaskForGeneratingLabel (auto-imported from go-client; UNVERIFIED
+    — confirm body/params in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_get_drop_off_point_restrictions
+  section: fbs
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/posting/fbs/restrictions
+  scope: seller
+  safety: write
+  summary: GetDropOffPointRestrictions (auto-imported from go-client; UNVERIFIED —
+    confirm body/params in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_set_product_items_data
+  section: fbs
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v6/fbs/posting/product/exemplar/set
+  scope: seller
+  safety: write
+  summary: SetProductItemsData (auto-imported from go-client; UNVERIFIED — confirm
+    body/params in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_get_product_items_check_statuses
+  section: fbs
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v5/fbs/posting/product/exemplar/status
+  scope: seller
+  safety: write
+  summary: GetProductItemsCheckStatuses (auto-imported from go-client; UNVERIFIED
+    — confirm body/params in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_reschedule_shipment_delivery_date
+  section: fbs
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/posting/fbs/timeslot/set
+  scope: seller
+  safety: write
+  summary: RescheduleShipmentDeliveryDate (auto-imported from go-client; UNVERIFIED
+    — confirm body/params in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_date_available_for_delivery_schedule
+  section: fbs
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/posting/fbs/timeslot/change-restrictions
+  scope: seller
+  safety: write
+  summary: DateAvailableForDeliverySchedule (auto-imported from go-client; UNVERIFIED
+    — confirm body/params in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_list_manufacturing_countries
+  section: fbs
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v2/posting/fbs/product/country/list
+  scope: seller
+  safety: write
+  summary: ListManufacturingCountries (auto-imported from go-client; UNVERIFIED —
+    confirm body/params in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_set_manufacturing_country
+  section: fbs
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v2/posting/fbs/product/country/set
+  scope: seller
+  safety: write
+  summary: SetManufacturingCountry (auto-imported from go-client; UNVERIFIED — confirm
+    body/params in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_partial_pack_order
+  section: fbs
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v4/posting/fbs/ship/package
+  scope: seller
+  safety: write
+  summary: PartialPackOrder (auto-imported from go-client; UNVERIFIED — confirm body/params
+    in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_available_freights_list
+  section: fbs
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/posting/carriage-available/list
+  scope: seller
+  safety: write
+  summary: AvailableFreightsList (auto-imported from go-client; UNVERIFIED — confirm
+    body/params in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_generate_act
+  section: fbs
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v2/posting/fbs/digital/act/check-status
+  scope: seller
+  safety: write
+  summary: GenerateAct (auto-imported from go-client; UNVERIFIED — confirm body/params
+    in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_get_digital_act
+  section: fbs
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v2/posting/fbs/digital/act/get-pdf
+  scope: seller
+  safety: write
+  summary: GetDigitalAct (auto-imported from go-client; UNVERIFIED — confirm body/params
+    in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_package_unit_label
+  section: fbs
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v2/posting/fbs/act/get-container-labels
+  scope: seller
+  safety: write
+  summary: PackageUnitLabel (auto-imported from go-client; UNVERIFIED — confirm body/params
+    in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_open_dispute_over_shipment
+  section: fbs
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v2/posting/fbs/arbitration
+  scope: seller
+  safety: write
+  summary: OpenDisputeOverShipment (auto-imported from go-client; UNVERIFIED — confirm
+    body/params in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_shipment_cancellation_reasons
+  section: fbs
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/posting/fbs/cancel-reason
+  scope: seller
+  safety: write
+  summary: ShipmentCancellationReasons (auto-imported from go-client; UNVERIFIED —
+    confirm body/params in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_shipments_cancellation_reasons
+  section: fbs
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v2/posting/fbs/cancel-reason/list
+  scope: seller
+  safety: write
+  summary: ShipmentsCancellationReasons (auto-imported from go-client; UNVERIFIED
+    — confirm body/params in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_add_weight_for_bulk_product
+  section: fbs
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v2/posting/fbs/product/change
+  scope: seller
+  safety: write
+  summary: AddWeightForBulkProduct (auto-imported from go-client; UNVERIFIED — confirm
+    body/params in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_cancel_sending
+  section: fbs
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v2/posting/fbs/product/cancel
+  scope: seller
+  safety: write
+  summary: CancelSending (auto-imported from go-client; UNVERIFIED — confirm body/params
+    in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_list_shipment_in_certificate
+  section: fbs
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v2/posting/fbs/act/get-postings
+  scope: seller
+  safety: write
+  summary: ListShipmentInCertificate (auto-imported from go-client; UNVERIFIED — confirm
+    body/params in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_specify_number_of_boxes
+  section: fbs
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v3/posting/multiboxqty/set
+  scope: seller
+  safety: write
+  summary: SpecifyNumberOfBoxes (auto-imported from go-client; UNVERIFIED — confirm
+    body/params in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_status_of_act
+  section: fbs
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v2/posting/fbs/act/check-status
+  scope: seller
+  safety: write
+  summary: StatusOfAct (auto-imported from go-client; UNVERIFIED — confirm body/params
+    in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_e_t_g_b_customs_declarations
+  section: fbs
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/posting/global/etgb
+  scope: seller
+  safety: write
+  summary: ETGBCustomsDeclarations (auto-imported from go-client; UNVERIFIED — confirm
+    body/params in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_barcode_from_product_shipment
+  section: fbs
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v2/posting/fbs/act/get-barcode
+  scope: seller
+  safety: write
+  summary: BarcodeFromProductShipment (auto-imported from go-client; UNVERIFIED —
+    confirm body/params in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_barcode_value_from_product_shipment
+  section: fbs
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v2/posting/fbs/act/get-barcode/text
+  scope: seller
+  safety: write
+  summary: BarcodeValueFromProductShipment (auto-imported from go-client; UNVERIFIED
+    — confirm body/params in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_get_act_p_d_f
+  section: fbs
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v2/posting/fbs/act/get-pdf
+  scope: seller
+  safety: write
+  summary: GetActPDF (auto-imported from go-client; UNVERIFIED — confirm body/params
+    in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_create_or_get_product_exemplar
+  section: fbs
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v6/fbs/posting/product/exemplar/create-or-get
+  scope: seller
+  safety: write
+  summary: CreateOrGetProductExemplar (auto-imported from go-client; UNVERIFIED —
+    confirm body/params in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_get_carriage
+  section: fbs
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/carriage/get
+  scope: seller
+  safety: write
+  summary: GetCarriage (auto-imported from go-client; UNVERIFIED — confirm body/params
+    in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_get_cancellation_reasons
+  section: fbs
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/posting/fbo/cancel-reason/list
+  scope: seller
+  safety: write
+  summary: GetCancellationReasons (auto-imported from go-client; UNVERIFIED — confirm
+    body/params in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_set_shipping_date
+  section: fbs
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/posting/cutoff/set
+  scope: seller
+  safety: write
+  summary: SetShippingDate (auto-imported from go-client; UNVERIFIED — confirm body/params
+    in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_split_order
+  section: fbs
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/posting/fbs/split
+  scope: seller
+  safety: write
+  summary: SplitOrder (auto-imported from go-client; UNVERIFIED — confirm body/params
+    in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_list_unpaid_products
+  section: fbs
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/posting/unpaid-legal/product/list
+  scope: seller
+  safety: write
+  summary: ListUnpaidProducts (auto-imported from go-client; UNVERIFIED — confirm
+    body/params in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_change_shipment_composition
+  section: fbs
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/carriage/set-postings
+  scope: seller
+  safety: write
+  summary: ChangeShipmentComposition (auto-imported from go-client; UNVERIFIED — confirm
+    body/params in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_delete_shipment
+  section: fbs
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/carriage/cancel
+  scope: seller
+  safety: write
+  summary: DeleteShipment (auto-imported from go-client; UNVERIFIED — confirm body/params
+    in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_verify_courier_code
+  section: fbs
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/posting/fbs/pick-up-code/verify
+  scope: seller
+  safety: write
+  summary: VerifyCourierCode (auto-imported from go-client; UNVERIFIED — confirm body/params
+    in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_update_products_data
+  section: fbs
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/fbs/posting/product/exemplar/update
+  scope: seller
+  safety: write
+  summary: UpdateProductsData (auto-imported from go-client; UNVERIFIED — confirm
+    body/params in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_mutual_settlements
+  section: finance
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/finance/mutual-settlement
+  scope: seller
+  safety: write
+  summary: MutualSettlements (auto-imported from go-client; UNVERIFIED — confirm body/params
+    in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_create_update
+  section: invoices
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v2/invoice/create-or-update
+  scope: seller
+  safety: write
+  summary: CreateUpdate (auto-imported from go-client; UNVERIFIED — confirm body/params
+    in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_get
+  section: invoices
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v2/invoice/get
+  scope: seller
+  safety: write
+  summary: Get (auto-imported from go-client; UNVERIFIED — confirm body/params in
+    docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_delete_2
+  section: invoices
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/invoice/delete
+  scope: seller
+  safety: write
+  summary: Delete (auto-imported from go-client; UNVERIFIED — confirm body/params
+    in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_upload
+  section: invoices
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/invoice/file/upload
+  scope: seller
+  safety: write
+  summary: Upload (auto-imported from go-client; UNVERIFIED — confirm body/params
+    in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_list_6
+  section: pass
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/pass/list
+  scope: seller
+  safety: write
+  summary: List (auto-imported from go-client; UNVERIFIED — confirm body/params in
+    docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_create_carriage
+  section: pass
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/carriage/pass/create
+  scope: seller
+  safety: write
+  summary: CreateCarriage (auto-imported from go-client; UNVERIFIED — confirm body/params
+    in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_update_carriage
+  section: pass
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/carriage/pass/update
+  scope: seller
+  safety: write
+  summary: UpdateCarriage (auto-imported from go-client; UNVERIFIED — confirm body/params
+    in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_delete_carriage
+  section: pass
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/carriage/pass/delete
+  scope: seller
+  safety: write
+  summary: DeleteCarriage (auto-imported from go-client; UNVERIFIED — confirm body/params
+    in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_create_return
+  section: pass
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/return/pass/create
+  scope: seller
+  safety: write
+  summary: CreateReturn (auto-imported from go-client; UNVERIFIED — confirm body/params
+    in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_update_return
+  section: pass
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/return/pass/update
+  scope: seller
+  safety: write
+  summary: UpdateReturn (auto-imported from go-client; UNVERIFIED — confirm body/params
+    in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_delete_return
+  section: pass
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/return/pass/delete
+  scope: seller
+  safety: write
+  summary: DeleteReturn (auto-imported from go-client; UNVERIFIED — confirm body/params
+    in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_create_delivery
+  section: polygons
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/polygon/create
+  scope: seller
+  safety: write
+  summary: CreateDelivery (auto-imported from go-client; UNVERIFIED — confirm body/params
+    in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_link
+  section: polygons
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/polygon/bind
+  scope: seller
+  safety: write
+  summary: Link (auto-imported from go-client; UNVERIFIED — confirm body/params in
+    docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_update_stocks
+  section: products
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/product/import/stocks
+  scope: seller
+  safety: write
+  summary: UpdateStocks (auto-imported from go-client; UNVERIFIED — confirm body/params
+    in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_create_product_by_ozon_i_d
+  section: products
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/product/import-by-sku
+  scope: seller
+  safety: write
+  summary: CreateProductByOzonID (auto-imported from go-client; UNVERIFIED — confirm
+    body/params in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_check_image_uploading_status
+  section: products
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v2/product/pictures/info
+  scope: seller
+  safety: write
+  summary: CheckImageUploadingStatus (auto-imported from go-client; UNVERIFIED — confirm
+    body/params in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_get_product_description
+  section: products
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/product/info/description
+  scope: seller
+  safety: write
+  summary: GetProductDescription (auto-imported from go-client; UNVERIFIED — confirm
+    body/params in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_get_product_range_limit
+  section: products
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v4/product/info/limit
+  scope: seller
+  safety: write
+  summary: GetProductRangeLimit (auto-imported from go-client; UNVERIFIED — confirm
+    body/params in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_change_product_i_ds
+  section: products
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/product/update/offer-id
+  scope: seller
+  safety: write
+  summary: ChangeProductIDs (auto-imported from go-client; UNVERIFIED — confirm body/params
+    in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_unarchive_product
+  section: products
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/product/unarchive
+  scope: seller
+  safety: write
+  summary: UnarchiveProduct (auto-imported from go-client; UNVERIFIED — confirm body/params
+    in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_upload_activation_codes
+  section: products
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/product/upload_digital_codes
+  scope: seller
+  safety: write
+  summary: UploadActivationCodes (auto-imported from go-client; UNVERIFIED — confirm
+    body/params in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_status_of_uploading_activation_codes
+  section: products
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/product/upload_digital_codes/info
+  scope: seller
+  safety: write
+  summary: StatusOfUploadingActivationCodes (auto-imported from go-client; UNVERIFIED
+    — confirm body/params in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_get_markdown_info
+  section: products
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/product/info/discounted
+  scope: seller
+  safety: write
+  summary: GetMarkdownInfo (auto-imported from go-client; UNVERIFIED — confirm body/params
+    in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_number_of_subs_to_product_availability
+  section: products
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/product/info/subscription
+  scope: seller
+  safety: write
+  summary: NumberOfSubsToProductAvailability (auto-imported from go-client; UNVERIFIED
+    — confirm body/params in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_update_characteristics
+  section: products
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/product/attributes/update
+  scope: seller
+  safety: write
+  summary: UpdateCharacteristics (auto-imported from go-client; UNVERIFIED — confirm
+    body/params in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_get_related_s_k_us
+  section: products
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/product/related-sku/get
+  scope: seller
+  safety: write
+  summary: GetRelatedSKUs (auto-imported from go-client; UNVERIFIED — confirm body/params
+    in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_economy_info
+  section: products
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/product/quant/info
+  scope: seller
+  safety: write
+  summary: EconomyInfo (auto-imported from go-client; UNVERIFIED — confirm body/params
+    in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_list_economy
+  section: products
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/product/quant/list
+  scope: seller
+  safety: write
+  summary: ListEconomy (auto-imported from go-client; UNVERIFIED — confirm body/params
+    in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_update_price_relevance_timer
+  section: products
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/product/action/timer/update
+  scope: seller
+  safety: write
+  summary: UpdatePriceRelevanceTimer (auto-imported from go-client; UNVERIFIED — confirm
+    body/params in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_get_available_promotions
+  section: promotions
+  method: GET
+  host: api-seller.ozon.ru
+  path: /v1/actions
+  scope: seller
+  safety: read
+  summary: GetAvailablePromotions (auto-imported from go-client; UNVERIFIED — confirm
+    body/params in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_add_to_promotion
+  section: promotions
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/actions/products/activate
+  scope: seller
+  safety: write
+  summary: AddToPromotion (auto-imported from go-client; UNVERIFIED — confirm body/params
+    in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_products_available_for_promotion
+  section: promotions
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/actions/candidates
+  scope: seller
+  safety: write
+  summary: ProductsAvailableForPromotion (auto-imported from go-client; UNVERIFIED
+    — confirm body/params in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_products_in_promotion
+  section: promotions
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/actions/products
+  scope: seller
+  safety: write
+  summary: ProductsInPromotion (auto-imported from go-client; UNVERIFIED — confirm
+    body/params in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_remove_product
+  section: promotions
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/actions/products/deactivate
+  scope: seller
+  safety: write
+  summary: RemoveProduct (auto-imported from go-client; UNVERIFIED — confirm body/params
+    in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_list_discount_requests
+  section: promotions
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/actions/discounts-task/list
+  scope: seller
+  safety: write
+  summary: ListDiscountRequests (auto-imported from go-client; UNVERIFIED — confirm
+    body/params in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_approve_discount_request
+  section: promotions
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/actions/discounts-task/approve
+  scope: seller
+  safety: write
+  summary: ApproveDiscountRequest (auto-imported from go-client; UNVERIFIED — confirm
+    body/params in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_decline_discount_request
+  section: promotions
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/actions/discounts-task/decline
+  scope: seller
+  safety: write
+  summary: DeclineDiscountRequest (auto-imported from go-client; UNVERIFIED — confirm
+    body/params in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_list_7
+  section: quants
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/quant/list
+  scope: seller
+  safety: write
+  summary: List (auto-imported from go-client; UNVERIFIED — confirm body/params in
+    docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_get_2
+  section: quants
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/quant/get
+  scope: seller
+  safety: write
+  summary: Get (auto-imported from go-client; UNVERIFIED — confirm body/params in
+    docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_ship
+  section: quants
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/quant/ship
+  scope: seller
+  safety: write
+  summary: Ship (auto-imported from go-client; UNVERIFIED — confirm body/params in
+    docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_get_current_seller_rating_info
+  section: rating
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/rating/summary
+  scope: seller
+  safety: write
+  summary: GetCurrentSellerRatingInfo (auto-imported from go-client; UNVERIFIED —
+    confirm body/params in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_get_seller_rating_info_for_period
+  section: rating
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/rating/history
+  scope: seller
+  safety: write
+  summary: GetSellerRatingInfoForPeriod (auto-imported from go-client; UNVERIFIED
+    — confirm body/params in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_get_list
+  section: reports
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/report/list
+  scope: seller
+  safety: write
+  summary: GetList (auto-imported from go-client; UNVERIFIED — confirm body/params
+    in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_get_report_details
+  section: reports
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/report/info
+  scope: seller
+  safety: write
+  summary: GetReportDetails (auto-imported from go-client; UNVERIFIED — confirm body/params
+    in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_get_financial
+  section: reports
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/finance/cash-flow-statement/list
+  scope: seller
+  safety: write
+  summary: GetFinancial (auto-imported from go-client; UNVERIFIED — confirm body/params
+    in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_get_products
+  section: reports
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/report/products/create
+  scope: seller
+  safety: write
+  summary: GetProducts (auto-imported from go-client; UNVERIFIED — confirm body/params
+    in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_get_returns
+  section: reports
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v2/report/returns/create
+  scope: seller
+  safety: write
+  summary: GetReturns (auto-imported from go-client; UNVERIFIED — confirm body/params
+    in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_get_shipment
+  section: reports
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/report/postings/create
+  scope: seller
+  safety: write
+  summary: GetShipment (auto-imported from go-client; UNVERIFIED — confirm body/params
+    in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_issue_on_discounted_products
+  section: reports
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/report/discounted/create
+  scope: seller
+  safety: write
+  summary: IssueOnDiscountedProducts (auto-imported from go-client; UNVERIFIED — confirm
+    body/params in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_get_f_b_s_stocks
+  section: reports
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/report/warehouse/stock
+  scope: seller
+  safety: write
+  summary: GetFBSStocks (auto-imported from go-client; UNVERIFIED — confirm body/params
+    in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_get_r_f_b_s_returns
+  section: returns
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v2/returns/rfbs/list
+  scope: seller
+  safety: write
+  summary: GetRFBSReturns (auto-imported from go-client; UNVERIFIED — confirm body/params
+    in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_get_r_f_b_s_return
+  section: returns
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v2/returns/rfbs/get
+  scope: seller
+  safety: write
+  summary: GetRFBSReturn (auto-imported from go-client; UNVERIFIED — confirm body/params
+    in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_reject_r_f_b_s_return
+  section: returns
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v2/returns/rfbs/reject
+  scope: seller
+  safety: write
+  summary: RejectRFBSReturn (auto-imported from go-client; UNVERIFIED — confirm body/params
+    in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_compensate_r_f_b_s_return
+  section: returns
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v2/returns/rfbs/compensate
+  scope: seller
+  safety: write
+  summary: CompensateRFBSReturn (auto-imported from go-client; UNVERIFIED — confirm
+    body/params in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_approve_r_f_b_s_return
+  section: returns
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v2/returns/rfbs/verify
+  scope: seller
+  safety: write
+  summary: ApproveRFBSReturn (auto-imported from go-client; UNVERIFIED — confirm body/params
+    in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_receive_r_f_b_s_return
+  section: returns
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v2/returns/rfbs/receive-return
+  scope: seller
+  safety: write
+  summary: ReceiveRFBSReturn (auto-imported from go-client; UNVERIFIED — confirm body/params
+    in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_refund_r_f_b_s
+  section: returns
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v2/returns/rfbs/return-money
+  scope: seller
+  safety: write
+  summary: RefundRFBS (auto-imported from go-client; UNVERIFIED — confirm body/params
+    in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_is_giveout_enabled
+  section: returns
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/return/giveout/is-enabled
+  scope: seller
+  safety: write
+  summary: IsGiveoutEnabled (auto-imported from go-client; UNVERIFIED — confirm body/params
+    in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_get_giveout_p_d_f
+  section: returns
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/return/giveout/get-pdf
+  scope: seller
+  safety: write
+  summary: GetGiveoutPDF (auto-imported from go-client; UNVERIFIED — confirm body/params
+    in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_get_giveout_p_n_g
+  section: returns
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/return/giveout/get-png
+  scope: seller
+  safety: write
+  summary: GetGiveoutPNG (auto-imported from go-client; UNVERIFIED — confirm body/params
+    in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_get_giveout_barcode
+  section: returns
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/return/giveout/barcode
+  scope: seller
+  safety: write
+  summary: GetGiveoutBarcode (auto-imported from go-client; UNVERIFIED — confirm body/params
+    in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_reset_giveout_barcode
+  section: returns
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/return/giveout/barcode-reset
+  scope: seller
+  safety: write
+  summary: ResetGiveoutBarcode (auto-imported from go-client; UNVERIFIED — confirm
+    body/params in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_get_giveout_list
+  section: returns
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/return/giveout/list
+  scope: seller
+  safety: write
+  summary: GetGiveoutList (auto-imported from go-client; UNVERIFIED — confirm body/params
+    in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_get_giveout_info
+  section: returns
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/return/giveout/info
+  scope: seller
+  safety: write
+  summary: GetGiveoutInfo (auto-imported from go-client; UNVERIFIED — confirm body/params
+    in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_f_b_s_quantity
+  section: returns
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/returns/company/fbs/info
+  scope: seller
+  safety: write
+  summary: FBSQuantity (auto-imported from go-client; UNVERIFIED — confirm body/params
+    in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_list_8
+  section: returns
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/returns/list
+  scope: seller
+  safety: write
+  summary: List (auto-imported from go-client; UNVERIFIED — confirm body/params in
+    docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_leave_comment
+  section: reviews
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/review/comment/create
+  scope: seller
+  safety: write
+  summary: LeaveComment (auto-imported from go-client; UNVERIFIED — confirm body/params
+    in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_delete_comment
+  section: reviews
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/review/comment/delete
+  scope: seller
+  safety: write
+  summary: DeleteComment (auto-imported from go-client; UNVERIFIED — confirm body/params
+    in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_list_comments
+  section: reviews
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/review/comment/list
+  scope: seller
+  safety: write
+  summary: ListComments (auto-imported from go-client; UNVERIFIED — confirm body/params
+    in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_change_status
+  section: reviews
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/review/change-status
+  scope: seller
+  safety: write
+  summary: ChangeStatus (auto-imported from go-client; UNVERIFIED — confirm body/params
+    in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_count
+  section: reviews
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/review/count
+  scope: seller
+  safety: write
+  summary: Count (auto-imported from go-client; UNVERIFIED — confirm body/params in
+    docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_get_3
+  section: reviews
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/review/info
+  scope: seller
+  safety: write
+  summary: Get (auto-imported from go-client; UNVERIFIED — confirm body/params in
+    docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_list_9
+  section: reviews
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/review/list
+  scope: seller
+  safety: write
+  summary: List (auto-imported from go-client; UNVERIFIED — confirm body/params in
+    docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_list_competitors
+  section: strategies
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/pricing-strategy/competitors/list
+  scope: seller
+  safety: write
+  summary: ListCompetitors (auto-imported from go-client; UNVERIFIED — confirm body/params
+    in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_list_10
+  section: strategies
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/pricing-strategy/list
+  scope: seller
+  safety: write
+  summary: List (auto-imported from go-client; UNVERIFIED — confirm body/params in
+    docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_create_2
+  section: strategies
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/pricing-strategy/create
+  scope: seller
+  safety: write
+  summary: Create (auto-imported from go-client; UNVERIFIED — confirm body/params
+    in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_info
+  section: strategies
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/pricing-strategy/info
+  scope: seller
+  safety: write
+  summary: Info (auto-imported from go-client; UNVERIFIED — confirm body/params in
+    docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_update_2
+  section: strategies
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/pricing-strategy/update
+  scope: seller
+  safety: write
+  summary: Update (auto-imported from go-client; UNVERIFIED — confirm body/params
+    in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_add_products
+  section: strategies
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/pricing-strategy/products/add
+  scope: seller
+  safety: write
+  summary: AddProducts (auto-imported from go-client; UNVERIFIED — confirm body/params
+    in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_get_by_product_ids
+  section: strategies
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/pricing-strategy/strategy-ids-by-product-ids
+  scope: seller
+  safety: write
+  summary: GetByProductIds (auto-imported from go-client; UNVERIFIED — confirm body/params
+    in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_list_products
+  section: strategies
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/pricing-strategy/products/list
+  scope: seller
+  safety: write
+  summary: ListProducts (auto-imported from go-client; UNVERIFIED — confirm body/params
+    in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_get_competitor_price
+  section: strategies
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/pricing-strategy/product/info
+  scope: seller
+  safety: write
+  summary: GetCompetitorPrice (auto-imported from go-client; UNVERIFIED — confirm
+    body/params in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_remove_products
+  section: strategies
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/pricing-strategy/products/delete
+  scope: seller
+  safety: write
+  summary: RemoveProducts (auto-imported from go-client; UNVERIFIED — confirm body/params
+    in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_change_status_2
+  section: strategies
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/pricing-strategy/status
+  scope: seller
+  safety: write
+  summary: ChangeStatus (auto-imported from go-client; UNVERIFIED — confirm body/params
+    in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_remove
+  section: strategies
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/pricing-strategy/delete
+  scope: seller
+  safety: write
+  summary: Remove (auto-imported from go-client; UNVERIFIED — confirm body/params
+    in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_get_list_of_warehouses
+  section: warehouses
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/warehouse/list
+  scope: seller
+  safety: write
+  summary: GetListOfWarehouses (auto-imported from go-client; UNVERIFIED — confirm
+    body/params in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_get_list_of_delivery_methods
+  section: warehouses
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/delivery-method/list
+  scope: seller
+  safety: write
+  summary: GetListOfDeliveryMethods (auto-imported from go-client; UNVERIFIED — confirm
+    body/params in docs).
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_list_for_shipping
+  section: warehouses
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/warehouse/fbo/list
+  scope: seller
+  safety: write
+  summary: ListForShipping (auto-imported from go-client; UNVERIFIED — confirm body/params
+    in docs).
+  doc: https://docs.ozon.ru/api/seller/

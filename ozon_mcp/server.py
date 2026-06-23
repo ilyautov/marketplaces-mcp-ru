@@ -22,8 +22,10 @@ from core.client import MarketplaceClient, ServiceConfig
 from core.registry import Catalog
 from core.safety import check_gate
 from core.tools import register_generic_tools
+from core.workflows import Workflows, register_workflow_tools
 
 CATALOG_PATH = Path(__file__).with_name("endpoints.yaml")
+WORKFLOWS_PATH = Path(__file__).with_name("workflows.yaml")
 
 
 def _load_creds(env: dict[str, str]) -> dict[str, str]:
@@ -57,6 +59,7 @@ register_generic_tools(
     mcp, svc="ozon", client=client, catalog=catalog,
     key_help="seller.ozon.ru → Settings → API keys (Client-Id + Api-Key).",
 )
+register_workflow_tools(mcp, svc="ozon", workflows=Workflows.from_yaml(WORKFLOWS_PATH))
 
 
 def _j(obj) -> str:

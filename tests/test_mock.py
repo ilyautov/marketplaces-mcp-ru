@@ -155,7 +155,25 @@ def test_servers_register_tools():
     for t in ("ozon_search_methods", "ozon_call_method", "ozon_call_raw",
               "ozon_fetch_all", "ozon_get_products", "ozon_set_price"):
         assert t in ozon_tools, f"missing {t}"
-    assert len(wb_tools) >= 13 and len(ozon_tools) >= 13
+    assert len(wb_tools) >= 15 and len(ozon_tools) >= 15  # 8 generic + typed + 2 workflow
+    for t in ("ozon_list_workflows", "ozon_get_workflow"):
+        assert t in ozon_tools
+
+
+# ----------------------------- workflows integrity -----------------------------
+def test_workflows_reference_real_endpoints():
+    """Every workflow step must name an operation_id that exists in the catalog."""
+    from core.workflows import Workflows
+    for yaml_name, cat in (("ozon_mcp", "ozon_mcp"), ("wb_mcp", "wb_mcp")):
+        wf = Workflows.from_yaml(ROOT / yaml_name / "workflows.yaml")
+        cat_obj = Catalog.from_yaml(ROOT / cat / "endpoints.yaml")
+        names = wf.names()
+        assert len(names) >= 3, f"{yaml_name} has too few workflows"
+        for entry in names:
+            full = wf.get(entry["name"])
+            for step in full.get("steps", []):
+                oid = step["operation_id"]
+                assert cat_obj.get(oid), f"{yaml_name}/{entry['name']}: unknown operation_id {oid}"
 
 
 # ----------------------------- cross-platform install -----------------------------

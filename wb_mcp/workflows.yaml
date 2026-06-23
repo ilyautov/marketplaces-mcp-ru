@@ -1,0 +1,46 @@
+# Wildberries analytical workflows — curated recipes over the catalog.
+# NOTE: WB endpoints are not yet live-verified (no token at build time); these
+# recipes are structurally sound but confirm field names against live responses.
+
+workflows:
+  - name: sales_pulse
+    category: analytics
+    when_to_use: See recent sales, orders and returns to gauge momentum.
+    steps:
+      - operation_id: wb_stats_orders
+        why: Orders since a date (incremental by lastChangeDate).
+      - operation_id: wb_stats_sales
+        why: Sales and returns since the same date.
+    interpret: >
+      Compare orders vs sales to spot a buyout gap. Statistics endpoints are
+      rate-limited to 1 req/min — use wb_fetch_all which paces the date cursor.
+    common_mistakes:
+      - Hammering the endpoint — 1 req/min limit, expect slow walks.
+      - Confusing order date with change date (the flag parameter controls it).
+
+  - name: stock_health
+    category: warehouse
+    when_to_use: Check current stock and warehouse remains to avoid stockouts.
+    steps:
+      - operation_id: wb_stats_stocks
+        why: Current stock snapshot (no history).
+      - operation_id: wb_analytics_warehouse_remains
+        why: Detailed warehouse-remains report (async — returns a task_id to poll).
+    interpret: >
+      wb_stats_stocks is a point-in-time snapshot; there is no history, so store
+      snapshots yourself for trends. The remains report is async: create it, poll
+      status, then download.
+    common_mistakes:
+      - Expecting stock history from the snapshot endpoint.
+
+  - name: price_audit
+    category: pricing
+    when_to_use: Review current prices and discounts across the catalog.
+    steps:
+      - operation_id: wb_prices_list
+        why: Products with current price and discount (offset pagination).
+    interpret: >
+      Check for products in price quarantine (a new price 3x below the old one
+      triggers it). Use wb_fetch_all for the full list.
+    common_mistakes:
+      - Setting a price 3x below the old one — it lands in quarantine, not live.
