@@ -1,28 +1,42 @@
 #!/usr/bin/env python3
 """One-command installer: wires both marketplace servers into Claude / Cowork.
 
-It locates your Claude desktop config, asks for API keys (or takes them as
-flags), writes the two MCP server entries pointing at serve.py, and backs up the
-old config. No manual JSON editing, no pip install — serve.py self-bootstraps on
-first launch.
+Blessed path: drop the repo into Cowork and say "install WB+Ozon MCP". The
+installer copies the app to a canonical, stable location (~/.marketplace-mcp/app)
+and points the client config THERE — so when the mounted/cloned folder later
+moves or unmounts, the MCP keeps working. It then asks for API keys (or takes
+them as flags), backs up the old config, and writes secret-free server entries.
+No manual JSON editing, no pip install — serve.py self-bootstraps deps on first
+launch.
 
-    python3 install.py                 # interactive (asks for keys)
+    python3 install.py                 # interactive (asks for keys), copies to canonical dir
+    python3 install.py --with-ads      # also ask Ozon Performance (ads) keys
+    python3 install.py --in-place      # do NOT copy; run from this folder (manual/dev)
     python3 install.py --print         # just print the JSON block, change nothing
     python3 install.py --wb-token T --ozon-client-id ID --ozon-api-key KEY
 
-Re-running is safe: it updates the two entries and leaves everything else alone.
+Re-running is safe: it refreshes the app copy and the two entries, leaving
+everything else alone.
 """
 from __future__ import annotations
 
 import argparse
 import json
+import os
 import shutil
 import sys
 from datetime import datetime
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
-SERVE = HERE / "serve.py"
+# Canonical, stable home — decoupled from where the repo was dropped/cloned.
+# Overridable for tests via MARKETPLACE_MCP_HOME.
+APP_HOME = Path(os.environ.get("MARKETPLACE_MCP_HOME", Path.home() / ".marketplace-mcp"))
+APP_DIR = APP_HOME / "app"
+# Everything serve.py needs at runtime (packages carry their own *.yaml).
+RUNTIME_ITEMS = ["core", "wb_mcp", "ozon_mcp", "ozon_perf_mcp", "serve.py", "pyproject.toml"]
+# SERVE points at the canonical copy once installed; reassigned in main().
+SERVE = APP_DIR / "serve.py"
 sys.path.insert(0, str(HERE))
 from core.credentials import CredentialStore  # noqa: E402
 
@@ -117,6 +131,45 @@ def build_opencode_entries() -> dict:
     }
 
 
+def install_app(src: Path, dest: Path) -> Path:
+    """Copy the runtime app from `src` into the canonical `dest`, return the
+    canonical serve.py. Skips if already running from `dest`. Never touches the
+    source's .git — we only read out of it (safe even on a Cowork FUSE mount,
+    where git operations fail). Returns dest/serve.py."""
+    if src.resolve() == dest.resolve():
+        return dest / "serve.py"          # already canonical — re-run in place
+    dest.mkdir(parents=True, exist_ok=True)
+    ignore = shutil.ignore_patterns("__pycache__", "*.pyc", ".venv", ".git")
+    for item in RUNTIME_ITEMS:
+        s = src / item
+        if not s.exists():
+            continue
+        d = dest / item
+        if s.is_dir():
+            shutil.copytree(s, d, dirs_exist_ok=True, ignore=ignore)
+        else:
+            shutil.copy2(s, d)
+    return dest / "serve.py"
+
+
+def write_breadcrumb(config_path: Path, entries: dict, serve_path: Path,
+                     source: Path) -> Path:
+    """Write a visible, secret-free record of the install so it can be verified
+    without reading the client's protected config dir (Cowork blocks that).
+    Lands at ~/.marketplace-mcp/last_install.json."""
+    APP_HOME.mkdir(parents=True, exist_ok=True)
+    crumb = APP_HOME / "last_install.json"
+    crumb.write_text(json.dumps({
+        "installed_at": datetime.now().isoformat(timespec="seconds"),
+        "servers": sorted(entries.keys()),
+        "serve_py": str(serve_path),
+        "installed_from": str(source),
+        "client_config": str(config_path),
+        "note": "Verify after restart via MCP tools (wb_check_auth), not by reading the config.",
+    }, ensure_ascii=False, indent=2), encoding="utf-8")
+    return crumb
+
+
 def main() -> None:
     if sys.version_info < (3, 10):
         sys.exit(f"Python 3.10+ required, found {sys.version.split()[0]}. "
@@ -140,7 +193,23 @@ def main() -> None:
                     default="", help="target client (default: claude-desktop). "
                     "codex/claude-code print CLI commands; opencode writes opencode.json")
     ap.add_argument("--config", default="", help="override config file path")
+    ap.add_argument("--with-ads", action="store_true",
+                    help="also prompt for Ozon Performance (ads) keys "
+                         "(default: skip — keeps the interactive flow to 3 fields)")
+    ap.add_argument("--in-place", action="store_true",
+                    help="do NOT copy to the canonical dir; point the config at "
+                         "this folder (manual/dev use — the folder must not move)")
     args = ap.parse_args()
+
+    # Canonical install: copy the app to a stable home and point config there.
+    # --print and --in-place keep the in-folder path (no copy).
+    global SERVE
+    if args.print_only or args.in_place:
+        SERVE = HERE / "serve.py"
+    else:
+        SERVE = install_app(HERE, APP_DIR)
+        print(f"✅ App installed to {APP_DIR}\n"
+              "   (stable location — you can move or delete the source folder now.)\n")
 
     client = args.client or ("claude-code" if args.claude_code else "claude-desktop")
     if client == "claude-code":
@@ -163,11 +232,17 @@ def main() -> None:
     wb = _ask("Wildberries API token (Enter to skip): ", args.wb_token)
     oid = _ask("Ozon Client-Id (Enter to skip): ", args.ozon_client_id)
     okey = _ask("Ozon Api-Key (Enter to skip): ", args.ozon_api_key)
-    # Performance (ads) API — optional, separate OAuth2 credentials.
-    perf_id = _ask("Ozon Performance Client-Id (Enter to skip): ",
-                   args.ozon_perf_client_id)
-    perf_secret = _ask("Ozon Performance Client-Secret (Enter to skip): ",
-                       args.ozon_perf_client_secret)
+    # Performance (ads) API — optional, separate OAuth2 credentials. Hidden by
+    # default so a non-technical seller answers 3 fields, not 5; surfaced with
+    # --with-ads (or implicitly when perf keys are passed as flags).
+    with_ads = args.with_ads or bool(args.ozon_perf_client_id or args.ozon_perf_client_secret)
+    if with_ads:
+        perf_id = _ask("Ozon Performance Client-Id (Enter to skip): ",
+                       args.ozon_perf_client_id)
+        perf_secret = _ask("Ozon Performance Client-Secret (Enter to skip): ",
+                           args.ozon_perf_client_secret)
+    else:
+        perf_id, perf_secret = args.ozon_perf_client_id, args.ozon_perf_client_secret
 
     # 1) save credentials to the cabinet store
     save_cabinet(args.cabinet, wb, oid, okey, perf_id, perf_secret)
@@ -192,6 +267,8 @@ def main() -> None:
     cfg_path.write_text(json.dumps(config, ensure_ascii=False, indent=2), encoding="utf-8")
 
     print(f"\n✅ Config → {cfg_path} ({client}: servers 'wildberries', 'ozon', no secrets in it)")
+    crumb = write_breadcrumb(cfg_path, entries, SERVE, HERE)
+    print(f"✅ Install record → {crumb} (verify after restart, no secrets)")
     saved = [s for s, v in (("WB", wb), ("Ozon", oid and okey),
                             ("Ozon-Perf", perf_id and perf_secret)) if v]
     print(f"✅ Cabinet '{args.cabinet}' saved for: {', '.join(saved) or '(nothing — keys skipped)'}")

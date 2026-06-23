@@ -125,12 +125,10 @@
 Подробный пошаговый гайд под любую аудиторию — в **[QUICKSTART.md](QUICKSTART.md)**. Три пути, один результат:
 
 1. **Проще всего — попроси своего ИИ (без терминала).** Открой Claude / Cowork и скажи: *«установи WB + Ozon MCP»* — агент проведёт по встроенному `install-skill/`. (Песочница Cowork не лезет на твою машину, поэтому финальный клик остаётся за тобой — скилл лишь доводит без ошибок. В Claude Code ставится полностью сам.)
-2. **Скачать и кликнуть.** Возьми `marketplaces-mcp-ru-v<версия>.zip` из [GitHub Releases](https://github.com/ilyautov/marketplaces-mcp-ru/releases), распакуй, двойной клик `install.command` (macOS) / `install.bat` (Windows), вставь ключи.
+2. **Скачать и кликнуть.** Возьми `marketplaces-mcp-ru-v<версия>.zip` из [GitHub Releases](https://github.com/ilyautov/marketplaces-mcp-ru/releases), распакуй, двойной клик `install.command` (macOS) / `install.bat` (Windows), вставь ключи. _macOS, первый раз: правый клик → «Открыть» → «Открыть» (обойти Gatekeeper для скачанного файла)._
 3. **Технический.** `git clone https://github.com/ilyautov/marketplaces-mcp-ru` → `python3 install.py --client <твой-клиент>`.
 
-<!-- TODO: создать публичный репозиторий ilyautov/marketplaces-mcp-ru и выложить zip в Releases -->
-
-Ни `pip install`, ни правки JSON: зависимости ставятся сами при первом запуске (локальный venv), от тебя — только ключи. **4 клиента** через `--client`: `claude-desktop` и `opencode` получают записанный конфиг, `claude-code` и `codex` — готовые `* mcp add` команды.
+Установщик **копирует приложение в стабильное место** (`~/.marketplace-mcp/app`) и привязывает конфиг туда — скачанную или подключённую папку потом можно перемещать и удалять, MCP не сломается. Ни `pip install`, ни правки JSON: зависимости ставятся сами при первом запуске (локальный venv), от тебя — только ключи. **4 клиента** через `--client`: `claude-desktop` и `opencode` получают записанный конфиг, `claude-code` и `codex` — готовые `* mcp add` команды.
 
 **Где взять ключи:** Wildberries — seller.wildberries.ru → Настройки → Доступ к API; Ozon — seller.ozon.ru → Настройки → API-ключи. Ключи хранятся в `~/.marketplace-mcp/cabinets.json` (локально, chmod 600, никогда в репо). Поддержка **мультикабинета** — несколько магазинов с переключением из чата (`*_add_cabinet` / `*_use_cabinet`).
 
