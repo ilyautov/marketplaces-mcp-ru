@@ -80,3 +80,33 @@ workflows:
       lowest rating and fill the listed improve_attributes first.
     common_mistakes:
       - Auditing archived products — filter visibility to VISIBLE/IN_SALE.
+
+  - name: abc_analysis
+    category: analytics
+    when_to_use: Rank SKUs A/B/C by revenue to focus stock and ad budget.
+    steps:
+      - operation_id: ozon_analytics_data
+        why: Revenue and ordered units per SKU over a period (offset pagination).
+    interpret: >
+      Request metrics ["revenue","ordered_units"] with dimension ["sku"]. Sum
+      revenue per sku, sort descending, take cumulative share: A = top 80%,
+      B = next 15%, C = last 5%. Window is capped — pull one period at a time.
+    common_mistakes:
+      - Asking for more metrics/dimensions than the report allows in one call.
+      - Ranking by ordered_units instead of revenue.
+
+  - name: reviews_pulse
+    category: communications
+    when_to_use: Track review sentiment and seller rating trend.
+    steps:
+      - operation_id: ozon_list_9
+        why: Review list (filter by status/rating) — requires the reviews subscription.
+      - operation_id: ozon_get_seller_rating_info_for_period
+        why: Seller rating dynamics over a period to see if sentiment is moving.
+    interpret: >
+      Filter reviews by low rating first; cluster recurring complaints per SKU.
+      The rating-for-period endpoint shows trend — a falling rating with rising
+      low-star reviews is an early churn signal. Review endpoints need the paid
+      reviews subscription (Premium Plus); expect 403 without it.
+    common_mistakes:
+      - Assuming review access without the subscription — handle 403 gracefully.
