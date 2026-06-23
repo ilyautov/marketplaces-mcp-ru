@@ -9,6 +9,7 @@ endpoints:
   safety: read
   summary: Health check for the Content host; also validates the token works.
   doc: https://dev.wildberries.ru/en/openapi/api-information
+  pagination: none
 - operation_id: wb_content_cards_list
   section: content
   method: POST
@@ -26,6 +27,7 @@ endpoints:
   - карточки
   - товары
   - номенклатура
+  items_path: cards
 - operation_id: wb_content_categories
   section: content
   method: GET
@@ -41,6 +43,7 @@ endpoints:
   keywords:
   - категории
   - предметы
+  items_path: data
 - operation_id: wb_content_charcs
   section: content
   method: GET
@@ -50,6 +53,8 @@ endpoints:
   safety: read
   summary: Characteristics required for a given subject category.
   doc: https://dev.wildberries.ru/en/openapi/work-with-products
+  items_path: data
+  pagination: none
 - operation_id: wb_content_cards_upload
   section: content
   method: POST
@@ -60,6 +65,7 @@ endpoints:
   rate_limit: 10 req/min
   summary: Create new product cards (async). Body is an array of {subjectID, variants[]}.
   doc: https://dev.wildberries.ru/en/openapi/work-with-products
+  pagination: none
 - operation_id: wb_content_cards_update
   section: content
   method: POST
@@ -71,6 +77,7 @@ endpoints:
   summary: Update existing cards (text/characteristics/sizes). Cannot change photos/price
     here.
   doc: https://dev.wildberries.ru/en/openapi/work-with-products
+  pagination: none
 - operation_id: wb_content_cards_trash
   section: content
   method: POST
@@ -80,6 +87,7 @@ endpoints:
   safety: destructive
   summary: Move cards to trash by nmIDs (max 1000). Reversible via recover.
   doc: https://dev.wildberries.ru/en/openapi/work-with-products
+  pagination: none
 - operation_id: wb_prices_list
   section: prices
   method: GET
@@ -98,6 +106,7 @@ endpoints:
   - стоимость
   - прайс
   - скидки
+  items_path: data.listGoods
 - operation_id: wb_prices_set
   section: prices
   method: POST
@@ -113,6 +122,7 @@ endpoints:
   - изменить цену
   - установить цену
   - скидка
+  pagination: none
 - operation_id: wb_prices_history_tasks
   section: prices
   method: GET
@@ -124,6 +134,7 @@ endpoints:
   params:
     query: uploadID
   doc: https://dev.wildberries.ru/en/openapi/work-with-products
+  pagination: none
 - operation_id: wb_promotions_calendar
   section: prices
   method: GET
@@ -188,6 +199,7 @@ endpoints:
   - склад
   - сток
   - наличие
+  pagination: lastchangedate
 - operation_id: wb_stats_incomes
   section: statistics
   method: GET
@@ -252,6 +264,7 @@ endpoints:
   params:
     query: groupByNm, groupBySize, filterVolume
   doc: https://dev.wildberries.ru/en/openapi/analytics
+  pagination: none
 - operation_id: wb_analytics_paid_storage
   section: analytics
   method: GET
@@ -263,6 +276,7 @@ endpoints:
   params:
     query: dateFrom, dateTo
   doc: https://dev.wildberries.ru/en/openapi/analytics
+  pagination: none
 - operation_id: wb_fbs_orders_new
   section: marketplace
   method: GET
@@ -277,6 +291,8 @@ endpoints:
   - новые заказы
   - сборка
   - фбс
+  items_path: orders
+  pagination: none
 - operation_id: wb_fbs_orders
   section: marketplace
   method: GET
@@ -288,6 +304,8 @@ endpoints:
   params:
     query: limit 1-1000, next, dateFrom, dateTo (Unix)
   doc: https://dev.wildberries.ru/en/openapi/orders-fbs
+  items_path: orders
+  pagination: none
 - operation_id: wb_fbs_orders_status
   section: marketplace
   method: POST
@@ -299,6 +317,8 @@ endpoints:
   params:
     body: '{orders:[ids]}'
   doc: https://dev.wildberries.ru/en/openapi/orders-fbs
+  items_path: orders
+  pagination: none
 - operation_id: wb_fbs_stickers
   section: marketplace
   method: POST
@@ -311,6 +331,8 @@ endpoints:
     query: type, width, height
     body: '{orders[]}'
   doc: https://dev.wildberries.ru/en/openapi/orders-fbs
+  items_path: stickers
+  pagination: none
 - operation_id: wb_fbs_supplies_create
   section: marketplace
   method: POST
@@ -320,6 +342,7 @@ endpoints:
   safety: write
   summary: Create a new FBS supply. Body {name}. Returns {id:"WB-GI-..."}.
   doc: https://dev.wildberries.ru/en/openapi/orders-fbs
+  pagination: none
 - operation_id: wb_fbs_supplies_list
   section: marketplace
   method: GET
@@ -331,6 +354,8 @@ endpoints:
   params:
     query: limit, next
   doc: https://dev.wildberries.ru/en/openapi/orders-fbs
+  items_path: supplies
+  pagination: none
 - operation_id: wb_fbs_stock_update
   section: marketplace
   method: PUT
@@ -344,6 +369,7 @@ endpoints:
   - остатки
   - обновить сток
   - склад фбс
+  pagination: none
 - operation_id: wb_fbs_warehouses
   section: marketplace
   method: GET
@@ -353,6 +379,7 @@ endpoints:
   safety: read
   summary: List the seller's FBS warehouses.
   doc: https://dev.wildberries.ru/en/openapi/orders-fbs
+  pagination: none
 - operation_id: wb_adv_count
   section: promotion
   method: GET
@@ -362,6 +389,8 @@ endpoints:
   safety: read
   summary: Campaign counts by type/status with the list of campaign IDs.
   doc: https://dev.wildberries.ru/en/openapi/promotion
+  items_path: adverts
+  pagination: none
 - operation_id: wb_adv_budget
   section: promotion
   method: GET
@@ -373,6 +402,7 @@ endpoints:
   params:
     query: id
   doc: https://dev.wildberries.ru/en/openapi/promotion
+  pagination: none
 - operation_id: wb_adv_fullstats
   section: promotion
   method: POST
@@ -401,6 +431,7 @@ endpoints:
   - деньги
   - счёт
   - финансы
+  pagination: none
 - operation_id: wb_get_ping
   section: Проверка подключения к WB API
   method: GET
@@ -410,6 +441,7 @@ endpoints:
   safety: read
   summary: Проверка подключения
   doc: ''
+  pagination: none
 - operation_id: wb_get_api_communications_news
   section: API новостей
   method: GET
@@ -419,6 +451,8 @@ endpoints:
   safety: read
   summary: Получение новостей портала продавцов
   doc: ''
+  items_path: data
+  pagination: none
 - operation_id: wb_get_api_seller_info
   section: Информация о продавце
   method: GET
@@ -428,6 +462,7 @@ endpoints:
   safety: read
   summary: Получить информацию о продавце
   doc: ''
+  pagination: none
 - operation_id: wb_get_api_common_rating
   section: Информация о продавце
   method: GET
@@ -437,6 +472,7 @@ endpoints:
   safety: read
   summary: Получить рейтинг продавца
   doc: ''
+  pagination: none
 - operation_id: wb_get_api_common_subscriptions
   section: Информация о продавце
   method: GET
@@ -446,6 +482,7 @@ endpoints:
   safety: read
   summary: Получить информацию о подписке Джем
   doc: ''
+  pagination: none
 - operation_id: wb_post_api_invite
   section: Управление пользователями продавца
   method: POST
@@ -455,6 +492,7 @@ endpoints:
   safety: write
   summary: Создать приглашение для нового пользователя
   doc: ''
+  pagination: none
 - operation_id: wb_get_api_users
   section: Управление пользователями продавца
   method: GET
@@ -464,6 +502,8 @@ endpoints:
   safety: read
   summary: Получить список активных или приглашённых пользователей продавца
   doc: ''
+  items_path: users
+  pagination: offset
 - operation_id: wb_put_api_users_access
   section: Управление пользователями продавца
   method: PUT
@@ -473,6 +513,7 @@ endpoints:
   safety: write
   summary: Изменить права доступа пользователей
   doc: ''
+  pagination: none
 - operation_id: wb_delete_api_user
   section: Управление пользователями продавца
   method: DELETE
@@ -482,6 +523,7 @@ endpoints:
   safety: destructive
   summary: Удалить пользователя
   doc: ''
+  pagination: none
 - operation_id: wb_get_content_object_parent_all
   section: Категории, предметы и характеристики
   method: GET
@@ -491,6 +533,7 @@ endpoints:
   safety: read
   summary: Родительские категории товаров
   doc: ''
+  pagination: none
 - operation_id: wb_get_content_directory_colors
   section: Категории, предметы и характеристики
   method: GET
@@ -500,6 +543,7 @@ endpoints:
   safety: read
   summary: Цвет
   doc: ''
+  pagination: none
 - operation_id: wb_get_content_directory_kinds
   section: Категории, предметы и характеристики
   method: GET
@@ -509,6 +553,8 @@ endpoints:
   safety: read
   summary: Пол
   doc: ''
+  items_path: data
+  pagination: none
 - operation_id: wb_get_content_directory_countries
   section: Категории, предметы и характеристики
   method: GET
@@ -518,6 +564,7 @@ endpoints:
   safety: read
   summary: Страна производства
   doc: ''
+  pagination: none
 - operation_id: wb_get_content_directory_seasons
   section: Категории, предметы и характеристики
   method: GET
@@ -527,6 +574,8 @@ endpoints:
   safety: read
   summary: Сезон
   doc: ''
+  items_path: data
+  pagination: none
 - operation_id: wb_get_content_directory_vat
   section: Категории, предметы и характеристики
   method: GET
@@ -536,6 +585,8 @@ endpoints:
   safety: read
   summary: Ставка НДС
   doc: ''
+  items_path: data
+  pagination: none
 - operation_id: wb_get_content_directory_tnved
   section: Категории, предметы и характеристики
   method: GET
@@ -545,6 +596,8 @@ endpoints:
   safety: read
   summary: ТНВЭД-код
   doc: ''
+  items_path: data
+  pagination: none
 - operation_id: wb_get_api_content_brands
   section: Категории, предметы и характеристики
   method: GET
@@ -554,6 +607,8 @@ endpoints:
   safety: read
   summary: Бренды
   doc: ''
+  items_path: brands
+  pagination: none
 - operation_id: wb_get_content_tags
   section: Ярлыки
   method: GET
@@ -563,6 +618,7 @@ endpoints:
   safety: read
   summary: Список ярлыков
   doc: ''
+  pagination: none
 - operation_id: wb_post_content_tag
   section: Ярлыки
   method: POST
@@ -572,6 +628,7 @@ endpoints:
   safety: write
   summary: Создание ярлыка
   doc: ''
+  pagination: none
 - operation_id: wb_patch_content_tag_id
   section: Ярлыки
   method: PATCH
@@ -581,6 +638,7 @@ endpoints:
   safety: write
   summary: Изменение ярлыка
   doc: ''
+  pagination: none
 - operation_id: wb_delete_content_tag_id
   section: Ярлыки
   method: DELETE
@@ -590,6 +648,7 @@ endpoints:
   safety: destructive
   summary: Удаление ярлыка
   doc: ''
+  pagination: none
 - operation_id: wb_post_content_tag_nomenclature_link
   section: Ярлыки
   method: POST
@@ -599,6 +658,7 @@ endpoints:
   safety: write
   summary: Управление ярлыками в карточке товара
   doc: ''
+  pagination: none
 - operation_id: wb_post_content_cards_error_list
   section: Карточки товаров
   method: POST
@@ -608,6 +668,8 @@ endpoints:
   safety: read
   summary: Список несозданных карточек товаров с ошибками
   doc: ''
+  items_path: data.items
+  pagination: cursor
 - operation_id: wb_post_content_cards_movenm
   section: Карточки товаров
   method: POST
@@ -617,6 +679,7 @@ endpoints:
   safety: write
   summary: Объединение и разъединение карточек товаров
   doc: ''
+  pagination: none
 - operation_id: wb_post_content_cards_recover
   section: Карточки товаров
   method: POST
@@ -626,6 +689,7 @@ endpoints:
   safety: write
   summary: Восстановление карточек товаров из корзины
   doc: ''
+  pagination: none
 - operation_id: wb_post_content_get_cards_trash
   section: Карточки товаров
   method: POST
@@ -635,6 +699,8 @@ endpoints:
   safety: read
   summary: Список карточек товаров в корзине
   doc: ''
+  items_path: cards
+  pagination: cursor
 - operation_id: wb_get_content_cards_limits
   section: Создание карточек товаров
   method: GET
@@ -644,6 +710,7 @@ endpoints:
   safety: read
   summary: Лимиты карточек товаров
   doc: ''
+  pagination: none
 - operation_id: wb_post_content_barcodes
   section: Создание карточек товаров
   method: POST
@@ -653,6 +720,8 @@ endpoints:
   safety: write
   summary: Генерация баркодов
   doc: ''
+  items_path: data
+  pagination: none
 - operation_id: wb_post_content_cards_upload_add
   section: Создание карточек товаров
   method: POST
@@ -662,6 +731,7 @@ endpoints:
   safety: write
   summary: Создание карточек товаров с присоединением
   doc: ''
+  pagination: none
 - operation_id: wb_post_content_media_file
   section: Медиафайлы
   method: POST
@@ -671,6 +741,7 @@ endpoints:
   safety: write
   summary: Загрузить медиафайл
   doc: ''
+  pagination: none
 - operation_id: wb_post_content_media_save
   section: Медиафайлы
   method: POST
@@ -680,6 +751,7 @@ endpoints:
   safety: write
   summary: Загрузить медиафайлы по ссылкам
   doc: ''
+  pagination: none
 - operation_id: wb_post_api_upload_task_size
   section: Цены и скидки
   method: POST
@@ -689,6 +761,7 @@ endpoints:
   safety: write
   summary: Установить цены для размеров
   doc: ''
+  pagination: none
 - operation_id: wb_post_api_upload_task_club_discount
   section: Цены и скидки
   method: POST
@@ -698,6 +771,7 @@ endpoints:
   safety: write
   summary: Установить скидки WB Клуба
   doc: ''
+  pagination: none
 - operation_id: wb_post_api_discounts_prices_upload_task_b2b_wholesale
   section: Цены и скидки
   method: POST
@@ -707,6 +781,7 @@ endpoints:
   safety: write
   summary: Установить оптовые скидки для B2B-продаж
   doc: ''
+  pagination: none
 - operation_id: wb_get_api_history_goods_task
   section: Цены и скидки
   method: GET
@@ -716,6 +791,7 @@ endpoints:
   safety: read
   summary: Детализация обработанной загрузки
   doc: ''
+  pagination: none
 - operation_id: wb_get_api_buffer_tasks
   section: Цены и скидки
   method: GET
@@ -725,6 +801,7 @@ endpoints:
   safety: read
   summary: Состояние необработанной загрузки
   doc: ''
+  pagination: none
 - operation_id: wb_get_api_buffer_goods_task
   section: Цены и скидки
   method: GET
@@ -734,6 +811,7 @@ endpoints:
   safety: read
   summary: Детализация необработанной загрузки
   doc: ''
+  pagination: none
 - operation_id: wb_post_api_list_goods_filter
   section: Цены и скидки
   method: POST
@@ -743,6 +821,8 @@ endpoints:
   safety: read
   summary: Получить товары с ценами по артикулам
   doc: ''
+  pagination: none
+  items_path: data.listGoods
 - operation_id: wb_get_api_list_goods_size_nm
   section: Цены и скидки
   method: GET
@@ -752,6 +832,7 @@ endpoints:
   safety: read
   summary: Получить размеры товара с ценами
   doc: ''
+  pagination: none
 - operation_id: wb_get_api_quarantine_goods
   section: Цены и скидки
   method: GET
@@ -761,6 +842,7 @@ endpoints:
   safety: read
   summary: Получить товары в карантине
   doc: ''
+  pagination: none
 - operation_id: wb_delete_api_stocks_warehouseid
   section: Остатки на складах продавца
   method: DELETE
@@ -770,6 +852,7 @@ endpoints:
   safety: destructive
   summary: Удалить остатки товаров
   doc: ''
+  pagination: none
 - operation_id: wb_post_api_stocks_warehouseid
   section: Остатки на складах продавца
   method: POST
@@ -779,6 +862,8 @@ endpoints:
   safety: write
   summary: Получить остатки товаров
   doc: ''
+  items_path: stocks
+  pagination: none
 - operation_id: wb_get_api_offices
   section: Склады продавца
   method: GET
@@ -788,6 +873,7 @@ endpoints:
   safety: read
   summary: Получить список складов WB
   doc: ''
+  pagination: none
 - operation_id: wb_post_api_warehouses
   section: Склады продавца
   method: POST
@@ -797,6 +883,7 @@ endpoints:
   safety: read
   summary: Создать склад продавца
   doc: ''
+  pagination: none
 - operation_id: wb_put_api_warehouses_warehouseid
   section: Склады продавца
   method: PUT
@@ -806,6 +893,7 @@ endpoints:
   safety: read
   summary: Обновить склад продавца
   doc: ''
+  pagination: none
 - operation_id: wb_delete_api_warehouses_warehouseid
   section: Склады продавца
   method: DELETE
@@ -815,6 +903,7 @@ endpoints:
   safety: destructive
   summary: Удалить склад продавца
   doc: ''
+  pagination: none
 - operation_id: wb_get_api_dbw_warehouses_warehouseid_contacts
   section: Склады продавца
   method: GET
@@ -824,6 +913,8 @@ endpoints:
   safety: read
   summary: Список контактов
   doc: ''
+  items_path: contacts
+  pagination: none
 - operation_id: wb_put_api_dbw_warehouses_warehouseid_contacts
   section: Склады продавца
   method: PUT
@@ -833,6 +924,7 @@ endpoints:
   safety: read
   summary: Обновить список контактов
   doc: ''
+  pagination: none
 - operation_id: wb_get_api_passes_offices
   section: Пропуска FBS
   method: GET
@@ -842,6 +934,7 @@ endpoints:
   safety: read
   summary: Получить список складов, для которых требуется пропуск
   doc: ''
+  pagination: none
 - operation_id: wb_get_api_passes
   section: Пропуска FBS
   method: GET
@@ -851,6 +944,7 @@ endpoints:
   safety: read
   summary: Получить список пропусков
   doc: ''
+  pagination: none
 - operation_id: wb_post_api_passes
   section: Пропуска FBS
   method: POST
@@ -860,6 +954,7 @@ endpoints:
   safety: write
   summary: Создать пропуск
   doc: ''
+  pagination: none
 - operation_id: wb_put_api_passes_passid
   section: Пропуска FBS
   method: PUT
@@ -869,6 +964,7 @@ endpoints:
   safety: write
   summary: Обновить пропуск
   doc: ''
+  pagination: none
 - operation_id: wb_delete_api_passes_passid
   section: Пропуска FBS
   method: DELETE
@@ -878,6 +974,7 @@ endpoints:
   safety: destructive
   summary: Удалить пропуск
   doc: ''
+  pagination: none
 - operation_id: wb_get_api_supplies_orders_reshipment
   section: Сборочные задания FBS
   method: GET
@@ -887,6 +984,8 @@ endpoints:
   safety: read
   summary: Получить все сборочные задания для повторной отгрузки
   doc: ''
+  items_path: orders
+  pagination: none
 - operation_id: wb_patch_api_orders_orderid_cancel
   section: Сборочные задания FBS
   method: PATCH
@@ -896,6 +995,7 @@ endpoints:
   safety: write
   summary: Отменить сборочное задание
   doc: ''
+  pagination: none
 - operation_id: wb_post_api_marketplace_orders_meta
   section: Идентификаторы маркировки FBS
   method: POST
@@ -905,6 +1005,8 @@ endpoints:
   safety: write
   summary: Получить идентификаторы маркировки сборочных заданий
   doc: ''
+  items_path: orders
+  pagination: none
 - operation_id: wb_delete_api_orders_orderid_meta
   section: Идентификаторы маркировки FBS
   method: DELETE
@@ -914,6 +1016,7 @@ endpoints:
   safety: destructive
   summary: Удалить идентификаторы маркировки сборочного задания
   doc: ''
+  pagination: none
 - operation_id: wb_put_api_orders_orderid_meta_sgtin
   section: Идентификаторы маркировки FBS
   method: PUT
@@ -923,6 +1026,7 @@ endpoints:
   safety: write
   summary: Закрепить за сборочным заданием код маркировки Честного знака
   doc: ''
+  pagination: none
 - operation_id: wb_put_api_orders_orderid_meta_uin
   section: Идентификаторы маркировки FBS
   method: PUT
@@ -932,6 +1036,7 @@ endpoints:
   safety: write
   summary: Закрепить за сборочным заданием УИН
   doc: ''
+  pagination: none
 - operation_id: wb_put_api_orders_orderid_meta_imei
   section: Идентификаторы маркировки FBS
   method: PUT
@@ -941,6 +1046,7 @@ endpoints:
   safety: write
   summary: Закрепить за сборочным заданием IMEI
   doc: ''
+  pagination: none
 - operation_id: wb_put_api_orders_orderid_meta_gtin
   section: Идентификаторы маркировки FBS
   method: PUT
@@ -950,6 +1056,7 @@ endpoints:
   safety: write
   summary: Закрепить за сборочным заданием GTIN
   doc: ''
+  pagination: none
 - operation_id: wb_put_api_orders_orderid_meta_expiration
   section: Идентификаторы маркировки FBS
   method: PUT
@@ -959,6 +1066,7 @@ endpoints:
   safety: write
   summary: Закрепить за сборочным заданием срок годности товара
   doc: ''
+  pagination: none
 - operation_id: wb_put_api_marketplace_orders_orderid_meta_customs_declarati
   section: Идентификаторы маркировки FBS
   method: PUT
@@ -968,6 +1076,7 @@ endpoints:
   safety: write
   summary: Закрепить за сборочным заданием номер ДТ
   doc: ''
+  pagination: none
 - operation_id: wb_post_api_orders_stickers_cross_border
   section: Сборочные задания FBS
   method: POST
@@ -977,6 +1086,8 @@ endpoints:
   safety: write
   summary: Получить стикеры сборочных заданий трансграничных поставок
   doc: ''
+  items_path: stickers
+  pagination: none
 - operation_id: wb_post_api_orders_status_history
   section: Сборочные задания FBS
   method: POST
@@ -986,6 +1097,8 @@ endpoints:
   safety: read
   summary: История статусов для сборочных заданий трансграничных поставок
   doc: ''
+  items_path: orders
+  pagination: none
 - operation_id: wb_post_api_orders_client
   section: Сборочные задания FBS
   method: POST
@@ -995,6 +1108,8 @@ endpoints:
   safety: write
   summary: Заказы с информацией по клиенту
   doc: ''
+  items_path: orders
+  pagination: none
 - operation_id: wb_patch_api_marketplace_supplies_supplyid_orders
   section: Поставки FBS
   method: PATCH
@@ -1004,6 +1119,7 @@ endpoints:
   safety: write
   summary: Добавить сборочные задания к поставке
   doc: ''
+  pagination: none
 - operation_id: wb_get_api_supplies_supplyid
   section: Поставки FBS
   method: GET
@@ -1013,6 +1129,7 @@ endpoints:
   safety: read
   summary: Получить информацию о поставке
   doc: ''
+  pagination: none
 - operation_id: wb_delete_api_supplies_supplyid
   section: Поставки FBS
   method: DELETE
@@ -1022,6 +1139,7 @@ endpoints:
   safety: destructive
   summary: Удалить поставку
   doc: ''
+  pagination: none
 - operation_id: wb_get_api_marketplace_supplies_supplyid_order_ids
   section: Поставки FBS
   method: GET
@@ -1031,6 +1149,8 @@ endpoints:
   safety: read
   summary: Получить ID сборочных заданий поставки
   doc: ''
+  items_path: orderIds
+  pagination: none
 - operation_id: wb_patch_api_supplies_supplyid_deliver
   section: Поставки FBS
   method: PATCH
@@ -1040,6 +1160,7 @@ endpoints:
   safety: write
   summary: Передать поставку в доставку
   doc: ''
+  pagination: none
 - operation_id: wb_get_api_supplies_supplyid_barcode
   section: Поставки FBS
   method: GET
@@ -1049,6 +1170,7 @@ endpoints:
   safety: read
   summary: Получить QR-код поставки
   doc: ''
+  pagination: none
 - operation_id: wb_get_api_supplies_supplyid_trbx
   section: Поставки FBS
   method: GET
@@ -1058,6 +1180,8 @@ endpoints:
   safety: read
   summary: Получить список грузомест поставки
   doc: ''
+  items_path: trbxes
+  pagination: none
 - operation_id: wb_post_api_supplies_supplyid_trbx
   section: Поставки FBS
   method: POST
@@ -1067,6 +1191,8 @@ endpoints:
   safety: write
   summary: Добавить грузоместа к поставке
   doc: ''
+  items_path: trbxIds
+  pagination: none
 - operation_id: wb_delete_api_supplies_supplyid_trbx
   section: Поставки FBS
   method: DELETE
@@ -1076,6 +1202,7 @@ endpoints:
   safety: destructive
   summary: Удалить грузоместа из поставки
   doc: ''
+  pagination: none
 - operation_id: wb_post_api_supplies_supplyid_trbx_stickers
   section: Поставки FBS
   method: POST
@@ -1085,6 +1212,8 @@ endpoints:
   safety: write
   summary: Получить стикеры грузомест поставки
   doc: ''
+  items_path: stickers
+  pagination: none
 - operation_id: wb_get_api_marketplace_fbs_orders_archive
   section: Сборочные задания FBS
   method: GET
@@ -1094,6 +1223,8 @@ endpoints:
   safety: read
   summary: Получить список архивных сборочных заданий
   doc: ''
+  items_path: orders
+  pagination: none
 - operation_id: wb_get_api_dbw_orders_new
   section: Сборочные задания DBW
   method: GET
@@ -1103,6 +1234,8 @@ endpoints:
   safety: read
   summary: Получить список новых сборочных заданий
   doc: ''
+  items_path: orders
+  pagination: none
 - operation_id: wb_get_api_dbw_orders
   section: Сборочные задания DBW
   method: GET
@@ -1112,6 +1245,8 @@ endpoints:
   safety: read
   summary: Получить информацию о завершенных сборочных заданиях
   doc: ''
+  items_path: orders
+  pagination: none
 - operation_id: wb_post_api_dbw_orders_delivery_date
   section: Сборочные задания DBW
   method: POST
@@ -1121,6 +1256,8 @@ endpoints:
   safety: write
   summary: Получить дату и время доставки
   doc: ''
+  items_path: orders
+  pagination: none
 - operation_id: wb_post_api_marketplace_dbw_orders_client
   section: Сборочные задания DBW
   method: POST
@@ -1130,6 +1267,8 @@ endpoints:
   safety: write
   summary: Информация о покупателе
   doc: ''
+  items_path: orders
+  pagination: none
 - operation_id: wb_post_api_dbw_orders_status
   section: Сборочные задания DBW
   method: POST
@@ -1139,6 +1278,8 @@ endpoints:
   safety: read
   summary: Получить статусы сборочных заданий
   doc: ''
+  items_path: orders
+  pagination: none
 - operation_id: wb_patch_api_dbw_orders_orderid_confirm
   section: Сборочные задания DBW
   method: PATCH
@@ -1148,6 +1289,7 @@ endpoints:
   safety: write
   summary: Перевести на сборку
   doc: ''
+  pagination: none
 - operation_id: wb_post_api_dbw_orders_stickers
   section: Сборочные задания DBW
   method: POST
@@ -1157,6 +1299,8 @@ endpoints:
   safety: write
   summary: Получить стикеры сборочных заданий
   doc: ''
+  items_path: stickers
+  pagination: none
 - operation_id: wb_post_api_marketplace_dbw_orders_status_deliver
   section: Сборочные задания DBW
   method: POST
@@ -1166,6 +1310,8 @@ endpoints:
   safety: write
   summary: Перевести сборочные задания в доставку
   doc: ''
+  items_path: results
+  pagination: none
 - operation_id: wb_post_api_dbw_orders_courier
   section: Сборочные задания DBW
   method: POST
@@ -1175,6 +1321,8 @@ endpoints:
   safety: write
   summary: Информация о курьере
   doc: ''
+  items_path: orders
+  pagination: none
 - operation_id: wb_patch_api_dbw_orders_orderid_cancel
   section: Сборочные задания DBW
   method: PATCH
@@ -1184,6 +1332,7 @@ endpoints:
   safety: write
   summary: Отменить сборочное задание
   doc: ''
+  pagination: none
 - operation_id: wb_post_api_marketplace_dbw_orders_meta_details
   section: Идентификаторы маркировки DBW
   method: POST
@@ -1193,6 +1342,8 @@ endpoints:
   safety: read
   summary: Получить идентификаторы маркировки сборочных заданий
   doc: ''
+  items_path: orders
+  pagination: none
 - operation_id: wb_post_api_marketplace_dbw_orders_meta_delete
   section: Идентификаторы маркировки DBW
   method: POST
@@ -1202,6 +1353,8 @@ endpoints:
   safety: write
   summary: Удалить идентификаторы маркировки сборочных заданий
   doc: ''
+  items_path: results
+  pagination: none
 - operation_id: wb_get_api_dbw_orders_orderid_meta
   section: Идентификаторы маркировки DBW
   method: GET
@@ -1211,6 +1364,8 @@ endpoints:
   safety: read
   summary: Получить идентификаторы маркировки сборочного задания
   doc: ''
+  items_path: meta.sgtin.value
+  pagination: none
 - operation_id: wb_post_api_marketplace_dbw_orders_meta_sgtin
   section: Идентификаторы маркировки DBW
   method: POST
@@ -1220,6 +1375,8 @@ endpoints:
   safety: write
   summary: Закрепить коды маркировки Честного знака за сборочными заданиями
   doc: ''
+  items_path: results
+  pagination: none
 - operation_id: wb_put_api_dbw_orders_orderid_meta_uin
   section: Идентификаторы маркировки DBW
   method: PUT
@@ -1229,6 +1386,7 @@ endpoints:
   safety: write
   summary: Закрепить за сборочным заданием УИН (уникальный идентификационный номер)
   doc: ''
+  pagination: none
 - operation_id: wb_put_api_dbw_orders_orderid_meta_imei
   section: Идентификаторы маркировки DBW
   method: PUT
@@ -1238,6 +1396,7 @@ endpoints:
   safety: write
   summary: Закрепить за сборочным заданием IMEI
   doc: ''
+  pagination: none
 - operation_id: wb_put_api_dbw_orders_orderid_meta_gtin
   section: Идентификаторы маркировки DBW
   method: PUT
@@ -1247,6 +1406,7 @@ endpoints:
   safety: write
   summary: Закрепить за сборочным заданием GTIN
   doc: ''
+  pagination: none
 - operation_id: wb_get_api_dbs_orders_new
   section: Сборочные задания DBS
   method: GET
@@ -1256,6 +1416,8 @@ endpoints:
   safety: read
   summary: Получить список новых сборочных заданий
   doc: ''
+  items_path: orders
+  pagination: none
 - operation_id: wb_get_api_dbs_orders
   section: Сборочные задания DBS
   method: GET
@@ -1265,6 +1427,8 @@ endpoints:
   safety: read
   summary: Получить информацию о завершенных сборочных заданиях
   doc: ''
+  items_path: orders
+  pagination: none
 - operation_id: wb_post_api_dbs_groups_info
   section: Сборочные задания DBS
   method: POST
@@ -1274,6 +1438,7 @@ endpoints:
   safety: read
   summary: Получить информацию о платной доставке
   doc: ''
+  pagination: none
 - operation_id: wb_post_api_dbs_orders_client
   section: Сборочные задания DBS
   method: POST
@@ -1283,6 +1448,8 @@ endpoints:
   safety: write
   summary: Информация о покупателе
   doc: ''
+  items_path: orders
+  pagination: none
 - operation_id: wb_post_api_marketplace_dbs_orders_b2b_info
   section: Сборочные задания DBS
   method: POST
@@ -1292,6 +1459,8 @@ endpoints:
   safety: read
   summary: Информация о покупателе B2B
   doc: ''
+  items_path: results
+  pagination: none
 - operation_id: wb_post_api_dbs_orders_delivery_date
   section: Сборочные задания DBS
   method: POST
@@ -1301,6 +1470,8 @@ endpoints:
   safety: write
   summary: Получить дату и время доставки
   doc: ''
+  items_path: orders
+  pagination: none
 - operation_id: wb_post_api_marketplace_dbs_orders_status_info
   section: Сборочные задания DBS
   method: POST
@@ -1310,6 +1481,8 @@ endpoints:
   safety: read
   summary: Получить статусы сборочных заданий
   doc: ''
+  items_path: orders
+  pagination: none
 - operation_id: wb_post_api_marketplace_dbs_orders_status_cancel
   section: Сборочные задания DBS
   method: POST
@@ -1319,6 +1492,8 @@ endpoints:
   safety: write
   summary: Отменить сборочные задания
   doc: ''
+  items_path: results
+  pagination: none
 - operation_id: wb_post_api_marketplace_dbs_orders_status_confirm
   section: Сборочные задания DBS
   method: POST
@@ -1328,6 +1503,8 @@ endpoints:
   safety: write
   summary: Перевести сборочные задания на сборку
   doc: ''
+  items_path: results
+  pagination: none
 - operation_id: wb_post_api_marketplace_dbs_orders_stickers
   section: Сборочные задания DBS
   method: POST
@@ -1337,6 +1514,8 @@ endpoints:
   safety: write
   summary: Получить стикеры для сборочных заданий с доставкой в ПВЗ
   doc: ''
+  items_path: stickers
+  pagination: none
 - operation_id: wb_post_api_marketplace_dbs_orders_status_deliver
   section: Сборочные задания DBS
   method: POST
@@ -1346,6 +1525,8 @@ endpoints:
   safety: write
   summary: Перевести сборочные задания в доставку
   doc: ''
+  items_path: results
+  pagination: none
 - operation_id: wb_post_api_marketplace_dbs_orders_status_receive
   section: Сборочные задания DBS
   method: POST
@@ -1355,6 +1536,8 @@ endpoints:
   safety: write
   summary: Сообщить о получении заказов
   doc: ''
+  items_path: results
+  pagination: none
 - operation_id: wb_post_api_marketplace_dbs_orders_status_reject
   section: Сборочные задания DBS
   method: POST
@@ -1364,6 +1547,8 @@ endpoints:
   safety: write
   summary: Сообщить об отказе от заказов
   doc: ''
+  items_path: results
+  pagination: none
 - operation_id: wb_post_api_marketplace_dbs_orders_meta_details
   section: Идентификаторы маркировки DBS
   method: POST
@@ -1373,6 +1558,8 @@ endpoints:
   safety: read
   summary: Получить идентификаторы маркировки сборочных заданий
   doc: ''
+  items_path: orders
+  pagination: none
 - operation_id: wb_post_api_marketplace_dbs_orders_meta_info
   section: Идентификаторы маркировки DBS
   method: POST
@@ -1382,6 +1569,8 @@ endpoints:
   safety: read
   summary: Получить идентификаторы маркировки сборочных заданий
   doc: ''
+  items_path: meta
+  pagination: none
 - operation_id: wb_post_api_marketplace_dbs_orders_meta_delete
   section: Идентификаторы маркировки DBS
   method: POST
@@ -1391,6 +1580,8 @@ endpoints:
   safety: write
   summary: Удалить идентификаторы маркировки сборочных заданий
   doc: ''
+  items_path: results
+  pagination: none
 - operation_id: wb_post_api_marketplace_dbs_orders_meta_sgtin
   section: Идентификаторы маркировки DBS
   method: POST
@@ -1400,6 +1591,8 @@ endpoints:
   safety: write
   summary: Закрепить коды маркировки Честного знака за сборочными заданиями
   doc: ''
+  items_path: results
+  pagination: none
 - operation_id: wb_post_api_marketplace_dbs_orders_meta_uin
   section: Идентификаторы маркировки DBS
   method: POST
@@ -1409,6 +1602,8 @@ endpoints:
   safety: write
   summary: Закрепить УИН за сборочными заданиями
   doc: ''
+  items_path: results
+  pagination: none
 - operation_id: wb_post_api_marketplace_dbs_orders_meta_imei
   section: Идентификаторы маркировки DBS
   method: POST
@@ -1418,6 +1613,8 @@ endpoints:
   safety: write
   summary: Закрепить IMEI за сборочными заданиями
   doc: ''
+  items_path: results
+  pagination: none
 - operation_id: wb_post_api_marketplace_dbs_orders_meta_gtin
   section: Идентификаторы маркировки DBS
   method: POST
@@ -1427,6 +1624,8 @@ endpoints:
   safety: write
   summary: Закрепить GTIN за сборочными заданиями
   doc: ''
+  items_path: results
+  pagination: none
 - operation_id: wb_post_api_marketplace_dbs_orders_meta_customs_declaration
   section: Идентификаторы маркировки DBS
   method: POST
@@ -1436,6 +1635,7 @@ endpoints:
   safety: write
   summary: Закрепить за сборочными заданиями номер ДТ
   doc: ''
+  pagination: none
 - operation_id: wb_get_api_click_collect_orders_new
   section: Сборочные задания Самовывоз
   method: GET
@@ -1445,6 +1645,8 @@ endpoints:
   safety: read
   summary: Получить список новых сборочных заданий
   doc: ''
+  items_path: orders
+  pagination: none
 - operation_id: wb_post_api_marketplace_click_collect_orders_status_confirm
   section: Сборочные задания Самовывоз
   method: POST
@@ -1454,6 +1656,8 @@ endpoints:
   safety: write
   summary: Перевести сборочные задания на сборку
   doc: ''
+  items_path: results
+  pagination: none
 - operation_id: wb_post_api_marketplace_click_collect_orders_status_prepare
   section: Сборочные задания Самовывоз
   method: POST
@@ -1463,6 +1667,7 @@ endpoints:
   safety: write
   summary: Сообщить, что сборочные задания готовы к выдаче
   doc: ''
+  pagination: none
 - operation_id: wb_post_api_click_collect_orders_client
   section: Сборочные задания Самовывоз
   method: POST
@@ -1472,6 +1677,8 @@ endpoints:
   safety: write
   summary: Информация о покупателе
   doc: ''
+  items_path: orders
+  pagination: none
 - operation_id: wb_post_api_click_collect_orders_client_identity
   section: Сборочные задания Самовывоз
   method: POST
@@ -1481,6 +1688,7 @@ endpoints:
   safety: write
   summary: Проверить, что заказ принадлежит покупателю
   doc: ''
+  pagination: none
 - operation_id: wb_post_api_marketplace_click_collect_orders_status_receive
   section: Сборочные задания Самовывоз
   method: POST
@@ -1490,6 +1698,8 @@ endpoints:
   safety: write
   summary: Сообщить, что заказы приняты покупателями
   doc: ''
+  items_path: results
+  pagination: none
 - operation_id: wb_post_api_marketplace_click_collect_orders_status_reject
   section: Сборочные задания Самовывоз
   method: POST
@@ -1499,6 +1709,8 @@ endpoints:
   safety: write
   summary: Сообщить об отказе от заказов
   doc: ''
+  items_path: results
+  pagination: none
 - operation_id: wb_post_api_marketplace_click_collect_orders_status_info
   section: Сборочные задания Самовывоз
   method: POST
@@ -1508,6 +1720,8 @@ endpoints:
   safety: read
   summary: Получить статусы сборочных заданий
   doc: ''
+  items_path: orders
+  pagination: none
 - operation_id: wb_get_api_click_collect_orders
   section: Сборочные задания Самовывоз
   method: GET
@@ -1517,6 +1731,8 @@ endpoints:
   safety: read
   summary: Получить информацию о завершённых сборочных заданиях
   doc: ''
+  items_path: orders
+  pagination: none
 - operation_id: wb_post_api_marketplace_click_collect_orders_status_cancel
   section: Сборочные задания Самовывоз
   method: POST
@@ -1526,6 +1742,8 @@ endpoints:
   safety: write
   summary: Отменить сборочные задания
   doc: ''
+  items_path: results
+  pagination: none
 - operation_id: wb_post_api_marketplace_click_collect_orders_meta_details
   section: Идентификаторы маркировки Самовывоз
   method: POST
@@ -1535,6 +1753,8 @@ endpoints:
   safety: read
   summary: Получить идентификаторы маркировки сборочных заданий
   doc: ''
+  items_path: orders
+  pagination: none
 - operation_id: wb_post_api_marketplace_click_collect_orders_meta_info
   section: Идентификаторы маркировки Самовывоз
   method: POST
@@ -1544,6 +1764,8 @@ endpoints:
   safety: read
   summary: Получить идентификаторы маркировки сборочных заданий
   doc: ''
+  items_path: meta
+  pagination: none
 - operation_id: wb_post_api_marketplace_click_collect_orders_meta_delete
   section: Идентификаторы маркировки Самовывоз
   method: POST
@@ -1553,6 +1775,8 @@ endpoints:
   safety: write
   summary: Удалить идентификаторы маркировки сборочных заданий
   doc: ''
+  items_path: results
+  pagination: none
 - operation_id: wb_post_api_marketplace_click_collect_orders_meta_sgtin
   section: Идентификаторы маркировки Самовывоз
   method: POST
@@ -1562,6 +1786,8 @@ endpoints:
   safety: write
   summary: Закрепить коды маркировки Честного знака за сборочными заданиями
   doc: ''
+  items_path: results
+  pagination: none
 - operation_id: wb_post_api_marketplace_click_collect_orders_meta_uin
   section: Идентификаторы маркировки Самовывоз
   method: POST
@@ -1571,6 +1797,8 @@ endpoints:
   safety: write
   summary: Закрепить УИН за сборочными заданиями
   doc: ''
+  items_path: results
+  pagination: none
 - operation_id: wb_post_api_marketplace_click_collect_orders_meta_imei
   section: Идентификаторы маркировки Самовывоз
   method: POST
@@ -1580,6 +1808,8 @@ endpoints:
   safety: write
   summary: Закрепить IMEI за сборочными заданиями
   doc: ''
+  items_path: results
+  pagination: none
 - operation_id: wb_post_api_marketplace_click_collect_orders_meta_gtin
   section: Идентификаторы маркировки Самовывоз
   method: POST
@@ -1589,6 +1819,8 @@ endpoints:
   safety: write
   summary: Закрепить GTIN за сборочными заданиями
   doc: ''
+  items_path: results
+  pagination: none
 - operation_id: wb_post_api_acceptance_options
   section: Информация для формирования поставок
   method: POST
@@ -1598,6 +1830,8 @@ endpoints:
   safety: write
   summary: Опции приёмки
   doc: ''
+  items_path: result
+  pagination: none
 - operation_id: wb_get_api_warehouses
   section: Информация для формирования поставок
   method: GET
@@ -1607,6 +1841,7 @@ endpoints:
   safety: read
   summary: Список складов
   doc: ''
+  pagination: none
 - operation_id: wb_get_api_transit_tariffs
   section: Информация для формирования поставок
   method: GET
@@ -1616,6 +1851,7 @@ endpoints:
   safety: read
   summary: Транзитные направления
   doc: ''
+  pagination: none
 - operation_id: wb_post_api_supplies
   section: Информация о поставках
   method: POST
@@ -1625,6 +1861,7 @@ endpoints:
   safety: write
   summary: Список поставок
   doc: ''
+  pagination: offset
 - operation_id: wb_get_api_supplies_id
   section: Информация о поставках
   method: GET
@@ -1634,6 +1871,7 @@ endpoints:
   safety: read
   summary: Детали поставки
   doc: ''
+  pagination: none
 - operation_id: wb_get_api_supplies_id_goods
   section: Информация о поставках
   method: GET
@@ -1643,6 +1881,7 @@ endpoints:
   safety: read
   summary: Товары поставки
   doc: ''
+  pagination: offset
 - operation_id: wb_get_api_supplies_id_package
   section: Информация о поставках
   method: GET
@@ -1652,6 +1891,7 @@ endpoints:
   safety: read
   summary: Упаковка поставки
   doc: ''
+  pagination: none
 - operation_id: wb_get_api_advert_adverts
   section: Кампании
   method: GET
@@ -1661,6 +1901,8 @@ endpoints:
   safety: read
   summary: Информация о кампаниях
   doc: ''
+  items_path: adverts
+  pagination: none
 - operation_id: wb_post_api_advert_bids_min
   section: Создание кампаний
   method: POST
@@ -1670,6 +1912,8 @@ endpoints:
   safety: write
   summary: Минимальные ставки для карточек товаров
   doc: ''
+  items_path: bids
+  pagination: none
 - operation_id: wb_post_adv_seacat_save_ad
   section: Создание кампаний
   method: POST
@@ -1679,6 +1923,7 @@ endpoints:
   safety: write
   summary: Создать кампанию
   doc: ''
+  pagination: none
 - operation_id: wb_get_adv_supplier_subjects
   section: Создание кампаний
   method: GET
@@ -1688,6 +1933,7 @@ endpoints:
   safety: read
   summary: Предметы для кампаний
   doc: ''
+  pagination: none
 - operation_id: wb_post_adv_supplier_nms
   section: Создание кампаний
   method: POST
@@ -1697,6 +1943,7 @@ endpoints:
   safety: write
   summary: Карточки товаров для кампаний
   doc: ''
+  pagination: none
 - operation_id: wb_get_adv_delete
   section: Управление кампаниями
   method: GET
@@ -1706,6 +1953,7 @@ endpoints:
   safety: read
   summary: Удаление кампании
   doc: ''
+  pagination: none
 - operation_id: wb_post_adv_rename
   section: Управление кампаниями
   method: POST
@@ -1715,6 +1963,7 @@ endpoints:
   safety: write
   summary: Переименование кампании
   doc: ''
+  pagination: none
 - operation_id: wb_get_adv_start
   section: Управление кампаниями
   method: GET
@@ -1724,6 +1973,7 @@ endpoints:
   safety: read
   summary: Запуск кампании
   doc: ''
+  pagination: none
 - operation_id: wb_get_adv_pause
   section: Управление кампаниями
   method: GET
@@ -1733,6 +1983,7 @@ endpoints:
   safety: read
   summary: Пауза кампании
   doc: ''
+  pagination: none
 - operation_id: wb_get_adv_stop
   section: Управление кампаниями
   method: GET
@@ -1742,6 +1993,7 @@ endpoints:
   safety: read
   summary: Завершение кампании
   doc: ''
+  pagination: none
 - operation_id: wb_put_adv_auction_placements
   section: Управление кампаниями
   method: PUT
@@ -1751,6 +2003,7 @@ endpoints:
   safety: write
   summary: Изменение мест размещения в кампаниях с ручной ставкой
   doc: ''
+  pagination: none
 - operation_id: wb_patch_api_advert_bids
   section: Управление кампаниями
   method: PATCH
@@ -1760,6 +2013,8 @@ endpoints:
   safety: write
   summary: Изменение ставок в кампаниях
   doc: ''
+  items_path: bids
+  pagination: none
 - operation_id: wb_get_adv_balance
   section: Финансы
   method: GET
@@ -1769,6 +2024,8 @@ endpoints:
   safety: read
   summary: Баланс
   doc: ''
+  items_path: cashbacks
+  pagination: none
 - operation_id: wb_post_adv_budget_deposit
   section: Финансы
   method: POST
@@ -1778,6 +2035,7 @@ endpoints:
   safety: write
   summary: Пополнение бюджета кампании
   doc: ''
+  pagination: none
 - operation_id: wb_get_adv_upd
   section: Финансы
   method: GET
@@ -1787,6 +2045,7 @@ endpoints:
   safety: read
   summary: Получение истории затрат
   doc: ''
+  pagination: none
 - operation_id: wb_get_adv_payments
   section: Финансы
   method: GET
@@ -1796,6 +2055,7 @@ endpoints:
   safety: read
   summary: Получение истории пополнений счёта
   doc: ''
+  pagination: none
 - operation_id: wb_patch_adv_auction_nms
   section: Управление кампаниями
   method: PATCH
@@ -1805,6 +2065,8 @@ endpoints:
   safety: write
   summary: Изменение списка карточек товаров в кампаниях
   doc: ''
+  items_path: nms
+  pagination: none
 - operation_id: wb_get_api_advert_bids_recommendations
   section: Управление кампаниями
   method: GET
@@ -1814,6 +2076,8 @@ endpoints:
   safety: read
   summary: Рекомендуемые ставки для карточек товаров и поисковых кластеров
   doc: ''
+  items_path: normQueries
+  pagination: none
 - operation_id: wb_post_adv_normquery_stats
   section: Статистика
   method: POST
@@ -1823,6 +2087,8 @@ endpoints:
   safety: read
   summary: Статистика поисковых кластеров
   doc: ''
+  items_path: stats
+  pagination: none
 - operation_id: wb_post_adv_normquery_get_bids
   section: Поисковые кластеры
   method: POST
@@ -1832,6 +2098,8 @@ endpoints:
   safety: read
   summary: Список ставок поисковых кластеров
   doc: ''
+  items_path: bids
+  pagination: none
 - operation_id: wb_post_adv_normquery_bids
   section: Поисковые кластеры
   method: POST
@@ -1841,6 +2109,7 @@ endpoints:
   safety: write
   summary: Установить ставки для поисковых кластеров
   doc: ''
+  pagination: none
 - operation_id: wb_delete_adv_normquery_bids
   section: Поисковые кластеры
   method: DELETE
@@ -1850,6 +2119,7 @@ endpoints:
   safety: destructive
   summary: Удалить ставки поисковых кластеров
   doc: ''
+  pagination: none
 - operation_id: wb_post_adv_normquery_get_minus
   section: Поисковые кластеры
   method: POST
@@ -1859,6 +2129,8 @@ endpoints:
   safety: read
   summary: Список минус-фраз кампаний
   doc: ''
+  items_path: items
+  pagination: none
 - operation_id: wb_post_adv_normquery_set_minus
   section: Поисковые кластеры
   method: POST
@@ -1868,6 +2140,7 @@ endpoints:
   safety: write
   summary: Установка и удаление минус-фраз
   doc: ''
+  pagination: none
 - operation_id: wb_get_adv_count
   section: Медиа
   method: GET
@@ -1877,6 +2150,7 @@ endpoints:
   safety: read
   summary: Количество медиакампаний
   doc: ''
+  pagination: none
 - operation_id: wb_get_adv_adverts
   section: Медиа
   method: GET
@@ -1886,6 +2160,7 @@ endpoints:
   safety: read
   summary: Список медиакампаний
   doc: ''
+  pagination: offset
 - operation_id: wb_get_adv_advert
   section: Медиа
   method: GET
@@ -1895,6 +2170,8 @@ endpoints:
   safety: read
   summary: Информация о медиакампании
   doc: ''
+  items_path: items
+  pagination: none
 - operation_id: wb_get_adv_fullstats
   section: Статистика
   method: GET
@@ -1904,6 +2181,7 @@ endpoints:
   safety: read
   summary: Статистика кампаний
   doc: ''
+  pagination: none
 - operation_id: wb_post_adv_stats
   section: Статистика
   method: POST
@@ -1913,6 +2191,7 @@ endpoints:
   safety: read
   summary: Статистика медиакампаний
   doc: ''
+  pagination: none
 - operation_id: wb_get_api_calendar_promotions
   section: Календарь акций
   method: GET
@@ -1922,6 +2201,7 @@ endpoints:
   safety: read
   summary: Список акций
   doc: ''
+  pagination: none
 - operation_id: wb_get_api_calendar_promotions_details
   section: Календарь акций
   method: GET
@@ -1931,6 +2211,7 @@ endpoints:
   safety: read
   summary: Детальная информация об акциях
   doc: ''
+  pagination: none
 - operation_id: wb_get_api_calendar_promotions_nomenclatures
   section: Календарь акций
   method: GET
@@ -1940,6 +2221,7 @@ endpoints:
   safety: read
   summary: Список товаров для участия в акции
   doc: ''
+  pagination: none
 - operation_id: wb_post_api_calendar_promotions_upload
   section: Календарь акций
   method: POST
@@ -1949,6 +2231,7 @@ endpoints:
   safety: write
   summary: Добавить товар в акцию
   doc: ''
+  pagination: none
 - operation_id: wb_post_adv_normquery_list
   section: Поисковые кластеры
   method: POST
@@ -1958,6 +2241,8 @@ endpoints:
   safety: read
   summary: Списки активных и неактивных поисковых кластеров
   doc: ''
+  items_path: items
+  pagination: none
 - operation_id: wb_post_adv_normquery_stats_2
   section: Статистика
   method: POST
@@ -1967,6 +2252,8 @@ endpoints:
   safety: read
   summary: Статистика по поисковым кластерам с детализацией по дням
   doc: ''
+  items_path: items
+  pagination: none
 - operation_id: wb_post_api_content_recommendations_list
   section: Рекомендации
   method: POST
@@ -1976,6 +2263,8 @@ endpoints:
   safety: read
   summary: Список рекомендаций в карточках товаров
   doc: ''
+  items_path: data
+  pagination: none
 - operation_id: wb_post_api_content_recommendations_set
   section: Рекомендации
   method: POST
@@ -1985,6 +2274,8 @@ endpoints:
   safety: write
   summary: Установить рекомендации для товаров
   doc: ''
+  items_path: errors
+  pagination: none
 - operation_id: wb_get_api_new_feedbacks_questions
   section: Вопросы
   method: GET
@@ -1994,6 +2285,8 @@ endpoints:
   safety: read
   summary: Непросмотренные отзывы и вопросы
   doc: ''
+  items_path: additionalErrors
+  pagination: none
 - operation_id: wb_get_api_questions_count_unanswered
   section: Вопросы
   method: GET
@@ -2003,6 +2296,8 @@ endpoints:
   safety: read
   summary: Неотвеченные вопросы
   doc: ''
+  items_path: additionalErrors
+  pagination: none
 - operation_id: wb_get_api_questions_count
   section: Вопросы
   method: GET
@@ -2012,6 +2307,8 @@ endpoints:
   safety: read
   summary: Количество вопросов
   doc: ''
+  items_path: additionalErrors
+  pagination: none
 - operation_id: wb_get_api_questions
   section: Вопросы
   method: GET
@@ -2021,6 +2318,8 @@ endpoints:
   safety: read
   summary: Список вопросов
   doc: ''
+  items_path: additionalErrors
+  pagination: none
 - operation_id: wb_patch_api_questions
   section: Вопросы
   method: PATCH
@@ -2030,6 +2329,8 @@ endpoints:
   safety: read
   summary: Работа с вопросами
   doc: ''
+  items_path: additionalErrors
+  pagination: none
 - operation_id: wb_get_api_question
   section: Вопросы
   method: GET
@@ -2039,6 +2340,8 @@ endpoints:
   safety: read
   summary: Получить вопрос по ID
   doc: ''
+  items_path: additionalErrors
+  pagination: none
 - operation_id: wb_get_api_feedbacks_count_unanswered
   section: Отзывы
   method: GET
@@ -2048,6 +2351,8 @@ endpoints:
   safety: read
   summary: Необработанные отзывы
   doc: ''
+  items_path: additionalErrors
+  pagination: none
 - operation_id: wb_get_api_feedbacks_count
   section: Отзывы
   method: GET
@@ -2057,6 +2362,8 @@ endpoints:
   safety: read
   summary: Количество отзывов
   doc: ''
+  items_path: additionalErrors
+  pagination: none
 - operation_id: wb_get_api_feedbacks
   section: Отзывы
   method: GET
@@ -2066,6 +2373,8 @@ endpoints:
   safety: read
   summary: Список отзывов
   doc: ''
+  items_path: additionalErrors
+  pagination: none
 - operation_id: wb_post_api_feedbacks_answer
   section: Отзывы
   method: POST
@@ -2075,6 +2384,7 @@ endpoints:
   safety: read
   summary: Ответить на отзыв
   doc: ''
+  pagination: none
 - operation_id: wb_patch_api_feedbacks_answer
   section: Отзывы
   method: PATCH
@@ -2084,6 +2394,7 @@ endpoints:
   safety: read
   summary: Отредактировать ответ на отзыв
   doc: ''
+  pagination: none
 - operation_id: wb_post_api_feedbacks_order_return
   section: Отзывы
   method: POST
@@ -2093,6 +2404,8 @@ endpoints:
   safety: read
   summary: Возврат товара по ID отзыва
   doc: ''
+  items_path: additionalErrors
+  pagination: none
 - operation_id: wb_get_api_feedback
   section: Отзывы
   method: GET
@@ -2102,6 +2415,8 @@ endpoints:
   safety: read
   summary: Получить отзыв по ID
   doc: ''
+  items_path: additionalErrors
+  pagination: none
 - operation_id: wb_get_api_feedbacks_archive
   section: Отзывы
   method: GET
@@ -2111,6 +2426,8 @@ endpoints:
   safety: read
   summary: Список архивных отзывов
   doc: ''
+  items_path: additionalErrors
+  pagination: none
 - operation_id: wb_get_api_feedbacks_pins
   section: Закреплённые отзывы
   method: GET
@@ -2120,6 +2437,7 @@ endpoints:
   safety: read
   summary: Список закреплённых и откреплённых отзывов
   doc: ''
+  pagination: none
 - operation_id: wb_post_api_feedbacks_pins
   section: Закреплённые отзывы
   method: POST
@@ -2129,6 +2447,7 @@ endpoints:
   safety: read
   summary: Закрепить отзывы
   doc: ''
+  pagination: none
 - operation_id: wb_delete_api_feedbacks_pins
   section: Закреплённые отзывы
   method: DELETE
@@ -2138,6 +2457,7 @@ endpoints:
   safety: destructive
   summary: Открепить отзывы
   doc: ''
+  pagination: none
 - operation_id: wb_get_api_feedbacks_pins_count
   section: Закреплённые отзывы
   method: GET
@@ -2147,6 +2467,7 @@ endpoints:
   safety: read
   summary: Количество закреплённых и откреплённых отзывов
   doc: ''
+  pagination: none
 - operation_id: wb_get_api_feedbacks_pins_limits
   section: Закреплённые отзывы
   method: GET
@@ -2156,6 +2477,7 @@ endpoints:
   safety: read
   summary: Лимиты закреплённых отзывов
   doc: ''
+  pagination: none
 - operation_id: wb_get_api_seller_chats
   section: Чат с покупателями
   method: GET
@@ -2165,6 +2487,8 @@ endpoints:
   safety: read
   summary: Список чатов
   doc: ''
+  items_path: result
+  pagination: none
 - operation_id: wb_get_api_seller_events
   section: Чат с покупателями
   method: GET
@@ -2174,6 +2498,8 @@ endpoints:
   safety: read
   summary: События чатов
   doc: ''
+  items_path: errors
+  pagination: none
 - operation_id: wb_post_api_seller_message
   section: Чат с покупателями
   method: POST
@@ -2183,6 +2509,8 @@ endpoints:
   safety: write
   summary: Отправить сообщение
   doc: ''
+  items_path: errors
+  pagination: none
 - operation_id: wb_get_api_seller_download_id
   section: Чат с покупателями
   method: GET
@@ -2192,6 +2520,7 @@ endpoints:
   safety: read
   summary: Получить файл из сообщения
   doc: ''
+  pagination: none
 - operation_id: wb_get_api_claims
   section: Возвраты покупателями
   method: GET
@@ -2201,6 +2530,7 @@ endpoints:
   safety: read
   summary: Заявки покупателей на возврат
   doc: ''
+  pagination: none
 - operation_id: wb_patch_api_claim
   section: Возвраты покупателями
   method: PATCH
@@ -2210,6 +2540,7 @@ endpoints:
   safety: write
   summary: Ответ на заявку покупателя
   doc: ''
+  pagination: none
 - operation_id: wb_get_api_tariffs_commission
   section: Комиссии
   method: GET
@@ -2219,6 +2550,7 @@ endpoints:
   safety: read
   summary: Комиссия по категориям товаров
   doc: ''
+  pagination: none
 - operation_id: wb_get_api_tariffs_box
   section: Тарифы на остаток
   method: GET
@@ -2228,6 +2560,8 @@ endpoints:
   safety: read
   summary: Тарифы для коробов
   doc: ''
+  items_path: response.data.warehouseList
+  pagination: none
 - operation_id: wb_get_api_tariffs_pallet
   section: Тарифы на остаток
   method: GET
@@ -2237,6 +2571,8 @@ endpoints:
   safety: read
   summary: Тарифы для монопаллет
   doc: ''
+  items_path: response.data.warehouseList
+  pagination: none
 - operation_id: wb_get_api_tariffs_acceptance_coefficients
   section: Тарифы на поставку
   method: GET
@@ -2246,6 +2582,7 @@ endpoints:
   safety: read
   summary: Тарифы на поставку
   doc: ''
+  pagination: none
 - operation_id: wb_get_api_tariffs_return
   section: Стоимость возврата продавцу
   method: GET
@@ -2255,6 +2592,8 @@ endpoints:
   safety: read
   summary: Тарифы на возврат
   doc: ''
+  items_path: response.data.warehouseList
+  pagination: none
 - operation_id: wb_post_api_analytics_sales_funnel_products_history
   section: Воронка продаж
   method: POST
@@ -2264,6 +2603,7 @@ endpoints:
   safety: read
   summary: Статистика карточек товаров по дням
   doc: ''
+  pagination: none
 - operation_id: wb_post_api_analytics_sales_funnel_grouped_history
   section: Воронка продаж
   method: POST
@@ -2273,6 +2613,8 @@ endpoints:
   safety: read
   summary: Статистика групп карточек товаров по дням
   doc: ''
+  items_path: data
+  pagination: none
 - operation_id: wb_post_api_nm_report_downloads
   section: Аналитика продавца CSV
   method: POST
@@ -2282,6 +2624,7 @@ endpoints:
   safety: read
   summary: Создать отчёт
   doc: ''
+  pagination: none
 - operation_id: wb_get_api_nm_report_downloads
   section: Аналитика продавца CSV
   method: GET
@@ -2291,6 +2634,8 @@ endpoints:
   safety: read
   summary: Получить список отчётов
   doc: ''
+  items_path: data
+  pagination: none
 - operation_id: wb_post_api_nm_report_downloads_retry
   section: Аналитика продавца CSV
   method: POST
@@ -2300,6 +2645,7 @@ endpoints:
   safety: read
   summary: Сгенерировать отчёт повторно
   doc: ''
+  pagination: none
 - operation_id: wb_get_api_nm_report_downloads_file_downloadid
   section: Аналитика продавца CSV
   method: GET
@@ -2309,6 +2655,7 @@ endpoints:
   safety: read
   summary: Получить отчёт
   doc: ''
+  pagination: none
 - operation_id: wb_post_api_search_report_report
   section: Поисковые запросы по вашим товарам
   method: POST
@@ -2318,6 +2665,7 @@ endpoints:
   safety: read
   summary: Основная страница
   doc: ''
+  pagination: offset
 - operation_id: wb_post_api_search_report_table_groups
   section: Поисковые запросы по вашим товарам
   method: POST
@@ -2327,6 +2675,7 @@ endpoints:
   safety: read
   summary: Пагинация по группам
   doc: ''
+  pagination: offset
 - operation_id: wb_post_api_search_report_table_details
   section: Поисковые запросы по вашим товарам
   method: POST
@@ -2336,6 +2685,7 @@ endpoints:
   safety: read
   summary: Пагинация по товарам в группе
   doc: ''
+  pagination: offset
 - operation_id: wb_post_api_search_report_product_search_texts
   section: Поисковые запросы по вашим товарам
   method: POST
@@ -2345,6 +2695,7 @@ endpoints:
   safety: read
   summary: Поисковые запросы по товару
   doc: ''
+  pagination: none
 - operation_id: wb_post_api_search_report_product_orders
   section: Поисковые запросы по вашим товарам
   method: POST
@@ -2354,6 +2705,7 @@ endpoints:
   safety: read
   summary: Заказы и позиции по поисковым запросам товара
   doc: ''
+  pagination: none
 - operation_id: wb_post_api_analytics_stocks_report_wb_warehouses
   section: История остатков
   method: POST
@@ -2363,6 +2715,8 @@ endpoints:
   safety: read
   summary: Остатки на складах WB
   doc: ''
+  items_path: data.items
+  pagination: offset
 - operation_id: wb_post_api_stocks_report_products_groups
   section: История остатков
   method: POST
@@ -2372,6 +2726,8 @@ endpoints:
   safety: read
   summary: Данные по группам
   doc: ''
+  items_path: data.groups
+  pagination: none
 - operation_id: wb_post_api_stocks_report_products_products
   section: История остатков
   method: POST
@@ -2381,6 +2737,8 @@ endpoints:
   safety: read
   summary: Данные по товарам
   doc: ''
+  items_path: data.items
+  pagination: none
 - operation_id: wb_post_api_stocks_report_products_sizes
   section: История остатков
   method: POST
@@ -2390,6 +2748,8 @@ endpoints:
   safety: read
   summary: Данные по размерам
   doc: ''
+  items_path: data.offices
+  pagination: none
 - operation_id: wb_post_api_stocks_report_offices
   section: История остатков
   method: POST
@@ -2399,6 +2759,8 @@ endpoints:
   safety: read
   summary: Данные по складам
   doc: ''
+  items_path: data.regions
+  pagination: none
 - operation_id: wb_post_api_analytics_item_rating
   section: Оценка товара
   method: POST
@@ -2408,6 +2770,8 @@ endpoints:
   safety: read
   summary: Получить отчёт
   doc: ''
+  items_path: data.cards
+  pagination: offset
 - operation_id: wb_post_api_analytics_excise_report
   section: Отчёт о товарах c обязательной маркировкой
   method: POST
@@ -2417,6 +2781,8 @@ endpoints:
   safety: read
   summary: Получить отчёт
   doc: ''
+  items_path: response.data
+  pagination: none
 - operation_id: wb_get_api_warehouse_remains_tasks_task_id_status
   section: Отчёт об остатках на складах
   method: GET
@@ -2426,6 +2792,7 @@ endpoints:
   safety: read
   summary: Проверить статус
   doc: ''
+  pagination: none
 - operation_id: wb_get_api_warehouse_remains_tasks_task_id_download
   section: Отчёт об остатках на складах
   method: GET
@@ -2435,6 +2802,7 @@ endpoints:
   safety: read
   summary: Получить отчёт
   doc: ''
+  pagination: none
 - operation_id: wb_get_api_analytics_measurement_penalties
   section: Отчёты об удержаниях
   method: GET
@@ -2444,6 +2812,8 @@ endpoints:
   safety: read
   summary: Удержания за занижение габаритов упаковки
   doc: ''
+  items_path: data.reports
+  pagination: offset
 - operation_id: wb_get_api_analytics_warehouse_measurements
   section: Отчёты об удержаниях
   method: GET
@@ -2453,6 +2823,8 @@ endpoints:
   safety: read
   summary: Замеры склада
   doc: ''
+  items_path: data.reports
+  pagination: offset
 - operation_id: wb_get_api_analytics_deductions
   section: Отчёты об удержаниях
   method: GET
@@ -2462,6 +2834,7 @@ endpoints:
   safety: read
   summary: Подмены и неверные вложения
   doc: ''
+  pagination: offset
 - operation_id: wb_get_api_analytics_antifraud_details
   section: Отчёты об удержаниях
   method: GET
@@ -2471,6 +2844,7 @@ endpoints:
   safety: read
   summary: Самовыкупы
   doc: ''
+  pagination: none
 - operation_id: wb_get_api_analytics_goods_labeling
   section: Отчёты об удержаниях
   method: GET
@@ -2480,6 +2854,7 @@ endpoints:
   safety: read
   summary: Маркировка товара
   doc: ''
+  pagination: none
 - operation_id: wb_get_api_acceptance_report
   section: Операции при приёмке
   method: GET
@@ -2489,6 +2864,7 @@ endpoints:
   safety: read
   summary: Создать отчёт
   doc: ''
+  pagination: none
 - operation_id: wb_get_api_acceptance_report_tasks_task_id_status
   section: Операции при приёмке
   method: GET
@@ -2498,6 +2874,7 @@ endpoints:
   safety: read
   summary: Проверить статус
   doc: ''
+  pagination: none
 - operation_id: wb_get_api_acceptance_report_tasks_task_id_download
   section: Операции при приёмке
   method: GET
@@ -2507,6 +2884,7 @@ endpoints:
   safety: read
   summary: Получить отчёт
   doc: ''
+  pagination: none
 - operation_id: wb_get_api_paid_storage_tasks_task_id_status
   section: Платное хранение
   method: GET
@@ -2516,6 +2894,7 @@ endpoints:
   safety: read
   summary: Проверить статус
   doc: ''
+  pagination: none
 - operation_id: wb_get_api_paid_storage_tasks_task_id_download
   section: Платное хранение
   method: GET
@@ -2525,6 +2904,7 @@ endpoints:
   safety: read
   summary: Получить отчёт
   doc: ''
+  pagination: none
 - operation_id: wb_get_api_analytics_region_sale
   section: Продажи по регионам
   method: GET
@@ -2534,6 +2914,7 @@ endpoints:
   safety: read
   summary: Получить отчёт
   doc: ''
+  pagination: none
 - operation_id: wb_get_api_analytics_brand_share_brands
   section: Доля бренда в продажах
   method: GET
@@ -2543,6 +2924,7 @@ endpoints:
   safety: read
   summary: Бренды продавца
   doc: ''
+  pagination: none
 - operation_id: wb_get_api_analytics_brand_share_parent_subjects
   section: Доля бренда в продажах
   method: GET
@@ -2552,6 +2934,7 @@ endpoints:
   safety: read
   summary: Родительские категории бренда
   doc: ''
+  pagination: none
 - operation_id: wb_get_api_analytics_brand_share
   section: Доля бренда в продажах
   method: GET
@@ -2561,6 +2944,7 @@ endpoints:
   safety: read
   summary: Получить отчёт
   doc: ''
+  pagination: none
 - operation_id: wb_get_api_analytics_banned_products_blocked
   section: Скрытые товары
   method: GET
@@ -2570,6 +2954,8 @@ endpoints:
   safety: read
   summary: Заблокированные карточки
   doc: ''
+  items_path: report
+  pagination: none
 - operation_id: wb_get_api_analytics_banned_products_shadowed
   section: Скрытые товары
   method: GET
@@ -2579,6 +2965,8 @@ endpoints:
   safety: read
   summary: Скрытые из каталога
   doc: ''
+  items_path: report
+  pagination: none
 - operation_id: wb_get_api_analytics_goods_return
   section: Отчёт о возвратах и перемещении товаров
   method: GET
@@ -2588,6 +2976,8 @@ endpoints:
   safety: read
   summary: Получить отчёт
   doc: ''
+  items_path: report
+  pagination: none
 - operation_id: wb_get_api_account_balance
   section: Баланс
   method: GET
@@ -2597,6 +2987,7 @@ endpoints:
   safety: read
   summary: Получить баланс продавца
   doc: ''
+  pagination: none
 - operation_id: wb_post_api_finance_sales_reports_list
   section: Финансовые отчёты
   method: POST
@@ -2606,6 +2997,7 @@ endpoints:
   safety: read
   summary: Список отчётов реализации
   doc: ''
+  pagination: offset
 - operation_id: wb_post_api_finance_sales_reports_detailed_reportid
   section: Финансовые отчёты
   method: POST
@@ -2615,6 +3007,7 @@ endpoints:
   safety: read
   summary: Детализации к отчётам реализации по ID отчётов
   doc: ''
+  pagination: none
 - operation_id: wb_post_api_finance_sales_reports_detailed
   section: Финансовые отчёты
   method: POST
@@ -2624,6 +3017,7 @@ endpoints:
   safety: read
   summary: Детализации к отчётам реализации за период
   doc: ''
+  pagination: none
 - operation_id: wb_post_api_finance_acquiring_list
   section: Финансовые отчёты
   method: POST
@@ -2633,6 +3027,7 @@ endpoints:
   safety: read
   summary: Список отчётов об издержках на приём платежей
   doc: ''
+  pagination: offset
 - operation_id: wb_post_api_finance_acquiring_detailed_reportid
   section: Финансовые отчёты
   method: POST
@@ -2642,6 +3037,7 @@ endpoints:
   safety: write
   summary: Детализации к отчётам об издержках на приём платежей по ID отчётов
   doc: ''
+  pagination: none
 - operation_id: wb_post_api_finance_acquiring_detailed
   section: Финансовые отчёты
   method: POST
@@ -2651,6 +3047,7 @@ endpoints:
   safety: write
   summary: Детализации к отчётам об издержках на приём платежей за период
   doc: ''
+  pagination: none
 - operation_id: wb_get_api_documents_categories
   section: Документы
   method: GET
@@ -2660,6 +3057,8 @@ endpoints:
   safety: read
   summary: Категории документов
   doc: ''
+  items_path: data.categories
+  pagination: none
 - operation_id: wb_get_api_documents_list
   section: Документы
   method: GET
@@ -2669,6 +3068,8 @@ endpoints:
   safety: read
   summary: Список документов
   doc: ''
+  items_path: data.documents
+  pagination: offset
 - operation_id: wb_get_api_documents_download
   section: Документы
   method: GET
@@ -2678,6 +3079,7 @@ endpoints:
   safety: read
   summary: Получить документ
   doc: ''
+  pagination: none
 - operation_id: wb_post_api_documents_download_all
   section: Документы
   method: POST
@@ -2687,6 +3089,7 @@ endpoints:
   safety: read
   summary: Получить документы
   doc: ''
+  pagination: none
 - operation_id: wb_post_api_keys_api_keys
   section: Ключи активации
   method: POST
@@ -2696,6 +3099,7 @@ endpoints:
   safety: write
   summary: Добавить ключи активации
   doc: ''
+  pagination: none
 - operation_id: wb_delete_api_keys_api_keys
   section: Ключи активации
   method: DELETE
@@ -2705,6 +3109,8 @@ endpoints:
   safety: destructive
   summary: Удалить ключи активации
   doc: ''
+  items_path: statuses
+  pagination: none
 - operation_id: wb_get_api_keys_api_keys_redeemed
   section: Ключи активации
   method: GET
@@ -2714,6 +3120,8 @@ endpoints:
   safety: read
   summary: Получить купленные ключи
   doc: ''
+  items_path: items
+  pagination: none
 - operation_id: wb_get_api_offer_keys_offer_id
   section: Ключи активации
   method: GET
@@ -2723,6 +3131,7 @@ endpoints:
   safety: read
   summary: Получить количество ключей для предложения
   doc: ''
+  pagination: none
 - operation_id: wb_get_api_offer_keys_offer_id_list
   section: Ключи активации
   method: GET
@@ -2732,6 +3141,8 @@ endpoints:
   safety: read
   summary: Получить список ключей
   doc: ''
+  items_path: items
+  pagination: none
 - operation_id: wb_post_api_offers
   section: Предложения
   method: POST
@@ -2741,6 +3152,8 @@ endpoints:
   safety: write
   summary: Создать новое предложение
   doc: ''
+  items_path: content
+  pagination: none
 - operation_id: wb_post_api_offers_thumb
   section: Предложения
   method: POST
@@ -2750,6 +3163,7 @@ endpoints:
   safety: write
   summary: Добавить или обновить обложку предложения
   doc: ''
+  pagination: none
 - operation_id: wb_post_api_offers_offer_id
   section: Предложения
   method: POST
@@ -2759,6 +3173,7 @@ endpoints:
   safety: write
   summary: Редактировать предложение
   doc: ''
+  pagination: none
 - operation_id: wb_get_api_offers_offer_id
   section: Предложения
   method: GET
@@ -2768,6 +3183,8 @@ endpoints:
   safety: read
   summary: Получить информацию о предложении
   doc: ''
+  items_path: content
+  pagination: none
 - operation_id: wb_get_api_offers_author
   section: Предложения
   method: GET
@@ -2777,6 +3194,8 @@ endpoints:
   safety: read
   summary: Получить список своих предложений
   doc: ''
+  items_path: items
+  pagination: none
 - operation_id: wb_post_api_offer_price_offer_id
   section: Предложения
   method: POST
@@ -2786,6 +3205,7 @@ endpoints:
   safety: write
   summary: Обновить цену
   doc: ''
+  pagination: none
 - operation_id: wb_post_api_offer_offer_id
   section: Предложения
   method: POST
@@ -2795,6 +3215,7 @@ endpoints:
   safety: write
   summary: Обновить статус
   doc: ''
+  pagination: none
 - operation_id: wb_get_api_catalog
   section: Предложения
   method: GET
@@ -2804,6 +3225,8 @@ endpoints:
   safety: read
   summary: Получить категории и их подкатегории
   doc: ''
+  items_path: items
+  pagination: none
 - operation_id: wb_post_api_content_illustration
   section: Контент
   method: POST
@@ -2813,6 +3236,8 @@ endpoints:
   safety: write
   summary: Загрузить обложку контента
   doc: ''
+  items_path: uris
+  pagination: none
 - operation_id: wb_post_api_content_upload_init
   section: Контент
   method: POST
@@ -2822,6 +3247,7 @@ endpoints:
   safety: write
   summary: Инициализировать новый контент
   doc: ''
+  pagination: none
 - operation_id: wb_post_api_content_upload_chunk
   section: Контент
   method: POST
@@ -2831,6 +3257,7 @@ endpoints:
   safety: write
   summary: Загрузить контент (файл)
   doc: ''
+  pagination: none
 - operation_id: wb_post_api_content_author_content_id
   section: Контент
   method: POST
@@ -2840,6 +3267,8 @@ endpoints:
   safety: write
   summary: Редактировать контент
   doc: ''
+  items_path: files
+  pagination: none
 - operation_id: wb_get_api_content_author_content_id
   section: Контент
   method: GET
@@ -2849,6 +3278,8 @@ endpoints:
   safety: read
   summary: Получить информацию о контенте
   doc: ''
+  items_path: files
+  pagination: none
 - operation_id: wb_get_api_content_author
   section: Контент
   method: GET
@@ -2858,6 +3289,8 @@ endpoints:
   safety: read
   summary: Получить список своего контента
   doc: ''
+  items_path: items
+  pagination: none
 - operation_id: wb_get_api_content_download_uri
   section: Контент
   method: GET
@@ -2867,6 +3300,7 @@ endpoints:
   safety: read
   summary: Скачать контент
   doc: ''
+  pagination: none
 - operation_id: wb_post_api_content_delete
   section: Контент
   method: POST
@@ -2876,6 +3310,7 @@ endpoints:
   safety: write
   summary: Удалить контент
   doc: ''
+  pagination: none
 - operation_id: wb_post_api_content_gallery
   section: Контент
   method: POST
@@ -2885,3 +3320,5 @@ endpoints:
   safety: write
   summary: Загрузить медиафайлы для предложения
   doc: ''
+  items_path: uris
+  pagination: none

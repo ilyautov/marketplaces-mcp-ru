@@ -42,6 +42,7 @@ endpoints:
   params:
     body: '{filter:{...}, limit, last_id}'
   doc: https://docs.ozon.ru/api/seller/
+  items_path: result
 - operation_id: ozon_product_import
   section: products
   method: POST
@@ -53,6 +54,7 @@ endpoints:
   params:
     body: '{items:[{offer_id, attributes, images, dimensions, type_id}]}'
   doc: https://docs.ozon.ru/api/seller/
+  pagination: none
 - operation_id: ozon_product_import_info
   section: products
   method: POST
@@ -64,6 +66,8 @@ endpoints:
   params:
     body: '{task_id}'
   doc: https://docs.ozon.ru/api/seller/
+  items_path: result.items
+  pagination: none
 - operation_id: ozon_product_pictures_import
   section: products
   method: POST
@@ -75,6 +79,7 @@ endpoints:
   params:
     body: '{product_id, images:[]}'
   doc: https://docs.ozon.ru/api/seller/
+  pagination: none
 - operation_id: ozon_product_archive
   section: products
   method: POST
@@ -86,6 +91,7 @@ endpoints:
   params:
     body: '{product_id:[]}'
   doc: https://docs.ozon.ru/api/seller/
+  pagination: none
 - operation_id: ozon_product_delete
   section: products
   method: POST
@@ -97,6 +103,8 @@ endpoints:
   params:
     body: '{products:[{offer_id}]}'
   doc: https://docs.ozon.ru/api/seller/
+  items_path: status
+  pagination: none
 - operation_id: ozon_product_rating
   section: products
   method: POST
@@ -124,6 +132,8 @@ endpoints:
   keywords:
   - категории
   - дерево категорий
+  items_path: result
+  pagination: none
 - operation_id: ozon_category_attributes
   section: categories
   method: POST
@@ -135,6 +145,8 @@ endpoints:
   params:
     body: '{description_category_id, type_id, language}'
   doc: https://docs.ozon.ru/api/seller/
+  items_path: result
+  pagination: none
 - operation_id: ozon_prices_get
   section: prices
   method: POST
@@ -169,6 +181,8 @@ endpoints:
   - цены
   - изменить цену
   - установить цену
+  items_path: result
+  pagination: none
 - operation_id: ozon_discount_update
   section: prices
   method: POST
@@ -180,6 +194,7 @@ endpoints:
   params:
     body: '{product_id, discount}'
   doc: https://docs.ozon.ru/api/seller/
+  pagination: none
 - operation_id: ozon_stocks_info
   section: stocks
   method: POST
@@ -214,6 +229,8 @@ endpoints:
   - остатки
   - обновить сток
   - склад фбс
+  items_path: result
+  pagination: none
 - operation_id: ozon_stocks_by_warehouse_fbs
   section: stocks
   method: POST
@@ -225,6 +242,7 @@ endpoints:
   params:
     body: '{sku:[]}'
   doc: https://docs.ozon.ru/api/seller/
+  pagination: none
 - operation_id: ozon_fbs_unfulfilled
   section: orders_fbs
   method: POST
@@ -270,6 +288,8 @@ endpoints:
   params:
     body: '{posting_number, with:{}}'
   doc: https://docs.ozon.ru/api/seller/
+  items_path: result.products
+  pagination: none
 - operation_id: ozon_fbs_ship
   section: orders_fbs
   method: POST
@@ -281,6 +301,7 @@ endpoints:
   params:
     body: '{posting_number, packages:[], with:{}}'
   doc: https://docs.ozon.ru/api/seller/
+  pagination: none
 - operation_id: ozon_fbs_package_label
   section: orders_fbs
   method: POST
@@ -292,6 +313,7 @@ endpoints:
   params:
     body: '{posting_number:[]}'
   doc: https://docs.ozon.ru/api/seller/
+  pagination: none
 - operation_id: ozon_fbs_cancel
   section: orders_fbs
   method: POST
@@ -303,6 +325,7 @@ endpoints:
   params:
     body: '{posting_number, cancel_reason_id, cancel_reason_message}'
   doc: https://docs.ozon.ru/api/seller/
+  pagination: none
 - operation_id: ozon_fbo_list
   section: orders_fbo
   method: POST
@@ -330,6 +353,8 @@ endpoints:
   params:
     body: '{posting_number, with:{}}'
   doc: https://docs.ozon.ru/api/seller/
+  items_path: result.products
+  pagination: none
 - operation_id: ozon_analytics_data
   section: analytics
   method: POST
@@ -408,6 +433,7 @@ endpoints:
   params:
     body: '{date:{from,to}, transaction_type}'
   doc: https://docs.ozon.ru/api/seller/
+  pagination: none
 - operation_id: ozon_finance_realization
   section: finance
   method: POST
@@ -434,6 +460,8 @@ endpoints:
   summary: Stock (auto-imported from go-client; UNVERIFIED — confirm body/params in
     docs).
   doc: https://docs.ozon.ru/api/seller/
+  items_path: items
+  pagination: offset
 - operation_id: ozon_get_product_queries
   section: analytics
   method: POST
@@ -444,6 +472,8 @@ endpoints:
   summary: GetProductQueries (auto-imported from go-client; UNVERIFIED — confirm body/params
     in docs).
   doc: https://docs.ozon.ru/api/seller/
+  items_path: items
+  pagination: page
 - operation_id: ozon_generate
   section: barcodes
   method: POST
@@ -454,6 +484,8 @@ endpoints:
   summary: Generate (auto-imported from go-client; UNVERIFIED — confirm body/params
     in docs).
   doc: https://docs.ozon.ru/api/seller/
+  items_path: errors
+  pagination: none
 - operation_id: ozon_bind
   section: barcodes
   method: POST
@@ -464,6 +496,8 @@ endpoints:
   summary: Bind (auto-imported from go-client; UNVERIFIED — confirm body/params in
     docs).
   doc: https://docs.ozon.ru/api/seller/
+  items_path: errors
+  pagination: none
 - operation_id: ozon_list
   section: brands
   method: POST
@@ -474,6 +508,8 @@ endpoints:
   summary: List (auto-imported from go-client; UNVERIFIED — confirm body/params in
     docs).
   doc: https://docs.ozon.ru/api/seller/
+  items_path: result.brand_certification
+  pagination: page
 - operation_id: ozon_get_info
   section: cancellations
   method: POST
@@ -524,6 +560,8 @@ endpoints:
   summary: AttributesDictionary (auto-imported from go-client; UNVERIFIED — confirm
     body/params in docs).
   doc: https://docs.ozon.ru/api/seller/
+  items_path: result
+  pagination: none
 - operation_id: ozon_search_attributes_dictionary
   section: categories
   method: POST
@@ -534,6 +572,8 @@ endpoints:
   summary: SearchAttributesDictionary (auto-imported from go-client; UNVERIFIED —
     confirm body/params in docs).
   doc: https://docs.ozon.ru/api/seller/
+  items_path: result
+  pagination: none
 - operation_id: ozon_list_of_accordance_types
   section: certificates
   method: GET
@@ -544,6 +584,8 @@ endpoints:
   summary: ListOfAccordanceTypes (auto-imported from go-client; UNVERIFIED — confirm
     body/params in docs).
   doc: https://docs.ozon.ru/api/seller/
+  items_path: result.base
+  pagination: none
 - operation_id: ozon_directory_of_document_types
   section: certificates
   method: GET
@@ -554,6 +596,8 @@ endpoints:
   summary: DirectoryOfDocumentTypes (auto-imported from go-client; UNVERIFIED — confirm
     body/params in docs).
   doc: https://docs.ozon.ru/api/seller/
+  items_path: result
+  pagination: none
 - operation_id: ozon_list_of_certified_categories
   section: certificates
   method: POST
@@ -564,6 +608,8 @@ endpoints:
   summary: ListOfCertifiedCategories (auto-imported from go-client; UNVERIFIED — confirm
     body/params in docs).
   doc: https://docs.ozon.ru/api/seller/
+  items_path: certification
+  pagination: page
 - operation_id: ozon_link_to_product
   section: certificates
   method: POST
@@ -574,6 +620,7 @@ endpoints:
   summary: LinkToProduct (auto-imported from go-client; UNVERIFIED — confirm body/params
     in docs).
   doc: https://docs.ozon.ru/api/seller/
+  pagination: none
 - operation_id: ozon_delete
   section: certificates
   method: POST
@@ -584,6 +631,7 @@ endpoints:
   summary: Delete (auto-imported from go-client; UNVERIFIED — confirm body/params
     in docs).
   doc: https://docs.ozon.ru/api/seller/
+  pagination: none
 - operation_id: ozon_get_info_2
   section: certificates
   method: POST
@@ -594,6 +642,7 @@ endpoints:
   summary: GetInfo (auto-imported from go-client; UNVERIFIED — confirm body/params
     in docs).
   doc: https://docs.ozon.ru/api/seller/
+  pagination: none
 - operation_id: ozon_list_3
   section: certificates
   method: POST
@@ -604,6 +653,8 @@ endpoints:
   summary: List (auto-imported from go-client; UNVERIFIED — confirm body/params in
     docs).
   doc: https://docs.ozon.ru/api/seller/
+  items_path: result.certificates
+  pagination: page
 - operation_id: ozon_list_products_for_certificate
   section: certificates
   method: POST
@@ -614,6 +665,8 @@ endpoints:
   summary: ListProductsForCertificate (auto-imported from go-client; UNVERIFIED —
     confirm body/params in docs).
   doc: https://docs.ozon.ru/api/seller/
+  items_path: result.items
+  pagination: page
 - operation_id: ozon_unlink_from_product
   section: certificates
   method: POST
@@ -624,6 +677,8 @@ endpoints:
   summary: UnlinkFromProduct (auto-imported from go-client; UNVERIFIED — confirm body/params
     in docs).
   doc: https://docs.ozon.ru/api/seller/
+  items_path: result
+  pagination: none
 - operation_id: ozon_possible_reject_reasons
   section: certificates
   method: POST
@@ -634,6 +689,8 @@ endpoints:
   summary: PossibleRejectReasons (auto-imported from go-client; UNVERIFIED — confirm
     body/params in docs).
   doc: https://docs.ozon.ru/api/seller/
+  items_path: result
+  pagination: none
 - operation_id: ozon_possible_statuses
   section: certificates
   method: POST
@@ -644,6 +701,8 @@ endpoints:
   summary: PossibleStatuses (auto-imported from go-client; UNVERIFIED — confirm body/params
     in docs).
   doc: https://docs.ozon.ru/api/seller/
+  items_path: result
+  pagination: none
 - operation_id: ozon_add_for_products
   section: certificates
   method: POST
@@ -654,6 +713,7 @@ endpoints:
   summary: AddForProducts (auto-imported from go-client; UNVERIFIED — confirm body/params
     in docs).
   doc: https://docs.ozon.ru/api/seller/
+  pagination: none
 - operation_id: ozon_list_4
   section: chats
   method: POST
@@ -664,6 +724,7 @@ endpoints:
   summary: List (auto-imported from go-client; UNVERIFIED — confirm body/params in
     docs).
   doc: https://docs.ozon.ru/api/seller/
+  pagination: offset
 - operation_id: ozon_send_message
   section: chats
   method: POST
@@ -674,6 +735,7 @@ endpoints:
   summary: SendMessage (auto-imported from go-client; UNVERIFIED — confirm body/params
     in docs).
   doc: https://docs.ozon.ru/api/seller/
+  pagination: none
 - operation_id: ozon_send_file
   section: chats
   method: POST
@@ -684,6 +746,7 @@ endpoints:
   summary: SendFile (auto-imported from go-client; UNVERIFIED — confirm body/params
     in docs).
   doc: https://docs.ozon.ru/api/seller/
+  pagination: none
 - operation_id: ozon_history
   section: chats
   method: POST
@@ -694,6 +757,8 @@ endpoints:
   summary: History (auto-imported from go-client; UNVERIFIED — confirm body/params
     in docs).
   doc: https://docs.ozon.ru/api/seller/
+  items_path: messages
+  pagination: none
 - operation_id: ozon_update
   section: chats
   method: POST
@@ -714,6 +779,7 @@ endpoints:
   summary: Create (auto-imported from go-client; UNVERIFIED — confirm body/params
     in docs).
   doc: https://docs.ozon.ru/api/seller/
+  pagination: none
 - operation_id: ozon_mark_as_read
   section: chats
   method: POST
@@ -724,6 +790,7 @@ endpoints:
   summary: MarkAsRead (auto-imported from go-client; UNVERIFIED — confirm body/params
     in docs).
   doc: https://docs.ozon.ru/api/seller/
+  pagination: none
 - operation_id: ozon_list_5
   section: clusters
   method: POST
@@ -734,6 +801,8 @@ endpoints:
   summary: List (auto-imported from go-client; UNVERIFIED — confirm body/params in
     docs).
   doc: https://docs.ozon.ru/api/seller/
+  items_path: clusters
+  pagination: none
 - operation_id: ozon_list_supply_requests
   section: fbo
   method: POST
@@ -764,6 +833,7 @@ endpoints:
   summary: GetWarehouseWorkload (auto-imported from go-client; UNVERIFIED — confirm
     body/params in docs).
   doc: https://docs.ozon.ru/api/seller/
+  pagination: none
 - operation_id: ozon_get_supply_orders_by_status
   section: fbo
   method: GET
@@ -794,6 +864,8 @@ endpoints:
   summary: UpdateSupplyTimeslot (auto-imported from go-client; UNVERIFIED — confirm
     body/params in docs).
   doc: https://docs.ozon.ru/api/seller/
+  items_path: errors
+  pagination: none
 - operation_id: ozon_get_supply_timeslot_status
   section: fbo
   method: GET
@@ -814,6 +886,8 @@ endpoints:
   summary: CreatePass (auto-imported from go-client; UNVERIFIED — confirm body/params
     in docs).
   doc: https://docs.ozon.ru/api/seller/
+  items_path: error_reasons
+  pagination: none
 - operation_id: ozon_get_pass
   section: fbo
   method: GET
@@ -844,6 +918,7 @@ endpoints:
   summary: CreateSupplyDraft (auto-imported from go-client; UNVERIFIED — confirm body/params
     in docs).
   doc: https://docs.ozon.ru/api/seller/
+  pagination: none
 - operation_id: ozon_get_supply_draft_info
   section: fbo
   method: POST
@@ -854,6 +929,8 @@ endpoints:
   summary: GetSupplyDraftInfo (auto-imported from go-client; UNVERIFIED — confirm
     body/params in docs).
   doc: https://docs.ozon.ru/api/seller/
+  items_path: clusters
+  pagination: none
 - operation_id: ozon_create_supply_from_draft
   section: fbo
   method: POST
@@ -864,6 +941,7 @@ endpoints:
   summary: CreateSupplyFromDraft (auto-imported from go-client; UNVERIFIED — confirm
     body/params in docs).
   doc: https://docs.ozon.ru/api/seller/
+  pagination: none
 - operation_id: ozon_get_draft_timeslots
   section: fbo
   method: GET
@@ -884,6 +962,7 @@ endpoints:
   summary: CancelSuppyOrder (auto-imported from go-client; UNVERIFIED — confirm body/params
     in docs).
   doc: https://docs.ozon.ru/api/seller/
+  pagination: none
 - operation_id: ozon_status_cancelled_supply_order
   section: fbo
   method: POST
@@ -894,6 +973,8 @@ endpoints:
   summary: StatusCancelledSupplyOrder (auto-imported from go-client; UNVERIFIED —
     confirm body/params in docs).
   doc: https://docs.ozon.ru/api/seller/
+  items_path: error_reasons
+  pagination: none
 - operation_id: ozon_validate_labeling_codes
   section: fbs
   method: POST
@@ -904,6 +985,8 @@ endpoints:
   summary: ValidateLabelingCodes (auto-imported from go-client; UNVERIFIED — confirm
     body/params in docs).
   doc: https://docs.ozon.ru/api/seller/
+  items_path: products
+  pagination: none
 - operation_id: ozon_get_shipment_data_by_barcode
   section: fbs
   method: POST
@@ -914,6 +997,8 @@ endpoints:
   summary: GetShipmentDataByBarcode (auto-imported from go-client; UNVERIFIED — confirm
     body/params in docs).
   doc: https://docs.ozon.ru/api/seller/
+  items_path: result.products
+  pagination: none
 - operation_id: ozon_add_tracking_numbers
   section: fbs
   method: POST
@@ -924,6 +1009,8 @@ endpoints:
   summary: AddTrackingNumbers (auto-imported from go-client; UNVERIFIED — confirm
     body/params in docs).
   doc: https://docs.ozon.ru/api/seller/
+  items_path: result
+  pagination: none
 - operation_id: ozon_list_of_shipment_certificates
   section: fbs
   method: POST
@@ -934,6 +1021,8 @@ endpoints:
   summary: ListOfShipmentCertificates (auto-imported from go-client; UNVERIFIED —
     confirm body/params in docs).
   doc: https://docs.ozon.ru/api/seller/
+  items_path: result
+  pagination: none
 - operation_id: ozon_change_status_to_delivering
   section: fbs
   method: POST
@@ -944,6 +1033,8 @@ endpoints:
   summary: ChangeStatusToDelivering (auto-imported from go-client; UNVERIFIED — confirm
     body/params in docs).
   doc: https://docs.ozon.ru/api/seller/
+  items_path: result
+  pagination: none
 - operation_id: ozon_change_status_to_last_mile
   section: fbs
   method: POST
@@ -954,6 +1045,8 @@ endpoints:
   summary: ChangeStatusToLastMile (auto-imported from go-client; UNVERIFIED — confirm
     body/params in docs).
   doc: https://docs.ozon.ru/api/seller/
+  items_path: result
+  pagination: none
 - operation_id: ozon_change_status_to_delivered
   section: fbs
   method: POST
@@ -964,6 +1057,8 @@ endpoints:
   summary: ChangeStatusToDelivered (auto-imported from go-client; UNVERIFIED — confirm
     body/params in docs).
   doc: https://docs.ozon.ru/api/seller/
+  items_path: result
+  pagination: none
 - operation_id: ozon_change_status_to_send_by_seller
   section: fbs
   method: POST
@@ -984,6 +1079,7 @@ endpoints:
   summary: PassShipmentToShipping (auto-imported from go-client; UNVERIFIED — confirm
     body/params in docs).
   doc: https://docs.ozon.ru/api/seller/
+  pagination: none
 - operation_id: ozon_create_act
   section: fbs
   method: POST
@@ -994,6 +1090,7 @@ endpoints:
   summary: CreateAct (auto-imported from go-client; UNVERIFIED — confirm body/params
     in docs).
   doc: https://docs.ozon.ru/api/seller/
+  pagination: none
 - operation_id: ozon_get_labeling
   section: fbs
   method: POST
@@ -1004,6 +1101,8 @@ endpoints:
   summary: GetLabeling (auto-imported from go-client; UNVERIFIED — confirm body/params
     in docs).
   doc: https://docs.ozon.ru/api/seller/
+  items_path: result.unprinted_postings
+  pagination: none
 - operation_id: ozon_create_task_for_generating_label
   section: fbs
   method: POST
@@ -1014,6 +1113,8 @@ endpoints:
   summary: CreateTaskForGeneratingLabel (auto-imported from go-client; UNVERIFIED
     — confirm body/params in docs).
   doc: https://docs.ozon.ru/api/seller/
+  items_path: result.tasks
+  pagination: none
 - operation_id: ozon_get_drop_off_point_restrictions
   section: fbs
   method: POST
@@ -1024,6 +1125,7 @@ endpoints:
   summary: GetDropOffPointRestrictions (auto-imported from go-client; UNVERIFIED —
     confirm body/params in docs).
   doc: https://docs.ozon.ru/api/seller/
+  pagination: none
 - operation_id: ozon_set_product_items_data
   section: fbs
   method: POST
@@ -1034,6 +1136,8 @@ endpoints:
   summary: SetProductItemsData (auto-imported from go-client; UNVERIFIED — confirm
     body/params in docs).
   doc: https://docs.ozon.ru/api/seller/
+  items_path: details
+  pagination: none
 - operation_id: ozon_get_product_items_check_statuses
   section: fbs
   method: POST
@@ -1044,6 +1148,8 @@ endpoints:
   summary: GetProductItemsCheckStatuses (auto-imported from go-client; UNVERIFIED
     — confirm body/params in docs).
   doc: https://docs.ozon.ru/api/seller/
+  items_path: products
+  pagination: none
 - operation_id: ozon_reschedule_shipment_delivery_date
   section: fbs
   method: POST
@@ -1054,6 +1160,7 @@ endpoints:
   summary: RescheduleShipmentDeliveryDate (auto-imported from go-client; UNVERIFIED
     — confirm body/params in docs).
   doc: https://docs.ozon.ru/api/seller/
+  pagination: none
 - operation_id: ozon_date_available_for_delivery_schedule
   section: fbs
   method: POST
@@ -1064,6 +1171,7 @@ endpoints:
   summary: DateAvailableForDeliverySchedule (auto-imported from go-client; UNVERIFIED
     — confirm body/params in docs).
   doc: https://docs.ozon.ru/api/seller/
+  pagination: none
 - operation_id: ozon_list_manufacturing_countries
   section: fbs
   method: POST
@@ -1074,6 +1182,8 @@ endpoints:
   summary: ListManufacturingCountries (auto-imported from go-client; UNVERIFIED —
     confirm body/params in docs).
   doc: https://docs.ozon.ru/api/seller/
+  items_path: result
+  pagination: none
 - operation_id: ozon_set_manufacturing_country
   section: fbs
   method: POST
@@ -1084,6 +1194,7 @@ endpoints:
   summary: SetManufacturingCountry (auto-imported from go-client; UNVERIFIED — confirm
     body/params in docs).
   doc: https://docs.ozon.ru/api/seller/
+  pagination: none
 - operation_id: ozon_partial_pack_order
   section: fbs
   method: POST
@@ -1094,6 +1205,7 @@ endpoints:
   summary: PartialPackOrder (auto-imported from go-client; UNVERIFIED — confirm body/params
     in docs).
   doc: https://docs.ozon.ru/api/seller/
+  pagination: none
 - operation_id: ozon_available_freights_list
   section: fbs
   method: POST
@@ -1104,6 +1216,7 @@ endpoints:
   summary: AvailableFreightsList (auto-imported from go-client; UNVERIFIED — confirm
     body/params in docs).
   doc: https://docs.ozon.ru/api/seller/
+  pagination: none
 - operation_id: ozon_generate_act
   section: fbs
   method: POST
@@ -1114,6 +1227,7 @@ endpoints:
   summary: GenerateAct (auto-imported from go-client; UNVERIFIED — confirm body/params
     in docs).
   doc: https://docs.ozon.ru/api/seller/
+  pagination: none
 - operation_id: ozon_get_digital_act
   section: fbs
   method: POST
@@ -1124,6 +1238,7 @@ endpoints:
   summary: GetDigitalAct (auto-imported from go-client; UNVERIFIED — confirm body/params
     in docs).
   doc: https://docs.ozon.ru/api/seller/
+  pagination: none
 - operation_id: ozon_package_unit_label
   section: fbs
   method: POST
@@ -1134,6 +1249,7 @@ endpoints:
   summary: PackageUnitLabel (auto-imported from go-client; UNVERIFIED — confirm body/params
     in docs).
   doc: https://docs.ozon.ru/api/seller/
+  pagination: none
 - operation_id: ozon_open_dispute_over_shipment
   section: fbs
   method: POST
@@ -1144,6 +1260,7 @@ endpoints:
   summary: OpenDisputeOverShipment (auto-imported from go-client; UNVERIFIED — confirm
     body/params in docs).
   doc: https://docs.ozon.ru/api/seller/
+  pagination: none
 - operation_id: ozon_shipment_cancellation_reasons
   section: fbs
   method: POST
@@ -1154,6 +1271,8 @@ endpoints:
   summary: ShipmentCancellationReasons (auto-imported from go-client; UNVERIFIED —
     confirm body/params in docs).
   doc: https://docs.ozon.ru/api/seller/
+  items_path: result
+  pagination: none
 - operation_id: ozon_shipments_cancellation_reasons
   section: fbs
   method: POST
@@ -1164,6 +1283,8 @@ endpoints:
   summary: ShipmentsCancellationReasons (auto-imported from go-client; UNVERIFIED
     — confirm body/params in docs).
   doc: https://docs.ozon.ru/api/seller/
+  items_path: result
+  pagination: none
 - operation_id: ozon_add_weight_for_bulk_product
   section: fbs
   method: POST
@@ -1184,6 +1305,7 @@ endpoints:
   summary: CancelSending (auto-imported from go-client; UNVERIFIED — confirm body/params
     in docs).
   doc: https://docs.ozon.ru/api/seller/
+  pagination: none
 - operation_id: ozon_list_shipment_in_certificate
   section: fbs
   method: POST
@@ -1194,6 +1316,8 @@ endpoints:
   summary: ListShipmentInCertificate (auto-imported from go-client; UNVERIFIED — confirm
     body/params in docs).
   doc: https://docs.ozon.ru/api/seller/
+  items_path: result
+  pagination: none
 - operation_id: ozon_specify_number_of_boxes
   section: fbs
   method: POST
@@ -1204,6 +1328,7 @@ endpoints:
   summary: SpecifyNumberOfBoxes (auto-imported from go-client; UNVERIFIED — confirm
     body/params in docs).
   doc: https://docs.ozon.ru/api/seller/
+  pagination: none
 - operation_id: ozon_status_of_act
   section: fbs
   method: POST
@@ -1214,6 +1339,8 @@ endpoints:
   summary: StatusOfAct (auto-imported from go-client; UNVERIFIED — confirm body/params
     in docs).
   doc: https://docs.ozon.ru/api/seller/
+  items_path: result.added_to_act
+  pagination: none
 - operation_id: ozon_e_t_g_b_customs_declarations
   section: fbs
   method: POST
@@ -1224,6 +1351,8 @@ endpoints:
   summary: ETGBCustomsDeclarations (auto-imported from go-client; UNVERIFIED — confirm
     body/params in docs).
   doc: https://docs.ozon.ru/api/seller/
+  items_path: result
+  pagination: none
 - operation_id: ozon_barcode_from_product_shipment
   section: fbs
   method: POST
@@ -1234,6 +1363,7 @@ endpoints:
   summary: BarcodeFromProductShipment (auto-imported from go-client; UNVERIFIED —
     confirm body/params in docs).
   doc: https://docs.ozon.ru/api/seller/
+  pagination: none
 - operation_id: ozon_barcode_value_from_product_shipment
   section: fbs
   method: POST
@@ -1244,6 +1374,7 @@ endpoints:
   summary: BarcodeValueFromProductShipment (auto-imported from go-client; UNVERIFIED
     — confirm body/params in docs).
   doc: https://docs.ozon.ru/api/seller/
+  pagination: none
 - operation_id: ozon_get_act_p_d_f
   section: fbs
   method: POST
@@ -1254,6 +1385,7 @@ endpoints:
   summary: GetActPDF (auto-imported from go-client; UNVERIFIED — confirm body/params
     in docs).
   doc: https://docs.ozon.ru/api/seller/
+  pagination: none
 - operation_id: ozon_create_or_get_product_exemplar
   section: fbs
   method: POST
@@ -1264,6 +1396,8 @@ endpoints:
   summary: CreateOrGetProductExemplar (auto-imported from go-client; UNVERIFIED —
     confirm body/params in docs).
   doc: https://docs.ozon.ru/api/seller/
+  items_path: products
+  pagination: none
 - operation_id: ozon_get_carriage
   section: fbs
   method: POST
@@ -1274,6 +1408,8 @@ endpoints:
   summary: GetCarriage (auto-imported from go-client; UNVERIFIED — confirm body/params
     in docs).
   doc: https://docs.ozon.ru/api/seller/
+  items_path: arrival_pass_ids
+  pagination: none
 - operation_id: ozon_get_cancellation_reasons
   section: fbs
   method: POST
@@ -1284,6 +1420,8 @@ endpoints:
   summary: GetCancellationReasons (auto-imported from go-client; UNVERIFIED — confirm
     body/params in docs).
   doc: https://docs.ozon.ru/api/seller/
+  items_path: reasons
+  pagination: none
 - operation_id: ozon_set_shipping_date
   section: fbs
   method: POST
@@ -1294,6 +1432,7 @@ endpoints:
   summary: SetShippingDate (auto-imported from go-client; UNVERIFIED — confirm body/params
     in docs).
   doc: https://docs.ozon.ru/api/seller/
+  pagination: none
 - operation_id: ozon_split_order
   section: fbs
   method: POST
@@ -1304,6 +1443,8 @@ endpoints:
   summary: SplitOrder (auto-imported from go-client; UNVERIFIED — confirm body/params
     in docs).
   doc: https://docs.ozon.ru/api/seller/
+  items_path: postings
+  pagination: none
 - operation_id: ozon_list_unpaid_products
   section: fbs
   method: POST
@@ -1314,6 +1455,8 @@ endpoints:
   summary: ListUnpaidProducts (auto-imported from go-client; UNVERIFIED — confirm
     body/params in docs).
   doc: https://docs.ozon.ru/api/seller/
+  items_path: products
+  pagination: cursor
 - operation_id: ozon_change_shipment_composition
   section: fbs
   method: POST
@@ -1324,6 +1467,7 @@ endpoints:
   summary: ChangeShipmentComposition (auto-imported from go-client; UNVERIFIED — confirm
     body/params in docs).
   doc: https://docs.ozon.ru/api/seller/
+  pagination: none
 - operation_id: ozon_delete_shipment
   section: fbs
   method: POST
@@ -1334,6 +1478,7 @@ endpoints:
   summary: DeleteShipment (auto-imported from go-client; UNVERIFIED — confirm body/params
     in docs).
   doc: https://docs.ozon.ru/api/seller/
+  pagination: none
 - operation_id: ozon_verify_courier_code
   section: fbs
   method: POST
@@ -1344,6 +1489,7 @@ endpoints:
   summary: VerifyCourierCode (auto-imported from go-client; UNVERIFIED — confirm body/params
     in docs).
   doc: https://docs.ozon.ru/api/seller/
+  pagination: none
 - operation_id: ozon_update_products_data
   section: fbs
   method: POST
@@ -1354,6 +1500,8 @@ endpoints:
   summary: UpdateProductsData (auto-imported from go-client; UNVERIFIED — confirm
     body/params in docs).
   doc: https://docs.ozon.ru/api/seller/
+  items_path: details
+  pagination: none
 - operation_id: ozon_mutual_settlements
   section: finance
   method: POST
@@ -1364,6 +1512,7 @@ endpoints:
   summary: MutualSettlements (auto-imported from go-client; UNVERIFIED — confirm body/params
     in docs).
   doc: https://docs.ozon.ru/api/seller/
+  pagination: none
 - operation_id: ozon_create_update
   section: invoices
   method: POST
@@ -1374,6 +1523,7 @@ endpoints:
   summary: CreateUpdate (auto-imported from go-client; UNVERIFIED — confirm body/params
     in docs).
   doc: https://docs.ozon.ru/api/seller/
+  pagination: none
 - operation_id: ozon_get
   section: invoices
   method: POST
@@ -1384,6 +1534,8 @@ endpoints:
   summary: Get (auto-imported from go-client; UNVERIFIED — confirm body/params in
     docs).
   doc: https://docs.ozon.ru/api/seller/
+  items_path: result.hs_codes
+  pagination: none
 - operation_id: ozon_delete_2
   section: invoices
   method: POST
@@ -1394,6 +1546,7 @@ endpoints:
   summary: Delete (auto-imported from go-client; UNVERIFIED — confirm body/params
     in docs).
   doc: https://docs.ozon.ru/api/seller/
+  pagination: none
 - operation_id: ozon_upload
   section: invoices
   method: POST
@@ -1404,6 +1557,7 @@ endpoints:
   summary: Upload (auto-imported from go-client; UNVERIFIED — confirm body/params
     in docs).
   doc: https://docs.ozon.ru/api/seller/
+  pagination: none
 - operation_id: ozon_list_6
   section: pass
   method: POST
@@ -1414,6 +1568,8 @@ endpoints:
   summary: List (auto-imported from go-client; UNVERIFIED — confirm body/params in
     docs).
   doc: https://docs.ozon.ru/api/seller/
+  items_path: arrival_passes
+  pagination: cursor
 - operation_id: ozon_create_carriage
   section: pass
   method: POST
@@ -1424,6 +1580,8 @@ endpoints:
   summary: CreateCarriage (auto-imported from go-client; UNVERIFIED — confirm body/params
     in docs).
   doc: https://docs.ozon.ru/api/seller/
+  items_path: arrival_pass_ids
+  pagination: none
 - operation_id: ozon_update_carriage
   section: pass
   method: POST
@@ -1434,6 +1592,7 @@ endpoints:
   summary: UpdateCarriage (auto-imported from go-client; UNVERIFIED — confirm body/params
     in docs).
   doc: https://docs.ozon.ru/api/seller/
+  pagination: none
 - operation_id: ozon_delete_carriage
   section: pass
   method: POST
@@ -1444,6 +1603,7 @@ endpoints:
   summary: DeleteCarriage (auto-imported from go-client; UNVERIFIED — confirm body/params
     in docs).
   doc: https://docs.ozon.ru/api/seller/
+  pagination: none
 - operation_id: ozon_create_return
   section: pass
   method: POST
@@ -1454,6 +1614,8 @@ endpoints:
   summary: CreateReturn (auto-imported from go-client; UNVERIFIED — confirm body/params
     in docs).
   doc: https://docs.ozon.ru/api/seller/
+  items_path: arrival_pass_ids
+  pagination: none
 - operation_id: ozon_update_return
   section: pass
   method: POST
@@ -1464,6 +1626,7 @@ endpoints:
   summary: UpdateReturn (auto-imported from go-client; UNVERIFIED — confirm body/params
     in docs).
   doc: https://docs.ozon.ru/api/seller/
+  pagination: none
 - operation_id: ozon_delete_return
   section: pass
   method: POST
@@ -1474,6 +1637,7 @@ endpoints:
   summary: DeleteReturn (auto-imported from go-client; UNVERIFIED — confirm body/params
     in docs).
   doc: https://docs.ozon.ru/api/seller/
+  pagination: none
 - operation_id: ozon_create_delivery
   section: polygons
   method: POST
@@ -1484,6 +1648,7 @@ endpoints:
   summary: CreateDelivery (auto-imported from go-client; UNVERIFIED — confirm body/params
     in docs).
   doc: https://docs.ozon.ru/api/seller/
+  pagination: none
 - operation_id: ozon_link
   section: polygons
   method: POST
@@ -1494,6 +1659,7 @@ endpoints:
   summary: Link (auto-imported from go-client; UNVERIFIED — confirm body/params in
     docs).
   doc: https://docs.ozon.ru/api/seller/
+  pagination: none
 - operation_id: ozon_update_stocks
   section: products
   method: POST
@@ -1514,6 +1680,8 @@ endpoints:
   summary: CreateProductByOzonID (auto-imported from go-client; UNVERIFIED — confirm
     body/params in docs).
   doc: https://docs.ozon.ru/api/seller/
+  items_path: result.unmatched_sku_list
+  pagination: none
 - operation_id: ozon_check_image_uploading_status
   section: products
   method: POST
@@ -1524,6 +1692,8 @@ endpoints:
   summary: CheckImageUploadingStatus (auto-imported from go-client; UNVERIFIED — confirm
     body/params in docs).
   doc: https://docs.ozon.ru/api/seller/
+  items_path: items
+  pagination: none
 - operation_id: ozon_get_product_description
   section: products
   method: POST
@@ -1534,6 +1704,7 @@ endpoints:
   summary: GetProductDescription (auto-imported from go-client; UNVERIFIED — confirm
     body/params in docs).
   doc: https://docs.ozon.ru/api/seller/
+  pagination: none
 - operation_id: ozon_get_product_range_limit
   section: products
   method: POST
@@ -1544,6 +1715,7 @@ endpoints:
   summary: GetProductRangeLimit (auto-imported from go-client; UNVERIFIED — confirm
     body/params in docs).
   doc: https://docs.ozon.ru/api/seller/
+  pagination: none
 - operation_id: ozon_change_product_i_ds
   section: products
   method: POST
@@ -1554,6 +1726,7 @@ endpoints:
   summary: ChangeProductIDs (auto-imported from go-client; UNVERIFIED — confirm body/params
     in docs).
   doc: https://docs.ozon.ru/api/seller/
+  pagination: none
 - operation_id: ozon_unarchive_product
   section: products
   method: POST
@@ -1564,6 +1737,7 @@ endpoints:
   summary: UnarchiveProduct (auto-imported from go-client; UNVERIFIED — confirm body/params
     in docs).
   doc: https://docs.ozon.ru/api/seller/
+  pagination: none
 - operation_id: ozon_upload_activation_codes
   section: products
   method: POST
@@ -1594,6 +1768,7 @@ endpoints:
   summary: GetMarkdownInfo (auto-imported from go-client; UNVERIFIED — confirm body/params
     in docs).
   doc: https://docs.ozon.ru/api/seller/
+  pagination: none
 - operation_id: ozon_number_of_subs_to_product_availability
   section: products
   method: POST
@@ -1604,6 +1779,8 @@ endpoints:
   summary: NumberOfSubsToProductAvailability (auto-imported from go-client; UNVERIFIED
     — confirm body/params in docs).
   doc: https://docs.ozon.ru/api/seller/
+  items_path: result
+  pagination: none
 - operation_id: ozon_update_characteristics
   section: products
   method: POST
@@ -1614,6 +1791,7 @@ endpoints:
   summary: UpdateCharacteristics (auto-imported from go-client; UNVERIFIED — confirm
     body/params in docs).
   doc: https://docs.ozon.ru/api/seller/
+  pagination: none
 - operation_id: ozon_get_related_s_k_us
   section: products
   method: POST
@@ -1624,6 +1802,7 @@ endpoints:
   summary: GetRelatedSKUs (auto-imported from go-client; UNVERIFIED — confirm body/params
     in docs).
   doc: https://docs.ozon.ru/api/seller/
+  pagination: none
 - operation_id: ozon_economy_info
   section: products
   method: POST
@@ -1634,6 +1813,8 @@ endpoints:
   summary: EconomyInfo (auto-imported from go-client; UNVERIFIED — confirm body/params
     in docs).
   doc: https://docs.ozon.ru/api/seller/
+  items_path: items
+  pagination: none
 - operation_id: ozon_list_economy
   section: products
   method: POST
@@ -1644,6 +1825,7 @@ endpoints:
   summary: ListEconomy (auto-imported from go-client; UNVERIFIED — confirm body/params
     in docs).
   doc: https://docs.ozon.ru/api/seller/
+  pagination: cursor
 - operation_id: ozon_update_price_relevance_timer
   section: products
   method: POST
@@ -1654,6 +1836,8 @@ endpoints:
   summary: UpdatePriceRelevanceTimer (auto-imported from go-client; UNVERIFIED — confirm
     body/params in docs).
   doc: https://docs.ozon.ru/api/seller/
+  items_path: details
+  pagination: none
 - operation_id: ozon_get_available_promotions
   section: promotions
   method: GET
@@ -1664,6 +1848,8 @@ endpoints:
   summary: GetAvailablePromotions (auto-imported from go-client; UNVERIFIED — confirm
     body/params in docs).
   doc: https://docs.ozon.ru/api/seller/
+  items_path: result
+  pagination: none
 - operation_id: ozon_add_to_promotion
   section: promotions
   method: POST
@@ -1674,6 +1860,8 @@ endpoints:
   summary: AddToPromotion (auto-imported from go-client; UNVERIFIED — confirm body/params
     in docs).
   doc: https://docs.ozon.ru/api/seller/
+  items_path: result.product_ids
+  pagination: none
 - operation_id: ozon_products_available_for_promotion
   section: promotions
   method: POST
@@ -1684,6 +1872,8 @@ endpoints:
   summary: ProductsAvailableForPromotion (auto-imported from go-client; UNVERIFIED
     — confirm body/params in docs).
   doc: https://docs.ozon.ru/api/seller/
+  items_path: result.products
+  pagination: last_id
 - operation_id: ozon_products_in_promotion
   section: promotions
   method: POST
@@ -1694,6 +1884,8 @@ endpoints:
   summary: ProductsInPromotion (auto-imported from go-client; UNVERIFIED — confirm
     body/params in docs).
   doc: https://docs.ozon.ru/api/seller/
+  items_path: result.products
+  pagination: last_id
 - operation_id: ozon_remove_product
   section: promotions
   method: POST
@@ -1704,6 +1896,8 @@ endpoints:
   summary: RemoveProduct (auto-imported from go-client; UNVERIFIED — confirm body/params
     in docs).
   doc: https://docs.ozon.ru/api/seller/
+  items_path: result.product_ids
+  pagination: none
 - operation_id: ozon_list_discount_requests
   section: promotions
   method: POST
@@ -1714,6 +1908,8 @@ endpoints:
   summary: ListDiscountRequests (auto-imported from go-client; UNVERIFIED — confirm
     body/params in docs).
   doc: https://docs.ozon.ru/api/seller/
+  items_path: result
+  pagination: page
 - operation_id: ozon_approve_discount_request
   section: promotions
   method: POST
@@ -1724,6 +1920,8 @@ endpoints:
   summary: ApproveDiscountRequest (auto-imported from go-client; UNVERIFIED — confirm
     body/params in docs).
   doc: https://docs.ozon.ru/api/seller/
+  items_path: result.fail_details
+  pagination: none
 - operation_id: ozon_decline_discount_request
   section: promotions
   method: POST
@@ -1734,6 +1932,8 @@ endpoints:
   summary: DeclineDiscountRequest (auto-imported from go-client; UNVERIFIED — confirm
     body/params in docs).
   doc: https://docs.ozon.ru/api/seller/
+  items_path: result.fail_details
+  pagination: none
 - operation_id: ozon_list_7
   section: quants
   method: POST
@@ -1774,6 +1974,7 @@ endpoints:
   summary: GetCurrentSellerRatingInfo (auto-imported from go-client; UNVERIFIED —
     confirm body/params in docs).
   doc: https://docs.ozon.ru/api/seller/
+  pagination: none
 - operation_id: ozon_get_seller_rating_info_for_period
   section: rating
   method: POST
@@ -1784,6 +1985,7 @@ endpoints:
   summary: GetSellerRatingInfoForPeriod (auto-imported from go-client; UNVERIFIED
     — confirm body/params in docs).
   doc: https://docs.ozon.ru/api/seller/
+  pagination: none
 - operation_id: ozon_get_list
   section: reports
   method: POST
@@ -1794,6 +1996,8 @@ endpoints:
   summary: GetList (auto-imported from go-client; UNVERIFIED — confirm body/params
     in docs).
   doc: https://docs.ozon.ru/api/seller/
+  items_path: result.reports
+  pagination: page
 - operation_id: ozon_get_report_details
   section: reports
   method: POST
@@ -1804,6 +2008,7 @@ endpoints:
   summary: GetReportDetails (auto-imported from go-client; UNVERIFIED — confirm body/params
     in docs).
   doc: https://docs.ozon.ru/api/seller/
+  pagination: none
 - operation_id: ozon_get_financial
   section: reports
   method: POST
@@ -1814,6 +2019,8 @@ endpoints:
   summary: GetFinancial (auto-imported from go-client; UNVERIFIED — confirm body/params
     in docs).
   doc: https://docs.ozon.ru/api/seller/
+  items_path: result.details.others.items
+  pagination: page
 - operation_id: ozon_get_products
   section: reports
   method: POST
@@ -1824,6 +2031,7 @@ endpoints:
   summary: GetProducts (auto-imported from go-client; UNVERIFIED — confirm body/params
     in docs).
   doc: https://docs.ozon.ru/api/seller/
+  pagination: none
 - operation_id: ozon_get_returns
   section: reports
   method: POST
@@ -1834,6 +2042,7 @@ endpoints:
   summary: GetReturns (auto-imported from go-client; UNVERIFIED — confirm body/params
     in docs).
   doc: https://docs.ozon.ru/api/seller/
+  pagination: none
 - operation_id: ozon_get_shipment
   section: reports
   method: POST
@@ -1844,6 +2053,7 @@ endpoints:
   summary: GetShipment (auto-imported from go-client; UNVERIFIED — confirm body/params
     in docs).
   doc: https://docs.ozon.ru/api/seller/
+  pagination: none
 - operation_id: ozon_issue_on_discounted_products
   section: reports
   method: POST
@@ -1854,6 +2064,7 @@ endpoints:
   summary: IssueOnDiscountedProducts (auto-imported from go-client; UNVERIFIED — confirm
     body/params in docs).
   doc: https://docs.ozon.ru/api/seller/
+  pagination: none
 - operation_id: ozon_get_f_b_s_stocks
   section: reports
   method: POST
@@ -1864,6 +2075,7 @@ endpoints:
   summary: GetFBSStocks (auto-imported from go-client; UNVERIFIED — confirm body/params
     in docs).
   doc: https://docs.ozon.ru/api/seller/
+  pagination: none
 - operation_id: ozon_get_r_f_b_s_returns
   section: returns
   method: POST
@@ -1874,6 +2086,7 @@ endpoints:
   summary: GetRFBSReturns (auto-imported from go-client; UNVERIFIED — confirm body/params
     in docs).
   doc: https://docs.ozon.ru/api/seller/
+  pagination: last_id
 - operation_id: ozon_get_r_f_b_s_return
   section: returns
   method: POST
@@ -1884,6 +2097,8 @@ endpoints:
   summary: GetRFBSReturn (auto-imported from go-client; UNVERIFIED — confirm body/params
     in docs).
   doc: https://docs.ozon.ru/api/seller/
+  items_path: returns.available_actions
+  pagination: none
 - operation_id: ozon_reject_r_f_b_s_return
   section: returns
   method: POST
@@ -1894,6 +2109,7 @@ endpoints:
   summary: RejectRFBSReturn (auto-imported from go-client; UNVERIFIED — confirm body/params
     in docs).
   doc: https://docs.ozon.ru/api/seller/
+  pagination: none
 - operation_id: ozon_compensate_r_f_b_s_return
   section: returns
   method: POST
@@ -1904,6 +2120,7 @@ endpoints:
   summary: CompensateRFBSReturn (auto-imported from go-client; UNVERIFIED — confirm
     body/params in docs).
   doc: https://docs.ozon.ru/api/seller/
+  pagination: none
 - operation_id: ozon_approve_r_f_b_s_return
   section: returns
   method: POST
@@ -1914,6 +2131,7 @@ endpoints:
   summary: ApproveRFBSReturn (auto-imported from go-client; UNVERIFIED — confirm body/params
     in docs).
   doc: https://docs.ozon.ru/api/seller/
+  pagination: none
 - operation_id: ozon_receive_r_f_b_s_return
   section: returns
   method: POST
@@ -1924,6 +2142,7 @@ endpoints:
   summary: ReceiveRFBSReturn (auto-imported from go-client; UNVERIFIED — confirm body/params
     in docs).
   doc: https://docs.ozon.ru/api/seller/
+  pagination: none
 - operation_id: ozon_refund_r_f_b_s
   section: returns
   method: POST
@@ -1934,6 +2153,7 @@ endpoints:
   summary: RefundRFBS (auto-imported from go-client; UNVERIFIED — confirm body/params
     in docs).
   doc: https://docs.ozon.ru/api/seller/
+  pagination: none
 - operation_id: ozon_is_giveout_enabled
   section: returns
   method: POST
@@ -1944,6 +2164,7 @@ endpoints:
   summary: IsGiveoutEnabled (auto-imported from go-client; UNVERIFIED — confirm body/params
     in docs).
   doc: https://docs.ozon.ru/api/seller/
+  pagination: none
 - operation_id: ozon_get_giveout_p_d_f
   section: returns
   method: POST
@@ -1954,6 +2175,8 @@ endpoints:
   summary: GetGiveoutPDF (auto-imported from go-client; UNVERIFIED — confirm body/params
     in docs).
   doc: https://docs.ozon.ru/api/seller/
+  items_path: details
+  pagination: none
 - operation_id: ozon_get_giveout_p_n_g
   section: returns
   method: POST
@@ -1964,6 +2187,8 @@ endpoints:
   summary: GetGiveoutPNG (auto-imported from go-client; UNVERIFIED — confirm body/params
     in docs).
   doc: https://docs.ozon.ru/api/seller/
+  items_path: details
+  pagination: none
 - operation_id: ozon_get_giveout_barcode
   section: returns
   method: POST
@@ -1974,6 +2199,7 @@ endpoints:
   summary: GetGiveoutBarcode (auto-imported from go-client; UNVERIFIED — confirm body/params
     in docs).
   doc: https://docs.ozon.ru/api/seller/
+  pagination: none
 - operation_id: ozon_reset_giveout_barcode
   section: returns
   method: POST
@@ -1984,6 +2210,8 @@ endpoints:
   summary: ResetGiveoutBarcode (auto-imported from go-client; UNVERIFIED — confirm
     body/params in docs).
   doc: https://docs.ozon.ru/api/seller/
+  items_path: details
+  pagination: none
 - operation_id: ozon_get_giveout_list
   section: returns
   method: POST
@@ -1994,6 +2222,8 @@ endpoints:
   summary: GetGiveoutList (auto-imported from go-client; UNVERIFIED — confirm body/params
     in docs).
   doc: https://docs.ozon.ru/api/seller/
+  items_path: giveouts
+  pagination: last_id
 - operation_id: ozon_get_giveout_info
   section: returns
   method: POST
@@ -2004,6 +2234,8 @@ endpoints:
   summary: GetGiveoutInfo (auto-imported from go-client; UNVERIFIED — confirm body/params
     in docs).
   doc: https://docs.ozon.ru/api/seller/
+  items_path: articles
+  pagination: none
 - operation_id: ozon_f_b_s_quantity
   section: returns
   method: POST
@@ -2014,6 +2246,8 @@ endpoints:
   summary: FBSQuantity (auto-imported from go-client; UNVERIFIED — confirm body/params
     in docs).
   doc: https://docs.ozon.ru/api/seller/
+  items_path: drop_off_points
+  pagination: last_id
 - operation_id: ozon_list_8
   section: returns
   method: POST
@@ -2024,6 +2258,8 @@ endpoints:
   summary: List (auto-imported from go-client; UNVERIFIED — confirm body/params in
     docs).
   doc: https://docs.ozon.ru/api/seller/
+  items_path: returns
+  pagination: last_id
 - operation_id: ozon_leave_comment
   section: reviews
   method: POST
@@ -2034,6 +2270,7 @@ endpoints:
   summary: LeaveComment (auto-imported from go-client; UNVERIFIED — confirm body/params
     in docs).
   doc: https://docs.ozon.ru/api/seller/
+  pagination: none
 - operation_id: ozon_delete_comment
   section: reviews
   method: POST
@@ -2044,6 +2281,7 @@ endpoints:
   summary: DeleteComment (auto-imported from go-client; UNVERIFIED — confirm body/params
     in docs).
   doc: https://docs.ozon.ru/api/seller/
+  pagination: none
 - operation_id: ozon_list_comments
   section: reviews
   method: POST
@@ -2054,6 +2292,8 @@ endpoints:
   summary: ListComments (auto-imported from go-client; UNVERIFIED — confirm body/params
     in docs).
   doc: https://docs.ozon.ru/api/seller/
+  items_path: comments
+  pagination: offset
 - operation_id: ozon_change_status
   section: reviews
   method: POST
@@ -2064,6 +2304,7 @@ endpoints:
   summary: ChangeStatus (auto-imported from go-client; UNVERIFIED — confirm body/params
     in docs).
   doc: https://docs.ozon.ru/api/seller/
+  pagination: none
 - operation_id: ozon_count
   section: reviews
   method: POST
@@ -2074,6 +2315,7 @@ endpoints:
   summary: Count (auto-imported from go-client; UNVERIFIED — confirm body/params in
     docs).
   doc: https://docs.ozon.ru/api/seller/
+  pagination: none
 - operation_id: ozon_get_3
   section: reviews
   method: POST
@@ -2084,6 +2326,8 @@ endpoints:
   summary: Get (auto-imported from go-client; UNVERIFIED — confirm body/params in
     docs).
   doc: https://docs.ozon.ru/api/seller/
+  items_path: photos
+  pagination: none
 - operation_id: ozon_list_9
   section: reviews
   method: POST
@@ -2094,6 +2338,8 @@ endpoints:
   summary: List (auto-imported from go-client; UNVERIFIED — confirm body/params in
     docs).
   doc: https://docs.ozon.ru/api/seller/
+  items_path: reviews
+  pagination: last_id
 - operation_id: ozon_list_competitors
   section: strategies
   method: POST
@@ -2104,6 +2350,8 @@ endpoints:
   summary: ListCompetitors (auto-imported from go-client; UNVERIFIED — confirm body/params
     in docs).
   doc: https://docs.ozon.ru/api/seller/
+  items_path: competitor
+  pagination: page
 - operation_id: ozon_list_10
   section: strategies
   method: POST
@@ -2114,6 +2362,8 @@ endpoints:
   summary: List (auto-imported from go-client; UNVERIFIED — confirm body/params in
     docs).
   doc: https://docs.ozon.ru/api/seller/
+  items_path: strategies
+  pagination: page
 - operation_id: ozon_create_2
   section: strategies
   method: POST
@@ -2124,6 +2374,7 @@ endpoints:
   summary: Create (auto-imported from go-client; UNVERIFIED — confirm body/params
     in docs).
   doc: https://docs.ozon.ru/api/seller/
+  pagination: none
 - operation_id: ozon_info
   section: strategies
   method: POST
@@ -2134,6 +2385,8 @@ endpoints:
   summary: Info (auto-imported from go-client; UNVERIFIED — confirm body/params in
     docs).
   doc: https://docs.ozon.ru/api/seller/
+  items_path: result.competitors
+  pagination: none
 - operation_id: ozon_update_2
   section: strategies
   method: POST
@@ -2144,6 +2397,7 @@ endpoints:
   summary: Update (auto-imported from go-client; UNVERIFIED — confirm body/params
     in docs).
   doc: https://docs.ozon.ru/api/seller/
+  pagination: none
 - operation_id: ozon_add_products
   section: strategies
   method: POST
@@ -2154,6 +2408,8 @@ endpoints:
   summary: AddProducts (auto-imported from go-client; UNVERIFIED — confirm body/params
     in docs).
   doc: https://docs.ozon.ru/api/seller/
+  items_path: result.errors
+  pagination: none
 - operation_id: ozon_get_by_product_ids
   section: strategies
   method: POST
@@ -2164,6 +2420,8 @@ endpoints:
   summary: GetByProductIds (auto-imported from go-client; UNVERIFIED — confirm body/params
     in docs).
   doc: https://docs.ozon.ru/api/seller/
+  items_path: result.products_info
+  pagination: none
 - operation_id: ozon_list_products
   section: strategies
   method: POST
@@ -2174,6 +2432,8 @@ endpoints:
   summary: ListProducts (auto-imported from go-client; UNVERIFIED — confirm body/params
     in docs).
   doc: https://docs.ozon.ru/api/seller/
+  items_path: result.product_id
+  pagination: none
 - operation_id: ozon_get_competitor_price
   section: strategies
   method: POST
@@ -2184,6 +2444,7 @@ endpoints:
   summary: GetCompetitorPrice (auto-imported from go-client; UNVERIFIED — confirm
     body/params in docs).
   doc: https://docs.ozon.ru/api/seller/
+  pagination: none
 - operation_id: ozon_remove_products
   section: strategies
   method: POST
@@ -2194,6 +2455,7 @@ endpoints:
   summary: RemoveProducts (auto-imported from go-client; UNVERIFIED — confirm body/params
     in docs).
   doc: https://docs.ozon.ru/api/seller/
+  pagination: none
 - operation_id: ozon_change_status_2
   section: strategies
   method: POST
@@ -2204,6 +2466,7 @@ endpoints:
   summary: ChangeStatus (auto-imported from go-client; UNVERIFIED — confirm body/params
     in docs).
   doc: https://docs.ozon.ru/api/seller/
+  pagination: none
 - operation_id: ozon_remove
   section: strategies
   method: POST
@@ -2214,6 +2477,7 @@ endpoints:
   summary: Remove (auto-imported from go-client; UNVERIFIED — confirm body/params
     in docs).
   doc: https://docs.ozon.ru/api/seller/
+  pagination: none
 - operation_id: ozon_get_list_of_warehouses
   section: warehouses
   method: POST
@@ -2224,6 +2488,8 @@ endpoints:
   summary: GetListOfWarehouses (auto-imported from go-client; UNVERIFIED — confirm
     body/params in docs).
   doc: https://docs.ozon.ru/api/seller/
+  items_path: result
+  pagination: offset
 - operation_id: ozon_get_list_of_delivery_methods
   section: warehouses
   method: POST
@@ -2234,6 +2500,8 @@ endpoints:
   summary: GetListOfDeliveryMethods (auto-imported from go-client; UNVERIFIED — confirm
     body/params in docs).
   doc: https://docs.ozon.ru/api/seller/
+  items_path: result
+  pagination: offset
 - operation_id: ozon_list_for_shipping
   section: warehouses
   method: POST
@@ -2244,6 +2512,8 @@ endpoints:
   summary: ListForShipping (auto-imported from go-client; UNVERIFIED — confirm body/params
     in docs).
   doc: https://docs.ozon.ru/api/seller/
+  items_path: search
+  pagination: none
 - operation_id: ozon_post_v1_roles
   section: APIkey
   method: POST
@@ -2253,6 +2523,8 @@ endpoints:
   safety: read
   summary: Получить список ролей и методов по API-ключу
   doc: ''
+  items_path: roles
+  pagination: none
 - operation_id: ozon_post_v1_seller_info
   section: SellerInfo
   method: POST
@@ -2262,6 +2534,8 @@ endpoints:
   safety: read
   summary: Информация о кабинете продавца
   doc: ''
+  items_path: ratings
+  pagination: none
 - operation_id: ozon_post_v1_seller_ozon_logistics_info
   section: SellerInfo
   method: POST
@@ -2271,6 +2545,8 @@ endpoints:
   safety: read
   summary: Информация о подключении Ozon Доставки
   doc: ''
+  items_path: available_schemas
+  pagination: none
 - operation_id: ozon_post_v1_product_info_wrong_volume
   section: ProductAPI
   method: POST
@@ -2280,6 +2556,7 @@ endpoints:
   safety: read
   summary: Список товаров с некорректными ОВХ
   doc: ''
+  pagination: cursor
 - operation_id: ozon_post_v1_product_placement_zone_info
   section: ProductAPI
   method: POST
@@ -2289,6 +2566,8 @@ endpoints:
   safety: read
   summary: Получить зоны размещения товаров по SKU перед поставкой
   doc: ''
+  items_path: products_placement
+  pagination: none
 - operation_id: ozon_post_v1_product_info_warehouse_stocks
   section: Prices&StocksAPI
   method: POST
@@ -2298,6 +2577,8 @@ endpoints:
   safety: read
   summary: Получить информацию по остаткам на складе FBS и rFBS
   doc: ''
+  items_path: stocks
+  pagination: cursor
 - operation_id: ozon_post_v2_product_info_stocks_by_warehouse_fbs
   section: Prices&StocksAPI
   method: POST
@@ -2307,6 +2588,8 @@ endpoints:
   safety: read
   summary: Информация об остатках на складах продавца
   doc: ''
+  items_path: products
+  pagination: cursor
 - operation_id: ozon_post_v1_product_action_timer_status
   section: Prices&StocksAPI
   method: POST
@@ -2316,6 +2599,7 @@ endpoints:
   safety: read
   summary: Получить статус установленного таймера
   doc: ''
+  pagination: none
 - operation_id: ozon_get_v1_product_certificate_accordance_types
   section: CertificationAPI
   method: GET
@@ -2325,6 +2609,8 @@ endpoints:
   safety: read
   summary: Список типов соответствия требованиям (версия 1)
   doc: ''
+  items_path: result
+  pagination: none
 - operation_id: ozon_post_v1_product_certification_list
   section: CertificationAPI
   method: POST
@@ -2334,6 +2620,8 @@ endpoints:
   safety: read
   summary: Список сертифицируемых категорий
   doc: ''
+  items_path: result.certification
+  pagination: page
 - operation_id: ozon_post_v1_product_certificate_product_status_list
   section: CertificationAPI
   method: POST
@@ -2343,6 +2631,8 @@ endpoints:
   safety: read
   summary: Список возможных статусов товаров
   doc: ''
+  items_path: result
+  pagination: none
 - operation_id: ozon_post_v2_delivery_method_list
   section: WarehouseAPI
   method: POST
@@ -2352,6 +2642,8 @@ endpoints:
   safety: read
   summary: Список методов доставки realFBS-склада
   doc: ''
+  items_path: delivery_methods
+  pagination: cursor
 - operation_id: ozon_post_v1_delivery_method_return_settings_get
   section: WarehouseAPI
   method: POST
@@ -2361,6 +2653,8 @@ endpoints:
   safety: write
   summary: Получить информацию по возвратным настройкам rFBS и rFBS Express
   doc: ''
+  items_path: settings.transport_company_details.transport_company_names
+  pagination: none
 - operation_id: ozon_post_v2_warehouse_list
   section: WarehouseAPI
   method: POST
@@ -2370,6 +2664,8 @@ endpoints:
   safety: read
   summary: Список складов
   doc: ''
+  items_path: warehouses
+  pagination: cursor
 - operation_id: ozon_post_v1_warehouse_operation_status
   section: WarehouseAPI
   method: POST
@@ -2379,6 +2675,7 @@ endpoints:
   safety: read
   summary: Получить статус операции
   doc: ''
+  pagination: none
 - operation_id: ozon_post_v1_warehouse_archive
   section: WarehouseAPI
   method: POST
@@ -2388,6 +2685,7 @@ endpoints:
   safety: write
   summary: Перенести склад в архив
   doc: ''
+  pagination: none
 - operation_id: ozon_post_v1_warehouse_unarchive
   section: WarehouseAPI
   method: POST
@@ -2397,6 +2695,7 @@ endpoints:
   safety: write
   summary: Перенести склад из архива
   doc: ''
+  pagination: none
 - operation_id: ozon_post_v1_warehouse_invalid_products_get
   section: WarehouseAPI
   method: POST
@@ -2406,6 +2705,8 @@ endpoints:
   safety: read
   summary: Получить список товаров с ограничениями по доставке
   doc: ''
+  items_path: validation_results
+  pagination: last_id
 - operation_id: ozon_post_v1_warehouse_warehouses_with_invalid_products
   section: WarehouseAPI
   method: POST
@@ -2415,6 +2716,8 @@ endpoints:
   safety: write
   summary: Получить список складов с ограниченными для доставки товарами
   doc: ''
+  items_path: warehouse_ids
+  pagination: none
 - operation_id: ozon_post_v1_supply_order_status_counter
   section: FBO
   method: POST
@@ -2424,6 +2727,8 @@ endpoints:
   safety: read
   summary: Количество заявок по статусам
   doc: ''
+  items_path: items
+  pagination: none
 - operation_id: ozon_post_v1_supply_order_bundle
   section: FBO
   method: POST
@@ -2433,6 +2738,8 @@ endpoints:
   safety: write
   summary: Состав поставки или заявки на поставку
   doc: ''
+  items_path: items
+  pagination: last_id
 - operation_id: ozon_post_v3_supply_order_list
   section: FBO
   method: POST
@@ -2442,6 +2749,8 @@ endpoints:
   safety: read
   summary: Список заявок на поставку на склад Ozon
   doc: ''
+  items_path: order_ids
+  pagination: last_id
 - operation_id: ozon_post_v3_supply_order_get
   section: FBO
   method: POST
@@ -2451,6 +2760,8 @@ endpoints:
   safety: read
   summary: Информация о заявке на поставку
   doc: ''
+  items_path: orders
+  pagination: none
 - operation_id: ozon_post_v1_supply_order_timeslot_get
   section: FBO
   method: POST
@@ -2460,6 +2771,8 @@ endpoints:
   safety: read
   summary: Интервалы поставки
   doc: ''
+  items_path: timeslots
+  pagination: none
 - operation_id: ozon_post_v1_supply_order_timeslot_status
   section: FBO
   method: POST
@@ -2469,6 +2782,8 @@ endpoints:
   safety: read
   summary: Статус интервала поставки
   doc: ''
+  items_path: errors
+  pagination: none
 - operation_id: ozon_post_v1_supply_order_pass_status
   section: FBO
   method: POST
@@ -2478,6 +2793,8 @@ endpoints:
   safety: read
   summary: Статус ввода данных о водителе и автомобиле
   doc: ''
+  items_path: errors
+  pagination: none
 - operation_id: ozon_post_v1_supply_order_details
   section: FBO
   method: POST
@@ -2487,6 +2804,8 @@ endpoints:
   safety: write
   summary: Получить подробную информацию о заявке на поставку
   doc: ''
+  items_path: supplies
+  pagination: none
 - operation_id: ozon_post_v1_draft_crossdock_create
   section: FboSupplyRequest
   method: POST
@@ -2496,6 +2815,8 @@ endpoints:
   safety: write
   summary: Создать черновик заявки на поставку кросс-докингом
   doc: ''
+  items_path: errors
+  pagination: none
 - operation_id: ozon_post_v1_draft_direct_create
   section: FboSupplyRequest
   method: POST
@@ -2505,6 +2826,8 @@ endpoints:
   safety: write
   summary: Создать черновик заявки на прямую поставку
   doc: ''
+  items_path: errors
+  pagination: none
 - operation_id: ozon_post_v1_draft_multi_cluster_create
   section: FboSupplyRequest
   method: POST
@@ -2514,6 +2837,8 @@ endpoints:
   safety: write
   summary: Создать черновик заявки на поставку для нескольких кластеров
   doc: ''
+  items_path: errors
+  pagination: none
 - operation_id: ozon_post_v1_draft_timeslot_info
   section: FboSupplyRequest
   method: POST
@@ -2523,6 +2848,8 @@ endpoints:
   safety: write
   summary: Доступные таймслоты
   doc: ''
+  items_path: drop_off_warehouse_timeslots
+  pagination: none
 - operation_id: ozon_post_v2_draft_create_info
   section: FboSupplyRequest
   method: POST
@@ -2532,6 +2859,8 @@ endpoints:
   safety: write
   summary: Получить информацию о черновике заявки на поставку
   doc: ''
+  items_path: clusters
+  pagination: none
 - operation_id: ozon_post_v1_draft_supply_create_status
   section: FboSupplyRequest
   method: POST
@@ -2541,6 +2870,8 @@ endpoints:
   safety: write
   summary: Информация о создании заявки на поставку
   doc: ''
+  items_path: error_messages
+  pagination: none
 - operation_id: ozon_post_v2_draft_timeslot_info
   section: FboSupplyRequest
   method: POST
@@ -2550,6 +2881,8 @@ endpoints:
   safety: write
   summary: Получить список доступных таймслотов
   doc: ''
+  items_path: result.drop_off_warehouse_timeslots.days
+  pagination: none
 - operation_id: ozon_post_v1_cargoes_create
   section: FboSupplyRequest
   method: POST
@@ -2559,6 +2892,8 @@ endpoints:
   safety: write
   summary: Установка грузомест
   doc: ''
+  items_path: errors.error_reasons
+  pagination: none
 - operation_id: ozon_post_v1_cargoes_create_info
   section: FboSupplyRequest
   method: POST
@@ -2568,6 +2903,8 @@ endpoints:
   safety: write
   summary: Получить информацию по установке грузомест
   doc: ''
+  items_path: result.cargoes
+  pagination: none
 - operation_id: ozon_post_v2_cargoes_create_info
   section: FboSupplyRequest
   method: POST
@@ -2577,6 +2914,8 @@ endpoints:
   safety: write
   summary: Получить информацию по установке грузомест
   doc: ''
+  items_path: result.cargoes
+  pagination: none
 - operation_id: ozon_post_v1_cargoes_get
   section: FboSupplyRequest
   method: POST
@@ -2586,6 +2925,8 @@ endpoints:
   safety: read
   summary: Получить информацию о грузоместах
   doc: ''
+  items_path: supply
+  pagination: none
 - operation_id: ozon_post_v1_cargoes_delete
   section: FboSupplyRequest
   method: POST
@@ -2595,6 +2936,8 @@ endpoints:
   safety: destructive
   summary: Удалить грузоместо в заявке на поставку
   doc: ''
+  items_path: errors.cargo_error_reasons
+  pagination: none
 - operation_id: ozon_post_v1_cargoes_delete_status
   section: FboSupplyRequest
   method: POST
@@ -2604,6 +2947,8 @@ endpoints:
   safety: destructive
   summary: Информация о статусе удаления грузоместа
   doc: ''
+  items_path: errors.cargo_error_reasons
+  pagination: none
 - operation_id: ozon_post_v1_cargoes_rules_get
   section: FboSupplyRequest
   method: POST
@@ -2613,6 +2958,8 @@ endpoints:
   safety: read
   summary: Чек-лист по установке грузомест FBO
   doc: ''
+  items_path: supply_check_lists
+  pagination: none
 - operation_id: ozon_post_v1_cargoes_label_create
   section: FboSupplyRequest
   method: POST
@@ -2622,6 +2969,8 @@ endpoints:
   safety: write
   summary: Сгенерировать этикетки для грузомест
   doc: ''
+  items_path: errors.error_reasons
+  pagination: none
 - operation_id: ozon_post_v1_cargoes_label_get
   section: FboSupplyRequest
   method: POST
@@ -2631,6 +2980,8 @@ endpoints:
   safety: read
   summary: Получить идентификатор этикетки для грузомест
   doc: ''
+  items_path: errors.error_reasons
+  pagination: none
 - operation_id: ozon_get_v1_cargoes_label_file_file_guid
   section: FboSupplyRequest
   method: GET
@@ -2640,6 +2991,8 @@ endpoints:
   safety: write
   summary: Получить PDF с этикетками грузовых мест
   doc: ''
+  items_path: details
+  pagination: none
 - operation_id: ozon_post_v1_supply_order_content_update
   section: FboSupplyRequest
   method: POST
@@ -2649,6 +3002,8 @@ endpoints:
   safety: write
   summary: Редактирование товарного состава
   doc: ''
+  items_path: errors
+  pagination: none
 - operation_id: ozon_post_v1_supply_order_content_update_status
   section: FboSupplyRequest
   method: POST
@@ -2658,6 +3013,8 @@ endpoints:
   safety: write
   summary: Информация о статусе редактирования товарного состава
   doc: ''
+  items_path: errors
+  pagination: none
 - operation_id: ozon_post_v1_supply_order_content_update_validation
   section: FboSupplyRequest
   method: POST
@@ -2667,6 +3024,8 @@ endpoints:
   safety: write
   summary: Проверить новый товарный состав
   doc: ''
+  items_path: editing_errors
+  pagination: none
 - operation_id: ozon_post_v2_draft_supply_create
   section: FboSupplyRequest
   method: POST
@@ -2676,6 +3035,8 @@ endpoints:
   safety: write
   summary: Создать заявку на поставку по черновику
   doc: ''
+  items_path: error_reasons
+  pagination: none
 - operation_id: ozon_post_v2_draft_supply_create_status
   section: FboSupplyRequest
   method: POST
@@ -2685,6 +3046,8 @@ endpoints:
   safety: write
   summary: Получить информацию о создании заявки на поставку
   doc: ''
+  items_path: error_reasons
+  pagination: none
 - operation_id: ozon_post_v1_warehouse_fbo_seller_list
   section: FboSupplyRequest
   method: POST
@@ -2694,6 +3057,8 @@ endpoints:
   safety: read
   summary: Получить список складов продавца
   doc: ''
+  items_path: warehouses
+  pagination: none
 - operation_id: ozon_post_v1_carriage_create
   section: DeliveryFBS
   method: POST
@@ -2703,6 +3068,7 @@ endpoints:
   safety: write
   summary: Создание отгрузки
   doc: ''
+  pagination: none
 - operation_id: ozon_post_v1_carriage_approve
   section: DeliveryFBS
   method: POST
@@ -2712,6 +3078,7 @@ endpoints:
   safety: write
   summary: Подтверждение отгрузки
   doc: ''
+  pagination: none
 - operation_id: ozon_post_v1_carriage_delivery_list
   section: DeliveryFBS
   method: POST
@@ -2721,6 +3088,8 @@ endpoints:
   safety: read
   summary: Список методов доставки и отгрузок
   doc: ''
+  items_path: result
+  pagination: none
 - operation_id: ozon_post_v2_carriage_delivery_list
   section: DeliveryFBS
   method: POST
@@ -2730,6 +3099,8 @@ endpoints:
   safety: read
   summary: Список методов доставки и отгрузок
   doc: ''
+  items_path: methods
+  pagination: cursor
 - operation_id: ozon_post_v1_posting_fbs_traceable_split
   section: DeliveryFBS
   method: POST
@@ -2739,6 +3110,8 @@ endpoints:
   safety: write
   summary: Разделить отправление с прослеживаемыми товарами
   doc: ''
+  items_path: postings
+  pagination: none
 - operation_id: ozon_post_v1_posting_fbs_product_traceable_attribute
   section: DeliveryFBS
   method: POST
@@ -2748,6 +3121,8 @@ endpoints:
   safety: read
   summary: Получить список незаполненных атрибутов для прослеживаемых товаров
   doc: ''
+  items_path: products
+  pagination: none
 - operation_id: ozon_post_v1_carriage_ettn_status
   section: DeliveryFBS
   method: POST
@@ -2757,6 +3132,8 @@ endpoints:
   safety: read
   summary: Получить статус проверки электронной ТТН на прослеживаемой перевозке FBS
   doc: ''
+  items_path: errors
+  pagination: none
 - operation_id: ozon_post_v1_assembly_carriage_posting_list
   section: DeliveryFBS
   method: POST
@@ -2766,6 +3143,8 @@ endpoints:
   safety: read
   summary: Получить список отправлений в отгрузке
   doc: ''
+  items_path: postings
+  pagination: cursor
 - operation_id: ozon_post_v1_assembly_carriage_product_list
   section: DeliveryFBS
   method: POST
@@ -2775,6 +3154,8 @@ endpoints:
   safety: read
   summary: Получить список товаров в отгрузке
   doc: ''
+  items_path: products
+  pagination: cursor
 - operation_id: ozon_post_v1_assembly_fbs_posting_list
   section: DeliveryFBS
   method: POST
@@ -2784,6 +3165,8 @@ endpoints:
   safety: read
   summary: Получить список отправлений
   doc: ''
+  items_path: postings
+  pagination: cursor
 - operation_id: ozon_post_v1_assembly_fbs_product_list
   section: DeliveryFBS
   method: POST
@@ -2793,6 +3176,8 @@ endpoints:
   safety: read
   summary: Получить список товаров в отправлениях
   doc: ''
+  items_path: products
+  pagination: offset
 - operation_id: ozon_post_v1_posting_fbs_package_label_create
   section: FBS
   method: POST
@@ -2802,6 +3187,7 @@ endpoints:
   safety: write
   summary: Создать задание на выгрузку этикеток
   doc: ''
+  pagination: none
 - operation_id: ozon_post_v1_returns_rfbs_action_set
   section: RFBSReturnsAPI
   method: POST
@@ -2811,6 +3197,8 @@ endpoints:
   safety: write
   summary: Передать доступные действия для rFBS возвратов
   doc: ''
+  items_path: details
+  pagination: none
 - operation_id: ozon_post_v2_conditional_cancellation_list
   section: CancellationAPI
   method: POST
@@ -2820,6 +3208,8 @@ endpoints:
   safety: write
   summary: Получить список заявок на отмену rFBS
   doc: ''
+  items_path: result
+  pagination: last_id
 - operation_id: ozon_post_v2_conditional_cancellation_approve
   section: CancellationAPI
   method: POST
@@ -2829,6 +3219,8 @@ endpoints:
   safety: write
   summary: Подтвердить заявку на отмену rFBS
   doc: ''
+  items_path: details
+  pagination: none
 - operation_id: ozon_post_v2_conditional_cancellation_reject
   section: CancellationAPI
   method: POST
@@ -2838,6 +3230,8 @@ endpoints:
   safety: write
   summary: Отклонить заявку на отмену rFBS
   doc: ''
+  items_path: details
+  pagination: none
 - operation_id: ozon_post_v1_returns_settings_utilization_history
   section: ReturnsAPI
   method: POST
@@ -2847,6 +3241,8 @@ endpoints:
   safety: write
   summary: Получить историю изменений автоутилизации
   doc: ''
+  items_path: history
+  pagination: none
 - operation_id: ozon_post_v1_returns_settings_utilization_info
   section: ReturnsAPI
   method: POST
@@ -2856,6 +3252,7 @@ endpoints:
   safety: write
   summary: Получить настройки автоутилизации
   doc: ''
+  pagination: none
 - operation_id: ozon_post_v1_returns_settings_utilization_update
   section: ReturnsAPI
   method: POST
@@ -2865,6 +3262,8 @@ endpoints:
   safety: write
   summary: Обновить настройки автоутилизации
   doc: ''
+  items_path: details
+  pagination: none
 - operation_id: ozon_post_v3_chat_list
   section: ChatAPI
   method: POST
@@ -2874,6 +3273,7 @@ endpoints:
   safety: read
   summary: Список чатов
   doc: ''
+  pagination: cursor
 - operation_id: ozon_post_v1_report_placement_by_products_create
   section: ReportAPI
   method: POST
@@ -2883,6 +3283,7 @@ endpoints:
   safety: write
   summary: Получить отчёт о стоимости размещения по товарам
   doc: ''
+  pagination: none
 - operation_id: ozon_post_v1_report_placement_by_supplies_create
   section: ReportAPI
   method: POST
@@ -2892,6 +3293,7 @@ endpoints:
   safety: write
   summary: Получить отчёт о стоимости размещения по поставкам
   doc: ''
+  pagination: none
 - operation_id: ozon_post_v1_report_marked_products_sales_create
   section: ReportAPI
   method: POST
@@ -2901,6 +3303,7 @@ endpoints:
   safety: write
   summary: Сгенерировать отчёт по продажам товаров с маркировкой
   doc: ''
+  pagination: none
 - operation_id: ozon_post_v1_analytics_average_delivery_time
   section: AnalyticsAPI
   method: POST
@@ -2910,6 +3313,8 @@ endpoints:
   safety: read
   summary: Получить аналитику по среднему времени доставки
   doc: ''
+  items_path: data
+  pagination: none
 - operation_id: ozon_post_v1_analytics_average_delivery_time_details
   section: AnalyticsAPI
   method: POST
@@ -2919,6 +3324,8 @@ endpoints:
   safety: read
   summary: Получить детальную аналитику по среднему времени доставки
   doc: ''
+  items_path: data
+  pagination: offset
 - operation_id: ozon_post_v1_analytics_average_delivery_time_summary
   section: AnalyticsAPI
   method: POST
@@ -2928,6 +3335,7 @@ endpoints:
   safety: read
   summary: Получить общую аналитику по среднему времени доставки
   doc: ''
+  pagination: none
 - operation_id: ozon_post_v1_analytics_stocks
   section: AnalyticsAPI
   method: POST
@@ -2937,6 +3345,8 @@ endpoints:
   safety: read
   summary: Получить аналитику по остаткам
   doc: ''
+  items_path: items
+  pagination: none
 - operation_id: ozon_post_v1_finance_realization_posting
   section: FinanceAPI
   method: POST
@@ -2946,6 +3356,8 @@ endpoints:
   safety: read
   summary: Позаказный отчёт о реализации товаров
   doc: ''
+  items_path: rows
+  pagination: none
 - operation_id: ozon_post_v1_finance_document_b2b_sales
   section: FinanceAPI
   method: POST
@@ -2955,6 +3367,7 @@ endpoints:
   safety: write
   summary: Реестр продаж юридическим лицам
   doc: ''
+  pagination: none
 - operation_id: ozon_post_v1_finance_document_b2b_sales_json
   section: FinanceAPI
   method: POST
@@ -2964,6 +3377,8 @@ endpoints:
   safety: write
   summary: Реестр продаж юридическим лицам в JSON-формате
   doc: ''
+  items_path: invoices
+  pagination: none
 - operation_id: ozon_post_v1_finance_products_buyout
   section: FinanceAPI
   method: POST
@@ -2973,6 +3388,8 @@ endpoints:
   safety: read
   summary: Отчёт о выкупленных товарах
   doc: ''
+  items_path: products
+  pagination: none
 - operation_id: ozon_post_v1_finance_compensation
   section: FinanceAPI
   method: POST
@@ -2982,6 +3399,7 @@ endpoints:
   safety: read
   summary: Отчёт о компенсациях
   doc: ''
+  pagination: none
 - operation_id: ozon_post_v1_finance_decompensation
   section: FinanceAPI
   method: POST
@@ -2991,6 +3409,7 @@ endpoints:
   safety: read
   summary: Отчёт о декомпенсациях
   doc: ''
+  pagination: none
 - operation_id: ozon_post_v1_receipts_get
   section: Receipt
   method: POST
@@ -3000,6 +3419,7 @@ endpoints:
   safety: read
   summary: Получить чек в формате PDF
   doc: ''
+  pagination: none
 - operation_id: ozon_post_v1_receipts_seller_list
   section: Receipt
   method: POST
@@ -3009,6 +3429,8 @@ endpoints:
   safety: read
   summary: Получить список чеков продавца
   doc: ''
+  items_path: receipts
+  pagination: page
 - operation_id: ozon_post_v1_receipts_upload
   section: Receipt
   method: POST
@@ -3018,6 +3440,7 @@ endpoints:
   safety: write
   summary: Загрузить чек
   doc: ''
+  pagination: none
 - operation_id: ozon_post_v1_rating_index_fbs_info
   section: SellerRating
   method: POST
@@ -3027,6 +3450,8 @@ endpoints:
   safety: read
   summary: Получить индекс ошибок FBS и rFBS
   doc: ''
+  items_path: defects
+  pagination: none
 - operation_id: ozon_post_v1_rating_index_fbs_posting_list
   section: SellerRating
   method: POST
@@ -3036,6 +3461,8 @@ endpoints:
   safety: read
   summary: Список отправлений, которые повлияли на индекс ошибок FBS и rFBS
   doc: ''
+  items_path: errors
+  pagination: cursor
 - operation_id: ozon_post_v1_posting_digital_codes_upload
   section: Digital
   method: POST
@@ -3045,6 +3472,8 @@ endpoints:
   safety: write
   summary: Загрузить коды цифровых товаров для отправления
   doc: ''
+  items_path: exemplars_by_sku
+  pagination: none
 - operation_id: ozon_post_v1_posting_digital_list
   section: Digital
   method: POST
@@ -3054,6 +3483,8 @@ endpoints:
   safety: read
   summary: Получить список отправлений
   doc: ''
+  items_path: result
+  pagination: offset
 - operation_id: ozon_post_v1_product_digital_stocks_import
   section: Digital
   method: POST
@@ -3063,6 +3494,8 @@ endpoints:
   safety: write
   summary: Обновить количество цифровых товаров
   doc: ''
+  items_path: status
+  pagination: none
 - operation_id: ozon_post_v1_removal_from_supply_list
   section: BetaMethod
   method: POST
@@ -3072,6 +3505,8 @@ endpoints:
   safety: read
   summary: Отчёт по вывозу и утилизации с поставки FBO
   doc: ''
+  items_path: returns_summary_report_rows
+  pagination: last_id
 - operation_id: ozon_post_v1_removal_from_stock_list
   section: BetaMethod
   method: POST
@@ -3081,6 +3516,8 @@ endpoints:
   safety: read
   summary: Отчёт по вывозу и утилизации со стока FBO
   doc: ''
+  items_path: returns_summary_report_rows
+  pagination: last_id
 - operation_id: ozon_post_v1_product_stairway_discount_by_quantity_set
   section: BetaMethod
   method: POST
@@ -3090,6 +3527,8 @@ endpoints:
   safety: write
   summary: Управлять скидкой от количества
   doc: ''
+  items_path: errors
+  pagination: none
 - operation_id: ozon_post_v1_product_stairway_discount_by_quantity_get
   section: BetaMethod
   method: POST
@@ -3099,6 +3538,8 @@ endpoints:
   safety: read
   summary: Получить информацию о скидке от количества
   doc: ''
+  items_path: stairways
+  pagination: none
 - operation_id: ozon_post_v1_finance_balance
   section: BetaMethod
   method: POST
@@ -3108,6 +3549,8 @@ endpoints:
   safety: read
   summary: Получить отчёт о балансе
   doc: ''
+  items_path: cashflows.services
+  pagination: none
 - operation_id: ozon_post_v2_actions_discounts_task_list
   section: BetaMethod
   method: POST
@@ -3117,6 +3560,8 @@ endpoints:
   safety: read
   summary: Получить список заявок на скидку
   doc: ''
+  items_path: tasks
+  pagination: last_id
 - operation_id: ozon_post_v1_carriage_act_discrepancy_pdf
   section: BetaMethod
   method: POST
@@ -3126,6 +3571,7 @@ endpoints:
   safety: write
   summary: Получить акт о расхождениях по отгрузке FBS
   doc: ''
+  pagination: none
 - operation_id: ozon_post_v1_warehouse_ozon_list
   section: BetaMethod
   method: POST
@@ -3135,6 +3581,8 @@ endpoints:
   safety: read
   summary: Получить список складов Ozon
   doc: ''
+  items_path: warehouses
+  pagination: none
 - operation_id: ozon_post_v2_cluster_list
   section: BetaMethod
   method: POST
@@ -3144,6 +3592,8 @@ endpoints:
   safety: read
   summary: Получить информацию о макролокальных кластерах
   doc: ''
+  items_path: result
+  pagination: none
 - operation_id: ozon_post_v1_product_visibility_set
   section: BetaMethod
   method: POST
@@ -3153,6 +3603,8 @@ endpoints:
   safety: write
   summary: Настроить видимость товара на витрине Ozon и Ozon Селект
   doc: ''
+  items_path: items
+  pagination: none
 - operation_id: ozon_post_v1_warehouse_rfbs_pause
   section: BetaMethod
   method: POST
@@ -3162,6 +3614,7 @@ endpoints:
   safety: write
   summary: Поставить rFBS-склад на паузу
   doc: ''
+  pagination: none
 - operation_id: ozon_post_v1_warehouse_rfbs_unpause
   section: BetaMethod
   method: POST
@@ -3171,6 +3624,7 @@ endpoints:
   safety: write
   summary: Снять rFBS-склад с паузы
   doc: ''
+  pagination: none
 - operation_id: ozon_post_v1_warehouse_fbs_create_drop_off_list
   section: FBSWarehouseSetup
   method: POST
@@ -3180,6 +3634,8 @@ endpoints:
   safety: write
   summary: Получить список drop-off пунктов для создания склада
   doc: ''
+  items_path: points
+  pagination: none
 - operation_id: ozon_post_v1_warehouse_fbs_update_drop_off_list
   section: FBSWarehouseSetup
   method: POST
@@ -3189,6 +3645,8 @@ endpoints:
   safety: write
   summary: Получить список drop-off пунктов для изменения информации склада
   doc: ''
+  items_path: points
+  pagination: none
 - operation_id: ozon_post_v1_warehouse_fbs_create_drop_off_timeslot_list
   section: FBSWarehouseSetup
   method: POST
@@ -3198,6 +3656,8 @@ endpoints:
   safety: write
   summary: Получить список таймслотов для создания склада с отгрузкой drop-off
   doc: ''
+  items_path: timeslots
+  pagination: none
 - operation_id: ozon_post_v1_warehouse_fbs_update_drop_off_timeslot_list
   section: FBSWarehouseSetup
   method: POST
@@ -3207,6 +3667,8 @@ endpoints:
   safety: write
   summary: Получить список таймслотов для обновления склада с отгрузкой drop-off
   doc: ''
+  items_path: timeslots
+  pagination: none
 - operation_id: ozon_post_v1_warehouse_fbs_create_pick_up_timeslot_list
   section: FBSWarehouseSetup
   method: POST
@@ -3216,6 +3678,8 @@ endpoints:
   safety: write
   summary: Получить список таймслотов для создания склада с отгрузкой pick-up
   doc: ''
+  items_path: timeslots
+  pagination: none
 - operation_id: ozon_post_v1_warehouse_fbs_update_pick_up_timeslot_list
   section: FBSWarehouseSetup
   method: POST
@@ -3225,6 +3689,8 @@ endpoints:
   safety: write
   summary: Получить список таймслотов для обновления склада с отгрузкой pick-up
   doc: ''
+  items_path: timeslots
+  pagination: none
 - operation_id: ozon_post_v1_warehouse_fbs_create
   section: FBSWarehouseSetup
   method: POST
@@ -3234,6 +3700,7 @@ endpoints:
   safety: write
   summary: Создать склад
   doc: ''
+  pagination: none
 - operation_id: ozon_post_v1_warehouse_fbs_update
   section: FBSWarehouseSetup
   method: POST
@@ -3243,6 +3710,7 @@ endpoints:
   safety: write
   summary: Обновить склад
   doc: ''
+  pagination: none
 - operation_id: ozon_post_v1_warehouse_fbs_first_mile_update
   section: FBSWarehouseSetup
   method: POST
@@ -3252,6 +3720,7 @@ endpoints:
   safety: write
   summary: Обновить первую милю
   doc: ''
+  pagination: none
 - operation_id: ozon_post_v1_warehouse_fbs_create_return_point_list
   section: FBSWarehouseSetup
   method: POST
@@ -3261,6 +3730,8 @@ endpoints:
   safety: write
   summary: Получить список пунктов возврата для создания склада
   doc: ''
+  items_path: points
+  pagination: last_id
 - operation_id: ozon_post_v1_warehouse_fbs_update_return_point_list
   section: FBSWarehouseSetup
   method: POST
@@ -3270,6 +3741,8 @@ endpoints:
   safety: write
   summary: Получить список пунктов возврата для обновления склада
   doc: ''
+  items_path: points
+  pagination: last_id
 - operation_id: ozon_post_v1_warehouse_fbs_return_mile_info
   section: FBSWarehouseSetup
   method: POST
@@ -3279,6 +3752,8 @@ endpoints:
   safety: read
   summary: Получить информацию о возвратной миле
   doc: ''
+  items_path: return_mile_settings
+  pagination: none
 - operation_id: ozon_post_v1_warehouse_fbs_return_mile_check
   section: FBSWarehouseSetup
   method: POST
@@ -3288,6 +3763,8 @@ endpoints:
   safety: write
   summary: Проверить необходимость установки возвратной мили на склад
   doc: ''
+  items_path: unavailability_reasons
+  pagination: none
 - operation_id: ozon_post_v1_warehouse_fbs_pickup_courier_create
   section: FBSWarehouseSetup
   method: POST
@@ -3297,6 +3774,8 @@ endpoints:
   safety: write
   summary: Создать вызов курьера на забор отгрузки pick-up
   doc: ''
+  items_path: details
+  pagination: none
 - operation_id: ozon_post_v1_warehouse_fbs_pickup_courier_cancel
   section: FBSWarehouseSetup
   method: POST
@@ -3306,6 +3785,8 @@ endpoints:
   safety: write
   summary: Отменить вызов курьера на забор отгрузки pick-up
   doc: ''
+  items_path: details
+  pagination: none
 - operation_id: ozon_post_v1_warehouse_fbs_pickup_history_list
   section: FBSWarehouseSetup
   method: POST
@@ -3315,6 +3796,8 @@ endpoints:
   safety: read
   summary: Получить историю отгрузок курьерам
   doc: ''
+  items_path: result.history
+  pagination: cursor
 - operation_id: ozon_post_v1_warehouse_fbs_pickup_planning_list
   section: FBSWarehouseSetup
   method: POST
@@ -3324,6 +3807,8 @@ endpoints:
   safety: read
   summary: Получить список складов для планирования отгрузок курьеру
   doc: ''
+  items_path: result.warehouses
+  pagination: none
 - operation_id: ozon_post_v1_warehouse_erfbs_aggregator_create
   section: rFBSWarehouseSetup
   method: POST
@@ -3333,6 +3818,7 @@ endpoints:
   safety: write
   summary: Создать склад с методом доставки «Партнёры Ozon»
   doc: ''
+  pagination: none
 - operation_id: ozon_post_v1_warehouse_erfbs_update
   section: rFBSWarehouseSetup
   method: POST
@@ -3342,6 +3828,7 @@ endpoints:
   safety: write
   summary: Обновить склад
   doc: ''
+  pagination: none
 - operation_id: ozon_post_v1_warehouse_erfbs_aggregator_delivery_method_upda
   section: rFBSWarehouseSetup
   method: POST
@@ -3351,6 +3838,7 @@ endpoints:
   safety: write
   summary: Обновить метод доставки «Партнёры Ozon»
   doc: ''
+  pagination: none
 - operation_id: ozon_post_v1_warehouse_erfbs_non_integrated_create
   section: rFBSWarehouseSetup
   method: POST
@@ -3360,6 +3848,7 @@ endpoints:
   safety: write
   summary: Создать склад с методом доставки «Вы или сторонняя служба»
   doc: ''
+  pagination: none
 - operation_id: ozon_post_v1_warehouse_erfbs_non_integrated_delivery_method_
   section: rFBSWarehouseSetup
   method: POST
@@ -3369,6 +3858,7 @@ endpoints:
   safety: write
   summary: Обновить метод доставки «Вы или сторонняя служба»
   doc: ''
+  pagination: none
 - operation_id: ozon_post_v2_polygon_bind
   section: PolygonAPI
   method: POST
@@ -3378,6 +3868,8 @@ endpoints:
   safety: write
   summary: Связать метод доставки с полигоном
   doc: ''
+  items_path: details
+  pagination: none
 - operation_id: ozon_post_v1_polygon_delete
   section: PolygonAPI
   method: POST
@@ -3387,6 +3879,8 @@ endpoints:
   safety: destructive
   summary: Удалить полигон из области доставки
   doc: ''
+  items_path: details
+  pagination: none
 - operation_id: ozon_post_v1_polygon_list
   section: PolygonAPI
   method: POST
@@ -3396,6 +3890,8 @@ endpoints:
   safety: read
   summary: Получить список установленных полигонов на метод доставки
   doc: ''
+  items_path: polygons
+  pagination: none
 - operation_id: ozon_post_v1_polygon_time_coordinates_update
   section: PolygonAPI
   method: POST
@@ -3405,6 +3901,8 @@ endpoints:
   safety: write
   summary: Обновить координаты полигона доставки
   doc: ''
+  items_path: details
+  pagination: none
 - operation_id: ozon_post_v1_polygon_time_set
   section: PolygonAPI
   method: POST
@@ -3414,6 +3912,8 @@ endpoints:
   safety: write
   summary: Установить новое время доставки в полигоне
   doc: ''
+  items_path: details
+  pagination: none
 - operation_id: ozon_post_v1_question_answer_create
   section: Questions&Answers
   method: POST
@@ -3423,6 +3923,7 @@ endpoints:
   safety: write
   summary: Создать ответ на вопрос
   doc: ''
+  pagination: none
 - operation_id: ozon_post_v1_question_answer_delete
   section: Questions&Answers
   method: POST
@@ -3432,6 +3933,7 @@ endpoints:
   safety: destructive
   summary: Удалить ответ на вопрос
   doc: ''
+  pagination: none
 - operation_id: ozon_post_v1_question_answer_list
   section: Questions&Answers
   method: POST
@@ -3441,6 +3943,7 @@ endpoints:
   safety: read
   summary: Список ответов на вопрос
   doc: ''
+  pagination: last_id
 - operation_id: ozon_post_v1_question_change_status
   section: Questions&Answers
   method: POST
@@ -3450,6 +3953,7 @@ endpoints:
   safety: write
   summary: Изменить статус вопросов
   doc: ''
+  pagination: none
 - operation_id: ozon_post_v1_question_count
   section: Questions&Answers
   method: POST
@@ -3459,6 +3963,7 @@ endpoints:
   safety: write
   summary: Количество вопросов по статусам
   doc: ''
+  pagination: none
 - operation_id: ozon_post_v1_question_info
   section: Questions&Answers
   method: POST
@@ -3468,6 +3973,7 @@ endpoints:
   safety: read
   summary: Информация о вопросе
   doc: ''
+  pagination: none
 - operation_id: ozon_post_v1_question_list
   section: Questions&Answers
   method: POST
@@ -3477,6 +3983,7 @@ endpoints:
   safety: read
   summary: Список вопросов
   doc: ''
+  pagination: last_id
 - operation_id: ozon_post_v1_question_top_sku
   section: Questions&Answers
   method: POST
@@ -3486,6 +3993,7 @@ endpoints:
   safety: write
   summary: Товары с наибольшим количеством вопросов
   doc: ''
+  pagination: none
 - operation_id: ozon_post_v1_seller_actions_create_discount
   section: SellerActions
   method: POST
@@ -3495,6 +4003,7 @@ endpoints:
   safety: write
   summary: Создать акцию с механикой «Скидка»
   doc: ''
+  pagination: none
 - operation_id: ozon_post_v1_seller_actions_create_discount_with_condition
   section: SellerActions
   method: POST
@@ -3504,6 +4013,7 @@ endpoints:
   safety: write
   summary: Создать акцию с механикой «Скидка от суммы заказа»
   doc: ''
+  pagination: none
 - operation_id: ozon_post_v1_seller_actions_create_installment
   section: SellerActions
   method: POST
@@ -3513,6 +4023,7 @@ endpoints:
   safety: write
   summary: Создать акцию с механикой «Беспроцентная рассрочка»
   doc: ''
+  pagination: none
 - operation_id: ozon_post_v1_seller_actions_create_multi_level_discount
   section: SellerActions
   method: POST
@@ -3522,6 +4033,7 @@ endpoints:
   safety: write
   summary: Создать акцию с механикой «Многоуровневая скидка от суммы»
   doc: ''
+  pagination: none
 - operation_id: ozon_post_v1_seller_actions_create_voucher
   section: SellerActions
   method: POST
@@ -3531,6 +4043,7 @@ endpoints:
   safety: write
   summary: Создать акцию с механикой «Скидка по промокоду»
   doc: ''
+  pagination: none
 - operation_id: ozon_post_v1_seller_actions_update_discount
   section: SellerActions
   method: POST
@@ -3540,6 +4053,7 @@ endpoints:
   safety: write
   summary: Обновить акцию с механикой «Скидка»
   doc: ''
+  pagination: none
 - operation_id: ozon_post_v1_seller_actions_update_discount_with_condition
   section: SellerActions
   method: POST
@@ -3549,6 +4063,7 @@ endpoints:
   safety: write
   summary: Обновить акцию с механикой «Скидка от суммы заказа»
   doc: ''
+  pagination: none
 - operation_id: ozon_post_v1_seller_actions_update_installment
   section: SellerActions
   method: POST
@@ -3558,6 +4073,7 @@ endpoints:
   safety: write
   summary: Обновить акцию с механикой «Беспроцентная рассрочка»
   doc: ''
+  pagination: none
 - operation_id: ozon_post_v1_seller_actions_update_multi_level_discount
   section: SellerActions
   method: POST
@@ -3567,6 +4083,7 @@ endpoints:
   safety: write
   summary: Обновить акцию с механикой «Многоуровневая скидка от суммы»
   doc: ''
+  pagination: none
 - operation_id: ozon_post_v1_seller_actions_update_voucher
   section: SellerActions
   method: POST
@@ -3576,6 +4093,7 @@ endpoints:
   safety: write
   summary: Обновить акцию с механикой «Скидка по промокоду»
   doc: ''
+  pagination: none
 - operation_id: ozon_post_v1_seller_actions_products_add
   section: SellerActions
   method: POST
@@ -3585,6 +4103,8 @@ endpoints:
   safety: write
   summary: Добавить товары в акцию
   doc: ''
+  items_path: details
+  pagination: none
 - operation_id: ozon_post_v1_seller_actions_products_candidates
   section: SellerActions
   method: POST
@@ -3594,6 +4114,8 @@ endpoints:
   safety: write
   summary: Получить список доступных для акции товаров
   doc: ''
+  items_path: products
+  pagination: cursor
 - operation_id: ozon_post_v1_seller_actions_products_delete
   section: SellerActions
   method: POST
@@ -3603,6 +4125,8 @@ endpoints:
   safety: destructive
   summary: Удалить товары из акции
   doc: ''
+  items_path: details
+  pagination: none
 - operation_id: ozon_post_v1_seller_actions_products_list
   section: SellerActions
   method: POST
@@ -3612,6 +4136,8 @@ endpoints:
   safety: read
   summary: Получить список участвующих в акции товаров
   doc: ''
+  items_path: products
+  pagination: cursor
 - operation_id: ozon_post_v1_seller_actions_archive
   section: SellerActions
   method: POST
@@ -3621,6 +4147,8 @@ endpoints:
   safety: write
   summary: Перенести акцию в архив
   doc: ''
+  items_path: details
+  pagination: none
 - operation_id: ozon_post_v1_seller_actions_change_activity
   section: SellerActions
   method: POST
@@ -3630,6 +4158,8 @@ endpoints:
   safety: write
   summary: Включить или выключить акцию
   doc: ''
+  items_path: details
+  pagination: none
 - operation_id: ozon_post_v1_seller_actions_list
   section: SellerActions
   method: POST
@@ -3639,6 +4169,8 @@ endpoints:
   safety: read
   summary: Получить список акций
   doc: ''
+  items_path: actions
+  pagination: offset
 - operation_id: ozon_post_v1_seller_actions_voucher_get
   section: SellerActions
   method: POST
@@ -3648,6 +4180,7 @@ endpoints:
   safety: read
   summary: Получить файл с промокодами в формате CSV
   doc: ''
+  pagination: none
 - operation_id: ozon_post_v1_notification_set
   section: Notification
   method: POST
@@ -3657,6 +4190,7 @@ endpoints:
   safety: write
   summary: Подключить URL-адрес для уведомлений
   doc: ''
+  pagination: none
 - operation_id: ozon_post_v1_notification_update
   section: Notification
   method: POST
@@ -3666,6 +4200,7 @@ endpoints:
   safety: write
   summary: Изменить URL-адрес для уведомлений
   doc: ''
+  pagination: none
 - operation_id: ozon_post_v1_notification_delete
   section: Notification
   method: POST
@@ -3675,6 +4210,7 @@ endpoints:
   safety: destructive
   summary: Удалить URL-адрес для уведомлений
   doc: ''
+  pagination: none
 - operation_id: ozon_post_v1_notification_check
   section: Notification
   method: POST
@@ -3684,6 +4220,8 @@ endpoints:
   safety: write
   summary: Проверить URL-адрес для уведомлений
   doc: ''
+  items_path: errors
+  pagination: none
 - operation_id: ozon_post_v1_notification_enable
   section: Notification
   method: POST
@@ -3693,6 +4231,7 @@ endpoints:
   safety: write
   summary: Включить или выключить уведомления на URL-адрес
   doc: ''
+  pagination: none
 - operation_id: ozon_post_v1_notification_list
   section: Notification
   method: POST
@@ -3702,6 +4241,8 @@ endpoints:
   safety: read
   summary: Получить информацию по подключённым URL-адресам
   doc: ''
+  items_path: urls
+  pagination: none
 - operation_id: ozon_post_v1_notification_push_type_list
   section: Notification
   method: POST
@@ -3711,6 +4252,8 @@ endpoints:
   safety: read
   summary: Получить типы пуш-уведомлений
   doc: ''
+  items_path: types
+  pagination: none
 - operation_id: ozon_post_v1_fbp_draft_direct_seller_dlv_create
   section: DraftDirectFBP
   method: POST
@@ -3720,6 +4263,7 @@ endpoints:
   safety: write
   summary: Создать черновик с доставкой силами продавца
   doc: ''
+  pagination: none
 - operation_id: ozon_post_v1_fbp_draft_direct_seller_dlv_edit
   section: DraftDirectFBP
   method: POST
@@ -3729,6 +4273,8 @@ endpoints:
   safety: write
   summary: Обновить информацию о доставке силами продавца в черновике
   doc: ''
+  items_path: error.errors
+  pagination: none
 - operation_id: ozon_post_v1_fbp_draft_direct_timeslot_edit
   section: DraftDirectFBP
   method: POST
@@ -3738,6 +4284,8 @@ endpoints:
   safety: write
   summary: Отредактировать таймслот в черновике
   doc: ''
+  items_path: error_reasons
+  pagination: none
 - operation_id: ozon_post_v1_fbp_draft_direct_timeslot_get
   section: DraftDirectFBP
   method: POST
@@ -3747,6 +4295,8 @@ endpoints:
   safety: write
   summary: Получить список таймслотов для прямой поставки
   doc: ''
+  items_path: reasons
+  pagination: none
 - operation_id: ozon_post_v1_fbp_draft_direct_create
   section: DraftDirectFBP
   method: POST
@@ -3756,6 +4306,7 @@ endpoints:
   safety: write
   summary: Создать черновик заявки на поставку без указания способа доставки
   doc: ''
+  pagination: none
 - operation_id: ozon_post_v1_fbp_draft_direct_delete
   section: DraftDirectFBP
   method: POST
@@ -3765,6 +4316,7 @@ endpoints:
   safety: destructive
   summary: Удалить черновик заявки на поставку
   doc: ''
+  pagination: none
 - operation_id: ozon_post_v1_fbp_draft_direct_product_validate
   section: DraftDirectFBP
   method: POST
@@ -3774,6 +4326,8 @@ endpoints:
   safety: write
   summary: Проверить список товаров для склада партнёра
   doc: ''
+  items_path: approved_items
+  pagination: none
 - operation_id: ozon_post_v1_fbp_draft_direct_registrate
   section: DraftDirectFBP
   method: POST
@@ -3783,6 +4337,8 @@ endpoints:
   safety: write
   summary: Перевести черновик в действующую поставку
   doc: ''
+  items_path: error.bundle_errors
+  pagination: none
 - operation_id: ozon_post_v1_fbp_draft_drop_off_create
   section: DraftDropOffFBP
   method: POST
@@ -3792,6 +4348,7 @@ endpoints:
   safety: write
   summary: Создать черновик для доставки в drop-off пункт
   doc: ''
+  pagination: none
 - operation_id: ozon_post_v1_fbp_draft_drop_off_delete
   section: DraftDropOffFBP
   method: POST
@@ -3801,6 +4358,7 @@ endpoints:
   safety: destructive
   summary: Удалить черновик для доставки в drop-off пункт
   doc: ''
+  pagination: none
 - operation_id: ozon_post_v1_fbp_draft_drop_off_dlv_edit
   section: DraftDropOffFBP
   method: POST
@@ -3810,6 +4368,7 @@ endpoints:
   safety: write
   summary: Отредактировать детали доставки для drop-off черновика
   doc: ''
+  pagination: none
 - operation_id: ozon_post_v1_fbp_draft_drop_off_registrate
   section: DraftDropOffFBP
   method: POST
@@ -3819,6 +4378,8 @@ endpoints:
   safety: write
   summary: Перевести черновик в действующую поставку
   doc: ''
+  items_path: error.bundle_errors
+  pagination: none
 - operation_id: ozon_post_v1_fbp_draft_drop_off_province_list
   section: DraftDropOffFBP
   method: POST
@@ -3828,6 +4389,8 @@ endpoints:
   safety: write
   summary: Получить список провинций
   doc: ''
+  items_path: provinces
+  pagination: none
 - operation_id: ozon_post_v1_fbp_draft_drop_off_point_list
   section: DraftDropOffFBP
   method: POST
@@ -3837,6 +4400,8 @@ endpoints:
   safety: write
   summary: Получить список drop-off пунктов в провинции
   doc: ''
+  items_path: drop_off_points
+  pagination: none
 - operation_id: ozon_post_v1_fbp_draft_drop_off_point_timetable
   section: DraftDropOffFBP
   method: POST
@@ -3846,6 +4411,8 @@ endpoints:
   safety: write
   summary: Получить расписание работы drop-off пункта
   doc: ''
+  items_path: calendar
+  pagination: none
 - operation_id: ozon_post_v1_fbp_draft_drop_off_product_validate
   section: DraftDropOffFBP
   method: POST
@@ -3855,6 +4422,8 @@ endpoints:
   safety: write
   summary: Проверить список товаров, которые склад партнёра может принять
   doc: ''
+  items_path: approved_items
+  pagination: none
 - operation_id: ozon_post_v1_fbp_order_direct_cancel
   section: OrderDirectFBP
   method: POST
@@ -3864,6 +4433,8 @@ endpoints:
   safety: write
   summary: Отменить поставку
   doc: ''
+  items_path: error.order_errors
+  pagination: none
 - operation_id: ozon_post_v1_fbp_order_direct_seller_dlv_edit
   section: OrderDirectFBP
   method: POST
@@ -3873,6 +4444,8 @@ endpoints:
   safety: write
   summary: Обновить информацию о доставке силами продавца
   doc: ''
+  items_path: error.order_errors
+  pagination: none
 - operation_id: ozon_post_v1_fbp_order_direct_timeslot_edit
   section: OrderDirectFBP
   method: POST
@@ -3882,6 +4455,8 @@ endpoints:
   safety: read
   summary: Отредактировать таймслот в заявке на поставку
   doc: ''
+  items_path: error_reasons
+  pagination: none
 - operation_id: ozon_post_v1_fbp_order_direct_timeslot_list
   section: OrderDirectFBP
   method: POST
@@ -3891,6 +4466,8 @@ endpoints:
   safety: read
   summary: Получить список таймслотов для поставки
   doc: ''
+  items_path: reasons
+  pagination: none
 - operation_id: ozon_post_v1_fbp_act_from_create
   section: DeliveryFBP
   method: POST
@@ -3900,6 +4477,8 @@ endpoints:
   safety: write
   summary: Сгенерировать акт приёмки
   doc: ''
+  items_path: errors
+  pagination: none
 - operation_id: ozon_post_v1_fbp_act_from_get
   section: DeliveryFBP
   method: POST
@@ -3909,6 +4488,7 @@ endpoints:
   safety: read
   summary: Получить статус генерации акта приёмки
   doc: ''
+  pagination: none
 - operation_id: ozon_post_v1_fbp_act_to_create
   section: DeliveryFBP
   method: POST
@@ -3918,6 +4498,7 @@ endpoints:
   safety: write
   summary: Сгенерировать транспортную накладную
   doc: ''
+  pagination: none
 - operation_id: ozon_post_v1_fbp_act_to_get
   section: DeliveryFBP
   method: POST
@@ -3927,6 +4508,7 @@ endpoints:
   safety: read
   summary: Получить статус генерации транспортной накладной
   doc: ''
+  pagination: none
 - operation_id: ozon_post_v1_fbp_archive_get
   section: DeliveryFBP
   method: POST
@@ -3936,6 +4518,7 @@ endpoints:
   safety: write
   summary: Получить информацию о завершённой поставке
   doc: ''
+  pagination: none
 - operation_id: ozon_post_v1_fbp_archive_list
   section: DeliveryFBP
   method: POST
@@ -3945,6 +4528,8 @@ endpoints:
   safety: write
   summary: Получить список завершённых поставок
   doc: ''
+  items_path: items
+  pagination: last_id
 - operation_id: ozon_post_v1_fbp_label_create
   section: DeliveryFBP
   method: POST
@@ -3954,6 +4539,7 @@ endpoints:
   safety: write
   summary: Cоздать задание на генерацию этикеток
   doc: ''
+  pagination: none
 - operation_id: ozon_post_v1_fbp_label_get
   section: DeliveryFBP
   method: POST
@@ -3963,6 +4549,7 @@ endpoints:
   safety: read
   summary: Получить статус задания на генерацию этикеток
   doc: ''
+  pagination: none
 - operation_id: ozon_post_v1_fbp_draft_pick_up_create
   section: DraftPickupFBP
   method: POST
@@ -3972,6 +4559,7 @@ endpoints:
   safety: write
   summary: Создать черновик заявки на pick-up поставку
   doc: ''
+  pagination: none
 - operation_id: ozon_post_v1_fbp_draft_pick_up_delete
   section: DraftPickupFBP
   method: POST
@@ -3981,6 +4569,7 @@ endpoints:
   safety: destructive
   summary: Отменить черновик заявки на pick-up поставку
   doc: ''
+  pagination: none
 - operation_id: ozon_post_v1_fbp_draft_pick_up_dlv_edit
   section: DraftPickupFBP
   method: POST
@@ -3990,6 +4579,7 @@ endpoints:
   safety: write
   summary: Изменить черновик заявки на pick-up поставку
   doc: ''
+  pagination: none
 - operation_id: ozon_post_v1_fbp_draft_pick_up_product_validate
   section: DraftPickupFBP
   method: POST
@@ -3999,6 +4589,8 @@ endpoints:
   safety: write
   summary: Провалидировать список товаров для pick-up поставки
   doc: ''
+  items_path: approved_items
+  pagination: none
 - operation_id: ozon_post_v1_fbp_warehouse_list
   section: DeliveryFBPDraft
   method: POST
@@ -4008,6 +4600,8 @@ endpoints:
   safety: read
   summary: Получить список партнёрских складов
   doc: ''
+  items_path: warehouses
+  pagination: none
 - operation_id: ozon_post_v1_fbp_draft_pick_up_registrate
   section: DraftPickupFBP
   method: POST
@@ -4017,6 +4611,8 @@ endpoints:
   safety: write
   summary: Перевести черновик в действующую поставку
   doc: ''
+  items_path: error.bundle_errors
+  pagination: none
 - operation_id: ozon_post_v1_fbp_draft_get
   section: DeliveryFBPDraft
   method: POST
@@ -4026,6 +4622,8 @@ endpoints:
   safety: write
   summary: Получить информацию о черновике поставки
   doc: ''
+  items_path: decline_reason.failed_sku_ids
+  pagination: none
 - operation_id: ozon_post_v1_fbp_draft_list
   section: DeliveryFBPDraft
   method: POST
@@ -4035,6 +4633,8 @@ endpoints:
   safety: write
   summary: Список черновиков поставки
   doc: ''
+  items_path: items
+  pagination: last_id
 - operation_id: ozon_post_v1_fbp_draft_direct_tpl_dlv_create
   section: DraftDirectFBP
   method: POST
@@ -4044,6 +4644,7 @@ endpoints:
   safety: write
   summary: Создать черновик заявки на доставку сторонней транспортной компанией
   doc: ''
+  pagination: none
 - operation_id: ozon_post_v1_fbp_draft_direct_tpl_dlv_edit
   section: DraftDirectFBP
   method: POST
@@ -4054,6 +4655,8 @@ endpoints:
   summary: Редактировать черновик поставки со способом доставки сторонней транспортной
     компанией
   doc: ''
+  items_path: error.errors
+  pagination: none
 - operation_id: ozon_post_v1_fbp_order_drop_off_cancel
   section: OrderDropOffFBP
   method: POST
@@ -4063,6 +4666,8 @@ endpoints:
   safety: write
   summary: Отменить поставку drop-off
   doc: ''
+  items_path: error.order_errors
+  pagination: none
 - operation_id: ozon_post_v1_fbp_order_drop_off_dlv_edit
   section: OrderDropOffFBP
   method: POST
@@ -4072,6 +4677,7 @@ endpoints:
   safety: write
   summary: Отредактировать информацию о поставке на drop-off пункт
   doc: ''
+  pagination: none
 - operation_id: ozon_post_v1_fbp_order_drop_off_timetable
   section: OrderDropOffFBP
   method: POST
@@ -4081,6 +4687,8 @@ endpoints:
   safety: write
   summary: Получить график работы drop-off пункта
   doc: ''
+  items_path: calendar
+  pagination: none
 - operation_id: ozon_post_v1_fbp_order_get
   section: DeliveryFBP
   method: POST
@@ -4090,6 +4698,8 @@ endpoints:
   safety: read
   summary: Получить информацию о конкретной поставке
   doc: ''
+  items_path: attention_reasons
+  pagination: none
 - operation_id: ozon_post_v1_fbp_order_list
   section: DeliveryFBP
   method: POST
@@ -4099,6 +4709,8 @@ endpoints:
   safety: read
   summary: Получить список поставок
   doc: ''
+  items_path: items
+  pagination: last_id
 - operation_id: ozon_post_v1_fbp_order_pick_up_cancel
   section: OrderPickupFBP
   method: POST
@@ -4108,6 +4720,8 @@ endpoints:
   safety: write
   summary: Отменить pick-up поставку
   doc: ''
+  items_path: error.order_errors
+  pagination: none
 - operation_id: ozon_post_v1_fbp_order_pick_up_dlv_edit
   section: OrderPickupFBP
   method: POST
@@ -4117,6 +4731,8 @@ endpoints:
   safety: write
   summary: Изменить данные о точке забора
   doc: ''
+  items_path: error.order_errors
+  pagination: none
 - operation_id: ozon_post_v1_analytics_product_queries_details
   section: Premium
   method: POST
@@ -4126,6 +4742,8 @@ endpoints:
   safety: read
   summary: Получить детализацию запросов по товару
   doc: ''
+  items_path: queries
+  pagination: page
 - operation_id: ozon_post_v1_finance_realization_by_day
   section: Premium
   method: POST
@@ -4135,6 +4753,8 @@ endpoints:
   safety: read
   summary: Отчёт о реализации товаров за день
   doc: ''
+  items_path: rows
+  pagination: none
 - operation_id: ozon_post_v1_search_queries_text
   section: Premium
   method: POST
@@ -4144,6 +4764,8 @@ endpoints:
   safety: read
   summary: Получить список поисковых запросов по тексту
   doc: ''
+  items_path: search_queries
+  pagination: offset
 - operation_id: ozon_post_v1_search_queries_top
   section: Premium
   method: POST
@@ -4153,6 +4775,8 @@ endpoints:
   safety: read
   summary: Получить список популярных поисковых запросов
   doc: ''
+  items_path: search_queries
+  pagination: offset
 - operation_id: ozon_post_v1_product_prices_details
   section: Premium
   method: POST
@@ -4162,6 +4786,8 @@ endpoints:
   safety: write
   summary: Получить подробную информацию о ценах товаров
   doc: ''
+  items_path: prices
+  pagination: none
 - operation_id: ozon_post_v1_cancel_reason_list
   section: CancelReasonAPI
   method: POST
@@ -4171,6 +4797,8 @@ endpoints:
   safety: write
   summary: Причины отмены отправлений
   doc: ''
+  items_path: reasons
+  pagination: none
 - operation_id: ozon_post_v1_cancel_reason_list_by_order
   section: CancelReasonAPI
   method: POST
@@ -4180,6 +4808,8 @@ endpoints:
   safety: write
   summary: Причины отмены заказа
   doc: ''
+  items_path: reasons
+  pagination: none
 - operation_id: ozon_post_v1_cancel_reason_list_by_posting
   section: CancelReasonAPI
   method: POST
@@ -4189,6 +4819,8 @@ endpoints:
   safety: write
   summary: Причины отмены отправления
   doc: ''
+  items_path: reasons
+  pagination: none
 - operation_id: ozon_post_v1_delivery_check
   section: DeliveryAPI
   method: POST
@@ -4198,6 +4830,7 @@ endpoints:
   safety: write
   summary: Проверить доступность доставки для покупателя
   doc: ''
+  pagination: none
 - operation_id: ozon_post_v2_delivery_checkout
   section: DeliveryAPI
   method: POST
@@ -4207,6 +4840,8 @@ endpoints:
   safety: write
   summary: Получить доступные варианты доставки
   doc: ''
+  items_path: splits
+  pagination: none
 - operation_id: ozon_post_v1_delivery_map
   section: DeliveryAPI
   method: POST
@@ -4216,6 +4851,8 @@ endpoints:
   safety: write
   summary: Отрисовать точки на карте
   doc: ''
+  items_path: clusters
+  pagination: none
 - operation_id: ozon_post_v1_delivery_point_info
   section: DeliveryAPI
   method: POST
@@ -4225,6 +4862,8 @@ endpoints:
   safety: read
   summary: Получить информацию о точке самовывоза
   doc: ''
+  items_path: points
+  pagination: none
 - operation_id: ozon_post_v1_delivery_point_list
   section: DeliveryAPI
   method: POST
@@ -4234,6 +4873,8 @@ endpoints:
   safety: read
   summary: Получить список точек самовывоза
   doc: ''
+  items_path: points
+  pagination: none
 - operation_id: ozon_post_v1_order_cancel
   section: OrderAPI
   method: POST
@@ -4243,6 +4884,7 @@ endpoints:
   safety: write
   summary: Отменить заказ
   doc: ''
+  pagination: none
 - operation_id: ozon_post_v1_order_cancel_check
   section: OrderAPI
   method: POST
@@ -4252,6 +4894,8 @@ endpoints:
   safety: write
   summary: Проверить возможность отмены заказа
   doc: ''
+  items_path: postings
+  pagination: none
 - operation_id: ozon_post_v1_order_cancel_status
   section: OrderAPI
   method: POST
@@ -4261,6 +4905,8 @@ endpoints:
   safety: write
   summary: Получить статус отмены заказа
   doc: ''
+  items_path: posting_number
+  pagination: none
 - operation_id: ozon_post_v2_order_create
   section: OrderAPI
   method: POST
@@ -4270,6 +4916,8 @@ endpoints:
   safety: write
   summary: Создать заказ
   doc: ''
+  items_path: postings
+  pagination: none
 - operation_id: ozon_post_v1_posting_cancel
   section: FboPostingAPI
   method: POST
@@ -4279,6 +4927,7 @@ endpoints:
   safety: write
   summary: Отменить отправление из заказа
   doc: ''
+  pagination: none
 - operation_id: ozon_post_v1_posting_cancel_status
   section: FboPostingAPI
   method: POST
@@ -4288,6 +4937,8 @@ endpoints:
   safety: write
   summary: Проверить статус отмены отправления
   doc: ''
+  items_path: posting_number
+  pagination: none
 - operation_id: ozon_post_v1_posting_marks
   section: FboPostingAPI
   method: POST
@@ -4297,3 +4948,5 @@ endpoints:
   safety: write
   summary: Получить маркировки экземпляров из отправления
   doc: ''
+  items_path: invalid_postings
+  pagination: none
