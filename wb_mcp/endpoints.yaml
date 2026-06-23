@@ -401,3 +401,2487 @@ endpoints:
   - деньги
   - счёт
   - финансы
+- operation_id: wb_get_ping
+  section: Проверка подключения к WB API
+  method: GET
+  host: common-api.wildberries.ru
+  path: /ping
+  scope: common
+  safety: read
+  summary: Проверка подключения
+  doc: ''
+- operation_id: wb_get_api_communications_news
+  section: API новостей
+  method: GET
+  host: common-api.wildberries.ru
+  path: /api/communications/v2/news
+  scope: common
+  safety: read
+  summary: Получение новостей портала продавцов
+  doc: ''
+- operation_id: wb_get_api_seller_info
+  section: Информация о продавце
+  method: GET
+  host: common-api.wildberries.ru
+  path: /api/v1/seller-info
+  scope: common
+  safety: read
+  summary: Получить информацию о продавце
+  doc: ''
+- operation_id: wb_get_api_common_rating
+  section: Информация о продавце
+  method: GET
+  host: feedbacks-api.wildberries.ru
+  path: /api/common/v1/rating
+  scope: feedbacks
+  safety: read
+  summary: Получить рейтинг продавца
+  doc: ''
+- operation_id: wb_get_api_common_subscriptions
+  section: Информация о продавце
+  method: GET
+  host: common-api.wildberries.ru
+  path: /api/common/v1/subscriptions
+  scope: common
+  safety: read
+  summary: Получить информацию о подписке Джем
+  doc: ''
+- operation_id: wb_post_api_invite
+  section: Управление пользователями продавца
+  method: POST
+  host: user-management-api.wildberries.ru
+  path: /api/v1/invite
+  scope: general
+  safety: write
+  summary: Создать приглашение для нового пользователя
+  doc: ''
+- operation_id: wb_get_api_users
+  section: Управление пользователями продавца
+  method: GET
+  host: user-management-api.wildberries.ru
+  path: /api/v1/users
+  scope: general
+  safety: read
+  summary: Получить список активных или приглашённых пользователей продавца
+  doc: ''
+- operation_id: wb_put_api_users_access
+  section: Управление пользователями продавца
+  method: PUT
+  host: user-management-api.wildberries.ru
+  path: /api/v1/users/access
+  scope: general
+  safety: write
+  summary: Изменить права доступа пользователей
+  doc: ''
+- operation_id: wb_delete_api_user
+  section: Управление пользователями продавца
+  method: DELETE
+  host: user-management-api.wildberries.ru
+  path: /api/v1/user
+  scope: general
+  safety: destructive
+  summary: Удалить пользователя
+  doc: ''
+- operation_id: wb_get_content_object_parent_all
+  section: Категории, предметы и характеристики
+  method: GET
+  host: content-api.wildberries.ru
+  path: /content/v2/object/parent/all
+  scope: content
+  safety: read
+  summary: Родительские категории товаров
+  doc: ''
+- operation_id: wb_get_content_directory_colors
+  section: Категории, предметы и характеристики
+  method: GET
+  host: content-api.wildberries.ru
+  path: /content/v2/directory/colors
+  scope: content
+  safety: read
+  summary: Цвет
+  doc: ''
+- operation_id: wb_get_content_directory_kinds
+  section: Категории, предметы и характеристики
+  method: GET
+  host: content-api.wildberries.ru
+  path: /content/v2/directory/kinds
+  scope: content
+  safety: read
+  summary: Пол
+  doc: ''
+- operation_id: wb_get_content_directory_countries
+  section: Категории, предметы и характеристики
+  method: GET
+  host: content-api.wildberries.ru
+  path: /content/v2/directory/countries
+  scope: content
+  safety: read
+  summary: Страна производства
+  doc: ''
+- operation_id: wb_get_content_directory_seasons
+  section: Категории, предметы и характеристики
+  method: GET
+  host: content-api.wildberries.ru
+  path: /content/v2/directory/seasons
+  scope: content
+  safety: read
+  summary: Сезон
+  doc: ''
+- operation_id: wb_get_content_directory_vat
+  section: Категории, предметы и характеристики
+  method: GET
+  host: content-api.wildberries.ru
+  path: /content/v2/directory/vat
+  scope: content
+  safety: read
+  summary: Ставка НДС
+  doc: ''
+- operation_id: wb_get_content_directory_tnved
+  section: Категории, предметы и характеристики
+  method: GET
+  host: content-api.wildberries.ru
+  path: /content/v2/directory/tnved
+  scope: content
+  safety: read
+  summary: ТНВЭД-код
+  doc: ''
+- operation_id: wb_get_api_content_brands
+  section: Категории, предметы и характеристики
+  method: GET
+  host: content-api.wildberries.ru
+  path: /api/content/v1/brands
+  scope: content
+  safety: read
+  summary: Бренды
+  doc: ''
+- operation_id: wb_get_content_tags
+  section: Ярлыки
+  method: GET
+  host: content-api.wildberries.ru
+  path: /content/v2/tags
+  scope: content
+  safety: read
+  summary: Список ярлыков
+  doc: ''
+- operation_id: wb_post_content_tag
+  section: Ярлыки
+  method: POST
+  host: content-api.wildberries.ru
+  path: /content/v2/tag
+  scope: content
+  safety: write
+  summary: Создание ярлыка
+  doc: ''
+- operation_id: wb_patch_content_tag_id
+  section: Ярлыки
+  method: PATCH
+  host: content-api.wildberries.ru
+  path: /content/v2/tag/{id}
+  scope: content
+  safety: write
+  summary: Изменение ярлыка
+  doc: ''
+- operation_id: wb_delete_content_tag_id
+  section: Ярлыки
+  method: DELETE
+  host: content-api.wildberries.ru
+  path: /content/v2/tag/{id}
+  scope: content
+  safety: destructive
+  summary: Удаление ярлыка
+  doc: ''
+- operation_id: wb_post_content_tag_nomenclature_link
+  section: Ярлыки
+  method: POST
+  host: content-api.wildberries.ru
+  path: /content/v2/tag/nomenclature/link
+  scope: content
+  safety: write
+  summary: Управление ярлыками в карточке товара
+  doc: ''
+- operation_id: wb_post_content_cards_error_list
+  section: Карточки товаров
+  method: POST
+  host: content-api.wildberries.ru
+  path: /content/v2/cards/error/list
+  scope: content
+  safety: read
+  summary: Список несозданных карточек товаров с ошибками
+  doc: ''
+- operation_id: wb_post_content_cards_movenm
+  section: Карточки товаров
+  method: POST
+  host: content-api.wildberries.ru
+  path: /content/v2/cards/moveNm
+  scope: content
+  safety: write
+  summary: Объединение и разъединение карточек товаров
+  doc: ''
+- operation_id: wb_post_content_cards_recover
+  section: Карточки товаров
+  method: POST
+  host: content-api.wildberries.ru
+  path: /content/v2/cards/recover
+  scope: content
+  safety: write
+  summary: Восстановление карточек товаров из корзины
+  doc: ''
+- operation_id: wb_post_content_get_cards_trash
+  section: Карточки товаров
+  method: POST
+  host: content-api.wildberries.ru
+  path: /content/v2/get/cards/trash
+  scope: content
+  safety: read
+  summary: Список карточек товаров в корзине
+  doc: ''
+- operation_id: wb_get_content_cards_limits
+  section: Создание карточек товаров
+  method: GET
+  host: content-api.wildberries.ru
+  path: /content/v2/cards/limits
+  scope: content
+  safety: read
+  summary: Лимиты карточек товаров
+  doc: ''
+- operation_id: wb_post_content_barcodes
+  section: Создание карточек товаров
+  method: POST
+  host: content-api.wildberries.ru
+  path: /content/v2/barcodes
+  scope: content
+  safety: write
+  summary: Генерация баркодов
+  doc: ''
+- operation_id: wb_post_content_cards_upload_add
+  section: Создание карточек товаров
+  method: POST
+  host: content-api.wildberries.ru
+  path: /content/v2/cards/upload/add
+  scope: content
+  safety: write
+  summary: Создание карточек товаров с присоединением
+  doc: ''
+- operation_id: wb_post_content_media_file
+  section: Медиафайлы
+  method: POST
+  host: content-api.wildberries.ru
+  path: /content/v3/media/file
+  scope: content
+  safety: write
+  summary: Загрузить медиафайл
+  doc: ''
+- operation_id: wb_post_content_media_save
+  section: Медиафайлы
+  method: POST
+  host: content-api.wildberries.ru
+  path: /content/v3/media/save
+  scope: content
+  safety: write
+  summary: Загрузить медиафайлы по ссылкам
+  doc: ''
+- operation_id: wb_post_api_upload_task_size
+  section: Цены и скидки
+  method: POST
+  host: discounts-prices-api.wildberries.ru
+  path: /api/v2/upload/task/size
+  scope: prices
+  safety: write
+  summary: Установить цены для размеров
+  doc: ''
+- operation_id: wb_post_api_upload_task_club_discount
+  section: Цены и скидки
+  method: POST
+  host: discounts-prices-api.wildberries.ru
+  path: /api/v2/upload/task/club-discount
+  scope: prices
+  safety: write
+  summary: Установить скидки WB Клуба
+  doc: ''
+- operation_id: wb_post_api_discounts_prices_upload_task_b2b_wholesale
+  section: Цены и скидки
+  method: POST
+  host: discounts-prices-api.wildberries.ru
+  path: /api/discounts-prices/v1/upload/task/b2b/wholesale
+  scope: prices
+  safety: write
+  summary: Установить оптовые скидки для B2B-продаж
+  doc: ''
+- operation_id: wb_get_api_history_goods_task
+  section: Цены и скидки
+  method: GET
+  host: discounts-prices-api.wildberries.ru
+  path: /api/v2/history/goods/task
+  scope: prices
+  safety: read
+  summary: Детализация обработанной загрузки
+  doc: ''
+- operation_id: wb_get_api_buffer_tasks
+  section: Цены и скидки
+  method: GET
+  host: discounts-prices-api.wildberries.ru
+  path: /api/v2/buffer/tasks
+  scope: prices
+  safety: read
+  summary: Состояние необработанной загрузки
+  doc: ''
+- operation_id: wb_get_api_buffer_goods_task
+  section: Цены и скидки
+  method: GET
+  host: discounts-prices-api.wildberries.ru
+  path: /api/v2/buffer/goods/task
+  scope: prices
+  safety: read
+  summary: Детализация необработанной загрузки
+  doc: ''
+- operation_id: wb_post_api_list_goods_filter
+  section: Цены и скидки
+  method: POST
+  host: discounts-prices-api.wildberries.ru
+  path: /api/v2/list/goods/filter
+  scope: prices
+  safety: read
+  summary: Получить товары с ценами по артикулам
+  doc: ''
+- operation_id: wb_get_api_list_goods_size_nm
+  section: Цены и скидки
+  method: GET
+  host: discounts-prices-api.wildberries.ru
+  path: /api/v2/list/goods/size/nm
+  scope: prices
+  safety: read
+  summary: Получить размеры товара с ценами
+  doc: ''
+- operation_id: wb_get_api_quarantine_goods
+  section: Цены и скидки
+  method: GET
+  host: discounts-prices-api.wildberries.ru
+  path: /api/v2/quarantine/goods
+  scope: prices
+  safety: read
+  summary: Получить товары в карантине
+  doc: ''
+- operation_id: wb_delete_api_stocks_warehouseid
+  section: Остатки на складах продавца
+  method: DELETE
+  host: marketplace-api.wildberries.ru
+  path: /api/v3/stocks/{warehouseId}
+  scope: marketplace
+  safety: destructive
+  summary: Удалить остатки товаров
+  doc: ''
+- operation_id: wb_post_api_stocks_warehouseid
+  section: Остатки на складах продавца
+  method: POST
+  host: marketplace-api.wildberries.ru
+  path: /api/v3/stocks/{warehouseId}
+  scope: marketplace
+  safety: write
+  summary: Получить остатки товаров
+  doc: ''
+- operation_id: wb_get_api_offices
+  section: Склады продавца
+  method: GET
+  host: marketplace-api.wildberries.ru
+  path: /api/v3/offices
+  scope: marketplace
+  safety: read
+  summary: Получить список складов WB
+  doc: ''
+- operation_id: wb_post_api_warehouses
+  section: Склады продавца
+  method: POST
+  host: marketplace-api.wildberries.ru
+  path: /api/v3/warehouses
+  scope: marketplace
+  safety: read
+  summary: Создать склад продавца
+  doc: ''
+- operation_id: wb_put_api_warehouses_warehouseid
+  section: Склады продавца
+  method: PUT
+  host: marketplace-api.wildberries.ru
+  path: /api/v3/warehouses/{warehouseId}
+  scope: marketplace
+  safety: read
+  summary: Обновить склад продавца
+  doc: ''
+- operation_id: wb_delete_api_warehouses_warehouseid
+  section: Склады продавца
+  method: DELETE
+  host: marketplace-api.wildberries.ru
+  path: /api/v3/warehouses/{warehouseId}
+  scope: marketplace
+  safety: destructive
+  summary: Удалить склад продавца
+  doc: ''
+- operation_id: wb_get_api_dbw_warehouses_warehouseid_contacts
+  section: Склады продавца
+  method: GET
+  host: marketplace-api.wildberries.ru
+  path: /api/v3/dbw/warehouses/{warehouseId}/contacts
+  scope: marketplace
+  safety: read
+  summary: Список контактов
+  doc: ''
+- operation_id: wb_put_api_dbw_warehouses_warehouseid_contacts
+  section: Склады продавца
+  method: PUT
+  host: marketplace-api.wildberries.ru
+  path: /api/v3/dbw/warehouses/{warehouseId}/contacts
+  scope: marketplace
+  safety: read
+  summary: Обновить список контактов
+  doc: ''
+- operation_id: wb_get_api_passes_offices
+  section: Пропуска FBS
+  method: GET
+  host: marketplace-api.wildberries.ru
+  path: /api/v3/passes/offices
+  scope: marketplace
+  safety: read
+  summary: Получить список складов, для которых требуется пропуск
+  doc: ''
+- operation_id: wb_get_api_passes
+  section: Пропуска FBS
+  method: GET
+  host: marketplace-api.wildberries.ru
+  path: /api/v3/passes
+  scope: marketplace
+  safety: read
+  summary: Получить список пропусков
+  doc: ''
+- operation_id: wb_post_api_passes
+  section: Пропуска FBS
+  method: POST
+  host: marketplace-api.wildberries.ru
+  path: /api/v3/passes
+  scope: marketplace
+  safety: write
+  summary: Создать пропуск
+  doc: ''
+- operation_id: wb_put_api_passes_passid
+  section: Пропуска FBS
+  method: PUT
+  host: marketplace-api.wildberries.ru
+  path: /api/v3/passes/{passId}
+  scope: marketplace
+  safety: write
+  summary: Обновить пропуск
+  doc: ''
+- operation_id: wb_delete_api_passes_passid
+  section: Пропуска FBS
+  method: DELETE
+  host: marketplace-api.wildberries.ru
+  path: /api/v3/passes/{passId}
+  scope: marketplace
+  safety: destructive
+  summary: Удалить пропуск
+  doc: ''
+- operation_id: wb_get_api_supplies_orders_reshipment
+  section: Сборочные задания FBS
+  method: GET
+  host: marketplace-api.wildberries.ru
+  path: /api/v3/supplies/orders/reshipment
+  scope: marketplace
+  safety: read
+  summary: Получить все сборочные задания для повторной отгрузки
+  doc: ''
+- operation_id: wb_patch_api_orders_orderid_cancel
+  section: Сборочные задания FBS
+  method: PATCH
+  host: marketplace-api.wildberries.ru
+  path: /api/v3/orders/{orderId}/cancel
+  scope: marketplace
+  safety: write
+  summary: Отменить сборочное задание
+  doc: ''
+- operation_id: wb_post_api_marketplace_orders_meta
+  section: Идентификаторы маркировки FBS
+  method: POST
+  host: marketplace-api.wildberries.ru
+  path: /api/marketplace/v3/orders/meta
+  scope: marketplace
+  safety: write
+  summary: Получить идентификаторы маркировки сборочных заданий
+  doc: ''
+- operation_id: wb_delete_api_orders_orderid_meta
+  section: Идентификаторы маркировки FBS
+  method: DELETE
+  host: marketplace-api.wildberries.ru
+  path: /api/v3/orders/{orderId}/meta
+  scope: marketplace
+  safety: destructive
+  summary: Удалить идентификаторы маркировки сборочного задания
+  doc: ''
+- operation_id: wb_put_api_orders_orderid_meta_sgtin
+  section: Идентификаторы маркировки FBS
+  method: PUT
+  host: marketplace-api.wildberries.ru
+  path: /api/v3/orders/{orderId}/meta/sgtin
+  scope: marketplace
+  safety: write
+  summary: Закрепить за сборочным заданием код маркировки Честного знака
+  doc: ''
+- operation_id: wb_put_api_orders_orderid_meta_uin
+  section: Идентификаторы маркировки FBS
+  method: PUT
+  host: marketplace-api.wildberries.ru
+  path: /api/v3/orders/{orderId}/meta/uin
+  scope: marketplace
+  safety: write
+  summary: Закрепить за сборочным заданием УИН
+  doc: ''
+- operation_id: wb_put_api_orders_orderid_meta_imei
+  section: Идентификаторы маркировки FBS
+  method: PUT
+  host: marketplace-api.wildberries.ru
+  path: /api/v3/orders/{orderId}/meta/imei
+  scope: marketplace
+  safety: write
+  summary: Закрепить за сборочным заданием IMEI
+  doc: ''
+- operation_id: wb_put_api_orders_orderid_meta_gtin
+  section: Идентификаторы маркировки FBS
+  method: PUT
+  host: marketplace-api.wildberries.ru
+  path: /api/v3/orders/{orderId}/meta/gtin
+  scope: marketplace
+  safety: write
+  summary: Закрепить за сборочным заданием GTIN
+  doc: ''
+- operation_id: wb_put_api_orders_orderid_meta_expiration
+  section: Идентификаторы маркировки FBS
+  method: PUT
+  host: marketplace-api.wildberries.ru
+  path: /api/v3/orders/{orderId}/meta/expiration
+  scope: marketplace
+  safety: write
+  summary: Закрепить за сборочным заданием срок годности товара
+  doc: ''
+- operation_id: wb_put_api_marketplace_orders_orderid_meta_customs_declarati
+  section: Идентификаторы маркировки FBS
+  method: PUT
+  host: marketplace-api.wildberries.ru
+  path: /api/marketplace/v3/orders/{orderId}/meta/customs-declaration
+  scope: marketplace
+  safety: write
+  summary: Закрепить за сборочным заданием номер ДТ
+  doc: ''
+- operation_id: wb_post_api_orders_stickers_cross_border
+  section: Сборочные задания FBS
+  method: POST
+  host: marketplace-api.wildberries.ru
+  path: /api/v3/orders/stickers/cross-border
+  scope: marketplace
+  safety: write
+  summary: Получить стикеры сборочных заданий трансграничных поставок
+  doc: ''
+- operation_id: wb_post_api_orders_status_history
+  section: Сборочные задания FBS
+  method: POST
+  host: marketplace-api.wildberries.ru
+  path: /api/v3/orders/status/history
+  scope: marketplace
+  safety: read
+  summary: История статусов для сборочных заданий трансграничных поставок
+  doc: ''
+- operation_id: wb_post_api_orders_client
+  section: Сборочные задания FBS
+  method: POST
+  host: marketplace-api.wildberries.ru
+  path: /api/v3/orders/client
+  scope: marketplace
+  safety: write
+  summary: Заказы с информацией по клиенту
+  doc: ''
+- operation_id: wb_patch_api_marketplace_supplies_supplyid_orders
+  section: Поставки FBS
+  method: PATCH
+  host: marketplace-api.wildberries.ru
+  path: /api/marketplace/v3/supplies/{supplyId}/orders
+  scope: marketplace
+  safety: write
+  summary: Добавить сборочные задания к поставке
+  doc: ''
+- operation_id: wb_get_api_supplies_supplyid
+  section: Поставки FBS
+  method: GET
+  host: marketplace-api.wildberries.ru
+  path: /api/v3/supplies/{supplyId}
+  scope: marketplace
+  safety: read
+  summary: Получить информацию о поставке
+  doc: ''
+- operation_id: wb_delete_api_supplies_supplyid
+  section: Поставки FBS
+  method: DELETE
+  host: marketplace-api.wildberries.ru
+  path: /api/v3/supplies/{supplyId}
+  scope: marketplace
+  safety: destructive
+  summary: Удалить поставку
+  doc: ''
+- operation_id: wb_get_api_marketplace_supplies_supplyid_order_ids
+  section: Поставки FBS
+  method: GET
+  host: marketplace-api.wildberries.ru
+  path: /api/marketplace/v3/supplies/{supplyId}/order-ids
+  scope: marketplace
+  safety: read
+  summary: Получить ID сборочных заданий поставки
+  doc: ''
+- operation_id: wb_patch_api_supplies_supplyid_deliver
+  section: Поставки FBS
+  method: PATCH
+  host: marketplace-api.wildberries.ru
+  path: /api/v3/supplies/{supplyId}/deliver
+  scope: marketplace
+  safety: write
+  summary: Передать поставку в доставку
+  doc: ''
+- operation_id: wb_get_api_supplies_supplyid_barcode
+  section: Поставки FBS
+  method: GET
+  host: marketplace-api.wildberries.ru
+  path: /api/v3/supplies/{supplyId}/barcode
+  scope: marketplace
+  safety: read
+  summary: Получить QR-код поставки
+  doc: ''
+- operation_id: wb_get_api_supplies_supplyid_trbx
+  section: Поставки FBS
+  method: GET
+  host: marketplace-api.wildberries.ru
+  path: /api/v3/supplies/{supplyId}/trbx
+  scope: marketplace
+  safety: read
+  summary: Получить список грузомест поставки
+  doc: ''
+- operation_id: wb_post_api_supplies_supplyid_trbx
+  section: Поставки FBS
+  method: POST
+  host: marketplace-api.wildberries.ru
+  path: /api/v3/supplies/{supplyId}/trbx
+  scope: marketplace
+  safety: write
+  summary: Добавить грузоместа к поставке
+  doc: ''
+- operation_id: wb_delete_api_supplies_supplyid_trbx
+  section: Поставки FBS
+  method: DELETE
+  host: marketplace-api.wildberries.ru
+  path: /api/v3/supplies/{supplyId}/trbx
+  scope: marketplace
+  safety: destructive
+  summary: Удалить грузоместа из поставки
+  doc: ''
+- operation_id: wb_post_api_supplies_supplyid_trbx_stickers
+  section: Поставки FBS
+  method: POST
+  host: marketplace-api.wildberries.ru
+  path: /api/v3/supplies/{supplyId}/trbx/stickers
+  scope: marketplace
+  safety: write
+  summary: Получить стикеры грузомест поставки
+  doc: ''
+- operation_id: wb_get_api_marketplace_fbs_orders_archive
+  section: Сборочные задания FBS
+  method: GET
+  host: marketplace-api.wildberries.ru
+  path: /api/marketplace/v3/fbs/orders/archive
+  scope: marketplace
+  safety: read
+  summary: Получить список архивных сборочных заданий
+  doc: ''
+- operation_id: wb_get_api_dbw_orders_new
+  section: Сборочные задания DBW
+  method: GET
+  host: marketplace-api.wildberries.ru
+  path: /api/v3/dbw/orders/new
+  scope: marketplace
+  safety: read
+  summary: Получить список новых сборочных заданий
+  doc: ''
+- operation_id: wb_get_api_dbw_orders
+  section: Сборочные задания DBW
+  method: GET
+  host: marketplace-api.wildberries.ru
+  path: /api/v3/dbw/orders
+  scope: marketplace
+  safety: read
+  summary: Получить информацию о завершенных сборочных заданиях
+  doc: ''
+- operation_id: wb_post_api_dbw_orders_delivery_date
+  section: Сборочные задания DBW
+  method: POST
+  host: marketplace-api.wildberries.ru
+  path: /api/v3/dbw/orders/delivery-date
+  scope: marketplace
+  safety: write
+  summary: Получить дату и время доставки
+  doc: ''
+- operation_id: wb_post_api_marketplace_dbw_orders_client
+  section: Сборочные задания DBW
+  method: POST
+  host: marketplace-api.wildberries.ru
+  path: /api/marketplace/v3/dbw/orders/client
+  scope: marketplace
+  safety: write
+  summary: Информация о покупателе
+  doc: ''
+- operation_id: wb_post_api_dbw_orders_status
+  section: Сборочные задания DBW
+  method: POST
+  host: marketplace-api.wildberries.ru
+  path: /api/v3/dbw/orders/status
+  scope: marketplace
+  safety: read
+  summary: Получить статусы сборочных заданий
+  doc: ''
+- operation_id: wb_patch_api_dbw_orders_orderid_confirm
+  section: Сборочные задания DBW
+  method: PATCH
+  host: marketplace-api.wildberries.ru
+  path: /api/v3/dbw/orders/{orderId}/confirm
+  scope: marketplace
+  safety: write
+  summary: Перевести на сборку
+  doc: ''
+- operation_id: wb_post_api_dbw_orders_stickers
+  section: Сборочные задания DBW
+  method: POST
+  host: marketplace-api.wildberries.ru
+  path: /api/v3/dbw/orders/stickers
+  scope: marketplace
+  safety: write
+  summary: Получить стикеры сборочных заданий
+  doc: ''
+- operation_id: wb_post_api_marketplace_dbw_orders_status_deliver
+  section: Сборочные задания DBW
+  method: POST
+  host: marketplace-api.wildberries.ru
+  path: /api/marketplace/v3/dbw/orders/status/deliver
+  scope: marketplace
+  safety: write
+  summary: Перевести сборочные задания в доставку
+  doc: ''
+- operation_id: wb_post_api_dbw_orders_courier
+  section: Сборочные задания DBW
+  method: POST
+  host: marketplace-api.wildberries.ru
+  path: /api/v3/dbw/orders/courier
+  scope: marketplace
+  safety: write
+  summary: Информация о курьере
+  doc: ''
+- operation_id: wb_patch_api_dbw_orders_orderid_cancel
+  section: Сборочные задания DBW
+  method: PATCH
+  host: marketplace-api.wildberries.ru
+  path: /api/v3/dbw/orders/{orderId}/cancel
+  scope: marketplace
+  safety: write
+  summary: Отменить сборочное задание
+  doc: ''
+- operation_id: wb_post_api_marketplace_dbw_orders_meta_details
+  section: Идентификаторы маркировки DBW
+  method: POST
+  host: marketplace-api.wildberries.ru
+  path: /api/marketplace/v3/dbw/orders/meta/details
+  scope: marketplace
+  safety: read
+  summary: Получить идентификаторы маркировки сборочных заданий
+  doc: ''
+- operation_id: wb_post_api_marketplace_dbw_orders_meta_delete
+  section: Идентификаторы маркировки DBW
+  method: POST
+  host: marketplace-api.wildberries.ru
+  path: /api/marketplace/v3/dbw/orders/meta/delete
+  scope: marketplace
+  safety: write
+  summary: Удалить идентификаторы маркировки сборочных заданий
+  doc: ''
+- operation_id: wb_get_api_dbw_orders_orderid_meta
+  section: Идентификаторы маркировки DBW
+  method: GET
+  host: marketplace-api.wildberries.ru
+  path: /api/v3/dbw/orders/{orderId}/meta
+  scope: marketplace
+  safety: read
+  summary: Получить идентификаторы маркировки сборочного задания
+  doc: ''
+- operation_id: wb_post_api_marketplace_dbw_orders_meta_sgtin
+  section: Идентификаторы маркировки DBW
+  method: POST
+  host: marketplace-api.wildberries.ru
+  path: /api/marketplace/v3/dbw/orders/meta/sgtin
+  scope: marketplace
+  safety: write
+  summary: Закрепить коды маркировки Честного знака за сборочными заданиями
+  doc: ''
+- operation_id: wb_put_api_dbw_orders_orderid_meta_uin
+  section: Идентификаторы маркировки DBW
+  method: PUT
+  host: marketplace-api.wildberries.ru
+  path: /api/v3/dbw/orders/{orderId}/meta/uin
+  scope: marketplace
+  safety: write
+  summary: Закрепить за сборочным заданием УИН (уникальный идентификационный номер)
+  doc: ''
+- operation_id: wb_put_api_dbw_orders_orderid_meta_imei
+  section: Идентификаторы маркировки DBW
+  method: PUT
+  host: marketplace-api.wildberries.ru
+  path: /api/v3/dbw/orders/{orderId}/meta/imei
+  scope: marketplace
+  safety: write
+  summary: Закрепить за сборочным заданием IMEI
+  doc: ''
+- operation_id: wb_put_api_dbw_orders_orderid_meta_gtin
+  section: Идентификаторы маркировки DBW
+  method: PUT
+  host: marketplace-api.wildberries.ru
+  path: /api/v3/dbw/orders/{orderId}/meta/gtin
+  scope: marketplace
+  safety: write
+  summary: Закрепить за сборочным заданием GTIN
+  doc: ''
+- operation_id: wb_get_api_dbs_orders_new
+  section: Сборочные задания DBS
+  method: GET
+  host: marketplace-api.wildberries.ru
+  path: /api/v3/dbs/orders/new
+  scope: marketplace
+  safety: read
+  summary: Получить список новых сборочных заданий
+  doc: ''
+- operation_id: wb_get_api_dbs_orders
+  section: Сборочные задания DBS
+  method: GET
+  host: marketplace-api.wildberries.ru
+  path: /api/v3/dbs/orders
+  scope: marketplace
+  safety: read
+  summary: Получить информацию о завершенных сборочных заданиях
+  doc: ''
+- operation_id: wb_post_api_dbs_groups_info
+  section: Сборочные задания DBS
+  method: POST
+  host: marketplace-api.wildberries.ru
+  path: /api/v3/dbs/groups/info
+  scope: marketplace
+  safety: read
+  summary: Получить информацию о платной доставке
+  doc: ''
+- operation_id: wb_post_api_dbs_orders_client
+  section: Сборочные задания DBS
+  method: POST
+  host: marketplace-api.wildberries.ru
+  path: /api/v3/dbs/orders/client
+  scope: marketplace
+  safety: write
+  summary: Информация о покупателе
+  doc: ''
+- operation_id: wb_post_api_marketplace_dbs_orders_b2b_info
+  section: Сборочные задания DBS
+  method: POST
+  host: marketplace-api.wildberries.ru
+  path: /api/marketplace/v3/dbs/orders/b2b/info
+  scope: marketplace
+  safety: read
+  summary: Информация о покупателе B2B
+  doc: ''
+- operation_id: wb_post_api_dbs_orders_delivery_date
+  section: Сборочные задания DBS
+  method: POST
+  host: marketplace-api.wildberries.ru
+  path: /api/v3/dbs/orders/delivery-date
+  scope: marketplace
+  safety: write
+  summary: Получить дату и время доставки
+  doc: ''
+- operation_id: wb_post_api_marketplace_dbs_orders_status_info
+  section: Сборочные задания DBS
+  method: POST
+  host: marketplace-api.wildberries.ru
+  path: /api/marketplace/v3/dbs/orders/status/info
+  scope: marketplace
+  safety: read
+  summary: Получить статусы сборочных заданий
+  doc: ''
+- operation_id: wb_post_api_marketplace_dbs_orders_status_cancel
+  section: Сборочные задания DBS
+  method: POST
+  host: marketplace-api.wildberries.ru
+  path: /api/marketplace/v3/dbs/orders/status/cancel
+  scope: marketplace
+  safety: write
+  summary: Отменить сборочные задания
+  doc: ''
+- operation_id: wb_post_api_marketplace_dbs_orders_status_confirm
+  section: Сборочные задания DBS
+  method: POST
+  host: marketplace-api.wildberries.ru
+  path: /api/marketplace/v3/dbs/orders/status/confirm
+  scope: marketplace
+  safety: write
+  summary: Перевести сборочные задания на сборку
+  doc: ''
+- operation_id: wb_post_api_marketplace_dbs_orders_stickers
+  section: Сборочные задания DBS
+  method: POST
+  host: marketplace-api.wildberries.ru
+  path: /api/marketplace/v3/dbs/orders/stickers
+  scope: marketplace
+  safety: write
+  summary: Получить стикеры для сборочных заданий с доставкой в ПВЗ
+  doc: ''
+- operation_id: wb_post_api_marketplace_dbs_orders_status_deliver
+  section: Сборочные задания DBS
+  method: POST
+  host: marketplace-api.wildberries.ru
+  path: /api/marketplace/v3/dbs/orders/status/deliver
+  scope: marketplace
+  safety: write
+  summary: Перевести сборочные задания в доставку
+  doc: ''
+- operation_id: wb_post_api_marketplace_dbs_orders_status_receive
+  section: Сборочные задания DBS
+  method: POST
+  host: marketplace-api.wildberries.ru
+  path: /api/marketplace/v3/dbs/orders/status/receive
+  scope: marketplace
+  safety: write
+  summary: Сообщить о получении заказов
+  doc: ''
+- operation_id: wb_post_api_marketplace_dbs_orders_status_reject
+  section: Сборочные задания DBS
+  method: POST
+  host: marketplace-api.wildberries.ru
+  path: /api/marketplace/v3/dbs/orders/status/reject
+  scope: marketplace
+  safety: write
+  summary: Сообщить об отказе от заказов
+  doc: ''
+- operation_id: wb_post_api_marketplace_dbs_orders_meta_details
+  section: Идентификаторы маркировки DBS
+  method: POST
+  host: marketplace-api.wildberries.ru
+  path: /api/marketplace/v3/dbs/orders/meta/details
+  scope: marketplace
+  safety: read
+  summary: Получить идентификаторы маркировки сборочных заданий
+  doc: ''
+- operation_id: wb_post_api_marketplace_dbs_orders_meta_info
+  section: Идентификаторы маркировки DBS
+  method: POST
+  host: marketplace-api.wildberries.ru
+  path: /api/marketplace/v3/dbs/orders/meta/info
+  scope: marketplace
+  safety: read
+  summary: Получить идентификаторы маркировки сборочных заданий
+  doc: ''
+- operation_id: wb_post_api_marketplace_dbs_orders_meta_delete
+  section: Идентификаторы маркировки DBS
+  method: POST
+  host: marketplace-api.wildberries.ru
+  path: /api/marketplace/v3/dbs/orders/meta/delete
+  scope: marketplace
+  safety: write
+  summary: Удалить идентификаторы маркировки сборочных заданий
+  doc: ''
+- operation_id: wb_post_api_marketplace_dbs_orders_meta_sgtin
+  section: Идентификаторы маркировки DBS
+  method: POST
+  host: marketplace-api.wildberries.ru
+  path: /api/marketplace/v3/dbs/orders/meta/sgtin
+  scope: marketplace
+  safety: write
+  summary: Закрепить коды маркировки Честного знака за сборочными заданиями
+  doc: ''
+- operation_id: wb_post_api_marketplace_dbs_orders_meta_uin
+  section: Идентификаторы маркировки DBS
+  method: POST
+  host: marketplace-api.wildberries.ru
+  path: /api/marketplace/v3/dbs/orders/meta/uin
+  scope: marketplace
+  safety: write
+  summary: Закрепить УИН за сборочными заданиями
+  doc: ''
+- operation_id: wb_post_api_marketplace_dbs_orders_meta_imei
+  section: Идентификаторы маркировки DBS
+  method: POST
+  host: marketplace-api.wildberries.ru
+  path: /api/marketplace/v3/dbs/orders/meta/imei
+  scope: marketplace
+  safety: write
+  summary: Закрепить IMEI за сборочными заданиями
+  doc: ''
+- operation_id: wb_post_api_marketplace_dbs_orders_meta_gtin
+  section: Идентификаторы маркировки DBS
+  method: POST
+  host: marketplace-api.wildberries.ru
+  path: /api/marketplace/v3/dbs/orders/meta/gtin
+  scope: marketplace
+  safety: write
+  summary: Закрепить GTIN за сборочными заданиями
+  doc: ''
+- operation_id: wb_post_api_marketplace_dbs_orders_meta_customs_declaration
+  section: Идентификаторы маркировки DBS
+  method: POST
+  host: marketplace-api.wildberries.ru
+  path: /api/marketplace/v3/dbs/orders/meta/customs-declaration
+  scope: marketplace
+  safety: write
+  summary: Закрепить за сборочными заданиями номер ДТ
+  doc: ''
+- operation_id: wb_get_api_click_collect_orders_new
+  section: Сборочные задания Самовывоз
+  method: GET
+  host: marketplace-api.wildberries.ru
+  path: /api/v3/click-collect/orders/new
+  scope: marketplace
+  safety: read
+  summary: Получить список новых сборочных заданий
+  doc: ''
+- operation_id: wb_post_api_marketplace_click_collect_orders_status_confirm
+  section: Сборочные задания Самовывоз
+  method: POST
+  host: marketplace-api.wildberries.ru
+  path: /api/marketplace/v3/click-collect/orders/status/confirm
+  scope: marketplace
+  safety: write
+  summary: Перевести сборочные задания на сборку
+  doc: ''
+- operation_id: wb_post_api_marketplace_click_collect_orders_status_prepare
+  section: Сборочные задания Самовывоз
+  method: POST
+  host: marketplace-api.wildberries.ru
+  path: /api/marketplace/v3/click-collect/orders/status/prepare
+  scope: marketplace
+  safety: write
+  summary: Сообщить, что сборочные задания готовы к выдаче
+  doc: ''
+- operation_id: wb_post_api_click_collect_orders_client
+  section: Сборочные задания Самовывоз
+  method: POST
+  host: marketplace-api.wildberries.ru
+  path: /api/v3/click-collect/orders/client
+  scope: marketplace
+  safety: write
+  summary: Информация о покупателе
+  doc: ''
+- operation_id: wb_post_api_click_collect_orders_client_identity
+  section: Сборочные задания Самовывоз
+  method: POST
+  host: marketplace-api.wildberries.ru
+  path: /api/v3/click-collect/orders/client/identity
+  scope: marketplace
+  safety: write
+  summary: Проверить, что заказ принадлежит покупателю
+  doc: ''
+- operation_id: wb_post_api_marketplace_click_collect_orders_status_receive
+  section: Сборочные задания Самовывоз
+  method: POST
+  host: marketplace-api.wildberries.ru
+  path: /api/marketplace/v3/click-collect/orders/status/receive
+  scope: marketplace
+  safety: write
+  summary: Сообщить, что заказы приняты покупателями
+  doc: ''
+- operation_id: wb_post_api_marketplace_click_collect_orders_status_reject
+  section: Сборочные задания Самовывоз
+  method: POST
+  host: marketplace-api.wildberries.ru
+  path: /api/marketplace/v3/click-collect/orders/status/reject
+  scope: marketplace
+  safety: write
+  summary: Сообщить об отказе от заказов
+  doc: ''
+- operation_id: wb_post_api_marketplace_click_collect_orders_status_info
+  section: Сборочные задания Самовывоз
+  method: POST
+  host: marketplace-api.wildberries.ru
+  path: /api/marketplace/v3/click-collect/orders/status/info
+  scope: marketplace
+  safety: read
+  summary: Получить статусы сборочных заданий
+  doc: ''
+- operation_id: wb_get_api_click_collect_orders
+  section: Сборочные задания Самовывоз
+  method: GET
+  host: marketplace-api.wildberries.ru
+  path: /api/v3/click-collect/orders
+  scope: marketplace
+  safety: read
+  summary: Получить информацию о завершённых сборочных заданиях
+  doc: ''
+- operation_id: wb_post_api_marketplace_click_collect_orders_status_cancel
+  section: Сборочные задания Самовывоз
+  method: POST
+  host: marketplace-api.wildberries.ru
+  path: /api/marketplace/v3/click-collect/orders/status/cancel
+  scope: marketplace
+  safety: write
+  summary: Отменить сборочные задания
+  doc: ''
+- operation_id: wb_post_api_marketplace_click_collect_orders_meta_details
+  section: Идентификаторы маркировки Самовывоз
+  method: POST
+  host: marketplace-api.wildberries.ru
+  path: /api/marketplace/v3/click-collect/orders/meta/details
+  scope: marketplace
+  safety: read
+  summary: Получить идентификаторы маркировки сборочных заданий
+  doc: ''
+- operation_id: wb_post_api_marketplace_click_collect_orders_meta_info
+  section: Идентификаторы маркировки Самовывоз
+  method: POST
+  host: marketplace-api.wildberries.ru
+  path: /api/marketplace/v3/click-collect/orders/meta/info
+  scope: marketplace
+  safety: read
+  summary: Получить идентификаторы маркировки сборочных заданий
+  doc: ''
+- operation_id: wb_post_api_marketplace_click_collect_orders_meta_delete
+  section: Идентификаторы маркировки Самовывоз
+  method: POST
+  host: marketplace-api.wildberries.ru
+  path: /api/marketplace/v3/click-collect/orders/meta/delete
+  scope: marketplace
+  safety: write
+  summary: Удалить идентификаторы маркировки сборочных заданий
+  doc: ''
+- operation_id: wb_post_api_marketplace_click_collect_orders_meta_sgtin
+  section: Идентификаторы маркировки Самовывоз
+  method: POST
+  host: marketplace-api.wildberries.ru
+  path: /api/marketplace/v3/click-collect/orders/meta/sgtin
+  scope: marketplace
+  safety: write
+  summary: Закрепить коды маркировки Честного знака за сборочными заданиями
+  doc: ''
+- operation_id: wb_post_api_marketplace_click_collect_orders_meta_uin
+  section: Идентификаторы маркировки Самовывоз
+  method: POST
+  host: marketplace-api.wildberries.ru
+  path: /api/marketplace/v3/click-collect/orders/meta/uin
+  scope: marketplace
+  safety: write
+  summary: Закрепить УИН за сборочными заданиями
+  doc: ''
+- operation_id: wb_post_api_marketplace_click_collect_orders_meta_imei
+  section: Идентификаторы маркировки Самовывоз
+  method: POST
+  host: marketplace-api.wildberries.ru
+  path: /api/marketplace/v3/click-collect/orders/meta/imei
+  scope: marketplace
+  safety: write
+  summary: Закрепить IMEI за сборочными заданиями
+  doc: ''
+- operation_id: wb_post_api_marketplace_click_collect_orders_meta_gtin
+  section: Идентификаторы маркировки Самовывоз
+  method: POST
+  host: marketplace-api.wildberries.ru
+  path: /api/marketplace/v3/click-collect/orders/meta/gtin
+  scope: marketplace
+  safety: write
+  summary: Закрепить GTIN за сборочными заданиями
+  doc: ''
+- operation_id: wb_post_api_acceptance_options
+  section: Информация для формирования поставок
+  method: POST
+  host: supplies-api.wildberries.ru
+  path: /api/v1/acceptance/options
+  scope: supplies
+  safety: write
+  summary: Опции приёмки
+  doc: ''
+- operation_id: wb_get_api_warehouses
+  section: Информация для формирования поставок
+  method: GET
+  host: supplies-api.wildberries.ru
+  path: /api/v1/warehouses
+  scope: supplies
+  safety: read
+  summary: Список складов
+  doc: ''
+- operation_id: wb_get_api_transit_tariffs
+  section: Информация для формирования поставок
+  method: GET
+  host: supplies-api.wildberries.ru
+  path: /api/v1/transit-tariffs
+  scope: supplies
+  safety: read
+  summary: Транзитные направления
+  doc: ''
+- operation_id: wb_post_api_supplies
+  section: Информация о поставках
+  method: POST
+  host: supplies-api.wildberries.ru
+  path: /api/v1/supplies
+  scope: supplies
+  safety: write
+  summary: Список поставок
+  doc: ''
+- operation_id: wb_get_api_supplies_id
+  section: Информация о поставках
+  method: GET
+  host: supplies-api.wildberries.ru
+  path: /api/v1/supplies/{ID}
+  scope: supplies
+  safety: read
+  summary: Детали поставки
+  doc: ''
+- operation_id: wb_get_api_supplies_id_goods
+  section: Информация о поставках
+  method: GET
+  host: supplies-api.wildberries.ru
+  path: /api/v1/supplies/{ID}/goods
+  scope: supplies
+  safety: read
+  summary: Товары поставки
+  doc: ''
+- operation_id: wb_get_api_supplies_id_package
+  section: Информация о поставках
+  method: GET
+  host: supplies-api.wildberries.ru
+  path: /api/v1/supplies/{ID}/package
+  scope: supplies
+  safety: read
+  summary: Упаковка поставки
+  doc: ''
+- operation_id: wb_get_api_advert_adverts
+  section: Кампании
+  method: GET
+  host: advert-api.wildberries.ru
+  path: /api/advert/v2/adverts
+  scope: promotion
+  safety: read
+  summary: Информация о кампаниях
+  doc: ''
+- operation_id: wb_post_api_advert_bids_min
+  section: Создание кампаний
+  method: POST
+  host: advert-api.wildberries.ru
+  path: /api/advert/v1/bids/min
+  scope: promotion
+  safety: write
+  summary: Минимальные ставки для карточек товаров
+  doc: ''
+- operation_id: wb_post_adv_seacat_save_ad
+  section: Создание кампаний
+  method: POST
+  host: advert-api.wildberries.ru
+  path: /adv/v2/seacat/save-ad
+  scope: promotion
+  safety: write
+  summary: Создать кампанию
+  doc: ''
+- operation_id: wb_get_adv_supplier_subjects
+  section: Создание кампаний
+  method: GET
+  host: advert-api.wildberries.ru
+  path: /adv/v1/supplier/subjects
+  scope: promotion
+  safety: read
+  summary: Предметы для кампаний
+  doc: ''
+- operation_id: wb_post_adv_supplier_nms
+  section: Создание кампаний
+  method: POST
+  host: advert-api.wildberries.ru
+  path: /adv/v2/supplier/nms
+  scope: promotion
+  safety: write
+  summary: Карточки товаров для кампаний
+  doc: ''
+- operation_id: wb_get_adv_delete
+  section: Управление кампаниями
+  method: GET
+  host: advert-api.wildberries.ru
+  path: /adv/v0/delete
+  scope: promotion
+  safety: read
+  summary: Удаление кампании
+  doc: ''
+- operation_id: wb_post_adv_rename
+  section: Управление кампаниями
+  method: POST
+  host: advert-api.wildberries.ru
+  path: /adv/v0/rename
+  scope: promotion
+  safety: write
+  summary: Переименование кампании
+  doc: ''
+- operation_id: wb_get_adv_start
+  section: Управление кампаниями
+  method: GET
+  host: advert-api.wildberries.ru
+  path: /adv/v0/start
+  scope: promotion
+  safety: read
+  summary: Запуск кампании
+  doc: ''
+- operation_id: wb_get_adv_pause
+  section: Управление кампаниями
+  method: GET
+  host: advert-api.wildberries.ru
+  path: /adv/v0/pause
+  scope: promotion
+  safety: read
+  summary: Пауза кампании
+  doc: ''
+- operation_id: wb_get_adv_stop
+  section: Управление кампаниями
+  method: GET
+  host: advert-api.wildberries.ru
+  path: /adv/v0/stop
+  scope: promotion
+  safety: read
+  summary: Завершение кампании
+  doc: ''
+- operation_id: wb_put_adv_auction_placements
+  section: Управление кампаниями
+  method: PUT
+  host: advert-api.wildberries.ru
+  path: /adv/v0/auction/placements
+  scope: promotion
+  safety: write
+  summary: Изменение мест размещения в кампаниях с ручной ставкой
+  doc: ''
+- operation_id: wb_patch_api_advert_bids
+  section: Управление кампаниями
+  method: PATCH
+  host: advert-api.wildberries.ru
+  path: /api/advert/v1/bids
+  scope: promotion
+  safety: write
+  summary: Изменение ставок в кампаниях
+  doc: ''
+- operation_id: wb_get_adv_balance
+  section: Финансы
+  method: GET
+  host: advert-api.wildberries.ru
+  path: /adv/v1/balance
+  scope: promotion
+  safety: read
+  summary: Баланс
+  doc: ''
+- operation_id: wb_post_adv_budget_deposit
+  section: Финансы
+  method: POST
+  host: advert-api.wildberries.ru
+  path: /adv/v1/budget/deposit
+  scope: promotion
+  safety: write
+  summary: Пополнение бюджета кампании
+  doc: ''
+- operation_id: wb_get_adv_upd
+  section: Финансы
+  method: GET
+  host: advert-api.wildberries.ru
+  path: /adv/v1/upd
+  scope: promotion
+  safety: read
+  summary: Получение истории затрат
+  doc: ''
+- operation_id: wb_get_adv_payments
+  section: Финансы
+  method: GET
+  host: advert-api.wildberries.ru
+  path: /adv/v1/payments
+  scope: promotion
+  safety: read
+  summary: Получение истории пополнений счёта
+  doc: ''
+- operation_id: wb_patch_adv_auction_nms
+  section: Управление кампаниями
+  method: PATCH
+  host: advert-api.wildberries.ru
+  path: /adv/v0/auction/nms
+  scope: promotion
+  safety: write
+  summary: Изменение списка карточек товаров в кампаниях
+  doc: ''
+- operation_id: wb_get_api_advert_bids_recommendations
+  section: Управление кампаниями
+  method: GET
+  host: advert-api.wildberries.ru
+  path: /api/advert/v0/bids/recommendations
+  scope: promotion
+  safety: read
+  summary: Рекомендуемые ставки для карточек товаров и поисковых кластеров
+  doc: ''
+- operation_id: wb_post_adv_normquery_stats
+  section: Статистика
+  method: POST
+  host: advert-api.wildberries.ru
+  path: /adv/v0/normquery/stats
+  scope: promotion
+  safety: read
+  summary: Статистика поисковых кластеров
+  doc: ''
+- operation_id: wb_post_adv_normquery_get_bids
+  section: Поисковые кластеры
+  method: POST
+  host: advert-api.wildberries.ru
+  path: /adv/v0/normquery/get-bids
+  scope: promotion
+  safety: read
+  summary: Список ставок поисковых кластеров
+  doc: ''
+- operation_id: wb_post_adv_normquery_bids
+  section: Поисковые кластеры
+  method: POST
+  host: advert-api.wildberries.ru
+  path: /adv/v0/normquery/bids
+  scope: promotion
+  safety: write
+  summary: Установить ставки для поисковых кластеров
+  doc: ''
+- operation_id: wb_delete_adv_normquery_bids
+  section: Поисковые кластеры
+  method: DELETE
+  host: advert-api.wildberries.ru
+  path: /adv/v0/normquery/bids
+  scope: promotion
+  safety: destructive
+  summary: Удалить ставки поисковых кластеров
+  doc: ''
+- operation_id: wb_post_adv_normquery_get_minus
+  section: Поисковые кластеры
+  method: POST
+  host: advert-api.wildberries.ru
+  path: /adv/v0/normquery/get-minus
+  scope: promotion
+  safety: read
+  summary: Список минус-фраз кампаний
+  doc: ''
+- operation_id: wb_post_adv_normquery_set_minus
+  section: Поисковые кластеры
+  method: POST
+  host: advert-api.wildberries.ru
+  path: /adv/v0/normquery/set-minus
+  scope: promotion
+  safety: write
+  summary: Установка и удаление минус-фраз
+  doc: ''
+- operation_id: wb_get_adv_count
+  section: Медиа
+  method: GET
+  host: advert-media-api.wildberries.ru
+  path: /adv/v1/count
+  scope: promotion
+  safety: read
+  summary: Количество медиакампаний
+  doc: ''
+- operation_id: wb_get_adv_adverts
+  section: Медиа
+  method: GET
+  host: advert-media-api.wildberries.ru
+  path: /adv/v1/adverts
+  scope: promotion
+  safety: read
+  summary: Список медиакампаний
+  doc: ''
+- operation_id: wb_get_adv_advert
+  section: Медиа
+  method: GET
+  host: advert-media-api.wildberries.ru
+  path: /adv/v1/advert
+  scope: promotion
+  safety: read
+  summary: Информация о медиакампании
+  doc: ''
+- operation_id: wb_get_adv_fullstats
+  section: Статистика
+  method: GET
+  host: advert-api.wildberries.ru
+  path: /adv/v3/fullstats
+  scope: promotion
+  safety: read
+  summary: Статистика кампаний
+  doc: ''
+- operation_id: wb_post_adv_stats
+  section: Статистика
+  method: POST
+  host: advert-media-api.wildberries.ru
+  path: /adv/v1/stats
+  scope: promotion
+  safety: read
+  summary: Статистика медиакампаний
+  doc: ''
+- operation_id: wb_get_api_calendar_promotions
+  section: Календарь акций
+  method: GET
+  host: dp-calendar-api.wildberries.ru
+  path: /api/v1/calendar/promotions
+  scope: promotion
+  safety: read
+  summary: Список акций
+  doc: ''
+- operation_id: wb_get_api_calendar_promotions_details
+  section: Календарь акций
+  method: GET
+  host: dp-calendar-api.wildberries.ru
+  path: /api/v1/calendar/promotions/details
+  scope: promotion
+  safety: read
+  summary: Детальная информация об акциях
+  doc: ''
+- operation_id: wb_get_api_calendar_promotions_nomenclatures
+  section: Календарь акций
+  method: GET
+  host: dp-calendar-api.wildberries.ru
+  path: /api/v1/calendar/promotions/nomenclatures
+  scope: promotion
+  safety: read
+  summary: Список товаров для участия в акции
+  doc: ''
+- operation_id: wb_post_api_calendar_promotions_upload
+  section: Календарь акций
+  method: POST
+  host: dp-calendar-api.wildberries.ru
+  path: /api/v1/calendar/promotions/upload
+  scope: promotion
+  safety: write
+  summary: Добавить товар в акцию
+  doc: ''
+- operation_id: wb_post_adv_normquery_list
+  section: Поисковые кластеры
+  method: POST
+  host: advert-api.wildberries.ru
+  path: /adv/v0/normquery/list
+  scope: promotion
+  safety: read
+  summary: Списки активных и неактивных поисковых кластеров
+  doc: ''
+- operation_id: wb_post_adv_normquery_stats_2
+  section: Статистика
+  method: POST
+  host: advert-api.wildberries.ru
+  path: /adv/v1/normquery/stats
+  scope: promotion
+  safety: read
+  summary: Статистика по поисковым кластерам с детализацией по дням
+  doc: ''
+- operation_id: wb_post_api_content_recommendations_list
+  section: Рекомендации
+  method: POST
+  host: content-api.wildberries.ru
+  path: /api/content/v1/recommendations/list
+  scope: content
+  safety: read
+  summary: Список рекомендаций в карточках товаров
+  doc: ''
+- operation_id: wb_post_api_content_recommendations_set
+  section: Рекомендации
+  method: POST
+  host: content-api.wildberries.ru
+  path: /api/content/v1/recommendations/set
+  scope: content
+  safety: write
+  summary: Установить рекомендации для товаров
+  doc: ''
+- operation_id: wb_get_api_new_feedbacks_questions
+  section: Вопросы
+  method: GET
+  host: feedbacks-api.wildberries.ru
+  path: /api/v1/new-feedbacks-questions
+  scope: feedbacks
+  safety: read
+  summary: Непросмотренные отзывы и вопросы
+  doc: ''
+- operation_id: wb_get_api_questions_count_unanswered
+  section: Вопросы
+  method: GET
+  host: feedbacks-api.wildberries.ru
+  path: /api/v1/questions/count-unanswered
+  scope: feedbacks
+  safety: read
+  summary: Неотвеченные вопросы
+  doc: ''
+- operation_id: wb_get_api_questions_count
+  section: Вопросы
+  method: GET
+  host: feedbacks-api.wildberries.ru
+  path: /api/v1/questions/count
+  scope: feedbacks
+  safety: read
+  summary: Количество вопросов
+  doc: ''
+- operation_id: wb_get_api_questions
+  section: Вопросы
+  method: GET
+  host: feedbacks-api.wildberries.ru
+  path: /api/v1/questions
+  scope: feedbacks
+  safety: read
+  summary: Список вопросов
+  doc: ''
+- operation_id: wb_patch_api_questions
+  section: Вопросы
+  method: PATCH
+  host: feedbacks-api.wildberries.ru
+  path: /api/v1/questions
+  scope: feedbacks
+  safety: read
+  summary: Работа с вопросами
+  doc: ''
+- operation_id: wb_get_api_question
+  section: Вопросы
+  method: GET
+  host: feedbacks-api.wildberries.ru
+  path: /api/v1/question
+  scope: feedbacks
+  safety: read
+  summary: Получить вопрос по ID
+  doc: ''
+- operation_id: wb_get_api_feedbacks_count_unanswered
+  section: Отзывы
+  method: GET
+  host: feedbacks-api.wildberries.ru
+  path: /api/v1/feedbacks/count-unanswered
+  scope: feedbacks
+  safety: read
+  summary: Необработанные отзывы
+  doc: ''
+- operation_id: wb_get_api_feedbacks_count
+  section: Отзывы
+  method: GET
+  host: feedbacks-api.wildberries.ru
+  path: /api/v1/feedbacks/count
+  scope: feedbacks
+  safety: read
+  summary: Количество отзывов
+  doc: ''
+- operation_id: wb_get_api_feedbacks
+  section: Отзывы
+  method: GET
+  host: feedbacks-api.wildberries.ru
+  path: /api/v1/feedbacks
+  scope: feedbacks
+  safety: read
+  summary: Список отзывов
+  doc: ''
+- operation_id: wb_post_api_feedbacks_answer
+  section: Отзывы
+  method: POST
+  host: feedbacks-api.wildberries.ru
+  path: /api/v1/feedbacks/answer
+  scope: feedbacks
+  safety: read
+  summary: Ответить на отзыв
+  doc: ''
+- operation_id: wb_patch_api_feedbacks_answer
+  section: Отзывы
+  method: PATCH
+  host: feedbacks-api.wildberries.ru
+  path: /api/v1/feedbacks/answer
+  scope: feedbacks
+  safety: read
+  summary: Отредактировать ответ на отзыв
+  doc: ''
+- operation_id: wb_post_api_feedbacks_order_return
+  section: Отзывы
+  method: POST
+  host: feedbacks-api.wildberries.ru
+  path: /api/v1/feedbacks/order/return
+  scope: feedbacks
+  safety: read
+  summary: Возврат товара по ID отзыва
+  doc: ''
+- operation_id: wb_get_api_feedback
+  section: Отзывы
+  method: GET
+  host: feedbacks-api.wildberries.ru
+  path: /api/v1/feedback
+  scope: feedbacks
+  safety: read
+  summary: Получить отзыв по ID
+  doc: ''
+- operation_id: wb_get_api_feedbacks_archive
+  section: Отзывы
+  method: GET
+  host: feedbacks-api.wildberries.ru
+  path: /api/v1/feedbacks/archive
+  scope: feedbacks
+  safety: read
+  summary: Список архивных отзывов
+  doc: ''
+- operation_id: wb_get_api_feedbacks_pins
+  section: Закреплённые отзывы
+  method: GET
+  host: feedbacks-api.wildberries.ru
+  path: /api/feedbacks/v1/pins
+  scope: feedbacks
+  safety: read
+  summary: Список закреплённых и откреплённых отзывов
+  doc: ''
+- operation_id: wb_post_api_feedbacks_pins
+  section: Закреплённые отзывы
+  method: POST
+  host: feedbacks-api.wildberries.ru
+  path: /api/feedbacks/v1/pins
+  scope: feedbacks
+  safety: read
+  summary: Закрепить отзывы
+  doc: ''
+- operation_id: wb_delete_api_feedbacks_pins
+  section: Закреплённые отзывы
+  method: DELETE
+  host: feedbacks-api.wildberries.ru
+  path: /api/feedbacks/v1/pins
+  scope: feedbacks
+  safety: destructive
+  summary: Открепить отзывы
+  doc: ''
+- operation_id: wb_get_api_feedbacks_pins_count
+  section: Закреплённые отзывы
+  method: GET
+  host: feedbacks-api.wildberries.ru
+  path: /api/feedbacks/v1/pins/count
+  scope: feedbacks
+  safety: read
+  summary: Количество закреплённых и откреплённых отзывов
+  doc: ''
+- operation_id: wb_get_api_feedbacks_pins_limits
+  section: Закреплённые отзывы
+  method: GET
+  host: feedbacks-api.wildberries.ru
+  path: /api/feedbacks/v1/pins/limits
+  scope: feedbacks
+  safety: read
+  summary: Лимиты закреплённых отзывов
+  doc: ''
+- operation_id: wb_get_api_seller_chats
+  section: Чат с покупателями
+  method: GET
+  host: buyer-chat-api.wildberries.ru
+  path: /api/v1/seller/chats
+  scope: chat
+  safety: read
+  summary: Список чатов
+  doc: ''
+- operation_id: wb_get_api_seller_events
+  section: Чат с покупателями
+  method: GET
+  host: buyer-chat-api.wildberries.ru
+  path: /api/v1/seller/events
+  scope: chat
+  safety: read
+  summary: События чатов
+  doc: ''
+- operation_id: wb_post_api_seller_message
+  section: Чат с покупателями
+  method: POST
+  host: buyer-chat-api.wildberries.ru
+  path: /api/v1/seller/message
+  scope: chat
+  safety: write
+  summary: Отправить сообщение
+  doc: ''
+- operation_id: wb_get_api_seller_download_id
+  section: Чат с покупателями
+  method: GET
+  host: buyer-chat-api.wildberries.ru
+  path: /api/v1/seller/download/{id}
+  scope: chat
+  safety: read
+  summary: Получить файл из сообщения
+  doc: ''
+- operation_id: wb_get_api_claims
+  section: Возвраты покупателями
+  method: GET
+  host: returns-api.wildberries.ru
+  path: /api/v1/claims
+  scope: returns
+  safety: read
+  summary: Заявки покупателей на возврат
+  doc: ''
+- operation_id: wb_patch_api_claim
+  section: Возвраты покупателями
+  method: PATCH
+  host: returns-api.wildberries.ru
+  path: /api/v1/claim
+  scope: returns
+  safety: write
+  summary: Ответ на заявку покупателя
+  doc: ''
+- operation_id: wb_get_api_tariffs_commission
+  section: Комиссии
+  method: GET
+  host: common-api.wildberries.ru
+  path: /api/v1/tariffs/commission
+  scope: common
+  safety: read
+  summary: Комиссия по категориям товаров
+  doc: ''
+- operation_id: wb_get_api_tariffs_box
+  section: Тарифы на остаток
+  method: GET
+  host: common-api.wildberries.ru
+  path: /api/v1/tariffs/box
+  scope: common
+  safety: read
+  summary: Тарифы для коробов
+  doc: ''
+- operation_id: wb_get_api_tariffs_pallet
+  section: Тарифы на остаток
+  method: GET
+  host: common-api.wildberries.ru
+  path: /api/v1/tariffs/pallet
+  scope: common
+  safety: read
+  summary: Тарифы для монопаллет
+  doc: ''
+- operation_id: wb_get_api_tariffs_acceptance_coefficients
+  section: Тарифы на поставку
+  method: GET
+  host: common-api.wildberries.ru
+  path: /api/tariffs/v1/acceptance/coefficients
+  scope: common
+  safety: read
+  summary: Тарифы на поставку
+  doc: ''
+- operation_id: wb_get_api_tariffs_return
+  section: Стоимость возврата продавцу
+  method: GET
+  host: common-api.wildberries.ru
+  path: /api/v1/tariffs/return
+  scope: common
+  safety: read
+  summary: Тарифы на возврат
+  doc: ''
+- operation_id: wb_post_api_analytics_sales_funnel_products_history
+  section: Воронка продаж
+  method: POST
+  host: seller-analytics-api.wildberries.ru
+  path: /api/analytics/v3/sales-funnel/products/history
+  scope: analytics
+  safety: read
+  summary: Статистика карточек товаров по дням
+  doc: ''
+- operation_id: wb_post_api_analytics_sales_funnel_grouped_history
+  section: Воронка продаж
+  method: POST
+  host: seller-analytics-api.wildberries.ru
+  path: /api/analytics/v3/sales-funnel/grouped/history
+  scope: analytics
+  safety: read
+  summary: Статистика групп карточек товаров по дням
+  doc: ''
+- operation_id: wb_post_api_nm_report_downloads
+  section: Аналитика продавца CSV
+  method: POST
+  host: seller-analytics-api.wildberries.ru
+  path: /api/v2/nm-report/downloads
+  scope: analytics
+  safety: read
+  summary: Создать отчёт
+  doc: ''
+- operation_id: wb_get_api_nm_report_downloads
+  section: Аналитика продавца CSV
+  method: GET
+  host: seller-analytics-api.wildberries.ru
+  path: /api/v2/nm-report/downloads
+  scope: analytics
+  safety: read
+  summary: Получить список отчётов
+  doc: ''
+- operation_id: wb_post_api_nm_report_downloads_retry
+  section: Аналитика продавца CSV
+  method: POST
+  host: seller-analytics-api.wildberries.ru
+  path: /api/v2/nm-report/downloads/retry
+  scope: analytics
+  safety: read
+  summary: Сгенерировать отчёт повторно
+  doc: ''
+- operation_id: wb_get_api_nm_report_downloads_file_downloadid
+  section: Аналитика продавца CSV
+  method: GET
+  host: seller-analytics-api.wildberries.ru
+  path: /api/v2/nm-report/downloads/file/{downloadId}
+  scope: analytics
+  safety: read
+  summary: Получить отчёт
+  doc: ''
+- operation_id: wb_post_api_search_report_report
+  section: Поисковые запросы по вашим товарам
+  method: POST
+  host: seller-analytics-api.wildberries.ru
+  path: /api/v2/search-report/report
+  scope: analytics
+  safety: read
+  summary: Основная страница
+  doc: ''
+- operation_id: wb_post_api_search_report_table_groups
+  section: Поисковые запросы по вашим товарам
+  method: POST
+  host: seller-analytics-api.wildberries.ru
+  path: /api/v2/search-report/table/groups
+  scope: analytics
+  safety: read
+  summary: Пагинация по группам
+  doc: ''
+- operation_id: wb_post_api_search_report_table_details
+  section: Поисковые запросы по вашим товарам
+  method: POST
+  host: seller-analytics-api.wildberries.ru
+  path: /api/v2/search-report/table/details
+  scope: analytics
+  safety: read
+  summary: Пагинация по товарам в группе
+  doc: ''
+- operation_id: wb_post_api_search_report_product_search_texts
+  section: Поисковые запросы по вашим товарам
+  method: POST
+  host: seller-analytics-api.wildberries.ru
+  path: /api/v2/search-report/product/search-texts
+  scope: analytics
+  safety: read
+  summary: Поисковые запросы по товару
+  doc: ''
+- operation_id: wb_post_api_search_report_product_orders
+  section: Поисковые запросы по вашим товарам
+  method: POST
+  host: seller-analytics-api.wildberries.ru
+  path: /api/v2/search-report/product/orders
+  scope: analytics
+  safety: read
+  summary: Заказы и позиции по поисковым запросам товара
+  doc: ''
+- operation_id: wb_post_api_analytics_stocks_report_wb_warehouses
+  section: История остатков
+  method: POST
+  host: seller-analytics-api.wildberries.ru
+  path: /api/analytics/v1/stocks-report/wb-warehouses
+  scope: analytics
+  safety: read
+  summary: Остатки на складах WB
+  doc: ''
+- operation_id: wb_post_api_stocks_report_products_groups
+  section: История остатков
+  method: POST
+  host: seller-analytics-api.wildberries.ru
+  path: /api/v2/stocks-report/products/groups
+  scope: analytics
+  safety: read
+  summary: Данные по группам
+  doc: ''
+- operation_id: wb_post_api_stocks_report_products_products
+  section: История остатков
+  method: POST
+  host: seller-analytics-api.wildberries.ru
+  path: /api/v2/stocks-report/products/products
+  scope: analytics
+  safety: read
+  summary: Данные по товарам
+  doc: ''
+- operation_id: wb_post_api_stocks_report_products_sizes
+  section: История остатков
+  method: POST
+  host: seller-analytics-api.wildberries.ru
+  path: /api/v2/stocks-report/products/sizes
+  scope: analytics
+  safety: read
+  summary: Данные по размерам
+  doc: ''
+- operation_id: wb_post_api_stocks_report_offices
+  section: История остатков
+  method: POST
+  host: seller-analytics-api.wildberries.ru
+  path: /api/v2/stocks-report/offices
+  scope: analytics
+  safety: read
+  summary: Данные по складам
+  doc: ''
+- operation_id: wb_post_api_analytics_item_rating
+  section: Оценка товара
+  method: POST
+  host: seller-analytics-api.wildberries.ru
+  path: /api/analytics/v1/item-rating
+  scope: analytics
+  safety: read
+  summary: Получить отчёт
+  doc: ''
+- operation_id: wb_post_api_analytics_excise_report
+  section: Отчёт о товарах c обязательной маркировкой
+  method: POST
+  host: seller-analytics-api.wildberries.ru
+  path: /api/v1/analytics/excise-report
+  scope: analytics
+  safety: read
+  summary: Получить отчёт
+  doc: ''
+- operation_id: wb_get_api_warehouse_remains_tasks_task_id_status
+  section: Отчёт об остатках на складах
+  method: GET
+  host: seller-analytics-api.wildberries.ru
+  path: /api/v1/warehouse_remains/tasks/{task_id}/status
+  scope: analytics
+  safety: read
+  summary: Проверить статус
+  doc: ''
+- operation_id: wb_get_api_warehouse_remains_tasks_task_id_download
+  section: Отчёт об остатках на складах
+  method: GET
+  host: seller-analytics-api.wildberries.ru
+  path: /api/v1/warehouse_remains/tasks/{task_id}/download
+  scope: analytics
+  safety: read
+  summary: Получить отчёт
+  doc: ''
+- operation_id: wb_get_api_analytics_measurement_penalties
+  section: Отчёты об удержаниях
+  method: GET
+  host: seller-analytics-api.wildberries.ru
+  path: /api/analytics/v1/measurement-penalties
+  scope: analytics
+  safety: read
+  summary: Удержания за занижение габаритов упаковки
+  doc: ''
+- operation_id: wb_get_api_analytics_warehouse_measurements
+  section: Отчёты об удержаниях
+  method: GET
+  host: seller-analytics-api.wildberries.ru
+  path: /api/analytics/v1/warehouse-measurements
+  scope: analytics
+  safety: read
+  summary: Замеры склада
+  doc: ''
+- operation_id: wb_get_api_analytics_deductions
+  section: Отчёты об удержаниях
+  method: GET
+  host: seller-analytics-api.wildberries.ru
+  path: /api/analytics/v1/deductions
+  scope: analytics
+  safety: read
+  summary: Подмены и неверные вложения
+  doc: ''
+- operation_id: wb_get_api_analytics_antifraud_details
+  section: Отчёты об удержаниях
+  method: GET
+  host: seller-analytics-api.wildberries.ru
+  path: /api/v1/analytics/antifraud-details
+  scope: analytics
+  safety: read
+  summary: Самовыкупы
+  doc: ''
+- operation_id: wb_get_api_analytics_goods_labeling
+  section: Отчёты об удержаниях
+  method: GET
+  host: seller-analytics-api.wildberries.ru
+  path: /api/v1/analytics/goods-labeling
+  scope: analytics
+  safety: read
+  summary: Маркировка товара
+  doc: ''
+- operation_id: wb_get_api_acceptance_report
+  section: Операции при приёмке
+  method: GET
+  host: seller-analytics-api.wildberries.ru
+  path: /api/v1/acceptance_report
+  scope: analytics
+  safety: read
+  summary: Создать отчёт
+  doc: ''
+- operation_id: wb_get_api_acceptance_report_tasks_task_id_status
+  section: Операции при приёмке
+  method: GET
+  host: seller-analytics-api.wildberries.ru
+  path: /api/v1/acceptance_report/tasks/{task_id}/status
+  scope: analytics
+  safety: read
+  summary: Проверить статус
+  doc: ''
+- operation_id: wb_get_api_acceptance_report_tasks_task_id_download
+  section: Операции при приёмке
+  method: GET
+  host: seller-analytics-api.wildberries.ru
+  path: /api/v1/acceptance_report/tasks/{task_id}/download
+  scope: analytics
+  safety: read
+  summary: Получить отчёт
+  doc: ''
+- operation_id: wb_get_api_paid_storage_tasks_task_id_status
+  section: Платное хранение
+  method: GET
+  host: seller-analytics-api.wildberries.ru
+  path: /api/v1/paid_storage/tasks/{task_id}/status
+  scope: analytics
+  safety: read
+  summary: Проверить статус
+  doc: ''
+- operation_id: wb_get_api_paid_storage_tasks_task_id_download
+  section: Платное хранение
+  method: GET
+  host: seller-analytics-api.wildberries.ru
+  path: /api/v1/paid_storage/tasks/{task_id}/download
+  scope: analytics
+  safety: read
+  summary: Получить отчёт
+  doc: ''
+- operation_id: wb_get_api_analytics_region_sale
+  section: Продажи по регионам
+  method: GET
+  host: seller-analytics-api.wildberries.ru
+  path: /api/v1/analytics/region-sale
+  scope: analytics
+  safety: read
+  summary: Получить отчёт
+  doc: ''
+- operation_id: wb_get_api_analytics_brand_share_brands
+  section: Доля бренда в продажах
+  method: GET
+  host: seller-analytics-api.wildberries.ru
+  path: /api/v1/analytics/brand-share/brands
+  scope: analytics
+  safety: read
+  summary: Бренды продавца
+  doc: ''
+- operation_id: wb_get_api_analytics_brand_share_parent_subjects
+  section: Доля бренда в продажах
+  method: GET
+  host: seller-analytics-api.wildberries.ru
+  path: /api/v1/analytics/brand-share/parent-subjects
+  scope: analytics
+  safety: read
+  summary: Родительские категории бренда
+  doc: ''
+- operation_id: wb_get_api_analytics_brand_share
+  section: Доля бренда в продажах
+  method: GET
+  host: seller-analytics-api.wildberries.ru
+  path: /api/v1/analytics/brand-share
+  scope: analytics
+  safety: read
+  summary: Получить отчёт
+  doc: ''
+- operation_id: wb_get_api_analytics_banned_products_blocked
+  section: Скрытые товары
+  method: GET
+  host: seller-analytics-api.wildberries.ru
+  path: /api/v1/analytics/banned-products/blocked
+  scope: analytics
+  safety: read
+  summary: Заблокированные карточки
+  doc: ''
+- operation_id: wb_get_api_analytics_banned_products_shadowed
+  section: Скрытые товары
+  method: GET
+  host: seller-analytics-api.wildberries.ru
+  path: /api/v1/analytics/banned-products/shadowed
+  scope: analytics
+  safety: read
+  summary: Скрытые из каталога
+  doc: ''
+- operation_id: wb_get_api_analytics_goods_return
+  section: Отчёт о возвратах и перемещении товаров
+  method: GET
+  host: seller-analytics-api.wildberries.ru
+  path: /api/v1/analytics/goods-return
+  scope: analytics
+  safety: read
+  summary: Получить отчёт
+  doc: ''
+- operation_id: wb_get_api_account_balance
+  section: Баланс
+  method: GET
+  host: finance-api.wildberries.ru
+  path: /api/v1/account/balance
+  scope: finance
+  safety: read
+  summary: Получить баланс продавца
+  doc: ''
+- operation_id: wb_post_api_finance_sales_reports_list
+  section: Финансовые отчёты
+  method: POST
+  host: finance-api.wildberries.ru
+  path: /api/finance/v1/sales-reports/list
+  scope: finance
+  safety: read
+  summary: Список отчётов реализации
+  doc: ''
+- operation_id: wb_post_api_finance_sales_reports_detailed_reportid
+  section: Финансовые отчёты
+  method: POST
+  host: finance-api.wildberries.ru
+  path: /api/finance/v1/sales-reports/detailed/{reportId}
+  scope: finance
+  safety: read
+  summary: Детализации к отчётам реализации по ID отчётов
+  doc: ''
+- operation_id: wb_post_api_finance_sales_reports_detailed
+  section: Финансовые отчёты
+  method: POST
+  host: finance-api.wildberries.ru
+  path: /api/finance/v1/sales-reports/detailed
+  scope: finance
+  safety: read
+  summary: Детализации к отчётам реализации за период
+  doc: ''
+- operation_id: wb_post_api_finance_acquiring_list
+  section: Финансовые отчёты
+  method: POST
+  host: finance-api.wildberries.ru
+  path: /api/finance/v1/acquiring/list
+  scope: finance
+  safety: read
+  summary: Список отчётов об издержках на приём платежей
+  doc: ''
+- operation_id: wb_post_api_finance_acquiring_detailed_reportid
+  section: Финансовые отчёты
+  method: POST
+  host: finance-api.wildberries.ru
+  path: /api/finance/v1/acquiring/detailed/{reportId}
+  scope: finance
+  safety: write
+  summary: Детализации к отчётам об издержках на приём платежей по ID отчётов
+  doc: ''
+- operation_id: wb_post_api_finance_acquiring_detailed
+  section: Финансовые отчёты
+  method: POST
+  host: finance-api.wildberries.ru
+  path: /api/finance/v1/acquiring/detailed
+  scope: finance
+  safety: write
+  summary: Детализации к отчётам об издержках на приём платежей за период
+  doc: ''
+- operation_id: wb_get_api_documents_categories
+  section: Документы
+  method: GET
+  host: documents-api.wildberries.ru
+  path: /api/v1/documents/categories
+  scope: documents
+  safety: read
+  summary: Категории документов
+  doc: ''
+- operation_id: wb_get_api_documents_list
+  section: Документы
+  method: GET
+  host: documents-api.wildberries.ru
+  path: /api/v1/documents/list
+  scope: documents
+  safety: read
+  summary: Список документов
+  doc: ''
+- operation_id: wb_get_api_documents_download
+  section: Документы
+  method: GET
+  host: documents-api.wildberries.ru
+  path: /api/v1/documents/download
+  scope: documents
+  safety: read
+  summary: Получить документ
+  doc: ''
+- operation_id: wb_post_api_documents_download_all
+  section: Документы
+  method: POST
+  host: documents-api.wildberries.ru
+  path: /api/v1/documents/download/all
+  scope: documents
+  safety: read
+  summary: Получить документы
+  doc: ''
+- operation_id: wb_post_api_keys_api_keys
+  section: Ключи активации
+  method: POST
+  host: devapi-digital.wildberries.ru
+  path: /api/v1/keys-api/keys
+  scope: documents
+  safety: write
+  summary: Добавить ключи активации
+  doc: ''
+- operation_id: wb_delete_api_keys_api_keys
+  section: Ключи активации
+  method: DELETE
+  host: devapi-digital.wildberries.ru
+  path: /api/v1/keys-api/keys
+  scope: documents
+  safety: destructive
+  summary: Удалить ключи активации
+  doc: ''
+- operation_id: wb_get_api_keys_api_keys_redeemed
+  section: Ключи активации
+  method: GET
+  host: devapi-digital.wildberries.ru
+  path: /api/v1/keys-api/keys/redeemed
+  scope: documents
+  safety: read
+  summary: Получить купленные ключи
+  doc: ''
+- operation_id: wb_get_api_offer_keys_offer_id
+  section: Ключи активации
+  method: GET
+  host: devapi-digital.wildberries.ru
+  path: /api/v1/offer/keys/{offer_id}
+  scope: documents
+  safety: read
+  summary: Получить количество ключей для предложения
+  doc: ''
+- operation_id: wb_get_api_offer_keys_offer_id_list
+  section: Ключи активации
+  method: GET
+  host: devapi-digital.wildberries.ru
+  path: /api/v1/offer/keys/{offer_id}/list
+  scope: documents
+  safety: read
+  summary: Получить список ключей
+  doc: ''
+- operation_id: wb_post_api_offers
+  section: Предложения
+  method: POST
+  host: devapi-digital.wildberries.ru
+  path: /api/v1/offers
+  scope: documents
+  safety: write
+  summary: Создать новое предложение
+  doc: ''
+- operation_id: wb_post_api_offers_thumb
+  section: Предложения
+  method: POST
+  host: devapi-digital.wildberries.ru
+  path: /api/v1/offers/thumb
+  scope: documents
+  safety: write
+  summary: Добавить или обновить обложку предложения
+  doc: ''
+- operation_id: wb_post_api_offers_offer_id
+  section: Предложения
+  method: POST
+  host: devapi-digital.wildberries.ru
+  path: /api/v1/offers/{offer_id}
+  scope: documents
+  safety: write
+  summary: Редактировать предложение
+  doc: ''
+- operation_id: wb_get_api_offers_offer_id
+  section: Предложения
+  method: GET
+  host: devapi-digital.wildberries.ru
+  path: /api/v1/offers/{offer_id}
+  scope: documents
+  safety: read
+  summary: Получить информацию о предложении
+  doc: ''
+- operation_id: wb_get_api_offers_author
+  section: Предложения
+  method: GET
+  host: devapi-digital.wildberries.ru
+  path: /api/v1/offers/author
+  scope: documents
+  safety: read
+  summary: Получить список своих предложений
+  doc: ''
+- operation_id: wb_post_api_offer_price_offer_id
+  section: Предложения
+  method: POST
+  host: devapi-digital.wildberries.ru
+  path: /api/v1/offer/price/{offer_id}
+  scope: documents
+  safety: write
+  summary: Обновить цену
+  doc: ''
+- operation_id: wb_post_api_offer_offer_id
+  section: Предложения
+  method: POST
+  host: devapi-digital.wildberries.ru
+  path: /api/v1/offer/{offer_id}
+  scope: documents
+  safety: write
+  summary: Обновить статус
+  doc: ''
+- operation_id: wb_get_api_catalog
+  section: Предложения
+  method: GET
+  host: devapi-digital.wildberries.ru
+  path: /api/v1/catalog
+  scope: documents
+  safety: read
+  summary: Получить категории и их подкатегории
+  doc: ''
+- operation_id: wb_post_api_content_illustration
+  section: Контент
+  method: POST
+  host: devapi-digital.wildberries.ru
+  path: /api/v1/content/illustration
+  scope: documents
+  safety: write
+  summary: Загрузить обложку контента
+  doc: ''
+- operation_id: wb_post_api_content_upload_init
+  section: Контент
+  method: POST
+  host: devapi-digital.wildberries.ru
+  path: /api/v1/content/upload/init
+  scope: documents
+  safety: write
+  summary: Инициализировать новый контент
+  doc: ''
+- operation_id: wb_post_api_content_upload_chunk
+  section: Контент
+  method: POST
+  host: devapi-digital.wildberries.ru
+  path: /api/v1/content/upload/chunk
+  scope: documents
+  safety: write
+  summary: Загрузить контент (файл)
+  doc: ''
+- operation_id: wb_post_api_content_author_content_id
+  section: Контент
+  method: POST
+  host: devapi-digital.wildberries.ru
+  path: /api/v1/content/author/{content_id}
+  scope: documents
+  safety: write
+  summary: Редактировать контент
+  doc: ''
+- operation_id: wb_get_api_content_author_content_id
+  section: Контент
+  method: GET
+  host: devapi-digital.wildberries.ru
+  path: /api/v1/content/author/{content_id}
+  scope: documents
+  safety: read
+  summary: Получить информацию о контенте
+  doc: ''
+- operation_id: wb_get_api_content_author
+  section: Контент
+  method: GET
+  host: devapi-digital.wildberries.ru
+  path: /api/v1/content/author
+  scope: documents
+  safety: read
+  summary: Получить список своего контента
+  doc: ''
+- operation_id: wb_get_api_content_download_uri
+  section: Контент
+  method: GET
+  host: devapi-digital.wildberries.ru
+  path: /api/v1/content/download/{uri}
+  scope: documents
+  safety: read
+  summary: Скачать контент
+  doc: ''
+- operation_id: wb_post_api_content_delete
+  section: Контент
+  method: POST
+  host: devapi-digital.wildberries.ru
+  path: /api/v1/content/delete
+  scope: documents
+  safety: write
+  summary: Удалить контент
+  doc: ''
+- operation_id: wb_post_api_content_gallery
+  section: Контент
+  method: POST
+  host: devapi-digital.wildberries.ru
+  path: /api/v1/content/gallery
+  scope: documents
+  safety: write
+  summary: Загрузить медиафайлы для предложения
+  doc: ''
