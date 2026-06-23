@@ -50,16 +50,25 @@ Typed convenience tools: `wb_get_sales`, `wb_get_stocks`, `wb_get_new_orders`,
 `*_list_workflows` / `*_get_workflow` expose curated, step-by-step recipes that
 turn raw endpoints into outcomes, each with interpretation guidance and common
 mistakes. Ozon: `oos_risk_analysis`, `pricing_analysis`, `unit_economics`,
-`catalog_sync`, `content_quality_audit`. WB: `sales_pulse`, `stock_health`,
-`price_audit`. Every recipe step is integrity-checked against the catalog.
+`catalog_sync`, `content_quality_audit`, `abc_analysis`, `reviews_pulse`. WB:
+`sales_pulse`, `stock_health`, `price_audit`, `reorder_planner`, `abc_analysis`,
+`reviews_pulse`. Every recipe step is integrity-checked against the catalog.
 
 ### Coverage
 
-The Ozon catalog carries **213 endpoints** across 27 sections; 13 read endpoints
-are live-verified, the curated core has exact pagination/params, and the rest
-are imported (marked UNVERIFIED — confirm bodies against the docs or via
-`call_raw`). WB ships ~31 curated endpoints. `call_raw` reaches anything not
-catalogued.
+Catalogs are built schema-driven from the official OpenAPI specs:
+
+| Catalog | File | Endpoints | Sections |
+|---|---|---:|---|
+| Wildberries | `wb_mcp/endpoints.yaml` | **307** | 70 |
+| Ozon Seller | `ozon_mcp/endpoints.yaml` | **441** | 67 |
+| Ozon Performance | `ozon_mcp/perf_endpoints.yaml` | **45** | 6 |
+
+A curated, live-verified core has exact pagination/params; the rest are imported
+from the specs (paths reliable, HTTP verbs not guaranteed — see caveats below).
+`call_raw` reaches anything not catalogued. Ozon Performance is **catalog-only**
+today — the perf server is a separate follow-up (see `HANDOFF.md`); `serve.py`
+exposes `wb` and `ozon`.
 
 ## Safety model
 
@@ -81,8 +90,20 @@ keys.
 
 **Double-click (easiest):**
 - **macOS** — double-click `install.command`
-- **Windows** — double-click `install.bat`
+- **Windows** — double-click `install.bat` (it finds the `py` launcher or
+  `python` on PATH; if Python is missing it tells you to install it from
+  python.org with "Add to PATH" ticked)
 - **Linux** — run `bash install.sh`
+
+**Verify it works** (any OS), after install:
+
+```bash
+python serve.py ozon --selfcheck     # -> "OK: ozon ready, 19 tools."
+```
+
+The launcher self-installs its dependencies into a local virtual environment on
+first run and injects them into the running process — no `os.exec`, so the MCP
+stdio handshake is identical and reliable on Windows, macOS and Linux.
 
 **Or one command, any OS:**
 
@@ -90,17 +111,25 @@ keys.
 python3 install.py
 ```
 
-**Or let Claude Code do it for you.** In Claude Code (which runs on your
-machine), just ask it to install — it can run `install.py` directly, or use:
+**Four clients via `--client`.** `install.py` targets Claude Desktop, Claude
+Code, Codex and OpenCode. Server entries are secret-free (keys go to the cabinet
+store); Desktop/OpenCode get their config file written, Claude Code/Codex get
+ready-to-paste CLI commands:
 
 ```bash
-python3 install.py --claude-code        # prints ready `claude mcp add` commands
+python3 install.py                          # interactive, claude-desktop (default)
+python3 install.py --client claude-desktop  # writes claude_desktop_config.json
+python3 install.py --client claude-code     # prints `claude mcp add` commands
+python3 install.py --client codex           # prints `codex mcp add` commands
+python3 install.py --client opencode        # writes ~/.config/opencode/opencode.json
 ```
 
-All paths route through `install.py`: it asks for your keys, finds your Claude /
-Cowork config for your OS, writes both servers, and backs up the old config.
-Restart Claude/Cowork — done. `serve.py` then self-bootstraps its virtual
-environment on first run.
+(`--claude-code` is still accepted as a shorthand for `--client claude-code`.)
+
+All paths route through `install.py`: it asks for your keys, finds the right
+config for your OS, writes both servers, and backs up the old config. Restart
+the client — done. `serve.py` then self-bootstraps its virtual environment on
+first run.
 
 > Note: Cowork's own sandbox can't install onto your machine for you (it's an
 > isolated Linux container, and typing into your terminal is blocked for safety).
@@ -162,12 +191,21 @@ An env-only setup still works — environment variables act as a fallback cabine
 
 `serve.py` self-bootstraps its venv, so `command` can be any Python 3.10+.
 
-## Coverage and growing the catalog
+## Scripts and growing the catalog
 
-Each catalog ships ~31 curated, verified endpoints across all major sections.
+`scripts/`:
+
+- `ingest_specs.py` — build the WB catalog from the official OpenAPI specs.
+- `ingest_ozon.py` — build the Ozon Seller catalog from the official specs.
+- `sync_swagger.py` — additive, idempotent catalog sync from a local swagger.
+- `derive_pagination.py` — infer pagination style for catalog entries.
+- `validate_items_path.py` — **live** `items_path` validator/auto-fixer (needs
+  cabinet creds; run locally — see `HANDOFF.md`).
+- `smoke_mcp.py` — quick MCP smoke check.
+
 `*_call_raw` already reaches **any** endpoint not yet catalogued. To grow the
-typed catalog toward every method, run the swagger sync **locally** (WB/Ozon
-hosts block many non-RU IPs):
+typed catalog, run the swagger sync **locally** (WB/Ozon hosts block many non-RU
+IPs):
 
 ```bash
 python scripts/sync_swagger.py --spec ozon_seller.json \
@@ -181,7 +219,7 @@ never overwritten.
 
 ```bash
 pip install pytest pytest-asyncio
-python -m pytest tests/ -q        # 11 offline tests, no tokens needed
+python -m pytest tests/ -q        # 21 offline tests, no tokens needed
 ```
 
 ## Known caveats (verify against live docs before relying on them)
@@ -194,12 +232,13 @@ python -m pytest tests/ -q        # 11 offline tests, no tokens needed
   possible deprecation in favour of a new finance POST endpoint — confirm.
 - **Ozon versions drift silently** (list v3, attributes v4, prices v5, stocks
   v4/v2). If a call 404s, check the version; `sync_swagger.py` re-aligns paths.
-- **Imported endpoints (the 182 marked UNVERIFIED): paths are reliable, HTTP
-  verbs are NOT.** A live probe found imported GET-labelled endpoints that are
-  actually POST (405 Method Not Allowed). Treat imported entries as a discovery
-  map: confirm the verb/body in the docs, or call with the correct verb via
-  `call_raw`. The 13 live-verified core endpoints and the curated set are
-  trustworthy as-is.
+- **Imported (spec-derived) endpoints: paths are reliable, HTTP verbs are NOT.**
+  A live probe found imported GET-labelled endpoints that are actually POST (405
+  Method Not Allowed). Treat imported entries as a discovery map: confirm the
+  verb/body in the docs, or call with the correct verb via `call_raw`. The
+  live-verified core (WB 7 categories, Ozon 4 sections) and the curated set are
+  trustworthy as-is. A full live `items_path` sweep is an open follow-up — see
+  `HANDOFF.md`.
 - Some WB write verbs (tag update, meta setters, supply deliver) were inferred
   where the docs stripped the verb badge — confirm before automating them.
 
