@@ -786,11 +786,11 @@ endpoints:
   doc: https://docs.ozon.ru/api/seller/
 - operation_id: ozon_update_supply_timeslot
   section: fbo
-  method: GET
+  method: POST
   host: api-seller.ozon.ru
   path: /v1/supply-order/timeslot/update
   scope: seller
-  safety: read
+  safety: write
   summary: UpdateSupplyTimeslot (auto-imported from go-client; UNVERIFIED — confirm
     body/params in docs).
   doc: https://docs.ozon.ru/api/seller/
@@ -806,11 +806,11 @@ endpoints:
   doc: https://docs.ozon.ru/api/seller/
 - operation_id: ozon_create_pass
   section: fbo
-  method: GET
+  method: POST
   host: api-seller.ozon.ru
   path: /v1/supply-order/pass/create
   scope: seller
-  safety: read
+  safety: write
   summary: CreatePass (auto-imported from go-client; UNVERIFIED — confirm body/params
     in docs).
   doc: https://docs.ozon.ru/api/seller/
@@ -836,17 +836,17 @@ endpoints:
   doc: https://docs.ozon.ru/api/seller/
 - operation_id: ozon_create_supply_draft
   section: fbo
-  method: GET
+  method: POST
   host: api-seller.ozon.ru
   path: /v1/draft/create
   scope: seller
-  safety: read
+  safety: write
   summary: CreateSupplyDraft (auto-imported from go-client; UNVERIFIED — confirm body/params
     in docs).
   doc: https://docs.ozon.ru/api/seller/
 - operation_id: ozon_get_supply_draft_info
   section: fbo
-  method: GET
+  method: POST
   host: api-seller.ozon.ru
   path: /v1/draft/create/info
   scope: seller
@@ -856,11 +856,11 @@ endpoints:
   doc: https://docs.ozon.ru/api/seller/
 - operation_id: ozon_create_supply_from_draft
   section: fbo
-  method: GET
+  method: POST
   host: api-seller.ozon.ru
   path: /v1/draft/supply/create
   scope: seller
-  safety: read
+  safety: write
   summary: CreateSupplyFromDraft (auto-imported from go-client; UNVERIFIED — confirm
     body/params in docs).
   doc: https://docs.ozon.ru/api/seller/
@@ -876,17 +876,17 @@ endpoints:
   doc: https://docs.ozon.ru/api/seller/
 - operation_id: ozon_cancel_suppy_order
   section: fbo
-  method: GET
+  method: POST
   host: api-seller.ozon.ru
   path: /v1/supply-order/cancel
   scope: seller
-  safety: read
+  safety: write
   summary: CancelSuppyOrder (auto-imported from go-client; UNVERIFIED — confirm body/params
     in docs).
   doc: https://docs.ozon.ru/api/seller/
 - operation_id: ozon_status_cancelled_supply_order
   section: fbo
-  method: GET
+  method: POST
   host: api-seller.ozon.ru
   path: /v1/supply-order/cancel/status
   scope: seller
@@ -2220,7 +2220,7 @@ endpoints:
   host: api-seller.ozon.ru
   path: /v1/warehouse/list
   scope: seller
-  safety: write
+  safety: read
   summary: GetListOfWarehouses (auto-imported from go-client; UNVERIFIED — confirm
     body/params in docs).
   doc: https://docs.ozon.ru/api/seller/
@@ -2244,3 +2244,2056 @@ endpoints:
   summary: ListForShipping (auto-imported from go-client; UNVERIFIED — confirm body/params
     in docs).
   doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_post_v1_roles
+  section: APIkey
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/roles
+  scope: seller
+  safety: read
+  summary: Получить список ролей и методов по API-ключу
+  doc: ''
+- operation_id: ozon_post_v1_seller_info
+  section: SellerInfo
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/seller/info
+  scope: seller
+  safety: read
+  summary: Информация о кабинете продавца
+  doc: ''
+- operation_id: ozon_post_v1_seller_ozon_logistics_info
+  section: SellerInfo
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/seller/ozon-logistics/info
+  scope: seller
+  safety: read
+  summary: Информация о подключении Ozon Доставки
+  doc: ''
+- operation_id: ozon_post_v1_product_info_wrong_volume
+  section: ProductAPI
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/product/info/wrong-volume
+  scope: seller
+  safety: read
+  summary: Список товаров с некорректными ОВХ
+  doc: ''
+- operation_id: ozon_post_v1_product_placement_zone_info
+  section: ProductAPI
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/product/placement-zone/info
+  scope: seller
+  safety: read
+  summary: Получить зоны размещения товаров по SKU перед поставкой
+  doc: ''
+- operation_id: ozon_post_v1_product_info_warehouse_stocks
+  section: Prices&StocksAPI
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/product/info/warehouse/stocks
+  scope: seller
+  safety: read
+  summary: Получить информацию по остаткам на складе FBS и rFBS
+  doc: ''
+- operation_id: ozon_post_v2_product_info_stocks_by_warehouse_fbs
+  section: Prices&StocksAPI
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v2/product/info/stocks-by-warehouse/fbs
+  scope: seller
+  safety: read
+  summary: Информация об остатках на складах продавца
+  doc: ''
+- operation_id: ozon_post_v1_product_action_timer_status
+  section: Prices&StocksAPI
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/product/action/timer/status
+  scope: seller
+  safety: read
+  summary: Получить статус установленного таймера
+  doc: ''
+- operation_id: ozon_get_v1_product_certificate_accordance_types
+  section: CertificationAPI
+  method: GET
+  host: api-seller.ozon.ru
+  path: /v1/product/certificate/accordance-types
+  scope: seller
+  safety: read
+  summary: Список типов соответствия требованиям (версия 1)
+  doc: ''
+- operation_id: ozon_post_v1_product_certification_list
+  section: CertificationAPI
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/product/certification/list
+  scope: seller
+  safety: read
+  summary: Список сертифицируемых категорий
+  doc: ''
+- operation_id: ozon_post_v1_product_certificate_product_status_list
+  section: CertificationAPI
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/product/certificate/product_status/list
+  scope: seller
+  safety: read
+  summary: Список возможных статусов товаров
+  doc: ''
+- operation_id: ozon_post_v2_delivery_method_list
+  section: WarehouseAPI
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v2/delivery-method/list
+  scope: seller
+  safety: read
+  summary: Список методов доставки realFBS-склада
+  doc: ''
+- operation_id: ozon_post_v1_delivery_method_return_settings_get
+  section: WarehouseAPI
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/delivery-method/return/settings/get
+  scope: seller
+  safety: write
+  summary: Получить информацию по возвратным настройкам rFBS и rFBS Express
+  doc: ''
+- operation_id: ozon_post_v2_warehouse_list
+  section: WarehouseAPI
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v2/warehouse/list
+  scope: seller
+  safety: read
+  summary: Список складов
+  doc: ''
+- operation_id: ozon_post_v1_warehouse_operation_status
+  section: WarehouseAPI
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/warehouse/operation/status
+  scope: seller
+  safety: read
+  summary: Получить статус операции
+  doc: ''
+- operation_id: ozon_post_v1_warehouse_archive
+  section: WarehouseAPI
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/warehouse/archive
+  scope: seller
+  safety: write
+  summary: Перенести склад в архив
+  doc: ''
+- operation_id: ozon_post_v1_warehouse_unarchive
+  section: WarehouseAPI
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/warehouse/unarchive
+  scope: seller
+  safety: write
+  summary: Перенести склад из архива
+  doc: ''
+- operation_id: ozon_post_v1_warehouse_invalid_products_get
+  section: WarehouseAPI
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/warehouse/invalid-products/get
+  scope: seller
+  safety: read
+  summary: Получить список товаров с ограничениями по доставке
+  doc: ''
+- operation_id: ozon_post_v1_warehouse_warehouses_with_invalid_products
+  section: WarehouseAPI
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/warehouse/warehouses-with-invalid-products
+  scope: seller
+  safety: write
+  summary: Получить список складов с ограниченными для доставки товарами
+  doc: ''
+- operation_id: ozon_post_v1_supply_order_status_counter
+  section: FBO
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/supply-order/status/counter
+  scope: seller
+  safety: read
+  summary: Количество заявок по статусам
+  doc: ''
+- operation_id: ozon_post_v1_supply_order_bundle
+  section: FBO
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/supply-order/bundle
+  scope: seller
+  safety: write
+  summary: Состав поставки или заявки на поставку
+  doc: ''
+- operation_id: ozon_post_v3_supply_order_list
+  section: FBO
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v3/supply-order/list
+  scope: seller
+  safety: read
+  summary: Список заявок на поставку на склад Ozon
+  doc: ''
+- operation_id: ozon_post_v3_supply_order_get
+  section: FBO
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v3/supply-order/get
+  scope: seller
+  safety: read
+  summary: Информация о заявке на поставку
+  doc: ''
+- operation_id: ozon_post_v1_supply_order_timeslot_get
+  section: FBO
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/supply-order/timeslot/get
+  scope: seller
+  safety: read
+  summary: Интервалы поставки
+  doc: ''
+- operation_id: ozon_post_v1_supply_order_timeslot_status
+  section: FBO
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/supply-order/timeslot/status
+  scope: seller
+  safety: read
+  summary: Статус интервала поставки
+  doc: ''
+- operation_id: ozon_post_v1_supply_order_pass_status
+  section: FBO
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/supply-order/pass/status
+  scope: seller
+  safety: read
+  summary: Статус ввода данных о водителе и автомобиле
+  doc: ''
+- operation_id: ozon_post_v1_supply_order_details
+  section: FBO
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/supply-order/details
+  scope: seller
+  safety: write
+  summary: Получить подробную информацию о заявке на поставку
+  doc: ''
+- operation_id: ozon_post_v1_draft_crossdock_create
+  section: FboSupplyRequest
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/draft/crossdock/create
+  scope: seller
+  safety: write
+  summary: Создать черновик заявки на поставку кросс-докингом
+  doc: ''
+- operation_id: ozon_post_v1_draft_direct_create
+  section: FboSupplyRequest
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/draft/direct/create
+  scope: seller
+  safety: write
+  summary: Создать черновик заявки на прямую поставку
+  doc: ''
+- operation_id: ozon_post_v1_draft_multi_cluster_create
+  section: FboSupplyRequest
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/draft/multi-cluster/create
+  scope: seller
+  safety: write
+  summary: Создать черновик заявки на поставку для нескольких кластеров
+  doc: ''
+- operation_id: ozon_post_v1_draft_timeslot_info
+  section: FboSupplyRequest
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/draft/timeslot/info
+  scope: seller
+  safety: write
+  summary: Доступные таймслоты
+  doc: ''
+- operation_id: ozon_post_v2_draft_create_info
+  section: FboSupplyRequest
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v2/draft/create/info
+  scope: seller
+  safety: write
+  summary: Получить информацию о черновике заявки на поставку
+  doc: ''
+- operation_id: ozon_post_v1_draft_supply_create_status
+  section: FboSupplyRequest
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/draft/supply/create/status
+  scope: seller
+  safety: write
+  summary: Информация о создании заявки на поставку
+  doc: ''
+- operation_id: ozon_post_v2_draft_timeslot_info
+  section: FboSupplyRequest
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v2/draft/timeslot/info
+  scope: seller
+  safety: write
+  summary: Получить список доступных таймслотов
+  doc: ''
+- operation_id: ozon_post_v1_cargoes_create
+  section: FboSupplyRequest
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/cargoes/create
+  scope: seller
+  safety: write
+  summary: Установка грузомест
+  doc: ''
+- operation_id: ozon_post_v1_cargoes_create_info
+  section: FboSupplyRequest
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/cargoes/create/info
+  scope: seller
+  safety: write
+  summary: Получить информацию по установке грузомест
+  doc: ''
+- operation_id: ozon_post_v2_cargoes_create_info
+  section: FboSupplyRequest
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v2/cargoes/create/info
+  scope: seller
+  safety: write
+  summary: Получить информацию по установке грузомест
+  doc: ''
+- operation_id: ozon_post_v1_cargoes_get
+  section: FboSupplyRequest
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/cargoes/get
+  scope: seller
+  safety: read
+  summary: Получить информацию о грузоместах
+  doc: ''
+- operation_id: ozon_post_v1_cargoes_delete
+  section: FboSupplyRequest
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/cargoes/delete
+  scope: seller
+  safety: destructive
+  summary: Удалить грузоместо в заявке на поставку
+  doc: ''
+- operation_id: ozon_post_v1_cargoes_delete_status
+  section: FboSupplyRequest
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/cargoes/delete/status
+  scope: seller
+  safety: destructive
+  summary: Информация о статусе удаления грузоместа
+  doc: ''
+- operation_id: ozon_post_v1_cargoes_rules_get
+  section: FboSupplyRequest
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/cargoes/rules/get
+  scope: seller
+  safety: read
+  summary: Чек-лист по установке грузомест FBO
+  doc: ''
+- operation_id: ozon_post_v1_cargoes_label_create
+  section: FboSupplyRequest
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/cargoes-label/create
+  scope: seller
+  safety: write
+  summary: Сгенерировать этикетки для грузомест
+  doc: ''
+- operation_id: ozon_post_v1_cargoes_label_get
+  section: FboSupplyRequest
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/cargoes-label/get
+  scope: seller
+  safety: read
+  summary: Получить идентификатор этикетки для грузомест
+  doc: ''
+- operation_id: ozon_get_v1_cargoes_label_file_file_guid
+  section: FboSupplyRequest
+  method: GET
+  host: api-seller.ozon.ru
+  path: /v1/cargoes-label/file/{file_guid}
+  scope: seller
+  safety: write
+  summary: Получить PDF с этикетками грузовых мест
+  doc: ''
+- operation_id: ozon_post_v1_supply_order_content_update
+  section: FboSupplyRequest
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/supply-order/content/update
+  scope: seller
+  safety: write
+  summary: Редактирование товарного состава
+  doc: ''
+- operation_id: ozon_post_v1_supply_order_content_update_status
+  section: FboSupplyRequest
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/supply-order/content/update/status
+  scope: seller
+  safety: write
+  summary: Информация о статусе редактирования товарного состава
+  doc: ''
+- operation_id: ozon_post_v1_supply_order_content_update_validation
+  section: FboSupplyRequest
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/supply-order/content/update/validation
+  scope: seller
+  safety: write
+  summary: Проверить новый товарный состав
+  doc: ''
+- operation_id: ozon_post_v2_draft_supply_create
+  section: FboSupplyRequest
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v2/draft/supply/create
+  scope: seller
+  safety: write
+  summary: Создать заявку на поставку по черновику
+  doc: ''
+- operation_id: ozon_post_v2_draft_supply_create_status
+  section: FboSupplyRequest
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v2/draft/supply/create/status
+  scope: seller
+  safety: write
+  summary: Получить информацию о создании заявки на поставку
+  doc: ''
+- operation_id: ozon_post_v1_warehouse_fbo_seller_list
+  section: FboSupplyRequest
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/warehouse/fbo/seller/list
+  scope: seller
+  safety: read
+  summary: Получить список складов продавца
+  doc: ''
+- operation_id: ozon_post_v1_carriage_create
+  section: DeliveryFBS
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/carriage/create
+  scope: seller
+  safety: write
+  summary: Создание отгрузки
+  doc: ''
+- operation_id: ozon_post_v1_carriage_approve
+  section: DeliveryFBS
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/carriage/approve
+  scope: seller
+  safety: write
+  summary: Подтверждение отгрузки
+  doc: ''
+- operation_id: ozon_post_v1_carriage_delivery_list
+  section: DeliveryFBS
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/carriage/delivery/list
+  scope: seller
+  safety: read
+  summary: Список методов доставки и отгрузок
+  doc: ''
+- operation_id: ozon_post_v2_carriage_delivery_list
+  section: DeliveryFBS
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v2/carriage/delivery/list
+  scope: seller
+  safety: read
+  summary: Список методов доставки и отгрузок
+  doc: ''
+- operation_id: ozon_post_v1_posting_fbs_traceable_split
+  section: DeliveryFBS
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/posting/fbs/traceable/split
+  scope: seller
+  safety: write
+  summary: Разделить отправление с прослеживаемыми товарами
+  doc: ''
+- operation_id: ozon_post_v1_posting_fbs_product_traceable_attribute
+  section: DeliveryFBS
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/posting/fbs/product/traceable/attribute
+  scope: seller
+  safety: read
+  summary: Получить список незаполненных атрибутов для прослеживаемых товаров
+  doc: ''
+- operation_id: ozon_post_v1_carriage_ettn_status
+  section: DeliveryFBS
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/carriage/ettn/status
+  scope: seller
+  safety: read
+  summary: Получить статус проверки электронной ТТН на прослеживаемой перевозке FBS
+  doc: ''
+- operation_id: ozon_post_v1_assembly_carriage_posting_list
+  section: DeliveryFBS
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/assembly/carriage/posting/list
+  scope: seller
+  safety: read
+  summary: Получить список отправлений в отгрузке
+  doc: ''
+- operation_id: ozon_post_v1_assembly_carriage_product_list
+  section: DeliveryFBS
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/assembly/carriage/product/list
+  scope: seller
+  safety: read
+  summary: Получить список товаров в отгрузке
+  doc: ''
+- operation_id: ozon_post_v1_assembly_fbs_posting_list
+  section: DeliveryFBS
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/assembly/fbs/posting/list
+  scope: seller
+  safety: read
+  summary: Получить список отправлений
+  doc: ''
+- operation_id: ozon_post_v1_assembly_fbs_product_list
+  section: DeliveryFBS
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/assembly/fbs/product/list
+  scope: seller
+  safety: read
+  summary: Получить список товаров в отправлениях
+  doc: ''
+- operation_id: ozon_post_v1_posting_fbs_package_label_create
+  section: FBS
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/posting/fbs/package-label/create
+  scope: seller
+  safety: write
+  summary: Создать задание на выгрузку этикеток
+  doc: ''
+- operation_id: ozon_post_v1_returns_rfbs_action_set
+  section: RFBSReturnsAPI
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/returns/rfbs/action/set
+  scope: seller
+  safety: write
+  summary: Передать доступные действия для rFBS возвратов
+  doc: ''
+- operation_id: ozon_post_v2_conditional_cancellation_list
+  section: CancellationAPI
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v2/conditional-cancellation/list
+  scope: seller
+  safety: write
+  summary: Получить список заявок на отмену rFBS
+  doc: ''
+- operation_id: ozon_post_v2_conditional_cancellation_approve
+  section: CancellationAPI
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v2/conditional-cancellation/approve
+  scope: seller
+  safety: write
+  summary: Подтвердить заявку на отмену rFBS
+  doc: ''
+- operation_id: ozon_post_v2_conditional_cancellation_reject
+  section: CancellationAPI
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v2/conditional-cancellation/reject
+  scope: seller
+  safety: write
+  summary: Отклонить заявку на отмену rFBS
+  doc: ''
+- operation_id: ozon_post_v1_returns_settings_utilization_history
+  section: ReturnsAPI
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/returns/settings/utilization/history
+  scope: seller
+  safety: write
+  summary: Получить историю изменений автоутилизации
+  doc: ''
+- operation_id: ozon_post_v1_returns_settings_utilization_info
+  section: ReturnsAPI
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/returns/settings/utilization/info
+  scope: seller
+  safety: write
+  summary: Получить настройки автоутилизации
+  doc: ''
+- operation_id: ozon_post_v1_returns_settings_utilization_update
+  section: ReturnsAPI
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/returns/settings/utilization/update
+  scope: seller
+  safety: write
+  summary: Обновить настройки автоутилизации
+  doc: ''
+- operation_id: ozon_post_v3_chat_list
+  section: ChatAPI
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v3/chat/list
+  scope: seller
+  safety: read
+  summary: Список чатов
+  doc: ''
+- operation_id: ozon_post_v1_report_placement_by_products_create
+  section: ReportAPI
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/report/placement/by-products/create
+  scope: seller
+  safety: write
+  summary: Получить отчёт о стоимости размещения по товарам
+  doc: ''
+- operation_id: ozon_post_v1_report_placement_by_supplies_create
+  section: ReportAPI
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/report/placement/by-supplies/create
+  scope: seller
+  safety: write
+  summary: Получить отчёт о стоимости размещения по поставкам
+  doc: ''
+- operation_id: ozon_post_v1_report_marked_products_sales_create
+  section: ReportAPI
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/report/marked-products-sales/create
+  scope: seller
+  safety: write
+  summary: Сгенерировать отчёт по продажам товаров с маркировкой
+  doc: ''
+- operation_id: ozon_post_v1_analytics_average_delivery_time
+  section: AnalyticsAPI
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/analytics/average-delivery-time
+  scope: seller
+  safety: read
+  summary: Получить аналитику по среднему времени доставки
+  doc: ''
+- operation_id: ozon_post_v1_analytics_average_delivery_time_details
+  section: AnalyticsAPI
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/analytics/average-delivery-time/details
+  scope: seller
+  safety: read
+  summary: Получить детальную аналитику по среднему времени доставки
+  doc: ''
+- operation_id: ozon_post_v1_analytics_average_delivery_time_summary
+  section: AnalyticsAPI
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/analytics/average-delivery-time/summary
+  scope: seller
+  safety: read
+  summary: Получить общую аналитику по среднему времени доставки
+  doc: ''
+- operation_id: ozon_post_v1_analytics_stocks
+  section: AnalyticsAPI
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/analytics/stocks
+  scope: seller
+  safety: read
+  summary: Получить аналитику по остаткам
+  doc: ''
+- operation_id: ozon_post_v1_finance_realization_posting
+  section: FinanceAPI
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/finance/realization/posting
+  scope: seller
+  safety: read
+  summary: Позаказный отчёт о реализации товаров
+  doc: ''
+- operation_id: ozon_post_v1_finance_document_b2b_sales
+  section: FinanceAPI
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/finance/document-b2b-sales
+  scope: seller
+  safety: write
+  summary: Реестр продаж юридическим лицам
+  doc: ''
+- operation_id: ozon_post_v1_finance_document_b2b_sales_json
+  section: FinanceAPI
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/finance/document-b2b-sales/json
+  scope: seller
+  safety: write
+  summary: Реестр продаж юридическим лицам в JSON-формате
+  doc: ''
+- operation_id: ozon_post_v1_finance_products_buyout
+  section: FinanceAPI
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/finance/products/buyout
+  scope: seller
+  safety: read
+  summary: Отчёт о выкупленных товарах
+  doc: ''
+- operation_id: ozon_post_v1_finance_compensation
+  section: FinanceAPI
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/finance/compensation
+  scope: seller
+  safety: read
+  summary: Отчёт о компенсациях
+  doc: ''
+- operation_id: ozon_post_v1_finance_decompensation
+  section: FinanceAPI
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/finance/decompensation
+  scope: seller
+  safety: read
+  summary: Отчёт о декомпенсациях
+  doc: ''
+- operation_id: ozon_post_v1_receipts_get
+  section: Receipt
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/receipts/get
+  scope: seller
+  safety: read
+  summary: Получить чек в формате PDF
+  doc: ''
+- operation_id: ozon_post_v1_receipts_seller_list
+  section: Receipt
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/receipts/seller/list
+  scope: seller
+  safety: read
+  summary: Получить список чеков продавца
+  doc: ''
+- operation_id: ozon_post_v1_receipts_upload
+  section: Receipt
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/receipts/upload
+  scope: seller
+  safety: write
+  summary: Загрузить чек
+  doc: ''
+- operation_id: ozon_post_v1_rating_index_fbs_info
+  section: SellerRating
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/rating/index/fbs/info
+  scope: seller
+  safety: read
+  summary: Получить индекс ошибок FBS и rFBS
+  doc: ''
+- operation_id: ozon_post_v1_rating_index_fbs_posting_list
+  section: SellerRating
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/rating/index/fbs/posting/list
+  scope: seller
+  safety: read
+  summary: Список отправлений, которые повлияли на индекс ошибок FBS и rFBS
+  doc: ''
+- operation_id: ozon_post_v1_posting_digital_codes_upload
+  section: Digital
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/posting/digital/codes/upload
+  scope: seller
+  safety: write
+  summary: Загрузить коды цифровых товаров для отправления
+  doc: ''
+- operation_id: ozon_post_v1_posting_digital_list
+  section: Digital
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/posting/digital/list
+  scope: seller
+  safety: read
+  summary: Получить список отправлений
+  doc: ''
+- operation_id: ozon_post_v1_product_digital_stocks_import
+  section: Digital
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/product/digital/stocks/import
+  scope: seller
+  safety: write
+  summary: Обновить количество цифровых товаров
+  doc: ''
+- operation_id: ozon_post_v1_removal_from_supply_list
+  section: BetaMethod
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/removal/from-supply/list
+  scope: seller
+  safety: read
+  summary: Отчёт по вывозу и утилизации с поставки FBO
+  doc: ''
+- operation_id: ozon_post_v1_removal_from_stock_list
+  section: BetaMethod
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/removal/from-stock/list
+  scope: seller
+  safety: read
+  summary: Отчёт по вывозу и утилизации со стока FBO
+  doc: ''
+- operation_id: ozon_post_v1_product_stairway_discount_by_quantity_set
+  section: BetaMethod
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/product/stairway-discount/by-quantity/set
+  scope: seller
+  safety: write
+  summary: Управлять скидкой от количества
+  doc: ''
+- operation_id: ozon_post_v1_product_stairway_discount_by_quantity_get
+  section: BetaMethod
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/product/stairway-discount/by-quantity/get
+  scope: seller
+  safety: read
+  summary: Получить информацию о скидке от количества
+  doc: ''
+- operation_id: ozon_post_v1_finance_balance
+  section: BetaMethod
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/finance/balance
+  scope: seller
+  safety: read
+  summary: Получить отчёт о балансе
+  doc: ''
+- operation_id: ozon_post_v2_actions_discounts_task_list
+  section: BetaMethod
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v2/actions/discounts-task/list
+  scope: seller
+  safety: read
+  summary: Получить список заявок на скидку
+  doc: ''
+- operation_id: ozon_post_v1_carriage_act_discrepancy_pdf
+  section: BetaMethod
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/carriage/act-discrepancy/pdf
+  scope: seller
+  safety: write
+  summary: Получить акт о расхождениях по отгрузке FBS
+  doc: ''
+- operation_id: ozon_post_v1_warehouse_ozon_list
+  section: BetaMethod
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/warehouse/ozon/list
+  scope: seller
+  safety: read
+  summary: Получить список складов Ozon
+  doc: ''
+- operation_id: ozon_post_v2_cluster_list
+  section: BetaMethod
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v2/cluster/list
+  scope: seller
+  safety: read
+  summary: Получить информацию о макролокальных кластерах
+  doc: ''
+- operation_id: ozon_post_v1_product_visibility_set
+  section: BetaMethod
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/product/visibility/set
+  scope: seller
+  safety: write
+  summary: Настроить видимость товара на витрине Ozon и Ozon Селект
+  doc: ''
+- operation_id: ozon_post_v1_warehouse_rfbs_pause
+  section: BetaMethod
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/warehouse/rfbs/pause
+  scope: seller
+  safety: write
+  summary: Поставить rFBS-склад на паузу
+  doc: ''
+- operation_id: ozon_post_v1_warehouse_rfbs_unpause
+  section: BetaMethod
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/warehouse/rfbs/unpause
+  scope: seller
+  safety: write
+  summary: Снять rFBS-склад с паузы
+  doc: ''
+- operation_id: ozon_post_v1_warehouse_fbs_create_drop_off_list
+  section: FBSWarehouseSetup
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/warehouse/fbs/create/drop-off/list
+  scope: seller
+  safety: write
+  summary: Получить список drop-off пунктов для создания склада
+  doc: ''
+- operation_id: ozon_post_v1_warehouse_fbs_update_drop_off_list
+  section: FBSWarehouseSetup
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/warehouse/fbs/update/drop-off/list
+  scope: seller
+  safety: write
+  summary: Получить список drop-off пунктов для изменения информации склада
+  doc: ''
+- operation_id: ozon_post_v1_warehouse_fbs_create_drop_off_timeslot_list
+  section: FBSWarehouseSetup
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/warehouse/fbs/create/drop-off/timeslot/list
+  scope: seller
+  safety: write
+  summary: Получить список таймслотов для создания склада с отгрузкой drop-off
+  doc: ''
+- operation_id: ozon_post_v1_warehouse_fbs_update_drop_off_timeslot_list
+  section: FBSWarehouseSetup
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/warehouse/fbs/update/drop-off/timeslot/list
+  scope: seller
+  safety: write
+  summary: Получить список таймслотов для обновления склада с отгрузкой drop-off
+  doc: ''
+- operation_id: ozon_post_v1_warehouse_fbs_create_pick_up_timeslot_list
+  section: FBSWarehouseSetup
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/warehouse/fbs/create/pick-up/timeslot/list
+  scope: seller
+  safety: write
+  summary: Получить список таймслотов для создания склада с отгрузкой pick-up
+  doc: ''
+- operation_id: ozon_post_v1_warehouse_fbs_update_pick_up_timeslot_list
+  section: FBSWarehouseSetup
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/warehouse/fbs/update/pick-up/timeslot/list
+  scope: seller
+  safety: write
+  summary: Получить список таймслотов для обновления склада с отгрузкой pick-up
+  doc: ''
+- operation_id: ozon_post_v1_warehouse_fbs_create
+  section: FBSWarehouseSetup
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/warehouse/fbs/create
+  scope: seller
+  safety: write
+  summary: Создать склад
+  doc: ''
+- operation_id: ozon_post_v1_warehouse_fbs_update
+  section: FBSWarehouseSetup
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/warehouse/fbs/update
+  scope: seller
+  safety: write
+  summary: Обновить склад
+  doc: ''
+- operation_id: ozon_post_v1_warehouse_fbs_first_mile_update
+  section: FBSWarehouseSetup
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/warehouse/fbs/first-mile/update
+  scope: seller
+  safety: write
+  summary: Обновить первую милю
+  doc: ''
+- operation_id: ozon_post_v1_warehouse_fbs_create_return_point_list
+  section: FBSWarehouseSetup
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/warehouse/fbs/create/return-point/list
+  scope: seller
+  safety: write
+  summary: Получить список пунктов возврата для создания склада
+  doc: ''
+- operation_id: ozon_post_v1_warehouse_fbs_update_return_point_list
+  section: FBSWarehouseSetup
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/warehouse/fbs/update/return-point/list
+  scope: seller
+  safety: write
+  summary: Получить список пунктов возврата для обновления склада
+  doc: ''
+- operation_id: ozon_post_v1_warehouse_fbs_return_mile_info
+  section: FBSWarehouseSetup
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/warehouse/fbs/return-mile/info
+  scope: seller
+  safety: read
+  summary: Получить информацию о возвратной миле
+  doc: ''
+- operation_id: ozon_post_v1_warehouse_fbs_return_mile_check
+  section: FBSWarehouseSetup
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/warehouse/fbs/return-mile/check
+  scope: seller
+  safety: write
+  summary: Проверить необходимость установки возвратной мили на склад
+  doc: ''
+- operation_id: ozon_post_v1_warehouse_fbs_pickup_courier_create
+  section: FBSWarehouseSetup
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/warehouse/fbs/pickup/courier/create
+  scope: seller
+  safety: write
+  summary: Создать вызов курьера на забор отгрузки pick-up
+  doc: ''
+- operation_id: ozon_post_v1_warehouse_fbs_pickup_courier_cancel
+  section: FBSWarehouseSetup
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/warehouse/fbs/pickup/courier/cancel
+  scope: seller
+  safety: write
+  summary: Отменить вызов курьера на забор отгрузки pick-up
+  doc: ''
+- operation_id: ozon_post_v1_warehouse_fbs_pickup_history_list
+  section: FBSWarehouseSetup
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/warehouse/fbs/pickup/history/list
+  scope: seller
+  safety: read
+  summary: Получить историю отгрузок курьерам
+  doc: ''
+- operation_id: ozon_post_v1_warehouse_fbs_pickup_planning_list
+  section: FBSWarehouseSetup
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/warehouse/fbs/pickup/planning/list
+  scope: seller
+  safety: read
+  summary: Получить список складов для планирования отгрузок курьеру
+  doc: ''
+- operation_id: ozon_post_v1_warehouse_erfbs_aggregator_create
+  section: rFBSWarehouseSetup
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/warehouse/erfbs/aggregator/create
+  scope: seller
+  safety: write
+  summary: Создать склад с методом доставки «Партнёры Ozon»
+  doc: ''
+- operation_id: ozon_post_v1_warehouse_erfbs_update
+  section: rFBSWarehouseSetup
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/warehouse/erfbs/update
+  scope: seller
+  safety: write
+  summary: Обновить склад
+  doc: ''
+- operation_id: ozon_post_v1_warehouse_erfbs_aggregator_delivery_method_upda
+  section: rFBSWarehouseSetup
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/warehouse/erfbs/aggregator/delivery-method/update
+  scope: seller
+  safety: write
+  summary: Обновить метод доставки «Партнёры Ozon»
+  doc: ''
+- operation_id: ozon_post_v1_warehouse_erfbs_non_integrated_create
+  section: rFBSWarehouseSetup
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/warehouse/erfbs/non-integrated/create
+  scope: seller
+  safety: write
+  summary: Создать склад с методом доставки «Вы или сторонняя служба»
+  doc: ''
+- operation_id: ozon_post_v1_warehouse_erfbs_non_integrated_delivery_method_
+  section: rFBSWarehouseSetup
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/warehouse/erfbs/non-integrated/delivery-method/update
+  scope: seller
+  safety: write
+  summary: Обновить метод доставки «Вы или сторонняя служба»
+  doc: ''
+- operation_id: ozon_post_v2_polygon_bind
+  section: PolygonAPI
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v2/polygon/bind
+  scope: seller
+  safety: write
+  summary: Связать метод доставки с полигоном
+  doc: ''
+- operation_id: ozon_post_v1_polygon_delete
+  section: PolygonAPI
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/polygon/delete
+  scope: seller
+  safety: destructive
+  summary: Удалить полигон из области доставки
+  doc: ''
+- operation_id: ozon_post_v1_polygon_list
+  section: PolygonAPI
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/polygon/list
+  scope: seller
+  safety: read
+  summary: Получить список установленных полигонов на метод доставки
+  doc: ''
+- operation_id: ozon_post_v1_polygon_time_coordinates_update
+  section: PolygonAPI
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/polygon/time/coordinates/update
+  scope: seller
+  safety: write
+  summary: Обновить координаты полигона доставки
+  doc: ''
+- operation_id: ozon_post_v1_polygon_time_set
+  section: PolygonAPI
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/polygon/time/set
+  scope: seller
+  safety: write
+  summary: Установить новое время доставки в полигоне
+  doc: ''
+- operation_id: ozon_post_v1_question_answer_create
+  section: Questions&Answers
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/question/answer/create
+  scope: seller
+  safety: write
+  summary: Создать ответ на вопрос
+  doc: ''
+- operation_id: ozon_post_v1_question_answer_delete
+  section: Questions&Answers
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/question/answer/delete
+  scope: seller
+  safety: destructive
+  summary: Удалить ответ на вопрос
+  doc: ''
+- operation_id: ozon_post_v1_question_answer_list
+  section: Questions&Answers
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/question/answer/list
+  scope: seller
+  safety: read
+  summary: Список ответов на вопрос
+  doc: ''
+- operation_id: ozon_post_v1_question_change_status
+  section: Questions&Answers
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/question/change-status
+  scope: seller
+  safety: write
+  summary: Изменить статус вопросов
+  doc: ''
+- operation_id: ozon_post_v1_question_count
+  section: Questions&Answers
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/question/count
+  scope: seller
+  safety: write
+  summary: Количество вопросов по статусам
+  doc: ''
+- operation_id: ozon_post_v1_question_info
+  section: Questions&Answers
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/question/info
+  scope: seller
+  safety: read
+  summary: Информация о вопросе
+  doc: ''
+- operation_id: ozon_post_v1_question_list
+  section: Questions&Answers
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/question/list
+  scope: seller
+  safety: read
+  summary: Список вопросов
+  doc: ''
+- operation_id: ozon_post_v1_question_top_sku
+  section: Questions&Answers
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/question/top-sku
+  scope: seller
+  safety: write
+  summary: Товары с наибольшим количеством вопросов
+  doc: ''
+- operation_id: ozon_post_v1_seller_actions_create_discount
+  section: SellerActions
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/seller-actions/create/discount
+  scope: seller
+  safety: write
+  summary: Создать акцию с механикой «Скидка»
+  doc: ''
+- operation_id: ozon_post_v1_seller_actions_create_discount_with_condition
+  section: SellerActions
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/seller-actions/create/discount-with-condition
+  scope: seller
+  safety: write
+  summary: Создать акцию с механикой «Скидка от суммы заказа»
+  doc: ''
+- operation_id: ozon_post_v1_seller_actions_create_installment
+  section: SellerActions
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/seller-actions/create/installment
+  scope: seller
+  safety: write
+  summary: Создать акцию с механикой «Беспроцентная рассрочка»
+  doc: ''
+- operation_id: ozon_post_v1_seller_actions_create_multi_level_discount
+  section: SellerActions
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/seller-actions/create/multi-level-discount
+  scope: seller
+  safety: write
+  summary: Создать акцию с механикой «Многоуровневая скидка от суммы»
+  doc: ''
+- operation_id: ozon_post_v1_seller_actions_create_voucher
+  section: SellerActions
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/seller-actions/create/voucher
+  scope: seller
+  safety: write
+  summary: Создать акцию с механикой «Скидка по промокоду»
+  doc: ''
+- operation_id: ozon_post_v1_seller_actions_update_discount
+  section: SellerActions
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/seller-actions/update/discount
+  scope: seller
+  safety: write
+  summary: Обновить акцию с механикой «Скидка»
+  doc: ''
+- operation_id: ozon_post_v1_seller_actions_update_discount_with_condition
+  section: SellerActions
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/seller-actions/update/discount-with-condition
+  scope: seller
+  safety: write
+  summary: Обновить акцию с механикой «Скидка от суммы заказа»
+  doc: ''
+- operation_id: ozon_post_v1_seller_actions_update_installment
+  section: SellerActions
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/seller-actions/update/installment
+  scope: seller
+  safety: write
+  summary: Обновить акцию с механикой «Беспроцентная рассрочка»
+  doc: ''
+- operation_id: ozon_post_v1_seller_actions_update_multi_level_discount
+  section: SellerActions
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/seller-actions/update/multi-level-discount
+  scope: seller
+  safety: write
+  summary: Обновить акцию с механикой «Многоуровневая скидка от суммы»
+  doc: ''
+- operation_id: ozon_post_v1_seller_actions_update_voucher
+  section: SellerActions
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/seller-actions/update/voucher
+  scope: seller
+  safety: write
+  summary: Обновить акцию с механикой «Скидка по промокоду»
+  doc: ''
+- operation_id: ozon_post_v1_seller_actions_products_add
+  section: SellerActions
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/seller-actions/products/add
+  scope: seller
+  safety: write
+  summary: Добавить товары в акцию
+  doc: ''
+- operation_id: ozon_post_v1_seller_actions_products_candidates
+  section: SellerActions
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/seller-actions/products/candidates
+  scope: seller
+  safety: write
+  summary: Получить список доступных для акции товаров
+  doc: ''
+- operation_id: ozon_post_v1_seller_actions_products_delete
+  section: SellerActions
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/seller-actions/products/delete
+  scope: seller
+  safety: destructive
+  summary: Удалить товары из акции
+  doc: ''
+- operation_id: ozon_post_v1_seller_actions_products_list
+  section: SellerActions
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/seller-actions/products/list
+  scope: seller
+  safety: read
+  summary: Получить список участвующих в акции товаров
+  doc: ''
+- operation_id: ozon_post_v1_seller_actions_archive
+  section: SellerActions
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/seller-actions/archive
+  scope: seller
+  safety: write
+  summary: Перенести акцию в архив
+  doc: ''
+- operation_id: ozon_post_v1_seller_actions_change_activity
+  section: SellerActions
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/seller-actions/change-activity
+  scope: seller
+  safety: write
+  summary: Включить или выключить акцию
+  doc: ''
+- operation_id: ozon_post_v1_seller_actions_list
+  section: SellerActions
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/seller-actions/list
+  scope: seller
+  safety: read
+  summary: Получить список акций
+  doc: ''
+- operation_id: ozon_post_v1_seller_actions_voucher_get
+  section: SellerActions
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/seller-actions/voucher/get
+  scope: seller
+  safety: read
+  summary: Получить файл с промокодами в формате CSV
+  doc: ''
+- operation_id: ozon_post_v1_notification_set
+  section: Notification
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/notification/set
+  scope: seller
+  safety: write
+  summary: Подключить URL-адрес для уведомлений
+  doc: ''
+- operation_id: ozon_post_v1_notification_update
+  section: Notification
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/notification/update
+  scope: seller
+  safety: write
+  summary: Изменить URL-адрес для уведомлений
+  doc: ''
+- operation_id: ozon_post_v1_notification_delete
+  section: Notification
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/notification/delete
+  scope: seller
+  safety: destructive
+  summary: Удалить URL-адрес для уведомлений
+  doc: ''
+- operation_id: ozon_post_v1_notification_check
+  section: Notification
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/notification/check
+  scope: seller
+  safety: write
+  summary: Проверить URL-адрес для уведомлений
+  doc: ''
+- operation_id: ozon_post_v1_notification_enable
+  section: Notification
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/notification/enable
+  scope: seller
+  safety: write
+  summary: Включить или выключить уведомления на URL-адрес
+  doc: ''
+- operation_id: ozon_post_v1_notification_list
+  section: Notification
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/notification/list
+  scope: seller
+  safety: read
+  summary: Получить информацию по подключённым URL-адресам
+  doc: ''
+- operation_id: ozon_post_v1_notification_push_type_list
+  section: Notification
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/notification/push-type/list
+  scope: seller
+  safety: read
+  summary: Получить типы пуш-уведомлений
+  doc: ''
+- operation_id: ozon_post_v1_fbp_draft_direct_seller_dlv_create
+  section: DraftDirectFBP
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/fbp/draft/direct/seller-dlv/create
+  scope: seller
+  safety: write
+  summary: Создать черновик с доставкой силами продавца
+  doc: ''
+- operation_id: ozon_post_v1_fbp_draft_direct_seller_dlv_edit
+  section: DraftDirectFBP
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/fbp/draft/direct/seller-dlv/edit
+  scope: seller
+  safety: write
+  summary: Обновить информацию о доставке силами продавца в черновике
+  doc: ''
+- operation_id: ozon_post_v1_fbp_draft_direct_timeslot_edit
+  section: DraftDirectFBP
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/fbp/draft/direct/timeslot/edit
+  scope: seller
+  safety: write
+  summary: Отредактировать таймслот в черновике
+  doc: ''
+- operation_id: ozon_post_v1_fbp_draft_direct_timeslot_get
+  section: DraftDirectFBP
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/fbp/draft/direct/timeslot/get
+  scope: seller
+  safety: write
+  summary: Получить список таймслотов для прямой поставки
+  doc: ''
+- operation_id: ozon_post_v1_fbp_draft_direct_create
+  section: DraftDirectFBP
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/fbp/draft/direct/create
+  scope: seller
+  safety: write
+  summary: Создать черновик заявки на поставку без указания способа доставки
+  doc: ''
+- operation_id: ozon_post_v1_fbp_draft_direct_delete
+  section: DraftDirectFBP
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/fbp/draft/direct/delete
+  scope: seller
+  safety: destructive
+  summary: Удалить черновик заявки на поставку
+  doc: ''
+- operation_id: ozon_post_v1_fbp_draft_direct_product_validate
+  section: DraftDirectFBP
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/fbp/draft/direct/product/validate
+  scope: seller
+  safety: write
+  summary: Проверить список товаров для склада партнёра
+  doc: ''
+- operation_id: ozon_post_v1_fbp_draft_direct_registrate
+  section: DraftDirectFBP
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/fbp/draft/direct/registrate
+  scope: seller
+  safety: write
+  summary: Перевести черновик в действующую поставку
+  doc: ''
+- operation_id: ozon_post_v1_fbp_draft_drop_off_create
+  section: DraftDropOffFBP
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/fbp/draft/drop-off/create
+  scope: seller
+  safety: write
+  summary: Создать черновик для доставки в drop-off пункт
+  doc: ''
+- operation_id: ozon_post_v1_fbp_draft_drop_off_delete
+  section: DraftDropOffFBP
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/fbp/draft/drop-off/delete
+  scope: seller
+  safety: destructive
+  summary: Удалить черновик для доставки в drop-off пункт
+  doc: ''
+- operation_id: ozon_post_v1_fbp_draft_drop_off_dlv_edit
+  section: DraftDropOffFBP
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/fbp/draft/drop-off/dlv/edit
+  scope: seller
+  safety: write
+  summary: Отредактировать детали доставки для drop-off черновика
+  doc: ''
+- operation_id: ozon_post_v1_fbp_draft_drop_off_registrate
+  section: DraftDropOffFBP
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/fbp/draft/drop-off/registrate
+  scope: seller
+  safety: write
+  summary: Перевести черновик в действующую поставку
+  doc: ''
+- operation_id: ozon_post_v1_fbp_draft_drop_off_province_list
+  section: DraftDropOffFBP
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/fbp/draft/drop-off/province/list
+  scope: seller
+  safety: write
+  summary: Получить список провинций
+  doc: ''
+- operation_id: ozon_post_v1_fbp_draft_drop_off_point_list
+  section: DraftDropOffFBP
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/fbp/draft/drop-off/point/list
+  scope: seller
+  safety: write
+  summary: Получить список drop-off пунктов в провинции
+  doc: ''
+- operation_id: ozon_post_v1_fbp_draft_drop_off_point_timetable
+  section: DraftDropOffFBP
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/fbp/draft/drop-off/point/timetable
+  scope: seller
+  safety: write
+  summary: Получить расписание работы drop-off пункта
+  doc: ''
+- operation_id: ozon_post_v1_fbp_draft_drop_off_product_validate
+  section: DraftDropOffFBP
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/fbp/draft/drop-off/product/validate
+  scope: seller
+  safety: write
+  summary: Проверить список товаров, которые склад партнёра может принять
+  doc: ''
+- operation_id: ozon_post_v1_fbp_order_direct_cancel
+  section: OrderDirectFBP
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/fbp/order/direct/cancel
+  scope: seller
+  safety: write
+  summary: Отменить поставку
+  doc: ''
+- operation_id: ozon_post_v1_fbp_order_direct_seller_dlv_edit
+  section: OrderDirectFBP
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/fbp/order/direct/seller-dlv/edit
+  scope: seller
+  safety: write
+  summary: Обновить информацию о доставке силами продавца
+  doc: ''
+- operation_id: ozon_post_v1_fbp_order_direct_timeslot_edit
+  section: OrderDirectFBP
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/fbp/order/direct/timeslot/edit
+  scope: seller
+  safety: read
+  summary: Отредактировать таймслот в заявке на поставку
+  doc: ''
+- operation_id: ozon_post_v1_fbp_order_direct_timeslot_list
+  section: OrderDirectFBP
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/fbp/order/direct/timeslot/list
+  scope: seller
+  safety: read
+  summary: Получить список таймслотов для поставки
+  doc: ''
+- operation_id: ozon_post_v1_fbp_act_from_create
+  section: DeliveryFBP
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/fbp/act-from/create
+  scope: seller
+  safety: write
+  summary: Сгенерировать акт приёмки
+  doc: ''
+- operation_id: ozon_post_v1_fbp_act_from_get
+  section: DeliveryFBP
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/fbp/act-from/get
+  scope: seller
+  safety: read
+  summary: Получить статус генерации акта приёмки
+  doc: ''
+- operation_id: ozon_post_v1_fbp_act_to_create
+  section: DeliveryFBP
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/fbp/act-to/create
+  scope: seller
+  safety: write
+  summary: Сгенерировать транспортную накладную
+  doc: ''
+- operation_id: ozon_post_v1_fbp_act_to_get
+  section: DeliveryFBP
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/fbp/act-to/get
+  scope: seller
+  safety: read
+  summary: Получить статус генерации транспортной накладной
+  doc: ''
+- operation_id: ozon_post_v1_fbp_archive_get
+  section: DeliveryFBP
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/fbp/archive/get
+  scope: seller
+  safety: write
+  summary: Получить информацию о завершённой поставке
+  doc: ''
+- operation_id: ozon_post_v1_fbp_archive_list
+  section: DeliveryFBP
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/fbp/archive/list
+  scope: seller
+  safety: write
+  summary: Получить список завершённых поставок
+  doc: ''
+- operation_id: ozon_post_v1_fbp_label_create
+  section: DeliveryFBP
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/fbp/label/create
+  scope: seller
+  safety: write
+  summary: Cоздать задание на генерацию этикеток
+  doc: ''
+- operation_id: ozon_post_v1_fbp_label_get
+  section: DeliveryFBP
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/fbp/label/get
+  scope: seller
+  safety: read
+  summary: Получить статус задания на генерацию этикеток
+  doc: ''
+- operation_id: ozon_post_v1_fbp_draft_pick_up_create
+  section: DraftPickupFBP
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/fbp/draft/pick-up/create
+  scope: seller
+  safety: write
+  summary: Создать черновик заявки на pick-up поставку
+  doc: ''
+- operation_id: ozon_post_v1_fbp_draft_pick_up_delete
+  section: DraftPickupFBP
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/fbp/draft/pick-up/delete
+  scope: seller
+  safety: destructive
+  summary: Отменить черновик заявки на pick-up поставку
+  doc: ''
+- operation_id: ozon_post_v1_fbp_draft_pick_up_dlv_edit
+  section: DraftPickupFBP
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/fbp/draft/pick-up/dlv/edit
+  scope: seller
+  safety: write
+  summary: Изменить черновик заявки на pick-up поставку
+  doc: ''
+- operation_id: ozon_post_v1_fbp_draft_pick_up_product_validate
+  section: DraftPickupFBP
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/fbp/draft/pick-up/product/validate
+  scope: seller
+  safety: write
+  summary: Провалидировать список товаров для pick-up поставки
+  doc: ''
+- operation_id: ozon_post_v1_fbp_warehouse_list
+  section: DeliveryFBPDraft
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/fbp/warehouse/list
+  scope: seller
+  safety: read
+  summary: Получить список партнёрских складов
+  doc: ''
+- operation_id: ozon_post_v1_fbp_draft_pick_up_registrate
+  section: DraftPickupFBP
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/fbp/draft/pick-up/registrate
+  scope: seller
+  safety: write
+  summary: Перевести черновик в действующую поставку
+  doc: ''
+- operation_id: ozon_post_v1_fbp_draft_get
+  section: DeliveryFBPDraft
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/fbp/draft/get
+  scope: seller
+  safety: write
+  summary: Получить информацию о черновике поставки
+  doc: ''
+- operation_id: ozon_post_v1_fbp_draft_list
+  section: DeliveryFBPDraft
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/fbp/draft/list
+  scope: seller
+  safety: write
+  summary: Список черновиков поставки
+  doc: ''
+- operation_id: ozon_post_v1_fbp_draft_direct_tpl_dlv_create
+  section: DraftDirectFBP
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/fbp/draft/direct/tpl-dlv/create
+  scope: seller
+  safety: write
+  summary: Создать черновик заявки на доставку сторонней транспортной компанией
+  doc: ''
+- operation_id: ozon_post_v1_fbp_draft_direct_tpl_dlv_edit
+  section: DraftDirectFBP
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/fbp/draft/direct/tpl-dlv/edit
+  scope: seller
+  safety: write
+  summary: Редактировать черновик поставки со способом доставки сторонней транспортной
+    компанией
+  doc: ''
+- operation_id: ozon_post_v1_fbp_order_drop_off_cancel
+  section: OrderDropOffFBP
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/fbp/order/drop-off/cancel
+  scope: seller
+  safety: write
+  summary: Отменить поставку drop-off
+  doc: ''
+- operation_id: ozon_post_v1_fbp_order_drop_off_dlv_edit
+  section: OrderDropOffFBP
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/fbp/order/drop-off/dlv/edit
+  scope: seller
+  safety: write
+  summary: Отредактировать информацию о поставке на drop-off пункт
+  doc: ''
+- operation_id: ozon_post_v1_fbp_order_drop_off_timetable
+  section: OrderDropOffFBP
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/fbp/order/drop-off/timetable
+  scope: seller
+  safety: write
+  summary: Получить график работы drop-off пункта
+  doc: ''
+- operation_id: ozon_post_v1_fbp_order_get
+  section: DeliveryFBP
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/fbp/order/get
+  scope: seller
+  safety: read
+  summary: Получить информацию о конкретной поставке
+  doc: ''
+- operation_id: ozon_post_v1_fbp_order_list
+  section: DeliveryFBP
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/fbp/order/list
+  scope: seller
+  safety: read
+  summary: Получить список поставок
+  doc: ''
+- operation_id: ozon_post_v1_fbp_order_pick_up_cancel
+  section: OrderPickupFBP
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/fbp/order/pick-up/cancel
+  scope: seller
+  safety: write
+  summary: Отменить pick-up поставку
+  doc: ''
+- operation_id: ozon_post_v1_fbp_order_pick_up_dlv_edit
+  section: OrderPickupFBP
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/fbp/order/pick-up/dlv/edit
+  scope: seller
+  safety: write
+  summary: Изменить данные о точке забора
+  doc: ''
+- operation_id: ozon_post_v1_analytics_product_queries_details
+  section: Premium
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/analytics/product-queries/details
+  scope: seller
+  safety: read
+  summary: Получить детализацию запросов по товару
+  doc: ''
+- operation_id: ozon_post_v1_finance_realization_by_day
+  section: Premium
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/finance/realization/by-day
+  scope: seller
+  safety: read
+  summary: Отчёт о реализации товаров за день
+  doc: ''
+- operation_id: ozon_post_v1_search_queries_text
+  section: Premium
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/search-queries/text
+  scope: seller
+  safety: read
+  summary: Получить список поисковых запросов по тексту
+  doc: ''
+- operation_id: ozon_post_v1_search_queries_top
+  section: Premium
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/search-queries/top
+  scope: seller
+  safety: read
+  summary: Получить список популярных поисковых запросов
+  doc: ''
+- operation_id: ozon_post_v1_product_prices_details
+  section: Premium
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/product/prices/details
+  scope: seller
+  safety: write
+  summary: Получить подробную информацию о ценах товаров
+  doc: ''
+- operation_id: ozon_post_v1_cancel_reason_list
+  section: CancelReasonAPI
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/cancel-reason/list
+  scope: seller
+  safety: write
+  summary: Причины отмены отправлений
+  doc: ''
+- operation_id: ozon_post_v1_cancel_reason_list_by_order
+  section: CancelReasonAPI
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/cancel-reason/list-by-order
+  scope: seller
+  safety: write
+  summary: Причины отмены заказа
+  doc: ''
+- operation_id: ozon_post_v1_cancel_reason_list_by_posting
+  section: CancelReasonAPI
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/cancel-reason/list-by-posting
+  scope: seller
+  safety: write
+  summary: Причины отмены отправления
+  doc: ''
+- operation_id: ozon_post_v1_delivery_check
+  section: DeliveryAPI
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/delivery/check
+  scope: seller
+  safety: write
+  summary: Проверить доступность доставки для покупателя
+  doc: ''
+- operation_id: ozon_post_v2_delivery_checkout
+  section: DeliveryAPI
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v2/delivery/checkout
+  scope: seller
+  safety: write
+  summary: Получить доступные варианты доставки
+  doc: ''
+- operation_id: ozon_post_v1_delivery_map
+  section: DeliveryAPI
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/delivery/map
+  scope: seller
+  safety: write
+  summary: Отрисовать точки на карте
+  doc: ''
+- operation_id: ozon_post_v1_delivery_point_info
+  section: DeliveryAPI
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/delivery/point/info
+  scope: seller
+  safety: read
+  summary: Получить информацию о точке самовывоза
+  doc: ''
+- operation_id: ozon_post_v1_delivery_point_list
+  section: DeliveryAPI
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/delivery/point/list
+  scope: seller
+  safety: read
+  summary: Получить список точек самовывоза
+  doc: ''
+- operation_id: ozon_post_v1_order_cancel
+  section: OrderAPI
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/order/cancel
+  scope: seller
+  safety: write
+  summary: Отменить заказ
+  doc: ''
+- operation_id: ozon_post_v1_order_cancel_check
+  section: OrderAPI
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/order/cancel/check
+  scope: seller
+  safety: write
+  summary: Проверить возможность отмены заказа
+  doc: ''
+- operation_id: ozon_post_v1_order_cancel_status
+  section: OrderAPI
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/order/cancel/status
+  scope: seller
+  safety: write
+  summary: Получить статус отмены заказа
+  doc: ''
+- operation_id: ozon_post_v2_order_create
+  section: OrderAPI
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v2/order/create
+  scope: seller
+  safety: write
+  summary: Создать заказ
+  doc: ''
+- operation_id: ozon_post_v1_posting_cancel
+  section: FboPostingAPI
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/posting/cancel
+  scope: seller
+  safety: write
+  summary: Отменить отправление из заказа
+  doc: ''
+- operation_id: ozon_post_v1_posting_cancel_status
+  section: FboPostingAPI
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/posting/cancel/status
+  scope: seller
+  safety: write
+  summary: Проверить статус отмены отправления
+  doc: ''
+- operation_id: ozon_post_v1_posting_marks
+  section: FboPostingAPI
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/posting/marks
+  scope: seller
+  safety: write
+  summary: Получить маркировки экземпляров из отправления
+  doc: ''
