@@ -260,7 +260,7 @@ endpoints:
   - необработанные
   - сборка
   - фбс
-  items_path: result.postings
+  items_path: postings
 - operation_id: ozon_fbs_list
   section: orders_fbs
   method: POST
@@ -1420,7 +1420,7 @@ endpoints:
   summary: GetCancellationReasons (auto-imported from go-client; UNVERIFIED — confirm
     body/params in docs).
   doc: https://docs.ozon.ru/api/seller/
-  items_path: reasons
+  items_path: result
   pagination: none
 - operation_id: ozon_set_shipping_date
   section: fbs
@@ -4655,7 +4655,7 @@ endpoints:
   summary: Редактировать черновик поставки со способом доставки сторонней транспортной
     компанией
   doc: ''
-  items_path: error.errors
+  items_path: errors
   pagination: none
 - operation_id: ozon_post_v1_fbp_order_drop_off_cancel
   section: OrderDropOffFBP

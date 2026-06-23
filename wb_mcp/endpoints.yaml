@@ -2318,7 +2318,7 @@ endpoints:
   safety: read
   summary: Список вопросов
   doc: ''
-  items_path: additionalErrors
+  items_path: data.questions
   pagination: none
 - operation_id: wb_patch_api_questions
   section: Вопросы
@@ -2373,7 +2373,7 @@ endpoints:
   safety: read
   summary: Список отзывов
   doc: ''
-  items_path: additionalErrors
+  items_path: data.feedbacks
   pagination: none
 - operation_id: wb_post_api_feedbacks_answer
   section: Отзывы
@@ -2426,7 +2426,7 @@ endpoints:
   safety: read
   summary: Список архивных отзывов
   doc: ''
-  items_path: additionalErrors
+  items_path: data.feedbacks
   pagination: none
 - operation_id: wb_get_api_feedbacks_pins
   section: Закреплённые отзывы
@@ -2498,7 +2498,7 @@ endpoints:
   safety: read
   summary: События чатов
   doc: ''
-  items_path: errors
+  items_path: result.events
   pagination: none
 - operation_id: wb_post_api_seller_message
   section: Чат с покупателями
