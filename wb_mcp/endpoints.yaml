@@ -1,0 +1,403 @@
+default_host: content-api.wildberries.ru
+endpoints:
+- operation_id: wb_ping_content
+  section: system
+  method: GET
+  host: content-api.wildberries.ru
+  path: /ping
+  scope: content
+  safety: read
+  summary: Health check for the Content host; also validates the token works.
+  doc: https://dev.wildberries.ru/en/openapi/api-information
+- operation_id: wb_content_cards_list
+  section: content
+  method: POST
+  host: content-api.wildberries.ru
+  path: /content/v2/get/cards/list
+  scope: content
+  safety: read
+  pagination: cursor
+  rate_limit: 100 req/min
+  summary: List created product cards (nomenclatures). Cursor by updatedAt+nmID.
+  params:
+    body: '{settings:{cursor:{limit:100}, filter:{withPhoto:-1}}}'
+  doc: https://dev.wildberries.ru/en/openapi/work-with-products
+  keywords:
+  - карточки
+  - товары
+  - номенклатура
+- operation_id: wb_content_categories
+  section: content
+  method: GET
+  host: content-api.wildberries.ru
+  path: /content/v2/object/all
+  scope: content
+  safety: read
+  pagination: offset
+  summary: List subject categories with IDs (for creating cards).
+  params:
+    query: name, limit<=1000, offset, parentID, locale
+  doc: https://dev.wildberries.ru/en/openapi/work-with-products
+  keywords:
+  - категории
+  - предметы
+- operation_id: wb_content_charcs
+  section: content
+  method: GET
+  host: content-api.wildberries.ru
+  path: /content/v2/object/charcs/{subjectId}
+  scope: content
+  safety: read
+  summary: Characteristics required for a given subject category.
+  doc: https://dev.wildberries.ru/en/openapi/work-with-products
+- operation_id: wb_content_cards_upload
+  section: content
+  method: POST
+  host: content-api.wildberries.ru
+  path: /content/v2/cards/upload
+  scope: content
+  safety: write
+  rate_limit: 10 req/min
+  summary: Create new product cards (async). Body is an array of {subjectID, variants[]}.
+  doc: https://dev.wildberries.ru/en/openapi/work-with-products
+- operation_id: wb_content_cards_update
+  section: content
+  method: POST
+  host: content-api.wildberries.ru
+  path: /content/v2/cards/update
+  scope: content
+  safety: write
+  rate_limit: 10 req/min
+  summary: Update existing cards (text/characteristics/sizes). Cannot change photos/price
+    here.
+  doc: https://dev.wildberries.ru/en/openapi/work-with-products
+- operation_id: wb_content_cards_trash
+  section: content
+  method: POST
+  host: content-api.wildberries.ru
+  path: /content/v2/cards/delete/trash
+  scope: content
+  safety: destructive
+  summary: Move cards to trash by nmIDs (max 1000). Reversible via recover.
+  doc: https://dev.wildberries.ru/en/openapi/work-with-products
+- operation_id: wb_prices_list
+  section: prices
+  method: GET
+  host: discounts-prices-api.wildberries.ru
+  path: /api/v2/list/goods/filter
+  scope: prices
+  safety: read
+  pagination: offset
+  rate_limit: 10 req/6s
+  summary: Get products with current prices and discounts.
+  params:
+    query: limit<=1000, offset, filterNmID
+  doc: https://dev.wildberries.ru/en/openapi/work-with-products
+  keywords:
+  - цены
+  - стоимость
+  - прайс
+  - скидки
+- operation_id: wb_prices_set
+  section: prices
+  method: POST
+  host: discounts-prices-api.wildberries.ru
+  path: /api/v2/upload/task
+  scope: prices
+  safety: write
+  rate_limit: 10 req/6s
+  summary: Set prices and discounts (<=1000 products). Body {data:[{nmID,price,discount}]}.
+  doc: https://dev.wildberries.ru/en/openapi/work-with-products
+  keywords:
+  - цены
+  - изменить цену
+  - установить цену
+  - скидка
+- operation_id: wb_prices_history_tasks
+  section: prices
+  method: GET
+  host: discounts-prices-api.wildberries.ru
+  path: /api/v2/history/tasks
+  scope: prices
+  safety: read
+  summary: State of a processed price-upload task (status 3=ok,5=partial,6=fail).
+  params:
+    query: uploadID
+  doc: https://dev.wildberries.ru/en/openapi/work-with-products
+- operation_id: wb_promotions_calendar
+  section: prices
+  method: GET
+  host: discounts-prices-api.wildberries.ru
+  path: /api/v1/calendar/promotions
+  scope: prices
+  safety: read
+  pagination: offset
+  summary: List WB promotions in a time window.
+  params:
+    query: startDateTime, endDateTime (RFC3339), allPromo, limit, offset
+  doc: https://dev.wildberries.ru/en/openapi/promotion
+- operation_id: wb_stats_sales
+  section: statistics
+  method: GET
+  host: statistics-api.wildberries.ru
+  path: /api/v1/supplier/sales
+  scope: statistics
+  safety: read
+  pagination: lastchangedate
+  rate_limit: 1 req/min
+  summary: Sales and returns since dateFrom. Incremental by lastChangeDate.
+  params:
+    query: dateFrom (RFC3339), flag
+  doc: https://dev.wildberries.ru/en/openapi/reports
+  keywords:
+  - продажи
+  - выручка
+  - возвраты
+  - реализация
+- operation_id: wb_stats_orders
+  section: statistics
+  method: GET
+  host: statistics-api.wildberries.ru
+  path: /api/v1/supplier/orders
+  scope: statistics
+  safety: read
+  pagination: lastchangedate
+  rate_limit: 1 req/min
+  summary: Orders since dateFrom. Incremental by lastChangeDate.
+  params:
+    query: dateFrom (RFC3339), flag
+  doc: https://dev.wildberries.ru/en/openapi/reports
+  keywords:
+  - заказы
+  - ордера
+- operation_id: wb_stats_stocks
+  section: statistics
+  method: GET
+  host: statistics-api.wildberries.ru
+  path: /api/v1/supplier/stocks
+  scope: statistics
+  safety: read
+  rate_limit: 1 req/min
+  summary: Current stock snapshot (no history). Use an early dateFrom for the full
+    set.
+  params:
+    query: dateFrom (RFC3339)
+  doc: https://dev.wildberries.ru/en/openapi/reports
+  keywords:
+  - остатки
+  - склад
+  - сток
+  - наличие
+- operation_id: wb_stats_incomes
+  section: statistics
+  method: GET
+  host: statistics-api.wildberries.ru
+  path: /api/v1/supplier/incomes
+  scope: statistics
+  safety: read
+  pagination: lastchangedate
+  rate_limit: 1 req/min
+  summary: Incoming supplies (поставки) since dateFrom.
+  params:
+    query: dateFrom (RFC3339)
+  doc: https://dev.wildberries.ru/en/openapi/reports
+  keywords:
+  - поставки
+  - приёмка
+  - приход
+- operation_id: wb_report_realization
+  section: statistics
+  method: GET
+  host: statistics-api.wildberries.ru
+  path: /api/v5/supplier/reportDetailByPeriod
+  scope: statistics
+  safety: read
+  pagination: rrdid
+  rate_limit: 1 req/min
+  summary: Realization report (financial line items) for a period. Cursor via rrdid.
+  params:
+    query: dateFrom, dateTo, limit<=100000, rrdid
+  doc: https://dev.wildberries.ru/en/openapi/financial-reports-and-accounting
+  keywords:
+  - реализация
+  - финотчёт
+  - отчёт о реализации
+  - детализация
+- operation_id: wb_analytics_funnel
+  section: analytics
+  method: POST
+  host: seller-analytics-api.wildberries.ru
+  path: /api/analytics/v3/sales-funnel/products
+  scope: analytics
+  safety: read
+  pagination: offset
+  rate_limit: 3 req/min
+  summary: Sales funnel per product (views, cart, orders, buyout, conversions) vs
+    past period.
+  params:
+    body: '{selectedPeriod, pastPeriod, nmIds[], orderBy, limit<=1000, offset}'
+  doc: https://dev.wildberries.ru/en/openapi/analytics
+  keywords:
+  - воронка
+  - аналитика
+  - конверсия
+- operation_id: wb_analytics_warehouse_remains
+  section: analytics
+  method: GET
+  host: seller-analytics-api.wildberries.ru
+  path: /api/v1/warehouse_remains
+  scope: analytics
+  safety: read
+  summary: Create warehouse-remains report (async) -> returns task_id.
+  params:
+    query: groupByNm, groupBySize, filterVolume
+  doc: https://dev.wildberries.ru/en/openapi/analytics
+- operation_id: wb_analytics_paid_storage
+  section: analytics
+  method: GET
+  host: seller-analytics-api.wildberries.ru
+  path: /api/v1/paid_storage
+  scope: analytics
+  safety: read
+  summary: Create paid-storage report (async) -> returns task_id.
+  params:
+    query: dateFrom, dateTo
+  doc: https://dev.wildberries.ru/en/openapi/analytics
+- operation_id: wb_fbs_orders_new
+  section: marketplace
+  method: GET
+  host: marketplace-api.wildberries.ru
+  path: /api/v3/orders/new
+  scope: marketplace
+  safety: read
+  rate_limit: 300 req/min
+  summary: New FBS assembly orders awaiting processing.
+  doc: https://dev.wildberries.ru/en/openapi/orders-fbs
+  keywords:
+  - новые заказы
+  - сборка
+  - фбс
+- operation_id: wb_fbs_orders
+  section: marketplace
+  method: GET
+  host: marketplace-api.wildberries.ru
+  path: /api/v3/orders
+  scope: marketplace
+  safety: read
+  summary: FBS orders for a period (max 30 days). Paged via 'next'.
+  params:
+    query: limit 1-1000, next, dateFrom, dateTo (Unix)
+  doc: https://dev.wildberries.ru/en/openapi/orders-fbs
+- operation_id: wb_fbs_orders_status
+  section: marketplace
+  method: POST
+  host: marketplace-api.wildberries.ru
+  path: /api/v3/orders/status
+  scope: marketplace
+  safety: read
+  summary: Get supplier/wb status for up to 1000 order IDs.
+  params:
+    body: '{orders:[ids]}'
+  doc: https://dev.wildberries.ru/en/openapi/orders-fbs
+- operation_id: wb_fbs_stickers
+  section: marketplace
+  method: POST
+  host: marketplace-api.wildberries.ru
+  path: /api/v3/orders/stickers
+  scope: marketplace
+  safety: read
+  summary: Generate order stickers (svg/zplv/zplh/png) for up to 100 orders.
+  params:
+    query: type, width, height
+    body: '{orders[]}'
+  doc: https://dev.wildberries.ru/en/openapi/orders-fbs
+- operation_id: wb_fbs_supplies_create
+  section: marketplace
+  method: POST
+  host: marketplace-api.wildberries.ru
+  path: /api/v3/supplies
+  scope: marketplace
+  safety: write
+  summary: Create a new FBS supply. Body {name}. Returns {id:"WB-GI-..."}.
+  doc: https://dev.wildberries.ru/en/openapi/orders-fbs
+- operation_id: wb_fbs_supplies_list
+  section: marketplace
+  method: GET
+  host: marketplace-api.wildberries.ru
+  path: /api/v3/supplies
+  scope: marketplace
+  safety: read
+  summary: List FBS supplies. Paged via 'next'.
+  params:
+    query: limit, next
+  doc: https://dev.wildberries.ru/en/openapi/orders-fbs
+- operation_id: wb_fbs_stock_update
+  section: marketplace
+  method: PUT
+  host: marketplace-api.wildberries.ru
+  path: /api/v3/stocks/{warehouseId}
+  scope: marketplace
+  safety: write
+  summary: Set FBS stock per seller warehouse. Body {stocks:[{sku,amount}]}.
+  doc: https://dev.wildberries.ru/en/openapi/orders-fbs
+  keywords:
+  - остатки
+  - обновить сток
+  - склад фбс
+- operation_id: wb_fbs_warehouses
+  section: marketplace
+  method: GET
+  host: marketplace-api.wildberries.ru
+  path: /api/v3/warehouses
+  scope: marketplace
+  safety: read
+  summary: List the seller's FBS warehouses.
+  doc: https://dev.wildberries.ru/en/openapi/orders-fbs
+- operation_id: wb_adv_count
+  section: promotion
+  method: GET
+  host: advert-api.wildberries.ru
+  path: /adv/v1/promotion/count
+  scope: promotion
+  safety: read
+  summary: Campaign counts by type/status with the list of campaign IDs.
+  doc: https://dev.wildberries.ru/en/openapi/promotion
+- operation_id: wb_adv_budget
+  section: promotion
+  method: GET
+  host: advert-api.wildberries.ru
+  path: /adv/v1/budget
+  scope: promotion
+  safety: read
+  summary: Current budget of a campaign.
+  params:
+    query: id
+  doc: https://dev.wildberries.ru/en/openapi/promotion
+- operation_id: wb_adv_fullstats
+  section: promotion
+  method: POST
+  host: advert-api.wildberries.ru
+  path: /adv/v2/fullstats
+  scope: promotion
+  safety: read
+  summary: Spend/views/clicks statistics for campaigns over a period.
+  doc: https://dev.wildberries.ru/en/openapi/promotion-statistics
+  keywords:
+  - реклама
+  - статистика рекламы
+  - расход
+- operation_id: wb_finance_balance
+  section: finance
+  method: GET
+  host: common-api.wildberries.ru
+  path: /api/v1/account/balance
+  scope: finance
+  safety: read
+  rate_limit: 1 req/min
+  summary: Seller balance (current, for_withdraw). HOST UNVERIFIED — confirm common-api.
+  doc: https://dev.wildberries.ru/en/swagger/finances
+  keywords:
+  - баланс
+  - деньги
+  - счёт
+  - финансы

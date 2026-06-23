@@ -1,0 +1,426 @@
+default_host: api-seller.ozon.ru
+endpoints:
+- operation_id: ozon_product_list
+  section: products
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v3/product/list
+  scope: seller
+  safety: read
+  pagination: last_id
+  summary: Paginated product list. Filter by offer_id/product_id/visibility.
+  params:
+    body: '{filter:{visibility:''ALL''}, limit, last_id}'
+  doc: https://docs.ozon.ru/api/seller/
+  keywords:
+  - товары
+  - список товаров
+  - номенклатура
+  items_path: result.items
+- operation_id: ozon_product_info_list
+  section: products
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v3/product/info/list
+  scope: seller
+  safety: read
+  summary: Product details for a set of identifiers (offer_id/product_id/sku).
+  params:
+    body: '{offer_id:[], product_id:[], sku:[]}'
+  doc: https://docs.ozon.ru/api/seller/
+  pagination: none
+  items_path: items
+- operation_id: ozon_product_attributes
+  section: products
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v4/product/info/attributes
+  scope: seller
+  safety: read
+  pagination: last_id
+  summary: Full characteristics/attributes of products.
+  params:
+    body: '{filter:{...}, limit, last_id}'
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_product_import
+  section: products
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v3/product/import
+  scope: seller
+  safety: write
+  summary: Create/update products (<=100/req, async -> task_id). Poll import/info.
+  params:
+    body: '{items:[{offer_id, attributes, images, dimensions, type_id}]}'
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_product_import_info
+  section: products
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/product/import/info
+  scope: seller
+  safety: read
+  summary: Poll status of a product import task.
+  params:
+    body: '{task_id}'
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_product_pictures_import
+  section: products
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/product/pictures/import
+  scope: seller
+  safety: write
+  summary: Set/replace product images (images[], images360, color_image).
+  params:
+    body: '{product_id, images:[]}'
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_product_archive
+  section: products
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/product/archive
+  scope: seller
+  safety: write
+  summary: Archive products by product_id.
+  params:
+    body: '{product_id:[]}'
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_product_delete
+  section: products
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v2/products/delete
+  scope: seller
+  safety: destructive
+  summary: Permanently remove archived products without SKU (<=500).
+  params:
+    body: '{products:[{offer_id}]}'
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_product_rating
+  section: products
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/product/rating-by-sku
+  scope: seller
+  safety: read
+  summary: Content rating per SKU + which attributes would lift it.
+  params:
+    body: '{skus:[]}'
+  doc: https://docs.ozon.ru/api/seller/
+  pagination: none
+  items_path: products
+- operation_id: ozon_category_tree
+  section: categories
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/description-category/tree
+  scope: seller
+  safety: read
+  summary: Category -> product-type tree (current; replaces deprecated /v2/category/tree).
+  params:
+    body: '{language:''DEFAULT''}'
+  doc: https://docs.ozon.ru/api/seller/
+  keywords:
+  - категории
+  - дерево категорий
+- operation_id: ozon_category_attributes
+  section: categories
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/description-category/attribute
+  scope: seller
+  safety: read
+  summary: Attribute list for a description_category_id + type_id.
+  params:
+    body: '{description_category_id, type_id, language}'
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_prices_get
+  section: prices
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v5/product/info/prices
+  scope: seller
+  safety: read
+  pagination: cursor
+  summary: Prices + commissions + price indexes (<=1000/req). v5 is current.
+  params:
+    body: '{filter:{visibility:''ALL''}, limit, cursor}'
+  doc: https://docs.ozon.ru/api/seller/
+  keywords:
+  - цены
+  - стоимость
+  - прайс
+  - индекс цены
+  items_path: items
+- operation_id: ozon_prices_update
+  section: prices
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/product/import/prices
+  scope: seller
+  safety: write
+  rate_limit: <=10 updates/product/hour
+  summary: Set/change prices. old_price='0' resets old price. Body prices[].
+  params:
+    body: '{prices:[{offer_id, price, old_price, min_price, currency_code}]}'
+  doc: https://docs.ozon.ru/api/seller/
+  keywords:
+  - цены
+  - изменить цену
+  - установить цену
+- operation_id: ozon_discount_update
+  section: prices
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/product/update/discount
+  scope: seller
+  safety: write
+  summary: Set discount percent on markdown/FBS products.
+  params:
+    body: '{product_id, discount}'
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_stocks_info
+  section: stocks
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v4/product/info/stocks
+  scope: seller
+  safety: read
+  pagination: cursor
+  summary: Available + reserved quantity per product. v4 is current.
+  params:
+    body: '{filter:{visibility:''ALL''}, limit, last_id}'
+  doc: https://docs.ozon.ru/api/seller/
+  keywords:
+  - остатки
+  - склад
+  - сток
+  - наличие
+  items_path: items
+- operation_id: ozon_stocks_update
+  section: stocks
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v2/products/stocks
+  scope: seller
+  safety: write
+  rate_limit: ~1 update/2min/product
+  summary: Set FBS/rFBS stock per warehouse. Body stocks[] with warehouse_id.
+  params:
+    body: '{stocks:[{offer_id, stock, warehouse_id}]}'
+  doc: https://docs.ozon.ru/api/seller/
+  keywords:
+  - остатки
+  - обновить сток
+  - склад фбс
+- operation_id: ozon_stocks_by_warehouse_fbs
+  section: stocks
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/product/info/stocks-by-warehouse/fbs
+  scope: seller
+  safety: read
+  summary: FBS stock broken down by seller warehouse.
+  params:
+    body: '{sku:[]}'
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_fbs_unfulfilled
+  section: orders_fbs
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v3/posting/fbs/unfulfilled/list
+  scope: seller
+  safety: read
+  pagination: offset
+  summary: New/unprocessed FBS shipments awaiting assembly.
+  params:
+    body: '{filter:{cutoff_from, cutoff_to}, limit, offset}'
+  doc: https://docs.ozon.ru/api/seller/
+  keywords:
+  - новые заказы
+  - необработанные
+  - сборка
+  - фбс
+  items_path: result.postings
+- operation_id: ozon_fbs_list
+  section: orders_fbs
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v3/posting/fbs/list
+  scope: seller
+  safety: read
+  pagination: offset
+  summary: FBS shipments for a period (<=1yr), filter by status.
+  params:
+    body: '{filter:{since, to, status}, limit, offset, with:{}}'
+  doc: https://docs.ozon.ru/api/seller/
+  keywords:
+  - заказы фбс
+  - отправления
+  items_path: result.postings
+- operation_id: ozon_fbs_get
+  section: orders_fbs
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v3/posting/fbs/get
+  scope: seller
+  safety: read
+  summary: Details of a single FBS shipment.
+  params:
+    body: '{posting_number, with:{}}'
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_fbs_ship
+  section: orders_fbs
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v4/posting/fbs/ship
+  scope: seller
+  safety: write
+  summary: Pack & move shipment to awaiting_deliver. v4.
+  params:
+    body: '{posting_number, packages:[], with:{}}'
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_fbs_package_label
+  section: orders_fbs
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v2/posting/fbs/package-label
+  scope: seller
+  safety: read
+  summary: PDF label for up to 20 shipments (returns application/pdf).
+  params:
+    body: '{posting_number:[]}'
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_fbs_cancel
+  section: orders_fbs
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v2/posting/fbs/cancel
+  scope: seller
+  safety: destructive
+  summary: Cancel an FBS shipment (reason 402 needs a message). Irreversible.
+  params:
+    body: '{posting_number, cancel_reason_id, cancel_reason_message}'
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_fbo_list
+  section: orders_fbo
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v2/posting/fbo/list
+  scope: seller
+  safety: read
+  pagination: offset
+  summary: FBO shipments for a period.
+  params:
+    body: '{filter:{since, to, status}, limit, offset, with:{}}'
+  doc: https://docs.ozon.ru/api/seller/
+  keywords:
+  - заказы фбо
+  - отправления фбо
+  items_path: result
+- operation_id: ozon_fbo_get
+  section: orders_fbo
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v2/posting/fbo/get
+  scope: seller
+  safety: read
+  summary: Details of a single FBO shipment.
+  params:
+    body: '{posting_number, with:{}}'
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_analytics_data
+  section: analytics
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/analytics/data
+  scope: seller
+  safety: read
+  summary: Custom report by dimensions+metrics (revenue, ordered_units, conversions).
+  params:
+    body: '{date_from, date_to, dimension:[], metrics:[], limit<=1000, offset}'
+  doc: https://docs.ozon.ru/api/seller/
+  keywords:
+  - аналитика
+  - отчёт
+  - выручка
+  - метрики
+  pagination: offset
+  items_path: result.data
+- operation_id: ozon_stock_on_warehouses
+  section: analytics
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v2/analytics/stock_on_warehouses
+  scope: seller
+  safety: read
+  pagination: offset
+  summary: FBO stock & movement per Ozon warehouse. v2 (not v1).
+  params:
+    body: '{limit, offset, warehouse_type:''ALL''}'
+  doc: https://docs.ozon.ru/api/seller/
+  items_path: result.rows
+- operation_id: ozon_turnover_stocks
+  section: analytics
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/analytics/turnover/stocks
+  scope: seller
+  safety: read
+  rate_limit: 1 req/min
+  summary: Turnover rate + days-of-stock (idc) per SKU. Hard-limited 1 req/min.
+  params:
+    body: '{sku:[], limit, offset}'
+  doc: https://docs.ozon.ru/api/seller/
+  keywords:
+  - оборачиваемость
+  - остатки
+  - дни запаса
+  pagination: offset
+  items_path: items
+- operation_id: ozon_finance_transactions
+  section: finance
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v3/finance/transaction/list
+  scope: seller
+  safety: read
+  pagination: page
+  summary: Detailed financial transactions (<=1 month/req). v3.
+  params:
+    body: '{filter:{date:{from,to}, operation_type:[]}, page, page_size}'
+  doc: https://docs.ozon.ru/api/seller/
+  keywords:
+  - финансы
+  - транзакции
+  - начисления
+  - деньги
+  items_path: result.operations
+- operation_id: ozon_finance_totals
+  section: finance
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v3/finance/transaction/totals
+  scope: seller
+  safety: read
+  summary: Aggregated financial totals for a period. v3.
+  params:
+    body: '{date:{from,to}, transaction_type}'
+  doc: https://docs.ozon.ru/api/seller/
+- operation_id: ozon_finance_realization
+  section: finance
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v2/finance/realization
+  scope: seller
+  safety: read
+  summary: Monthly realization report (sold/returned). Ready ~5th of next month. v2.
+  params:
+    body: '{month, year}'
+  doc: https://docs.ozon.ru/api/seller/
+  keywords:
+  - реализация
+  - финотчёт
+  pagination: none
+  items_path: result.rows
