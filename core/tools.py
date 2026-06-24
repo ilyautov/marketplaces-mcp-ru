@@ -40,10 +40,12 @@ def register_generic_tools(
     client: MarketplaceClient,
     catalog: Catalog,
     key_help: str = "",
+    entities: Optional[Any] = None,
 ) -> None:
     """Register the 8 generic tools under the `{svc}_` prefix.
 
     key_help: human note on where to obtain the API keys (shown by check_auth).
+    entities: EntityIndex instance (optional); enables the *_map tool overview.
     """
 
     @mcp.tool(
@@ -117,6 +119,45 @@ def register_generic_tools(
                    "results": [s.to_summary_dict() for s in specs]})
 
     @mcp.tool(
+        name=f"{svc}_map",
+        annotations={"title": f"{svc.upper()} capabilities map",
+                     "readOnlyHint": True, "openWorldHint": False},
+    )
+    async def entity_map(entity: str = "") -> str:
+        """The big picture: business entities this API covers and the go-to
+        methods for each. Call with no args to see the whole map ("you are
+        here"); pass entity="reviews" (or stocks/prices/orders/…) to list every
+        method of one entity. Use this before guessing — it orients you fast.
+        """
+        ents = entities.entities if entities is not None else []
+        by_key: dict[str, list] = {}
+        for s in catalog.all():
+            for k in (s.entity or ["other"]):
+                by_key.setdefault(k, []).append(s)
+        if entity:
+            specs = by_key.get(entity, [])
+            return _j({"entity": entity, "count": len(specs),
+                       "methods": [s.to_summary_dict() for s in specs]})
+        out = []
+        for e in ents:
+            specs = by_key.get(e["key"], [])
+            if not specs:
+                continue
+            headline = [s for s in specs if s.operation_id in e.get("headline", [])]
+            shown = headline or specs[:5]
+            out.append({
+                "key": e["key"], "title_ru": e["title_ru"],
+                "title_en": e["title_en"], "synonyms": e["synonyms"],
+                "method_count": len(specs),
+                "headline": [s.to_summary_dict() for s in shown],
+            })
+        if by_key.get("other"):
+            out.append({"key": "other", "title_ru": "Прочее", "title_en": "Other",
+                        "synonyms": [], "method_count": len(by_key["other"]),
+                        "headline": []})
+        return _j({"service": svc, "entities": out})
+
+    @mcp.tool(
         name=f"{svc}_describe_method",
         annotations={"title": f"{svc.upper()} describe method",
                      "readOnlyHint": True, "openWorldHint": False},
@@ -131,6 +172,7 @@ def register_generic_tools(
                        "did_you_mean": [s.operation_id for s in hits]})
         return _j({
             "operation_id": spec.operation_id, "section": spec.section,
+            "entity": spec.entity,
             "method": spec.method, "host": spec.host, "path": spec.path,
             "path_params": spec.path_params, "scope": spec.scope,
             "safety": spec.safety, "pagination": spec.pagination,
