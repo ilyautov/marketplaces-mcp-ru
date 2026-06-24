@@ -1,0 +1,11 @@
+# Gitleaks config — extends the default ruleset.
+title = "marketplaces-mcp-ru gitleaks config"
+
+[extend]
+useDefault = true
+
+[allowlist]
+description = "detect-secrets baseline stores SHA hashes of reviewed false positives, not live secrets"
+paths = [
+  '''\.secrets\.baseline''',
+]

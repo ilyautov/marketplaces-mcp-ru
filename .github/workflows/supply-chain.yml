@@ -32,5 +32,8 @@ jobs:
       - name: pip-audit (runtime dependencies)
         run: |
           python -m pip install --upgrade pip pip-audit
-          python -m pip install .
-          pip-audit --strict
+          # Audit the declared runtime deps only (this package itself is not on
+          # PyPI, so we don't install it — we derive its dependency list).
+          python -c "import tomllib,pathlib;print(chr(10).join(tomllib.loads(pathlib.Path('pyproject.toml').read_text())['project']['dependencies']))" > requirements-audit.txt
+          cat requirements-audit.txt
+          pip-audit --strict -r requirements-audit.txt
