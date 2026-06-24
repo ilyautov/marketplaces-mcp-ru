@@ -2,6 +2,7 @@
 from __future__ import annotations
 import sys
 from pathlib import Path
+from types import SimpleNamespace
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
@@ -18,9 +19,6 @@ def test_taxonomy_loads_and_is_well_formed():
         assert e["key"] and e["title_ru"] and e["title_en"]
         assert e["synonyms"], f"{e['key']} has no synonyms"
         assert e["match"], f"{e['key']} has no section-match substrings"
-
-
-from types import SimpleNamespace  # noqa: E402
 
 
 def _spec(section):

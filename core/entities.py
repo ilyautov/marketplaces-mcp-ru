@@ -45,7 +45,8 @@ class EntityIndex:
         try:
             raw = yaml.safe_load(p.read_text(encoding="utf-8")) or {}
             entities = raw.get("entities", [])
-            assert isinstance(entities, list)
+            if not isinstance(entities, list):
+                entities = []
         except Exception:  # noqa: BLE001 — never break the server on a bad file
             entities = []
         return cls(entities)

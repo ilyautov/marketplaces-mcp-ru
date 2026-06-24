@@ -55,7 +55,7 @@ entities:
                funnel, report, reports, search queries]
     match: [аналитик, статистик, воронк, продаж, поиск, search, analytic,
             statistic, funnel, report, отчёт, отчет, кластер, доля бренда,
-            cluster, vendor]
+            cluster]
   - key: finance
     title_ru: Финансы и выплаты
     title_en: Finance & payouts
@@ -69,7 +69,9 @@ entities:
     title_en: Ads & promotion
     synonyms: [реклама, продвижение, кампания, кампании, ставки, ставка, бюджет,
                ads, advertising, campaign, promotion, bid]
-    match: [реклам, продвижен, кампани, campaign, promotion, promot, ad]
+    # "ad"/"vendor" = literal ozon_perf section names; revisit if a future
+    # section like "upload"/"metadata" would substring-match "ad".
+    match: [реклам, продвижен, кампани, campaign, promotion, promot, ad, vendor]
   - key: account
     title_ru: Аккаунт и доступ
     title_en: Account & access
