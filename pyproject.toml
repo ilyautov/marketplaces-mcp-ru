@@ -16,7 +16,13 @@ ozon-mcp = "ozon_mcp.server:main"
 ozon-perf-mcp = "ozon_perf_mcp.server:main"
 
 [project.optional-dependencies]
-dev = ["pytest>=8.0", "pytest-asyncio>=0.23"]
+dev = [
+    "pytest>=8.0",
+    "pytest-asyncio>=0.23",
+    "pre-commit>=3.5",
+    "pip-audit>=2.7",
+    "detect-secrets>=1.5",
+]
 
 [build-system]
 requires = ["setuptools>=68"]

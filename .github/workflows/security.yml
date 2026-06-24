@@ -1,0 +1,35 @@
+name: security
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  secrets:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5
+        with:
+          fetch-depth: 0
+      - name: Gitleaks
+        uses: gitleaks/gitleaks-action@dcedce43c6f43de0b836d1fe38946645c9c638dc # v2
+      - name: TruffleHog
+        uses: trufflesecurity/trufflehog@84a2b33c9f891494db6ebe02f2a55b19cdf38f25 # main
+        with:
+          extra_args: --results=verified,unknown
+
+  mcp-config:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5
+      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6
+        with:
+          python-version: '3.12'
+      - name: Local safety hooks (sensitive files + MCP config)
+        run: |
+          python scripts/security/forbid_sensitive_files.py --all
+          python scripts/security/scan_mcp_config.py

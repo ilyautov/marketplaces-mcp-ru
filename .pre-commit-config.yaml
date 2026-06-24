@@ -1,0 +1,40 @@
+# Pre-commit guardrails (adapted from letya999/ai-repo-safety-skill).
+# Install once:  pip install pre-commit && pre-commit install
+# Run on demand: pre-commit run --all-files
+repos:
+  # --- local, dependency-free safety checks --------------------------------
+  - repo: local
+    hooks:
+      - id: forbid-sensitive-files
+        name: forbid sensitive files
+        entry: python scripts/security/forbid_sensitive_files.py
+        language: system
+        pass_filenames: false
+      - id: scan-mcp-config
+        name: scan MCP config safety
+        entry: python scripts/security/scan_mcp_config.py
+        language: system
+        pass_filenames: false
+
+  # --- secret scanning ------------------------------------------------------
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.24.2
+    hooks:
+      - id: gitleaks
+  - repo: https://github.com/Yelp/detect-secrets
+    rev: v1.5.0
+    hooks:
+      - id: detect-secrets
+        args: ["--baseline", ".secrets.baseline"]
+
+  # --- basic hygiene --------------------------------------------------------
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-merge-conflict
+      - id: check-yaml
+      - id: check-json
+      - id: check-added-large-files
+        args: ["--maxkb=1024"]

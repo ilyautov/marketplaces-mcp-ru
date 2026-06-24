@@ -26,3 +26,36 @@ venv/
 # internal dev docs — kept locally, not published
 HANDOFF.md
 CLAUDE_CODE_MISSION.md
+
+# >>> AI REPO SAFETY (from letya999/ai-repo-safety-skill) >>>
+# extra secret/credential shapes not covered above.
+# NOTE: .mcp.json is intentionally TRACKED here (secret-free plugin manifest),
+# so it is deliberately NOT ignored.
+.env.*
+!.env.example
+*.p12
+*.pfx
+id_rsa
+id_ed25519
+service-account*.json
+token.json
+tokens.json
+secrets.json
+*.ovpn
+claude_desktop_config.json
+
+# agent / IDE local context (often holds tokens or private context)
+.claude/
+.codex/
+.opencode/
+.cursor/
+.windsurf/
+.gemini/
+.idea/
+.vscode/
+*.session
+*.transcript
+
+# detect-secrets / ruff caches
+.ruff_cache/
+# <<< AI REPO SAFETY <<<
