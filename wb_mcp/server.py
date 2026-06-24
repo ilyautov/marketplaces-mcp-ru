@@ -21,6 +21,7 @@ from typing import Optional
 from mcp.server.fastmcp import FastMCP
 
 from core.client import MarketplaceClient, ServiceConfig
+from core.entities import EntityIndex
 from core.registry import Catalog
 from core.tools import register_cabinet_tools, register_generic_tools
 from core.workflows import Workflows, register_workflow_tools
@@ -44,12 +45,13 @@ WB_CONFIG = ServiceConfig(
 )
 
 mcp = FastMCP("wb_mcp")
-catalog = Catalog.from_yaml(CATALOG_PATH)
+entities = EntityIndex.load()
+catalog = Catalog.from_yaml(CATALOG_PATH, entities=entities)
 client = MarketplaceClient(WB_CONFIG)
 
 # Register the 8 generic schema-driven tools (wb_search_methods, wb_call_method, ...)
 register_generic_tools(
-    mcp, svc="wb", client=client, catalog=catalog,
+    mcp, svc="wb", client=client, catalog=catalog, entities=entities,
     key_help="seller.wildberries.ru → Settings → Access tokens (one token, "
              "select the categories you need).",
 )

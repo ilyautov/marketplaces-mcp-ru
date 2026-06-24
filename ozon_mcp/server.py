@@ -19,6 +19,7 @@ from typing import Optional
 from mcp.server.fastmcp import FastMCP
 
 from core.client import MarketplaceClient, ServiceConfig
+from core.entities import EntityIndex
 from core.registry import Catalog
 from core.safety import check_gate
 from core.tools import register_cabinet_tools, register_generic_tools
@@ -49,11 +50,12 @@ OZON_CONFIG = ServiceConfig(
 )
 
 mcp = FastMCP("ozon_mcp")
-catalog = Catalog.from_yaml(CATALOG_PATH)
+entities = EntityIndex.load()
+catalog = Catalog.from_yaml(CATALOG_PATH, entities=entities)
 client = MarketplaceClient(OZON_CONFIG)
 
 register_generic_tools(
-    mcp, svc="ozon", client=client, catalog=catalog,
+    mcp, svc="ozon", client=client, catalog=catalog, entities=entities,
     key_help="seller.ozon.ru → Settings → API keys (Client-Id + Api-Key).",
 )
 register_cabinet_tools(mcp, svc="ozon", client=client, catalog=catalog)

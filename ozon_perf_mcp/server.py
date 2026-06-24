@@ -32,6 +32,7 @@ from pathlib import Path
 from mcp.server.fastmcp import FastMCP
 
 from core.client import MarketplaceClient, ServiceConfig
+from core.entities import EntityIndex
 from core.registry import Catalog
 from core.tools import register_cabinet_tools, register_generic_tools
 from core.workflows import Workflows, register_workflow_tools
@@ -64,11 +65,12 @@ OZON_PERF_CONFIG = ServiceConfig(
 )
 
 mcp = FastMCP("ozon_perf_mcp")
-catalog = Catalog.from_yaml(CATALOG_PATH)
+entities = EntityIndex.load()
+catalog = Catalog.from_yaml(CATALOG_PATH, entities=entities)
 client = MarketplaceClient(OZON_PERF_CONFIG)
 
 register_generic_tools(
-    mcp, svc="ozon_perf", client=client, catalog=catalog,
+    mcp, svc="ozon_perf", client=client, catalog=catalog, entities=entities,
     key_help=("seller.ozon.ru → Performance API → API keys "
               "(Client-Id + Client-Secret; SEPARATE from Seller API keys)."),
 )
