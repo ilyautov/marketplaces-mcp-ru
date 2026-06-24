@@ -1,0 +1,80 @@
+# core/entities.yaml
+# Curated business-entity taxonomy shared across WB / Ozon / Ozon-perf.
+# `match` = lowercase substrings tested against a catalog section name (RU + EN).
+# `synonyms` = lowercase words/phrases a user might type; expanded in search.
+entities:
+  - key: products
+    title_ru: Товары и карточки
+    title_en: Products & cards
+    synonyms: [товар, товары, карточка, карточки, карточек, контент, описание,
+               характеристики, категория, категории, медиа, штрихкод, сертификат,
+               product, card, content, category, sku, barcode]
+    match: [товар, карточк, контент, характеристик, категори, предмет, медиа,
+            штрихкод, рекомендац, скрыт, предложен, content, product, categor,
+            barcode, quant, digital, certificat, сертификат, offer, brand]
+  - key: prices
+    title_ru: Цены и скидки
+    title_en: Prices & discounts
+    synonyms: [цена, цены, цену, ценой, скидка, скидки, акция, акции, наценка,
+               уценка, price, prices, discount, promo price, strategy]
+    match: [цен, скидк, акци, price, strateg, премиум, premium]
+  - key: stocks
+    title_ru: Остатки и склады
+    title_en: Stocks & warehouses
+    synonyms: [остаток, остатки, остатков, склад, склады, хранение, запас,
+               запасы, stock, stocks, warehouse, inventory]
+    match: [остат, склад, хранен, stock, warehouse]
+  - key: orders
+    title_ru: Заказы и доставка
+    title_en: Orders & delivery
+    synonyms: [заказ, заказы, заказов, отгрузка, доставка, сборочное задание,
+               отправление, возврат, возвраты, отмена, маркировка, order, orders,
+               posting, delivery, shipment, return, returns, cancel, marking]
+    match: [заказ, сборочн, order, fbs, fbo, dbs, dbw, самовывоз, доставк,
+            delivery, posting, ярлык, пропуск, pass, маркировк, идентификатор,
+            marketplace, возврат, return, отмен, cancel, receipt, polygon, полигон]
+  - key: supplies
+    title_ru: Поставки и приёмка
+    title_en: Supplies & inbound
+    synonyms: [поставка, поставки, поставок, приёмка, приемка, отгрузка на склад,
+               supply, supplies, inbound, draft, dropoff, pickup]
+    match: [поставк, поставок, приёмк, приемк, supply, draft, dropoff, pickup, fbp]
+  - key: reviews
+    title_ru: Отзывы и вопросы
+    title_en: Reviews & questions
+    synonyms: [отзыв, отзывы, отзывов, оценка, оценки, рейтинг, обратная связь,
+               вопрос, вопросы, чат, review, reviews, feedback, rating, question,
+               chat]
+    match: [отзыв, вопрос, оцен, рейтинг, review, question, rating, chat, чат,
+            feedback]
+  - key: analytics
+    title_ru: Аналитика и продажи
+    title_en: Analytics & sales
+    synonyms: [аналитика, статистика, продажи, выручка, воронка, отчёт, отчет,
+               отчёты, поисковые запросы, динамика, analytics, statistics, sales,
+               funnel, report, reports, search queries]
+    match: [аналитик, статистик, воронк, продаж, поиск, search, analytic,
+            statistic, funnel, report, отчёт, отчет, кластер, доля бренда,
+            cluster, vendor]
+  - key: finance
+    title_ru: Финансы и выплаты
+    title_en: Finance & payouts
+    synonyms: [финансы, выплата, выплаты, баланс, удержание, удержания, комиссия,
+               комиссии, тариф, тарифы, документ, счёт, finance, payout, balance,
+               commission, invoice, document]
+    match: [финанс, выплат, удержан, комисс, тариф, finance, invoice, документ,
+            document, баланс]
+  - key: ads
+    title_ru: Реклама и продвижение
+    title_en: Ads & promotion
+    synonyms: [реклама, продвижение, кампания, кампании, ставки, ставка, бюджет,
+               ads, advertising, campaign, promotion, bid]
+    match: [реклам, продвижен, кампани, campaign, promotion, promot, ad]
+  - key: account
+    title_ru: Аккаунт и доступ
+    title_en: Account & access
+    synonyms: [продавец, кабинет, пользователь, пользователи, доступ, токен,
+               ключ, подключение, новости, уведомления, seller, account, user,
+               access, token, key, notification]
+    match: [продавц, пользовател, систем, подключени, ключ, новост, seller, user,
+            system, notification, уведомлен, apikey]
