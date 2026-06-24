@@ -144,7 +144,10 @@ def register_generic_tools(
             if not specs:
                 continue
             headline = [s for s in specs if s.operation_id in e.get("headline", [])]
-            shown = headline or specs[:5]
+            # Fallback: surface read methods first so the map answers "how do I
+            # see X" before "how do I change/delete X".
+            ordered = sorted(specs, key=lambda s: 0 if s.safety == "read" else 1)
+            shown = headline or ordered[:5]
             out.append({
                 "key": e["key"], "title_ru": e["title_ru"],
                 "title_en": e["title_en"], "synonyms": e["synonyms"],
