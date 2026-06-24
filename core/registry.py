@@ -48,6 +48,8 @@ class EndpointSpec:
     keywords: list[str] = field(default_factory=list)
     # free-form param hints surfaced in describe_method
     params: dict[str, Any] = field(default_factory=dict)
+    # business-entity tags, filled at catalog load from EntityIndex (see entities.py)
+    entity: list[str] = field(default_factory=list)
 
     @property
     def path_params(self) -> list[str]:
@@ -70,28 +72,34 @@ class EndpointSpec:
             "path": self.path,
             "safety": self.safety,
             "summary": self.summary,
+            "entity": self.entity,
         }
 
 
 class Catalog:
     """Loaded, searchable set of EndpointSpec records."""
 
-    def __init__(self, specs: list[EndpointSpec], default_host: str = ""):
+    def __init__(self, specs: list[EndpointSpec], default_host: str = "",
+                 entities: "Any" = None):
         self.default_host = default_host
+        self.entities = entities  # EntityIndex | None — used by search()
         self._by_id: dict[str, EndpointSpec] = {}
         for s in specs:
             if not s.host:
                 s.host = default_host
+            if entities is not None:
+                s.entity = entities.entity_of(s)
             self._by_id[s.operation_id] = s
 
     @classmethod
-    def from_yaml(cls, path: str | Path, default_host: str = "") -> "Catalog":
+    def from_yaml(cls, path: str | Path, default_host: str = "",
+                  entities: "Any" = None) -> "Catalog":
         raw = yaml.safe_load(Path(path).read_text(encoding="utf-8")) or {}
         default_host = raw.get("default_host", default_host)
         specs: list[EndpointSpec] = []
         for rec in raw.get("endpoints", []):
             specs.append(EndpointSpec(**rec))
-        return cls(specs, default_host=default_host)
+        return cls(specs, default_host=default_host, entities=entities)
 
     def get(self, operation_id: str) -> Optional[EndpointSpec]:
         return self._by_id.get(operation_id)
@@ -109,13 +117,18 @@ class Catalog:
         return [s for s in self._by_id.values() if s.section == section]
 
     def search(self, query: str, limit: int = 15) -> list[EndpointSpec]:
-        """Lightweight token-overlap scoring over id/summary/path/section.
+        """Token-overlap scoring with optional entity awareness.
 
-        Deliberately dependency-free (no BM25 lib). Works for RU and EN because
-        it matches on raw tokens present in the catalog text.
+        When an EntityIndex is attached, stopwords are stripped from the query
+        and a spec whose entity matches the query's entity gets a strong boost.
+        Falls back to plain token overlap when no index is present.
         """
-        terms = [t for t in re.split(r"[^\w]+", query.lower()) if t]
-        if not terms:
+        if self.entities is not None:
+            terms, entity_keys = self.entities.expand(query)
+        else:
+            terms = [t for t in re.split(r"[^\w]+", query.lower()) if t]
+            entity_keys = set()
+        if not terms and not entity_keys:
             return []
         scored: list[tuple[float, EndpointSpec]] = []
         for s in self._by_id.values():
@@ -127,11 +140,12 @@ class Catalog:
             for t in terms:
                 if t in hay:
                     score += 1.0
-                # boost exact id/section hits
                 if t in s.operation_id.lower():
                     score += 0.5
                 if t == s.section.lower():
                     score += 0.5
+            if entity_keys and set(s.entity) & entity_keys:
+                score += 2.0  # entity match dominates incidental token hits
             if score > 0:
                 scored.append((score, s))
         scored.sort(key=lambda x: x[0], reverse=True)
