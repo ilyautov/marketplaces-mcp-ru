@@ -247,6 +247,19 @@ def main() -> None:
     # 1) save credentials to the cabinet store
     save_cabinet(args.cabinet, wb, oid, okey, perf_id, perf_secret)
 
+    # 1b) multi-shop: offer to add more cabinets in one go (interactive only —
+    #     skipped when stdin is piped / non-interactive, e.g. CI).
+    if sys.stdin and sys.stdin.isatty():
+        n = 2
+        while _ask("\nAdd another shop? (y/N): ", "").lower() in ("y", "yes", "д", "да"):
+            cab = _ask("  Shop (cabinet) name: ", "") or f"shop{n}"
+            w2 = _ask("  Wildberries API token (Enter to skip): ", "")
+            o2 = _ask("  Ozon Client-Id (Enter to skip): ", "")
+            k2 = _ask("  Ozon Api-Key (Enter to skip): ", "")
+            save_cabinet(cab, w2, o2, k2, "", "")
+            print(f"  ✅ Cabinet '{cab}' saved.")
+            n += 1
+
     # 2) write the (secret-free) server entries to the target client config
     if client == "opencode":
         cfg_path = opencode_config_path(); cfg_key = "mcp"; entries = build_opencode_entries()

@@ -42,6 +42,10 @@ OZON_CONFIG = ServiceConfig(
     fields=["client_id", "api_key"],
     env_map={"client_id": "OZON_CLIENT_ID", "api_key": "OZON_API_KEY"},
     build_headers=_build_headers,
+    # POST /v1/seller/info — exact name field not yet live-verified; we try a few
+    # candidates and fall back gracefully if none match.
+    whoami=("ozon_post_v1_seller_info",
+            ["name", "company_name", "result.name", "result.company_name"]),
 )
 
 mcp = FastMCP("ozon_mcp")
@@ -52,7 +56,7 @@ register_generic_tools(
     mcp, svc="ozon", client=client, catalog=catalog,
     key_help="seller.ozon.ru → Settings → API keys (Client-Id + Api-Key).",
 )
-register_cabinet_tools(mcp, svc="ozon", client=client)
+register_cabinet_tools(mcp, svc="ozon", client=client, catalog=catalog)
 register_workflow_tools(mcp, svc="ozon", workflows=Workflows.from_yaml(WORKFLOWS_PATH))
 
 

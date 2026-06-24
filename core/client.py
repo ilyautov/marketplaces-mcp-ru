@@ -55,6 +55,10 @@ class ServiceConfig:
     # which cred field feeds the token request's client_id / client_secret.
     oauth_id_field: str = "client_id"
     oauth_secret_field: str = "client_secret"
+    # Optional "whoami" lookup for auto-naming a cabinet from the marketplace's
+    # own seller-info endpoint: (operation_id, [candidate dotted name fields]).
+    # None disables auto-naming for this service.
+    whoami: Optional[tuple[str, list[str]]] = None
 
     @property
     def is_oauth(self) -> bool:
@@ -209,12 +213,19 @@ class MarketplaceClient:
         json_body: Optional[Any] = None,
         operation_id: Optional[str] = None,
         timeout: float = DEFAULT_TIMEOUT,
+        creds_override: Optional[dict[str, str]] = None,
     ) -> dict:
         """Execute one HTTP request with 429 backoff. Returns a dict:
         success -> {"ok": True, "status": int, "data": <parsed json|text>}
         failure -> canonical error envelope (ok=False).
+
+        creds_override lets a caller authenticate with an explicit credential set
+        (e.g. validating a not-yet-stored key) instead of the active cabinet.
         """
-        creds, err = self._creds_or_error()
+        if creds_override is not None:
+            creds, err = creds_override, None
+        else:
+            creds, err = self._creds_or_error()
         if err:
             return err
         headers = {
@@ -267,10 +278,14 @@ class MarketplaceClient:
                 return {"ok": True, "status": resp.status_code, "data": _parse_body(resp)}
 
             etype, retryable = classify_status(resp.status_code)
+            msg = (f"{self.config.name.upper()} API returned {resp.status_code}: "
+                   f"{_short_body(resp)}")
+            if etype == "auth":
+                msg += (f" — the key may be expired or revoked. Rotate it: "
+                        f"{self.config.name}_set_key (chat) or re-run the installer.")
             return make_error(
                 etype,
-                f"{self.config.name.upper()} API returned {resp.status_code}: "
-                f"{_short_body(resp)}",
+                msg,
                 code=resp.status_code,
                 operation_id=operation_id,
                 endpoint=path,
@@ -286,6 +301,7 @@ class MarketplaceClient:
         path_values: Optional[dict[str, Any]] = None,
         query: Optional[dict[str, Any]] = None,
         json_body: Optional[Any] = None,
+        creds_override: Optional[dict[str, str]] = None,
     ) -> dict:
         try:
             path = spec.render_path(path_values or {})
@@ -304,6 +320,7 @@ class MarketplaceClient:
             query=query,
             json_body=json_body,
             operation_id=spec.operation_id,
+            creds_override=creds_override,
         )
 
 

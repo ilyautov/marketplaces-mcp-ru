@@ -268,7 +268,100 @@ def register_generic_tools(
         return _j(resp)
 
 
-def register_cabinet_tools(mcp: FastMCP, *, svc: str, client: MarketplaceClient) -> None:
+def _dig(data: Any, dotted: str) -> Any:
+    """Follow a dotted path into nested dicts; return None if any hop misses."""
+    cur = data
+    for part in dotted.split("."):
+        if isinstance(cur, dict):
+            cur = cur.get(part)
+        else:
+            return None
+    return cur
+
+
+async def fetch_shop_name(catalog: Optional[Catalog], client: MarketplaceClient,
+                          creds: dict) -> Optional[str]:
+    """Best-effort shop name from the marketplace's seller-info endpoint, using
+    the given (possibly not-yet-stored) creds. Returns None on any problem —
+    never raises. A failure here never blocks saving the key (the token may
+    simply lack the seller-info scope)."""
+    whoami = getattr(client.config, "whoami", None)
+    if not whoami or catalog is None:
+        return None
+    op_id, name_fields = whoami
+    spec = catalog.get(op_id)
+    if spec is None:
+        return None
+    try:
+        body = None if spec.method.upper() in ("GET", "HEAD") else {}
+        resp = await client.call_spec(spec, json_body=body, creds_override=creds)
+    except Exception:  # noqa: BLE001 — naming is best-effort, never fatal
+        return None
+    if not isinstance(resp, dict) or not resp.get("ok"):
+        return None
+    data = resp.get("data")
+    for f in name_fields:
+        val = _dig(data, f)
+        if isinstance(val, str) and val.strip():
+            return val.strip()
+    return None
+
+
+def _consent_block(svc: str, consent: bool) -> Optional[dict]:
+    """Return an error dict if the chat-secret consent flag is not set, else None.
+
+    Putting a key into a chat tool means it lands in the transcript. We require
+    explicit acknowledgement and point at the safe door (the installer)."""
+    if consent:
+        return None
+    return {
+        "error": "consent_required",
+        "message": (
+            "This puts the API key into the chat transcript (the provider keeps "
+            "chat history). If that's acceptable — use a scoped key and rotate it "
+            "if exposed — call again with i_understand_key_goes_to_chat=true. "
+            f"Safer alternative (key never enters chat): run the installer "
+            f"(install.py / double-click)."),
+        "safe_alternative": "installer",
+    }
+
+
+async def _store_key_core(*, config, catalog: Optional[Catalog],
+                          client: MarketplaceClient, credentials: dict,
+                          cabinet: str, consent: bool) -> dict:
+    """Shared logic for the consented, auto-naming chat key tools. Testable
+    without the MCP layer. Resolution order for the target cabinet:
+    explicit name -> active cabinet -> shop name from API -> "main"."""
+    block = _consent_block(config.name, consent)
+    if block:
+        return block
+    missing = [f for f in config.fields if not credentials.get(f)]
+    if missing:
+        return {"error": "invalid_params",
+                "message": f"Missing required field(s): {', '.join(missing)}.",
+                "fields_needed": config.fields}
+    clean = {f: str(credentials[f]) for f in config.fields}
+    shop = await fetch_shop_name(catalog, client, clean)
+    active = config.store.list_cabinets(config.name).get("active")
+    target = cabinet or active or shop or "main"
+    config.store.add_cabinet(config.name, target, clean, make_active=True)
+    info = config.store.list_cabinets(config.name)
+    return {
+        "ok": True,
+        "cabinet": target,
+        "shop_name": shop,
+        "validated": shop is not None,
+        "note": (f"Shop confirmed: {shop}." if shop else
+                 "Saved. Couldn't fetch the shop name (the key may lack that "
+                 "scope, or the lookup isn't live-verified for this marketplace) "
+                 "— the key is stored anyway."),
+        "active": info["active"],
+        "cabinets": info["cabinets"],
+    }
+
+
+def register_cabinet_tools(mcp: FastMCP, *, svc: str, client: MarketplaceClient,
+                           catalog: Optional[Catalog] = None) -> None:
     """Register cabinet-management tools so students can add/switch credentials
     from chat without editing files. Keys are stored locally (chmod 600)."""
     config = client.config
@@ -293,29 +386,59 @@ def register_cabinet_tools(mcp: FastMCP, *, svc: str, client: MarketplaceClient)
                      "readOnlyHint": False, "destructiveHint": False,
                      "idempotentHint": True, "openWorldHint": False},
     )
-    async def add_cabinet(name: str, credentials: dict,
-                          make_active: bool = True) -> str:
-        """Add or update a cabinet (a named set of API credentials).
+    async def add_cabinet(credentials: dict, name: str = "",
+                          i_understand_key_goes_to_chat: bool = False) -> str:
+        """Add or update a cabinet (a named set of API credentials), from chat.
+
+        ⚠️ This puts the key into the chat transcript — requires
+        i_understand_key_goes_to_chat=true. The terminal-free safe alternative is
+        the installer (install.py / double-click), where the key never enters chat.
 
         Args:
-            name: a label for this cabinet, e.g. "main" or "shop2".
             credentials: dict with the required fields for this service
                 ({fields}). For Ozon: {{"client_id": "...", "api_key": "..."}};
                 for WB: {{"token": "..."}}.
-            make_active: switch to this cabinet immediately (default true).
-        Returns JSON confirming the cabinet and active selection. Keys are saved
-        to ~/.marketplace-mcp/cabinets.json (local, chmod 600), never echoed back.
+            name: optional label. If omitted, the cabinet is named after the real
+                shop name fetched from the marketplace (falls back to "main").
+            i_understand_key_goes_to_chat: must be true to proceed.
+        Saved to ~/.marketplace-mcp/cabinets.json (local, chmod 600), never echoed.
         """
-        missing = [f for f in config.fields if not credentials.get(f)]
-        if missing:
-            return _j({"error": "invalid_params",
-                       "message": f"Missing required field(s): {', '.join(missing)}.",
-                       "fields_needed": config.fields})
-        clean = {f: str(credentials[f]) for f in config.fields}
-        config.store.add_cabinet(config.name, name, clean, make_active=make_active)
-        info = config.store.list_cabinets(config.name)
-        return _j({"ok": True, "added": name, "active": info["active"],
-                   "cabinets": info["cabinets"]})
+        res = await _store_key_core(
+            config=config, catalog=catalog, client=client,
+            credentials=credentials, cabinet=name,
+            consent=i_understand_key_goes_to_chat)
+        return _j(res)
+
+    @mcp.tool(
+        name=f"{svc}_set_key",
+        annotations={"title": f"{svc.upper()} set / rotate key",
+                     "readOnlyHint": False, "destructiveHint": False,
+                     "idempotentHint": True, "openWorldHint": False},
+    )
+    async def set_key(credentials: dict, cabinet: str = "",
+                      i_understand_key_goes_to_chat: bool = False) -> str:
+        """Change / rotate the API key from chat (e.g. the old one expired or
+        leaked).
+
+        ⚠️ The key goes into the chat transcript — requires
+        i_understand_key_goes_to_chat=true. The safe, terminal-free alternative
+        is the installer, where the key never enters chat. Use a scoped key and
+        rotate it in the seller cabinet if it was exposed.
+
+        Args:
+            credentials: dict with the required fields ({fields}).
+            cabinet: which cabinet to update. Default: the active one (so "my key
+                expired" just works). If there is none, the cabinet is named from
+                the marketplace's shop name, else "main".
+            i_understand_key_goes_to_chat: must be true to proceed.
+        On success the key is validated against the marketplace and the shop name
+        is reported. Saved locally (chmod 600), never echoed back.
+        """
+        res = await _store_key_core(
+            config=config, catalog=catalog, client=client,
+            credentials=credentials, cabinet=cabinet,
+            consent=i_understand_key_goes_to_chat)
+        return _j(res)
 
     @mcp.tool(
         name=f"{svc}_use_cabinet",

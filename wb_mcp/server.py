@@ -40,6 +40,7 @@ WB_CONFIG = ServiceConfig(
     fields=["token"],
     env_map={"token": "WB_API_TOKEN"},
     build_headers=_build_headers,
+    whoami=("wb_get_api_seller_info", ["name", "tradeMark"]),
 )
 
 mcp = FastMCP("wb_mcp")
@@ -52,7 +53,7 @@ register_generic_tools(
     key_help="seller.wildberries.ru → Settings → Access tokens (one token, "
              "select the categories you need).",
 )
-register_cabinet_tools(mcp, svc="wb", client=client)
+register_cabinet_tools(mcp, svc="wb", client=client, catalog=catalog)
 register_workflow_tools(mcp, svc="wb", workflows=Workflows.from_yaml(WORKFLOWS_PATH))
 
 

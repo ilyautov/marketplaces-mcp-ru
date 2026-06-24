@@ -72,7 +72,7 @@ register_generic_tools(
     key_help=("seller.ozon.ru → Performance API → API keys "
               "(Client-Id + Client-Secret; SEPARATE from Seller API keys)."),
 )
-register_cabinet_tools(mcp, svc="ozon_perf", client=client)
+register_cabinet_tools(mcp, svc="ozon_perf", client=client, catalog=catalog)
 register_workflow_tools(
     mcp, svc="ozon_perf", workflows=Workflows.from_yaml(WORKFLOWS_PATH))
 
