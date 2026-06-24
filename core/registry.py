@@ -80,9 +80,9 @@ class Catalog:
     """Loaded, searchable set of EndpointSpec records."""
 
     def __init__(self, specs: list[EndpointSpec], default_host: str = "",
-                 entities: "Any" = None):
+                 entities: Optional[Any] = None):
         self.default_host = default_host
-        self.entities = entities  # EntityIndex | None — used by search()
+        self.entities: Optional[Any] = entities  # EntityIndex | None — used by search()
         self._by_id: dict[str, EndpointSpec] = {}
         for s in specs:
             if not s.host:
@@ -93,7 +93,7 @@ class Catalog:
 
     @classmethod
     def from_yaml(cls, path: str | Path, default_host: str = "",
-                  entities: "Any" = None) -> "Catalog":
+                  entities: Optional[Any] = None) -> "Catalog":
         raw = yaml.safe_load(Path(path).read_text(encoding="utf-8")) or {}
         default_host = raw.get("default_host", default_host)
         specs: list[EndpointSpec] = []
