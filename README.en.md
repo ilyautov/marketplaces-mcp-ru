@@ -75,11 +75,47 @@ The catalog is built schema-driven from the official OpenAPI specs:
 
 The core (sales, stock, prices, finance, reviews) is verified live; the rest is imported from specs, and `call_raw` reaches anything not yet in the catalog.
 
-Tests:
+## Development
+
+For anyone who wants to dig into the code, battle-verify methods, or send a PR.
+
+All shared logic lives in `core/`; the servers are thin wrappers over it:
+
+```
+core/                shared core of both servers
+  client.py          HTTPS client (hosts, headers, retries)
+  credentials.py     loads keys from cabinets.json / env
+  safety.py          read / write / destructive gate
+  registry.py        loads and indexes the endpoints.yaml catalog
+  paginate.py        auto-pagination (offset / last_id / cursor / date)
+  entities.py        entity normalization (products, orders, …)
+  workflows.py       step-by-step workflow engine
+  tools.py           registers meta-tools with MCP
+  errors.py          unified error format
+wb_mcp/              WB server: server.py + endpoints.yaml + workflows.yaml
+ozon_mcp/            Ozon server: server.py + endpoints.yaml + perf_endpoints.yaml + workflows.yaml
+scripts/             catalog build, validation, release
+tests/               offline tests (no tokens needed)
+```
+
+Python 3.10+. Dependencies (`mcp`, `httpx`, `pyyaml`) install into a local `.venv` on first run.
 
 ```bash
-python3 -m pytest tests/ -q        # 21 offline tests, no tokens needed
+git clone https://github.com/ilyautov/marketplaces-mcp-ru.git
+cd marketplaces-mcp-ru
+
+# offline tests, no keys needed, expect 21 passed
+env -u OZON_CLIENT_ID -u OZON_API_KEY -u WB_API_TOKEN python3 -m pytest tests/ -q
+
+# selfcheck: 19 tools for wb, 19 for ozon, 14 for ozon-perf
+python3 serve.py wb --selfcheck
+python3 serve.py ozon --selfcheck
+python3 serve.py ozon-perf --selfcheck
 ```
+
+The `endpoints.yaml` catalogs are built schema-driven from the official OpenAPI specs (`ingest_specs.py` for WB, `ingest_ozon.py` for Ozon). Import is idempotent and additive: curated risk levels and descriptions are never overwritten. `validate_items_path.py` is a live validator (run locally on your own keys), `package_release.py` builds a clean versioned zip, `smoke_mcp.py` is a smoke test.
+
+Most useful contributions: battle-verifying HTTP verbs (paths are reliable, verbs aren't — a live probe found "GET" methods that are actually POST), new workflows in `*/workflows.yaml`, and refining the safety classification. Full rules in [CONTRIBUTING.md](CONTRIBUTING.md); repo guardrails in [AGENTS.md](AGENTS.md). A `test_safety_catalog.py` test keeps a mutating method from landing in the catalog as `read`.
 
 ## FAQ
 
