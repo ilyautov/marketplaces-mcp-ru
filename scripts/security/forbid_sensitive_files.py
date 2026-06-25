@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """Block secret-bearing files from entering Git.
 
 Adapted from letya999/ai-repo-safety-skill. The one local change for this repo:

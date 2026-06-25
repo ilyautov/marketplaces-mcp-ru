@@ -7,13 +7,13 @@ repos:
     hooks:
       - id: forbid-sensitive-files
         name: forbid sensitive files
-        entry: python scripts/security/forbid_sensitive_files.py
-        language: system
+        entry: scripts/security/forbid_sensitive_files.py
+        language: script
         pass_filenames: false
       - id: scan-mcp-config
         name: scan MCP config safety
-        entry: python scripts/security/scan_mcp_config.py
-        language: system
+        entry: scripts/security/scan_mcp_config.py
+        language: script
         pass_filenames: false
 
   # --- secret scanning ------------------------------------------------------

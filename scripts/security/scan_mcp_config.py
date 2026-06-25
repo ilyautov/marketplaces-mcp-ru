@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """Scan MCP config files for safety risks (secrets in plaintext, curl|bash,
 unpinned npx/uvx, over-privileged scopes, tokens without rotation metadata,
 mutable docker tags, missing audit logging).
