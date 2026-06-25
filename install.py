@@ -26,6 +26,7 @@ import os
 import shutil
 import sys
 from datetime import datetime
+from glob import glob
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
@@ -41,16 +42,56 @@ sys.path.insert(0, str(HERE))
 from core.credentials import CredentialStore  # noqa: E402
 
 
+CLAUDE_CONFIG_NAME = "claude_desktop_config.json"
+
+
+def _windows_claude_dirs() -> list[Path]:
+    """Existing Claude Desktop config folders on this Windows machine.
+
+    Covers both install types, because the static %APPDATA%\\Claude path misses
+    the Store build:
+      - packaged (MSIX / Microsoft Store):
+            %LOCALAPPDATA%\\Packages\\Claude_*\\LocalCache\\Roaming\\Claude
+      - classic / website installer:
+            %APPDATA%\\Claude
+    The Store package name carries a publisher hash (e.g. Claude_pzs8sxrjxfjjc)
+    that can differ between machines, so we match Claude_* instead of a fixed
+    path. Returns only folders that actually exist."""
+    dirs: list[Path] = []
+    local = os.environ.get("LOCALAPPDATA")
+    if local:
+        pattern = os.path.join(
+            local, "Packages", "Claude_*", "LocalCache", "Roaming", "Claude"
+        )
+        dirs += [Path(p) for p in glob(pattern)]
+    roaming = os.environ.get("APPDATA")
+    if roaming:
+        dirs.append(Path(roaming) / "Claude")
+    return [d for d in dirs if d.is_dir()]
+
+
+def _windows_config_paths() -> list[Path]:
+    """EVERY Claude Desktop config path to write on Windows.
+
+    We don't try to guess which folder the app reads — we write the
+    (secret-free) entries to all detected installs (Store + classic), so they
+    land wherever Claude actually looks. Falls back to the classic
+    %APPDATA%\\Claude on a fresh machine so the installer can still create it."""
+    dirs = _windows_claude_dirs()
+    if dirs:
+        return [d / CLAUDE_CONFIG_NAME for d in dirs]
+    base = Path(os.environ.get("APPDATA", Path.home()))
+    return [base / "Claude" / CLAUDE_CONFIG_NAME]
+
+
 def config_path() -> Path:
-    """Best-effort Claude desktop config path for this OS."""
+    """Primary Claude desktop config path for this OS (for display/breadcrumb)."""
     home = Path.home()
     if sys.platform == "darwin":
-        return home / "Library" / "Application Support" / "Claude" / "claude_desktop_config.json"
+        return home / "Library" / "Application Support" / "Claude" / CLAUDE_CONFIG_NAME
     if sys.platform.startswith("win"):
-        import os
-        base = Path(os.environ.get("APPDATA", home))
-        return base / "Claude" / "claude_desktop_config.json"
-    return home / ".config" / "Claude" / "claude_desktop_config.json"
+        return _windows_config_paths()[0]
+    return home / ".config" / "Claude" / CLAUDE_CONFIG_NAME
 
 
 def build_entries() -> dict:
@@ -170,6 +211,24 @@ def write_breadcrumb(config_path: Path, entries: dict, serve_path: Path,
     return crumb
 
 
+def merge_into_config(cfg_path: Path, cfg_key: str, entries: dict) -> None:
+    """Merge the secret-free server entries into one client config file,
+    backing up any existing config first. Creates parent dirs as needed."""
+    cfg_path.parent.mkdir(parents=True, exist_ok=True)
+    config: dict = {}
+    if cfg_path.exists():
+        try:
+            config = json.loads(cfg_path.read_text(encoding="utf-8"))
+        except json.JSONDecodeError:
+            print(f"⚠️  {cfg_path} is not valid JSON; starting fresh (old file backed up).")
+        backup = cfg_path.with_suffix(f".json.bak-{datetime.now():%Y%m%d-%H%M%S}")
+        shutil.copy2(cfg_path, backup)
+        print(f"Backed up existing config → {backup.name}")
+    config.setdefault(cfg_key, {})
+    config[cfg_key].update(entries)
+    cfg_path.write_text(json.dumps(config, ensure_ascii=False, indent=2), encoding="utf-8")
+
+
 def main() -> None:
     if sys.version_info < (3, 10):
         sys.exit(f"Python 3.10+ required, found {sys.version.split()[0]}. "
@@ -260,27 +319,24 @@ def main() -> None:
             print(f"  ✅ Cabinet '{cab}' saved.")
             n += 1
 
-    # 2) write the (secret-free) server entries to the target client config
+    # 2) write the (secret-free) server entries to the target client config(s)
     if client == "opencode":
-        cfg_path = opencode_config_path(); cfg_key = "mcp"; entries = build_opencode_entries()
-    else:  # claude-desktop
-        cfg_path = Path(args.config) if args.config else config_path(); cfg_key = "mcpServers"
-    cfg_path.parent.mkdir(parents=True, exist_ok=True)
-    config: dict = {}
-    if cfg_path.exists():
-        try:
-            config = json.loads(cfg_path.read_text(encoding="utf-8"))
-        except json.JSONDecodeError:
-            print(f"⚠️  {cfg_path} is not valid JSON; starting fresh (old file backed up).")
-        backup = cfg_path.with_suffix(f".json.bak-{datetime.now():%Y%m%d-%H%M%S}")
-        shutil.copy2(cfg_path, backup)
-        print(f"Backed up existing config → {backup.name}")
-    config.setdefault(cfg_key, {})
-    config[cfg_key].update(entries)
-    cfg_path.write_text(json.dumps(config, ensure_ascii=False, indent=2), encoding="utf-8")
+        targets = [opencode_config_path()]; cfg_key = "mcp"; entries = build_opencode_entries()
+    elif args.config:
+        targets = [Path(args.config)]; cfg_key = "mcpServers"
+    elif sys.platform.startswith("win"):
+        # Windows: write to EVERY detected Claude install (Store + classic), so
+        # the entries land wherever the app actually reads — no guessing.
+        targets = _windows_config_paths(); cfg_key = "mcpServers"
+    else:  # claude-desktop on macOS / Linux
+        targets = [config_path()]; cfg_key = "mcpServers"
+    for cfg_path in targets:
+        merge_into_config(cfg_path, cfg_key, entries)
 
-    print(f"\n✅ Config → {cfg_path} ({client}: servers 'wildberries', 'ozon', no secrets in it)")
-    crumb = write_breadcrumb(cfg_path, entries, SERVE, HERE)
+    print(f"\n✅ Config ({client}: servers 'wildberries', 'ozon', 'ozon-perf', no secrets):")
+    for cfg_path in targets:
+        print(f"   • {cfg_path}")
+    crumb = write_breadcrumb(targets[0], entries, SERVE, HERE)
     print(f"✅ Install record → {crumb} (verify after restart, no secrets)")
     saved = [s for s, v in (("WB", wb), ("Ozon", oid and okey),
                             ("Ozon-Perf", perf_id and perf_secret)) if v]
