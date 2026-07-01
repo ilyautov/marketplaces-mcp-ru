@@ -176,28 +176,45 @@ def install_app(src: Path, dest: Path) -> Path:
     """Copy the runtime app from `src` into the canonical `dest`, return the
     canonical serve.py. Skips if already running from `dest`. Never touches the
     source's .git — we only read out of it (safe even on a Cowork FUSE mount,
-    where git operations fail). Returns dest/serve.py."""
+    where git operations fail). Returns dest/serve.py.
+
+    The update is a clean swap: the fresh copy is staged next to the app
+    (`app.new`), the existing .venv (already provisioned deps) is carried
+    over, and only then the old app is replaced. Files deleted upstream do
+    not survive, and a failure mid-copy leaves the old app untouched."""
     if src.resolve() == dest.resolve():
         return dest / "serve.py"          # already canonical — re-run in place
-    dest.mkdir(parents=True, exist_ok=True)
+    dest.parent.mkdir(parents=True, exist_ok=True)
+    staging = dest.parent / (dest.name + ".new")
+    if staging.exists():
+        shutil.rmtree(staging)            # leftover from an interrupted run
+    staging.mkdir()
     ignore = shutil.ignore_patterns("__pycache__", "*.pyc", ".venv", ".git")
     for item in RUNTIME_ITEMS:
         s = src / item
         if not s.exists():
             continue
-        d = dest / item
+        d = staging / item
         if s.is_dir():
-            shutil.copytree(s, d, dirs_exist_ok=True, ignore=ignore)
+            shutil.copytree(s, d, ignore=ignore)
         else:
             shutil.copy2(s, d)
+    # the staged copy is complete — carry the provisioned venv over, then swap
+    old_venv = dest / ".venv"
+    if old_venv.is_dir():
+        shutil.move(str(old_venv), str(staging / ".venv"))
+    if dest.exists():
+        shutil.rmtree(dest)
+    os.replace(staging, dest)
     return dest / "serve.py"
 
 
-def write_breadcrumb(config_path: Path, entries: dict, serve_path: Path,
+def write_breadcrumb(config_paths: list[Path], entries: dict, serve_path: Path,
                      source: Path) -> Path:
     """Write a visible, secret-free record of the install so it can be verified
     without reading the client's protected config dir (Cowork blocks that).
-    Lands at ~/.marketplace-mcp/last_install.json."""
+    Records EVERY config file written (Windows may have several Claude
+    installs). Lands at ~/.marketplace-mcp/last_install.json."""
     APP_HOME.mkdir(parents=True, exist_ok=True)
     crumb = APP_HOME / "last_install.json"
     crumb.write_text(json.dumps({
@@ -205,7 +222,8 @@ def write_breadcrumb(config_path: Path, entries: dict, serve_path: Path,
         "servers": sorted(entries.keys()),
         "serve_py": str(serve_path),
         "installed_from": str(source),
-        "client_config": str(config_path),
+        "client_config": str(config_paths[0]),
+        "client_configs": [str(p) for p in config_paths],
         "note": "Verify after restart via MCP tools (wb_check_auth), not by reading the config.",
     }, ensure_ascii=False, indent=2), encoding="utf-8")
     return crumb
@@ -213,20 +231,42 @@ def write_breadcrumb(config_path: Path, entries: dict, serve_path: Path,
 
 def merge_into_config(cfg_path: Path, cfg_key: str, entries: dict) -> None:
     """Merge the secret-free server entries into one client config file,
-    backing up any existing config first. Creates parent dirs as needed."""
+    backing up any existing config first. Creates parent dirs as needed.
+    The write is atomic (tmp file + os.replace), so a crash mid-write can
+    never leave a half-written config behind."""
     cfg_path.parent.mkdir(parents=True, exist_ok=True)
     config: dict = {}
     if cfg_path.exists():
-        try:
-            config = json.loads(cfg_path.read_text(encoding="utf-8"))
-        except json.JSONDecodeError:
-            print(f"⚠️  {cfg_path} is not valid JSON; starting fresh (old file backed up).")
         backup = cfg_path.with_suffix(f".json.bak-{datetime.now():%Y%m%d-%H%M%S}")
         shutil.copy2(cfg_path, backup)
         print(f"Backed up existing config → {backup.name}")
+        try:
+            config = json.loads(cfg_path.read_text(encoding="utf-8"))
+        except json.JSONDecodeError:
+            n = 1
+            while (corrupt := cfg_path.with_name(f"{cfg_path.name}.corrupt-{n}")).exists():
+                n += 1
+            shutil.copy2(cfg_path, corrupt)
+            print(f"\n{'!' * 60}\n"
+                  f"⚠️  WARNING: {cfg_path} was NOT valid JSON (corrupt config).\n"
+                  f"   The broken file is preserved next to it as: {corrupt.name}\n"
+                  f"   A fresh config is being written; review the corrupt copy\n"
+                  f"   if you had custom entries there.\n"
+                  f"{'!' * 60}\n")
+            config = {}
+    if not isinstance(config, dict):
+        print(f"⚠️  {cfg_path} top level is not a JSON object — replacing it "
+              "(old file backed up above).")
+        config = {}
+    if cfg_key in config and not isinstance(config[cfg_key], dict):
+        print(f"⚠️  '{cfg_key}' in {cfg_path.name} is not an object — replacing it "
+              "(old file backed up above).")
+        config[cfg_key] = {}
     config.setdefault(cfg_key, {})
     config[cfg_key].update(entries)
-    cfg_path.write_text(json.dumps(config, ensure_ascii=False, indent=2), encoding="utf-8")
+    tmp = cfg_path.with_name(cfg_path.name + ".tmp")
+    tmp.write_text(json.dumps(config, ensure_ascii=False, indent=2), encoding="utf-8")
+    os.replace(tmp, cfg_path)
 
 
 def main() -> None:
@@ -271,14 +311,31 @@ def main() -> None:
               "   (stable location — you can move or delete the source folder now.)\n")
 
     client = args.client or ("claude-code" if args.claude_code else "claude-desktop")
-    if client == "claude-code":
-        print(claude_code_commands()); return
-    if client == "codex":
-        print(codex_commands()); return
+    if client in ("claude-code", "codex"):
+        # The cabinet store (~/.marketplace-mcp/cabinets.json) is shared by all
+        # clients — keys passed as flags must be saved here too, not dropped.
+        save_cabinet(args.cabinet, args.wb_token, args.ozon_client_id,
+                     args.ozon_api_key, args.ozon_perf_client_id,
+                     args.ozon_perf_client_secret)
+        saved = [s for s, v in (
+            ("WB", args.wb_token),
+            ("Ozon", args.ozon_client_id and args.ozon_api_key),
+            ("Ozon-Perf", args.ozon_perf_client_id and args.ozon_perf_client_secret),
+        ) if v]
+        if saved:
+            print(f"✅ Cabinet '{args.cabinet}' saved for: {', '.join(saved)} "
+                  "(→ ~/.marketplace-mcp/cabinets.json)")
+        print(claude_code_commands() if client == "claude-code" else codex_commands())
+        return
 
     entries = build_entries()
     if args.print_only:
         print(json.dumps({"mcpServers": entries}, ensure_ascii=False, indent=2))
+        print(f"\n⚠️  Note: this JSON points serve.py at the CURRENT folder "
+              f"({HERE}) — if the folder moves or unmounts, the servers break.\n"
+              f"   For a stable install run install.py WITHOUT --print: the app "
+              f"is copied to {APP_DIR} and the config points there.",
+              file=sys.stderr)
         return
 
     print("Marketplace MCP installer.\n"
@@ -336,7 +393,7 @@ def main() -> None:
     print(f"\n✅ Config ({client}: servers 'wildberries', 'ozon', 'ozon-perf', no secrets):")
     for cfg_path in targets:
         print(f"   • {cfg_path}")
-    crumb = write_breadcrumb(targets[0], entries, SERVE, HERE)
+    crumb = write_breadcrumb(targets, entries, SERVE, HERE)
     print(f"✅ Install record → {crumb} (verify after restart, no secrets)")
     saved = [s for s, v in (("WB", wb), ("Ozon", oid and okey),
                             ("Ozon-Perf", perf_id and perf_secret)) if v]

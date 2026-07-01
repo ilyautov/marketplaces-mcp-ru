@@ -100,7 +100,7 @@ python3 --version   # или: py -3 --version  (Windows)
 | **Codex** (CLI) | `python3 install.py --client codex` | ПЕЧАТАЕТ `codex mcp add ...` команды |
 | **OpenCode** | `python3 install.py --client opencode` | Пишет `~/.config/opencode/opencode.json` |
 
-Важно про CLI-клиенты: для `claude-code` и `codex` install.py НЕ пишет конфиг сам — он печатает команды `* mcp add wildberries -- ... wb` и т.д. Эти строки нужно реально выполнить (в Claude Code ты можешь сделать это сам через bash; для Codex — выполнить напечатанные команды).
+Важно про CLI-клиенты: для `claude-code` и `codex` install.py НЕ пишет конфиг сам — он печатает команды `* mcp add wildberries -- ... wb` и т.д. Эти строки нужно реально выполнить (в Claude Code ты можешь сделать это сам через bash; для Codex — выполнить напечатанные команды). При этом ключи, переданные флагами (`--wb-token`, `--ozon-client-id`, `--ozon-api-key`, `--ozon-perf-*`), install.py СОХРАНЯЕТ в общий кабинет-стор `~/.marketplace-mcp/cabinets.json` и для этих клиентов тоже — можно передать их сразу одной командой, отдельный запуск для сохранения ключей не нужен.
 
 Только посмотреть блок конфига, ничего не меняя:
 ```bash
@@ -171,6 +171,11 @@ python3 install.py \
 python3 ~/.marketplace-mcp/app/serve.py ozon --selfcheck   # -> "OK: ozon ready, N tools."
 python3 ~/.marketplace-mcp/app/serve.py wb --selfcheck
 ```
+
+> ⚠️ **Cowork:** selfcheck, запущенный тобой в песочнице, проверяет КОПИЮ внутри
+> контейнера, а не машину пользователя. Не выдавай его за финальную проверку —
+> попроси пользователя выполнить эти же команды у себя (или проверь живым
+> вызовом MCP-инструмента после перезапуска клиента).
 
 **Проверка авторизации из чата** (после перезапуска клиента) — инструмент `ozon_check_auth` / `wb_check_auth`: покажет активный кабинет, чего не хватает и где взять ключи. Секреты не эхает.
 

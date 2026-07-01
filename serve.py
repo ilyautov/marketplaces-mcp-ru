@@ -27,7 +27,9 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 VENV = Path(os.environ.get("MARKETPLACE_MCP_VENV", HERE / ".venv"))
-DEPS = ["mcp>=1.2.0", "httpx>=0.27", "pyyaml>=6.0"]
+# Upper bounds on purpose: a future mcp 2.x / httpx 1.x must not silently
+# break existing installs on their next automatic dependency refresh.
+DEPS = ["mcp>=1.2,<2", "httpx>=0.27,<1", "pyyaml>=6.0,<7"]
 SERVICES = {"wb": "wb_mcp.server", "ozon": "ozon_mcp.server",
             "ozon-perf": "ozon_perf_mcp.server"}
 
@@ -56,29 +58,85 @@ def _deps_importable() -> bool:
         return False
 
 
-def _ensure_deps() -> bool:
-    """Make mcp/httpx/yaml importable in THIS process. Returns success."""
-    if _deps_importable():
-        return True
-    vpy = _venv_python()
-    if not vpy.exists():
-        _log(f"first run — creating virtual environment at {VENV} …")
-        import venv
-        venv.EnvBuilder(with_pip=True).create(VENV)
-    _log("installing dependencies (one-time) …")
+def _deps_stamp() -> Path:
+    """Version stamp of the installed dependency set (lives inside the venv)."""
+    return VENV / "deps-stamp.txt"
+
+
+def _stamp_current() -> bool:
+    try:
+        return _deps_stamp().read_text(encoding="utf-8").strip() == "\n".join(DEPS)
+    except OSError:
+        return False
+
+
+def _write_stamp() -> None:
+    try:
+        _deps_stamp().write_text("\n".join(DEPS), encoding="utf-8")
+    except OSError:
+        pass  # non-fatal: next start just re-checks via pip
+
+
+def _inject_site_packages() -> None:
+    """Put the venv's site-packages onto sys.path of THIS interpreter."""
+    for sp in _venv_site_packages():
+        if sp.is_dir() and str(sp) not in sys.path:
+            sys.path.insert(0, str(sp))
+
+
+def _pip_install() -> bool:
     try:
         subprocess.run(
-            [str(vpy), "-m", "pip", "install", "--quiet", "--upgrade", "pip", *DEPS],
+            [str(_venv_python()), "-m", "pip", "install", "--quiet", *DEPS],
             check=True, stdout=sys.stderr.fileno(), stderr=sys.stderr.fileno(),
         )
+        return True
     except (subprocess.CalledProcessError, OSError) as exc:
         _log(f"dependency install failed: {exc}")
         return False
-    # inject the venv's site-packages into the running interpreter
-    for sp in _venv_site_packages():
-        if sp.is_dir():
-            sys.path.insert(0, str(sp))
-    return _deps_importable()
+
+
+def _ensure_deps() -> bool:
+    """Make mcp/httpx/yaml importable in THIS process. Returns success.
+
+    Fast path first: inject the venv's site-packages and try importing — a
+    machine with a provisioned venv starts instantly and fully OFFLINE (no
+    pip, no network). pip only runs when deps are missing or the pinned DEPS
+    set changed (detected via the deps-stamp file inside the venv)."""
+    _inject_site_packages()
+    if _deps_importable() and (not _venv_python().exists() or _stamp_current()):
+        return True  # ready venv (or system-wide deps) — no pip, works offline
+
+    import venv
+    if not _venv_python().exists():
+        _log(f"first run — creating virtual environment at {VENV} …")
+        venv.EnvBuilder(with_pip=True).create(VENV)
+        _log("installing dependencies (one-time) …")
+    else:
+        _log("refreshing dependencies …")
+
+    if _pip_install():
+        _inject_site_packages()
+        if _deps_importable():
+            _write_stamp()
+            return True
+    elif _deps_importable():
+        # Offline but the previously installed deps import fine — run with
+        # them and retry the refresh on a later start.
+        _log("could not refresh dependencies (offline?) — using installed ones.")
+        return True
+
+    # Install didn't help — the venv likely belongs to another Python
+    # version. Recreate it once and try again.
+    _log(f"recreating virtual environment at {VENV} …")
+    venv.EnvBuilder(with_pip=True, clear=True).create(VENV)
+    if not _pip_install():
+        return False
+    _inject_site_packages()
+    if _deps_importable():
+        _write_stamp()
+        return True
+    return False
 
 
 def main() -> None:
