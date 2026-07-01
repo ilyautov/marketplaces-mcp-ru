@@ -5,7 +5,7 @@
 Подключает ИИ-ассистента (Claude, Cursor, Codex, Cowork и др.) напрямую к вашим кабинетам Wildberries и Ozon. Вы спрашиваете обычными словами, агент берёт продажи, остатки, цены, финансы и отзывы прямо из API маркетплейса, а не выдумывает цифры.
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-[![Версия](https://img.shields.io/badge/%D0%B2%D0%B5%D1%80%D1%81%D0%B8%D1%8F-0.3.0-B5491F)](https://github.com/ilyautov/marketplaces-mcp-ru/commits/main)
+[![Версия](https://img.shields.io/badge/%D0%B2%D0%B5%D1%80%D1%81%D0%B8%D1%8F-0.3.1-B5491F)](https://github.com/ilyautov/marketplaces-mcp-ru/commits/main)
 [![Методов](https://img.shields.io/badge/%D0%BC%D0%B5%D1%82%D0%BE%D0%B4%D0%BE%D0%B2-793-2D7D4F)](#как-это-устроено)
 [![Клиентов](https://img.shields.io/badge/%D0%BA%D0%BB%D0%B8%D0%B5%D0%BD%D1%82%D0%BE%D0%B2-4-D97757)](#установка)
 
