@@ -14,6 +14,8 @@ from __future__ import annotations
 
 import asyncio
 import email.utils
+import hashlib
+import json
 import os
 import time
 from dataclasses import dataclass, field
@@ -46,6 +48,12 @@ class ServiceConfig:
     build_headers: Callable[[dict[str, str]], dict[str, str]]
     store: CredentialStore = field(default_factory=CredentialStore)
     user_agent: str = "marketplace-mcp/0.1 (+https://github.com/)"
+    # Host allowlist: a request may only be sent to a host whose name equals or
+    # ends with one of these suffixes (e.g. ".ozon.ru", ".wildberries.ru"). This
+    # stops a compromised/mis-prompted agent from exfiltrating the cabinet's auth
+    # headers to an attacker host via {svc}_call_raw. Empty list = no allowlist
+    # (permissive; the real servers always set one).
+    allowed_host_suffixes: list[str] = field(default_factory=list)
     # --- OAuth2 client_credentials (optional) -------------------------------
     # When token_url is non-empty the client treats this service as OAuth2
     # client_credentials: it POSTs creds to token_url, caches the access_token,
@@ -70,13 +78,24 @@ class ServiceConfig:
     def missing_creds(self) -> list[str]:
         return self.store.missing(self.name, self.fields, self.env_map)
 
-    # back-compat name used by some tools
-    def missing_env(self) -> list[str]:
-        return self.missing_creds()
+    def host_allowed(self, host: str) -> bool:
+        """True if `host` is inside the service allowlist (or no allowlist set).
 
-    @property
-    def required_env(self) -> list[str]:
-        return [self.env_map.get(f, f) for f in self.fields]
+        Suffix match is anchored on a dot boundary so `api-seller.ozon.ru.evil.com`
+        does NOT match `.ozon.ru`.
+        """
+        if not self.allowed_host_suffixes:
+            return True
+        h = host.strip().lower()
+        for pre in ("https://", "http://"):
+            if h.startswith(pre):
+                h = h[len(pre):]
+        h = h.strip("/").split("/")[0].split(":")[0]
+        for suf in self.allowed_host_suffixes:
+            bare = suf.lstrip(".")
+            if h == bare or h.endswith("." + bare):
+                return True
+        return False
 
 
 def _parse_retry_after(value: Optional[str]) -> Optional[float]:
@@ -85,11 +104,16 @@ def _parse_retry_after(value: Optional[str]) -> Optional[float]:
     try:
         return float(value)  # delta-seconds
     except ValueError:
-        # HTTP-date form
+        pass
+    # HTTP-date form. parsedate_to_datetime raises (not returns None) on garbage
+    # in Python >= 3.10, so guard it — a bad header must never crash the request.
+    try:
         dt = email.utils.parsedate_to_datetime(value)
-        if dt is None:
-            return None
-        return max(0.0, dt.timestamp() - time.time())
+    except (ValueError, TypeError):
+        return None
+    if dt is None:
+        return None
+    return max(0.0, dt.timestamp() - time.time())
 
 
 # Refresh a cached bearer this many seconds BEFORE it actually expires, so an
@@ -100,10 +124,17 @@ TOKEN_EXPIRY_SKEW = 60.0
 class MarketplaceClient:
     def __init__(self, config: ServiceConfig):
         self.config = config
-        # OAuth token cache (only used when config.token_url is set).
-        self._token: Optional[str] = None
-        self._token_expiry: float = 0.0  # monotonic deadline (time.monotonic)
+        # OAuth token cache (only used when config.token_url is set). Keyed per
+        # credential set so switching cabinets never reuses another cabinet's
+        # bearer: {creds_key: (token, monotonic_expiry)}.
+        self._tokens: dict[str, tuple[str, float]] = {}
         self._token_lock = asyncio.Lock()
+
+    @staticmethod
+    def _creds_key(config: ServiceConfig, creds: dict[str, str]) -> str:
+        raw = json.dumps({f: creds.get(f, "") for f in config.fields},
+                         sort_keys=True)
+        return hashlib.sha256(raw.encode("utf-8")).hexdigest()
 
     # --- credential handling -------------------------------------------------
     def _creds_or_error(self) -> tuple[Optional[dict[str, str]], Optional[dict]]:
@@ -135,17 +166,21 @@ class MarketplaceClient:
         Uses a cached token while valid; refreshes (with a 60s skew) on expiry.
         Concurrency-safe: a lock prevents a token stampede across parallel calls.
         """
+        key = self._creds_key(self.config, creds)
         now = time.monotonic()
-        if self._token and now < self._token_expiry:
-            return self._token, None
+        cached = self._tokens.get(key)
+        if cached and now < cached[1]:
+            return cached[0], None
         async with self._token_lock:
             # Re-check inside the lock: another coroutine may have refreshed.
+            cached = self._tokens.get(key)
             now = time.monotonic()
-            if self._token and now < self._token_expiry:
-                return self._token, None
-            return await self._fetch_token(creds)
+            if cached and now < cached[1]:
+                return cached[0], None
+            return await self._fetch_token(creds, key)
 
-    async def _fetch_token(self, creds: dict[str, str]) -> tuple[Optional[str], Optional[dict]]:
+    async def _fetch_token(self, creds: dict[str, str],
+                           key: str) -> tuple[Optional[str], Optional[dict]]:
         cfg = self.config
         payload = {
             "client_id": creds.get(cfg.oauth_id_field, ""),
@@ -194,13 +229,19 @@ class MarketplaceClient:
             ttl = float(body.get("expires_in", 1800))
         except (TypeError, ValueError):
             ttl = 1800.0
-        self._token = token
-        self._token_expiry = time.monotonic() + max(0.0, ttl - TOKEN_EXPIRY_SKEW)
+        self._tokens[key] = (token, time.monotonic() + max(0.0, ttl - TOKEN_EXPIRY_SKEW))
         return token, None
 
+    def _invalidate_token(self, creds: dict[str, str]) -> None:
+        self._tokens.pop(self._creds_key(self.config, creds), None)
+
     def _url(self, host: str, path: str) -> str:
-        host = host.replace("https://", "").replace("http://", "").strip("/")
-        return f"{self.config.scheme}://{host}{path}"
+        h = host.strip()
+        for pre in ("https://", "http://"):
+            if h.startswith(pre):
+                h = h[len(pre):]
+        h = h.strip("/")
+        return f"{self.config.scheme}://{h}{path}"
 
     # --- core request --------------------------------------------------------
     async def request(
@@ -222,6 +263,22 @@ class MarketplaceClient:
         creds_override lets a caller authenticate with an explicit credential set
         (e.g. validating a not-yet-stored key) instead of the active cabinet.
         """
+        if not isinstance(path, str) or not path.startswith("/"):
+            return make_error(
+                "invalid_params",
+                f"path must be a string beginning with '/', got {path!r}. "
+                "A path that does not start with '/' can smuggle a different host "
+                "onto the URL — refused before sending.",
+                operation_id=operation_id, endpoint=path, retryable=False,
+            )
+        if not self.config.host_allowed(host):
+            return make_error(
+                "forbidden",
+                f"Host {host!r} is not in the {self.config.name} allowlist "
+                f"({', '.join(self.config.allowed_host_suffixes)}). Refused before "
+                "sending so credentials never leave for an untrusted host.",
+                operation_id=operation_id, endpoint=path, retryable=False,
+            )
         if creds_override is not None:
             creds, err = creds_override, None
         else:
@@ -257,15 +314,25 @@ class MarketplaceClient:
                         headers=headers,
                     )
             except Exception as exc:  # noqa: BLE001 - mapped to envelope
-                if attempt < MAX_RETRIES and isinstance(
-                    exc, (httpx.TimeoutException, httpx.ConnectError)
-                ):
+                # Connection-phase failures (never reached the server) are safe to
+                # retry for any verb. A read/write-phase timeout may have already
+                # been processed server-side, so only auto-retry SAFE verbs — never
+                # silently repeat a POST/PATCH (would double-create supplies etc.).
+                connect_phase = isinstance(
+                    exc, (httpx.ConnectError, httpx.ConnectTimeout, httpx.PoolTimeout))
+                read_phase = isinstance(exc, (httpx.ReadTimeout, httpx.WriteTimeout))
+                safe_verb = method.upper() in ("GET", "HEAD")
+                if attempt < MAX_RETRIES and (connect_phase or (read_phase and safe_verb)):
                     await asyncio.sleep(BACKOFF_BASE * (2**attempt))
                     attempt += 1
                     continue
                 return error_from_exception(
                     exc, operation_id=operation_id, endpoint=path
                 )
+
+            # An expired/revoked bearer: drop it so the next call refreshes.
+            if resp.status_code == 401 and self.config.is_oauth:
+                self._invalidate_token(creds or {})
 
             if resp.status_code == 429 and attempt < MAX_RETRIES:
                 retry_after = _parse_retry_after(resp.headers.get("Retry-After"))
@@ -291,7 +358,7 @@ class MarketplaceClient:
                 endpoint=path,
                 retryable=retryable,
                 retry_after_seconds=_parse_retry_after(resp.headers.get("Retry-After")),
-                details=_parse_body(resp),
+                details=_capped_details(resp),
             )
 
     async def call_spec(
@@ -340,3 +407,13 @@ def _short_body(resp: httpx.Response, limit: int = 300) -> str:
     body = _parse_body(resp)
     s = body if isinstance(body, str) else str(body)
     return s[:limit]
+
+
+def _capped_details(resp: httpx.Response, limit: int = 2000) -> Any:
+    """Error details for the envelope, bounded so a giant HTML error page can't
+    flood the agent's context. Structured JSON bodies are usually small and pass
+    through unchanged; long text is truncated with a marker."""
+    body = _parse_body(resp)
+    if isinstance(body, str) and len(body) > limit:
+        return body[:limit] + f"... [truncated {len(body) - limit} chars]"
+    return body

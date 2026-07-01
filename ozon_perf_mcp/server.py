@@ -62,6 +62,8 @@ OZON_PERF_CONFIG = ServiceConfig(
     token_url="https://api-performance.ozon.ru/api/client/token",
     oauth_id_field="client_id",
     oauth_secret_field="client_secret",
+    # OAuth client_secret + bearer may only be sent to Ozon hosts.
+    allowed_host_suffixes=[".ozon.ru"],
 )
 
 mcp = FastMCP("ozon_perf_mcp")

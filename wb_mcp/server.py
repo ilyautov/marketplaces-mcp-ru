@@ -42,6 +42,9 @@ WB_CONFIG = ServiceConfig(
     env_map={"token": "WB_API_TOKEN"},
     build_headers=_build_headers,
     whoami=("wb_get_api_seller_info", ["name", "tradeMark"]),
+    # WB is multi-host, but every host lives under wildberries.ru. Auth headers
+    # (the raw seller token) may only ever be sent there.
+    allowed_host_suffixes=[".wildberries.ru"],
 )
 
 mcp = FastMCP("wb_mcp")

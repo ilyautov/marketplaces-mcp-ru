@@ -303,9 +303,12 @@ def register_generic_tools(
         spec = catalog.get(operation_id)
         if not spec:
             return _j({"error": "not_found", "operation_id": operation_id})
-        if spec.safety != "read":
+        # Verb-floor defense in depth (same as call_method): a mutating verb
+        # mislabelled `read` in the catalog must not be looped over unconfirmed.
+        if infer_safety(spec.method, spec.safety) != "read":
             return _j({"error": "invalid_params",
-                       "message": "fetch_all only runs read endpoints."})
+                       "message": "fetch_all only runs read endpoints; "
+                                  f"{operation_id} is a {spec.method} write."})
         resp = await _fetch_all(
             client, spec, base_query=query, base_body=body, path_values=path_values,
             items_path=items_path, limit=limit, max_items=max_items,

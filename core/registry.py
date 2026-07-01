@@ -24,6 +24,7 @@ import re
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, Optional
+from urllib.parse import quote
 
 import yaml
 
@@ -61,7 +62,9 @@ class EndpointSpec:
         for name in self.path_params:
             if name not in values:
                 raise KeyError(name)
-            out = out.replace("{" + name + "}", str(values[name]))
+            # Percent-encode: an agent-supplied value must not inject extra path
+            # segments (../), a query (?) or a fragment (#) into the URL.
+            out = out.replace("{" + name + "}", quote(str(values[name]), safe=""))
         return out
 
     def to_summary_dict(self) -> dict:

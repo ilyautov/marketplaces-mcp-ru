@@ -153,9 +153,12 @@ class _FakeClient:
 def test_fetch_all_offset():
     wb = Catalog.from_yaml(WB_YAML)
     spec = wb.get("wb_prices_list")  # pagination: offset
+    # A short page is NOT a stop signal (servers cap page size below the
+    # requested limit); the walk ends on an empty page.
     pages = [
         {"result": {"items": [1, 2, 3]}},
-        {"result": {"items": [4, 5]}},  # short page -> stop
+        {"result": {"items": [4, 5]}},   # short, but keep going
+        {"result": {"items": []}},        # empty -> stop
     ]
     fake = _FakeClient(pages)
     out = asyncio.run(fetch_all(fake, spec, items_path="result.items", limit=3))

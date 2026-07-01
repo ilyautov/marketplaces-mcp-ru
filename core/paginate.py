@@ -41,6 +41,15 @@ def _dig(obj: Any, dotted: str) -> Any:
     return cur
 
 
+def _to_int(value: Any) -> Optional[int]:
+    """Best-effort int from an API field; None if it isn't numeric (so a junk
+    total/page_count degrades the stop condition instead of crashing the walk)."""
+    try:
+        return int(value)
+    except (TypeError, ValueError):
+        return None
+
+
 async def fetch_all(
     client: MarketplaceClient,
     spec: EndpointSpec,
@@ -107,12 +116,14 @@ async def fetch_all(
 
         # advance cursor per style
         if style == "offset":
-            if len(page_items) < loc.get("limit", limit):
-                return _result(items, pages, truncated=False)
+            # Do NOT stop on a "short" page: servers silently cap page size
+            # below the requested limit, so a short page is normal mid-walk.
+            # The empty-page check above (and max_items/max_pages) terminates.
+            pass
         elif style == "cursor":
             cur = _dig(data, "cursor")
-            total = _dig(data, "total")
-            if total is not None and len(items) >= int(total):
+            total = _to_int(_dig(data, "total"))
+            if total is not None and len(items) >= total:
                 return _result(items, pages, truncated=False)
             if not cur or cur == seen_cursor:
                 return _result(items, pages, truncated=False)
@@ -123,8 +134,8 @@ async def fetch_all(
                 return _result(items, pages, truncated=False)
             seen_cursor = last_id
         elif style == "page":
-            page_count = _dig(data, "result.page_count") or _dig(data, "page_count")
-            if page_count and pages >= int(page_count):
+            page_count = _to_int(_dig(data, "result.page_count") or _dig(data, "page_count"))
+            if page_count and pages >= page_count:
                 return _result(items, pages, truncated=False)
         elif style == "lastchangedate":
             last = page_items[-1]

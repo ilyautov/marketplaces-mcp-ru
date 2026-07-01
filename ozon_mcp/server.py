@@ -47,6 +47,8 @@ OZON_CONFIG = ServiceConfig(
     # candidates and fall back gracefully if none match.
     whoami=("ozon_post_v1_seller_info",
             ["name", "company_name", "result.name", "result.company_name"]),
+    # Client-Id / Api-Key may only be sent to Ozon hosts.
+    allowed_host_suffixes=[".ozon.ru"],
 )
 
 mcp = FastMCP("ozon_mcp")
