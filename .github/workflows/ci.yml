@@ -8,11 +8,17 @@ on:
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
-        python-version: ["3.10", "3.11", "3.12"]
+        os: [ubuntu-latest]
+        python-version: ["3.10", "3.11", "3.12", "3.13"]
+        include:
+          # One Windows leg (single Python) to catch platform-specific breakage
+          # without blowing up the matrix.
+          - os: windows-latest
+            python-version: "3.12"
     steps:
       - uses: actions/checkout@v4
       - name: Set up Python ${{ matrix.python-version }}
@@ -20,6 +26,7 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
       - name: Install dependencies
+        shell: bash
         run: |
           python -m pip install --upgrade pip
           pip install pytest pyyaml httpx "mcp>=1.2.0"
@@ -27,8 +34,10 @@ jobs:
         # -u clears any inherited creds so tests run in a clean env.
         # Includes the safety-catalog lint: fails if any PUT/PATCH/DELETE is
         # marked safety:read (which would bypass the write gate in call_method).
+        shell: bash
         run: env -u OZON_CLIENT_ID -u OZON_API_KEY -u WB_API_TOKEN python -m pytest tests/ -q
       - name: Selfcheck all three servers
+        shell: bash
         run: |
           python serve.py wb --selfcheck
           python serve.py ozon --selfcheck

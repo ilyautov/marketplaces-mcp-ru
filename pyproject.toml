@@ -32,6 +32,7 @@ build-backend = "setuptools.build_meta"
 packages = ["core", "wb_mcp", "ozon_mcp", "ozon_perf_mcp"]
 
 [tool.setuptools.package-data]
+core = ["entities.yaml"]
 wb_mcp = ["endpoints.yaml", "workflows.yaml"]
 # perf_endpoints.yaml lives in ozon_mcp because ozon_perf_mcp/server.py loads
 # it from ../ozon_mcp/perf_endpoints.yaml — it MUST ship inside ozon_mcp.

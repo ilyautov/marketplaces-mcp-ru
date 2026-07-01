@@ -1,7 +1,7 @@
 # Ensure data files land in the sdist tarball as well as the wheel.
+recursive-include core *.yaml
 recursive-include wb_mcp *.yaml
 recursive-include ozon_mcp *.yaml
 recursive-include ozon_perf_mcp *.yaml
 include README.md
-include HANDOFF.md
 include serve.py

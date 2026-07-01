@@ -104,7 +104,7 @@ Python 3.10+. Dependencies (`mcp`, `httpx`, `pyyaml`) install into a local `.ven
 git clone https://github.com/ilyautov/marketplaces-mcp-ru.git
 cd marketplaces-mcp-ru
 
-# offline tests, no keys needed, expect 21 passed
+# offline tests, no keys needed — all offline tests pass
 env -u OZON_CLIENT_ID -u OZON_API_KEY -u WB_API_TOKEN python3 -m pytest tests/ -q
 
 # selfcheck: 19 tools for wb, 19 for ozon, 14 for ozon-perf

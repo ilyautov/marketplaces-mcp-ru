@@ -3,7 +3,7 @@
 
 Reads the version from pyproject.toml and produces:
 
-    dist/marketplace-mcp-v<VERSION>.zip
+    dist/marketplaces-mcp-ru-v<VERSION>.zip
 
 The archive is a self-contained copy of the project that a non-technical
 seller can download, unzip and double-click to install — no .git, no venv,
@@ -43,7 +43,6 @@ INCLUDE_FILES = [
     "serve.py",
     "README.md",
     "QUICKSTART.md",
-    "HANDOFF.md",
     "LICENSE",
     "pyproject.toml",
 ]
@@ -67,7 +66,7 @@ EXCLUDE_PATTERNS = [
 
 
 def read_name() -> str:
-    text = (ROOT / "pyproject.toml").read_text(encoding="utf-8") if 'ROOT' in globals() else open("pyproject.toml").read_text(encoding="utf-8")
+    text = (ROOT / "pyproject.toml").read_text(encoding="utf-8")
     m = re.search(r'^name\s*=\s*["\']([^"\']+)["\']', text, re.MULTILINE)
     return m.group(1) if m else "marketplaces-mcp-ru"
 
@@ -143,6 +142,23 @@ def assert_clean(files: list[Path]) -> None:
         sys.exit(f"REFUSING TO BUILD — secret/junk in file set: {sorted(set(bad))}")
 
 
+def zip_mode(p: Path) -> int:
+    """Normalized permissions inside the archive, independent of the local
+    machine: 0o755 for shell launchers and top-level Python entry points with
+    a shebang (install.py, serve.py), 0o644 for everything else (package
+    modules stay non-executable even if they carry a shebang)."""
+    if p.suffix in {".sh", ".command"}:
+        return 0o755
+    if p.suffix == ".py" and p.parent == ROOT:
+        try:
+            with p.open("rb") as fh:
+                if fh.read(2) == b"#!":
+                    return 0o755
+        except OSError:
+            pass
+    return 0o644
+
+
 def build(list_contents: bool) -> Path:
     version = read_version()
     files = collect()
@@ -159,7 +175,11 @@ def build(list_contents: bool) -> Path:
     with zipfile.ZipFile(zip_path, "w", zipfile.ZIP_DEFLATED) as zf:
         for p in files:
             rel = p.relative_to(ROOT).as_posix()
-            zf.write(p, f"{prefix}/{rel}")
+            info = zipfile.ZipInfo.from_file(p, f"{prefix}/{rel}")
+            info.compress_type = zipfile.ZIP_DEFLATED
+            # Regular file (0o100000) + normalized mode in the unix bits.
+            info.external_attr = (0o100000 | zip_mode(p)) << 16
+            zf.writestr(info, p.read_bytes())
 
     size_kb = zip_path.stat().st_size / 1024
     print(f"\n✅ Built {zip_path.relative_to(ROOT)}  ({len(files)} files, {size_kb:.0f} KB)")

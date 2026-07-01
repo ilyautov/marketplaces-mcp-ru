@@ -9,7 +9,7 @@
 git clone https://github.com/ilyautov/marketplaces-mcp-ru.git
 cd marketplaces-mcp-ru
 
-# офлайн-тесты (ключи не нужны) — должны быть 21 passed
+# офлайн-тесты (ключи не нужны) — все должны быть зелёные
 env -u OZON_CLIENT_ID -u OZON_API_KEY -u WB_API_TOKEN python3 -m pytest tests/ -q
 
 # selfcheck серверов

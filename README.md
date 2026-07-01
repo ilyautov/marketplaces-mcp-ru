@@ -152,7 +152,7 @@ tests/               офлайн-тесты (токены не нужны)
 git clone https://github.com/ilyautov/marketplaces-mcp-ru.git
 cd marketplaces-mcp-ru
 
-# офлайн-тесты, ключи не нужны, ожидается 21 passed
+# офлайн-тесты, ключи не нужны — все офлайн-тесты зелёные
 env -u OZON_CLIENT_ID -u OZON_API_KEY -u WB_API_TOKEN python3 -m pytest tests/ -q
 
 # selfcheck серверов: отдаёт 19 тулов для wb, 19 для ozon, 14 для ozon-perf

@@ -46,9 +46,8 @@
 «Add Python to PATH»).
 
 1. Откройте страницу **Releases** на GitHub и скачайте свежий
-   `marketplace-mcp-v<версия>.zip`:
+   `marketplaces-mcp-ru-v<версия>.zip`:
    **https://github.com/ilyautov/marketplaces-mcp-ru/releases**
-   <!-- TODO: создать публичный репозиторий ilyautov/marketplaces-mcp-ru -->
 2. **Распакуйте** архив в удобную папку (например, в «Документы»).
 3. Запустите установщик двойным кликом:
    - **macOS** — `install.command`
@@ -83,7 +82,6 @@ python3 install.py --client claude-code      # печатает готовые `
 python3 install.py --client codex            # печатает `codex mcp add`
 python3 install.py --client opencode         # пишет ~/.config/opencode/opencode.json
 ```
-<!-- TODO: создать публичный репозиторий ilyautov/marketplaces-mcp-ru -->
 
 Ключи можно передать без интерактива:
 ```bash
@@ -98,7 +96,7 @@ python3 install.py --print
 `serve.py` сам поднимает локальный venv при первом запуске — `command` может
 быть любым Python 3.10+. Несколько кабинетов (магазинов): повторите с
 `--cabinet shop2`, переключение из чата (`ozon_use_cabinet`). Тесты:
-`python -m pytest tests/ -q` (21 офлайн-тест, ключи не нужны).
+`python -m pytest tests/ -q` (офлайн-тесты, ключи не нужны — все должны быть зелёные).
 
 ---
 
