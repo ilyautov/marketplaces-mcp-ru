@@ -22,6 +22,12 @@ def _store(tmp_path):
     return CredentialStore(path=tmp_path / "sub" / "cabinets.json")
 
 
+# POSIX file modes don't translate to Windows (chmod is a near-no-op there; the
+# store guards it with suppress(OSError) and relies on NTFS ACLs / user profile).
+posix_only = pytest.mark.skipif(os.name == "nt", reason="POSIX file modes only")
+
+
+@posix_only
 def test_saved_file_is_0600(tmp_path):
     s = _store(tmp_path)
     s.add_cabinet("ozon", "main", {"client_id": "1", "api_key": "k"})
@@ -29,6 +35,7 @@ def test_saved_file_is_0600(tmp_path):
     assert mode == 0o600, f"secrets file must be 0600, got {oct(mode)}"
 
 
+@posix_only
 def test_parent_dir_is_0700(tmp_path):
     s = _store(tmp_path)
     s.add_cabinet("ozon", "main", {"client_id": "1", "api_key": "k"})

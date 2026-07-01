@@ -7,6 +7,7 @@ another Python version. All tests are offline — subprocess.run is stubbed.
 """
 from __future__ import annotations
 
+import os
 import sys
 import venv as venv_module
 from pathlib import Path
@@ -18,13 +19,26 @@ sys.path.insert(0, str(ROOT))
 import serve  # noqa: E402
 
 
+def _write_layout(venv_dir: Path) -> Path:
+    """Create the interpreter + site-packages layout serve.py expects on THIS
+    OS (Windows uses Scripts/python.exe + Lib/site-packages; POSIX uses
+    bin/python + lib/pythonX.Y/site-packages). Returns the site-packages dir."""
+    if os.name == "nt":
+        (venv_dir / "Scripts").mkdir(parents=True, exist_ok=True)
+        (venv_dir / "Scripts" / "python.exe").write_text("", encoding="utf-8")
+        sp = venv_dir / "Lib" / "site-packages"
+    else:
+        (venv_dir / "bin").mkdir(parents=True, exist_ok=True)
+        (venv_dir / "bin" / "python").write_text("", encoding="utf-8")
+        sp = venv_dir / "lib" / "python3.11" / "site-packages"
+    sp.mkdir(parents=True, exist_ok=True)
+    return sp
+
+
 def _make_venv(tmp_path: Path, stamp: str | None = None) -> tuple[Path, Path]:
-    """Create a fake venv layout (posix) and return (venv_dir, site_packages)."""
+    """Create a fake, OS-correct venv layout and return (venv_dir, site_packages)."""
     venv_dir = tmp_path / ".venv"
-    (venv_dir / "bin").mkdir(parents=True)
-    (venv_dir / "bin" / "python").write_text("", encoding="utf-8")
-    sp = venv_dir / "lib" / "python3.11" / "site-packages"
-    sp.mkdir(parents=True)
+    sp = _write_layout(venv_dir)
     if stamp is not None:
         (venv_dir / "deps-stamp.txt").write_text(stamp, encoding="utf-8")
     return venv_dir, sp
@@ -132,10 +146,7 @@ def test_broken_venv_is_recreated_once(tmp_path, monkeypatch):
             path = Path(path)
             if self.clear:
                 state["cleared"] = True
-            (path / "bin").mkdir(parents=True, exist_ok=True)
-            (path / "bin" / "python").write_text("", encoding="utf-8")
-            (path / "lib" / "python3.11" / "site-packages").mkdir(
-                parents=True, exist_ok=True)
+            _write_layout(path)
 
     monkeypatch.setattr(venv_module, "EnvBuilder", FakeBuilder)
 
@@ -162,9 +173,7 @@ def test_gives_up_after_one_recreate(tmp_path, monkeypatch):
         def create(self, path):
             if self.clear:
                 creates["clear"] += 1
-            path = Path(path)
-            (path / "bin").mkdir(parents=True, exist_ok=True)
-            (path / "bin" / "python").write_text("", encoding="utf-8")
+            _write_layout(Path(path))
 
     monkeypatch.setattr(venv_module, "EnvBuilder", FakeBuilder)
     monkeypatch.setattr(serve.subprocess, "run", lambda *a, **k: None)
