@@ -40,12 +40,20 @@ must be told to trust it. Because the package does not exist yet, register a
 
 ### 2. GHCR package visibility (once, after the first image push)
 
-`publish-registry.yml` pushes with the workflow's `GITHUB_TOKEN`. A personal
-account's first push creates the package **private**, and the registry cannot
-verify a private image. After the first run: GitHub → your profile → Packages →
-`marketplaces-mcp-ru` → Package settings → **Change visibility → Public**. Then
-re-run the workflow (`workflow_dispatch` with the tag) so the `registry` job
-succeeds. Later releases need nothing.
+`publish-registry.yml` pushes with the workflow's `GITHUB_TOKEN`. The package is
+linked to this public repo, and for v0.4.0 it came out **public** on the first
+push with no manual step. Verify after the first release anyway:
+
+```bash
+TOK=$(curl -s "https://ghcr.io/token?scope=repository:ilyautov/marketplaces-mcp-ru:pull" | jq -r .token)
+curl -s -o /dev/null -w "%{http_code}\n" -H "Authorization: Bearer $TOK" \
+  -H "Accept: application/vnd.oci.image.index.v1+json" \
+  https://ghcr.io/v2/ilyautov/marketplaces-mcp-ru/manifests/<version>   # want 200
+```
+
+A `401` means the package is private: GitHub → profile → Packages →
+`marketplaces-mcp-ru` → Package settings → **Change visibility → Public**, then
+re-run the workflow (`workflow_dispatch` with the tag).
 
 ### 3. MCP Registry ownership marker
 
