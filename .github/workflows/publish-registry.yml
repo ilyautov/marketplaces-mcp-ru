@@ -147,7 +147,8 @@ jobs:
       - name: Login (GitHub OIDC)
         run: ./mcp-publisher login github-oidc
 
-      - name: Validate and publish
-        run: |
-          ./mcp-publisher publish --dry-run
-          ./mcp-publisher publish
+      # No `--dry-run` first: in mcp-publisher 1.8.1 that flag still publishes,
+      # so a following real publish fails with "cannot publish duplicate
+      # version" (v0.4.0 went out that way — listing fine, job red).
+      - name: Publish
+        run: ./mcp-publisher publish

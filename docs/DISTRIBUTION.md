@@ -97,8 +97,8 @@ brew install mcp-publisher     # or download from the registry releases page
 
 # from the repo root (server.json lives here)
 mcp-publisher login github      # opens a device-code prompt
-mcp-publisher publish --dry-run # validate server.json only
 mcp-publisher publish           # publish the listing
+# note: `--dry-run` in mcp-publisher 1.8.1 is NOT dry — it publishes.
 ```
 
 `server.json`'s `name` must stay under the `io.github.ilyautov/` namespace —
