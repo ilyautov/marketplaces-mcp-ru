@@ -3,6 +3,20 @@
 Формат — [Keep a Changelog](https://keepachangelog.com/ru/1.1.0/),
 версии — [SemVer](https://semver.org/lang/ru/).
 
+## [0.5.2] — 2026-09-07
+
+### Добавлено
+- **npm-запускалка** `npx -y marketplaces-mcp-ru` (папка `npm/`). Сервер остаётся
+  на Python и PyPI; пакет на npm находит `uv` (PATH, `~/.local/bin`, `~/.cargo/bin`),
+  при отсутствии скачивает официальный релиз uv с проверкой sha256 в
+  `~/.cache/marketplaces-mcp-ru/` и запускает закреплённую версию с PyPI. Без uv —
+  запасной путь через `python3 -m pip install --target`. Всё, что пишет запускалка,
+  идёт в stderr; stdout остаётся транспортом MCP.
+- `server.json`: третий пакет `npm` рядом с `pypi` и `oci`; workflow `publish-npm.yml`
+  (npm Trusted Publishing по тегу); `publish-registry.yml` ждёт и npm тоже.
+- `tests/test_versions.py`: версия `npm/package.json` и `mcpName` сверяются с pyproject
+  и `server.json`.
+
 ## [0.5.1] — 2026-09-07
 
 Технический релиз: MCP Registry отверг `server.json` 0.5.0 (описание длиннее

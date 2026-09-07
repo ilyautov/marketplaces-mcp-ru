@@ -20,6 +20,10 @@ dist/
 .venv/
 venv/
 
+# npm launcher
+npm/node_modules/
+npm/*.tgz
+
 # OS / editor
 .DS_Store
 

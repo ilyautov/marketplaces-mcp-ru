@@ -1,17 +1,18 @@
 # Distribution & release runbook
 
 How `marketplaces-mcp-ru` reaches users, and the exact steps to cut a release.
-Five channels, one repo:
+Six channels, one repo:
 
 | Channel | Who | Artifact | How it's built |
 | --- | --- | --- | --- |
 | **`.mcpb` bundle** | Non-technical sellers on Claude Desktop | `dist/*.mcpb` | `scripts/package_mcpb.py`, attached to the GitHub Release |
 | **GitHub zip** | Sellers who prefer download-and-click installers | `dist/*.zip` | `scripts/package_release.py`, attached to the Release |
+| **npm / `npx`** | Anyone copying the standard `npx -y …` line from an MCP client's docs | `marketplaces-mcp-ru` on npm — a launcher that fetches `uv` + the pinned PyPI version | `publish-npm.yml` on every `v*` tag (npm Trusted Publishing, OIDC) |
 | **PyPI / `uvx`** | Developers & agencies | `marketplaces-mcp-ru` on PyPI | `publish-pypi.yml` on every `v*` tag (OIDC Trusted Publishing) |
 | **Docker / GHCR** | Servers, agencies, anyone without Python | `ghcr.io/ilyautov/marketplaces-mcp-ru:<version>` | `publish-registry.yml` on every `v*` tag |
-| **MCP Registry** | Discovery inside MCP clients | `server.json` metadata (PyPI + OCI packages) | `publish-registry.yml` via GitHub OIDC after PyPI is live; manual `mcp-publisher` as fallback |
+| **MCP Registry** | Discovery inside MCP clients | `server.json` metadata (npm + PyPI + OCI packages) | `publish-registry.yml` via GitHub OIDC after PyPI is live; manual `mcp-publisher` as fallback |
 
-All five are backed by the **combined server** (`core/combined.py`): WB + Ozon +
+All six are backed by the **combined server** (`core/combined.py`): WB + Ozon +
 Ozon Performance, Yandex Market and Avito on one FastMCP (106 tools). `uvx marketplaces-mcp-ru` and the
 `.mcpb` both run it; `wb-mcp` / `ozon-mcp` / `ozon-perf-mcp` / `yandex-mcp` / `avito-mcp` remain available
 for running a single service.
@@ -55,7 +56,22 @@ A `401` means the package is private: GitHub → profile → Packages →
 `marketplaces-mcp-ru` → Package settings → **Change visibility → Public**, then
 re-run the workflow (`workflow_dispatch` with the tag).
 
-### 3. MCP Registry ownership marker
+### 3. npm Trusted Publishing
+
+`publish-npm.yml` publishes `npm/` with OIDC, but npm only lets you configure a
+trusted publisher on a package that already exists, so the first version was
+published by hand (`cd npm && npm publish --access public`). Then, once:
+
+1. <https://www.npmjs.com/package/marketplaces-mcp-ru> → **Settings** → **Trusted publisher**.
+2. Publisher: GitHub Actions; user: `ilyautov`; repository: `marketplaces-mcp-ru`;
+   workflow filename: `publish-npm.yml`; environment: `npm`.
+3. Create the `npm` environment in the GitHub repo (Settings → Environments).
+
+The workflow skips the publish when the tag's version is already on npm, so a
+manual publish before the tag is always safe. The registry checks npm ownership
+through `"mcpName"` in `npm/package.json` — keep it equal to `server.json`'s `name`.
+
+### 4. MCP Registry ownership marker
 
 Already in place: `README.md` carries `<!-- mcp-name: io.github.ilyautov/marketplaces-mcp-ru -->`.
 That comment becomes the PyPI long description, and the registry scrapes it to
@@ -74,19 +90,20 @@ confirm you own the PyPI package. Keep it in the README.
    git tag v0.3.2
    git push origin v0.3.2
    ```
-4. The tag triggers three workflows automatically:
+4. The tag triggers four workflows automatically:
    - **`release.yml`** → builds the zip and the `.mcpb`, attaches both to the
      GitHub Release.
    - **`publish-pypi.yml`** → builds sdist+wheel, publishes to PyPI via OIDC.
+   - **`publish-npm.yml`** → publishes the `npx` launcher (skips if that version is already on npm).
    - **`publish-registry.yml`** → builds the OCI image, pushes
      `ghcr.io/ilyautov/marketplaces-mcp-ru:<version>` and `:latest`, smoke-tests
-     it with a real `docker run`, waits for PyPI to serve the version, then
+     it with a real `docker run`, waits for PyPI and npm to serve the version, then
      publishes `server.json` to the MCP Registry via GitHub OIDC.
-5. Verify: `uvx marketplaces-mcp-ru doctor`, `docker run --rm ghcr.io/ilyautov/marketplaces-mcp-ru:<version> doctor`,
+5. Verify: `uvx marketplaces-mcp-ru doctor`, `npx -y marketplaces-mcp-ru doctor`, `docker run --rm ghcr.io/ilyautov/marketplaces-mcp-ru:<version> doctor`,
    and the listing at `https://registry.modelcontextprotocol.io/v0/servers?search=marketplaces-mcp-ru`.
 
 `tests/test_versions.py` fails the build if `pyproject.toml`, `server.json`
-(both package entries) and `mcpb/manifest.json` disagree on the version, and if
+(all package entries), `mcpb/manifest.json` and `npm/package.json` disagree on the version, and if
 the Dockerfile's `io.modelcontextprotocol.server.name` label drifts from
 `server.json`'s `name`.
 
@@ -96,8 +113,8 @@ the Dockerfile's `io.modelcontextprotocol.server.name` label drifts from
 
 Normally `publish-registry.yml` does this. If it failed (PyPI late, GHCR still
 private), fix the cause and re-run the workflow, or publish manually. The registry
-hosts metadata only and validates that the PyPI package and the OCI image exist,
-so publish **after** both are live:
+hosts metadata only and validates that the npm package, the PyPI package and the
+OCI image exist, so publish **after** all three are live:
 
 ```bash
 # install the publisher CLI (macOS)

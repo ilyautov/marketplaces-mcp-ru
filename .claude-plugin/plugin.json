@@ -1,7 +1,7 @@
 {
   "name": "marketplaces-mcp-ru",
   "description": "MCP-серверы для кабинетов Wildberries, Ozon, Яндекс Маркета и Авито: продажи, заказы, остатки, цены, финансы, отзывы через API напрямую, без браузера. 1022 метода schema-driven, safety-гейт на запись, авто-пагинация, мультикабинет, поиск по-русски. | MCP servers for Wildberries, Ozon, Yandex Market & Avito seller accounts: 1022 schema-driven API methods, write safety gate, auto-pagination, Russian-language search.",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "author": {
     "name": "Ilya Utov",
     "email": "ilyautov@gmail.com",

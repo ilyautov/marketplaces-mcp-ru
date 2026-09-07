@@ -1,0 +1,79 @@
+name: Publish npm launcher
+
+# On every v* tag: publish npm/ (the `npx -y marketplaces-mcp-ru` launcher) to
+# npmjs.com via Trusted Publishing (OIDC — no token in the repo). The job is a
+# no-op when that version is already on npm (the first version was published
+# by hand, before the trusted publisher existed).
+#
+# npm-side setup (one-time, npmjs.com → package → Settings → Trusted publisher):
+#   Publisher:        GitHub Actions
+#   Organization/user: ilyautov
+#   Repository:       marketplaces-mcp-ru
+#   Workflow filename: publish-npm.yml   <-- must match this file's name exactly
+#   Environment name: npm
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Existing release tag to (re)publish, e.g. v0.5.2"
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  npm:
+    name: Publish to npm
+    runs-on: ubuntu-latest
+    environment:
+      name: npm
+      url: https://www.npmjs.com/package/marketplaces-mcp-ru
+    permissions:
+      contents: read
+      id-token: write # Trusted Publishing (OIDC) + provenance
+    steps:
+      - name: Resolve tag
+        id: tag
+        shell: bash
+        run: |
+          TAG="${{ github.event.inputs.tag || github.ref_name }}"
+          case "$TAG" in v*) ;; *) echo "not a release tag: $TAG" >&2; exit 1 ;; esac
+          echo "value=$TAG" >> "$GITHUB_OUTPUT"
+
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          ref: ${{ steps.tag.outputs.value }}
+          persist-credentials: false
+
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
+        with:
+          node-version: "22"
+          registry-url: "https://registry.npmjs.org"
+
+      - name: npm >= 11.5.1 (required for Trusted Publishing)
+        run: npm install -g npm@latest && npm --version
+
+      - name: Version from tag must match npm/package.json
+        id: version
+        shell: bash
+        env:
+          TAG: ${{ steps.tag.outputs.value }}
+        run: |
+          V="${TAG#v}"
+          PJ=$(node -p "require('./npm/package.json').version")
+          echo "tag=$V package.json=$PJ"
+          [ "$V" = "$PJ" ] || { echo "version mismatch" >&2; exit 1; }
+          if npm view "marketplaces-mcp-ru@$V" version >/dev/null 2>&1; then
+            echo "already on npm — nothing to do"; echo "skip=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Launcher syntax check
+        run: node --check npm/bin/marketplaces-mcp-ru.js && node npm/bin/marketplaces-mcp-ru.js --wrapper-version
+
+      - name: Publish
+        if: steps.version.outputs.skip != 'true'
+        working-directory: npm
+        run: npm publish --provenance --access public

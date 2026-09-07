@@ -3,7 +3,7 @@
   "name": "io.github.ilyautov/marketplaces-mcp-ru",
   "title": "Marketplaces MCP (RU) — Wildberries, Ozon, Yandex Market, Avito",
   "description": "Wildberries, Ozon, Yandex Market & Avito seller APIs for AI assistants: schema-driven, safety-gated.",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "repository": {
     "url": "https://github.com/ilyautov/marketplaces-mcp-ru",
     "source": "github"
@@ -11,10 +11,70 @@
   "websiteUrl": "https://marketplaces-mcp-ru.aifrontier.tech/",
   "packages": [
     {
+      "registryType": "npm",
+      "registryBaseUrl": "https://registry.npmjs.org",
+      "identifier": "marketplaces-mcp-ru",
+      "version": "0.5.2",
+      "runtimeHint": "npx",
+      "transport": {
+        "type": "stdio"
+      },
+      "environmentVariables": [
+        {
+          "name": "WB_API_TOKEN",
+          "description": "Wildberries Seller API token (seller.wildberries.ru → Settings → API access). Leave unset if you do not sell on WB.",
+          "isRequired": false,
+          "isSecret": true
+        },
+        {
+          "name": "OZON_CLIENT_ID",
+          "description": "Ozon Seller Client ID (seller.ozon.ru → Settings → API keys).",
+          "isRequired": false,
+          "isSecret": false
+        },
+        {
+          "name": "OZON_API_KEY",
+          "description": "Ozon Seller API key paired with the Client ID.",
+          "isRequired": false,
+          "isSecret": true
+        },
+        {
+          "name": "OZON_PERF_CLIENT_ID",
+          "description": "Ozon Performance (ads) API Client ID. Optional.",
+          "isRequired": false,
+          "isSecret": false
+        },
+        {
+          "name": "OZON_PERF_CLIENT_SECRET",
+          "description": "Ozon Performance API Client Secret. Optional.",
+          "isRequired": false,
+          "isSecret": true
+        },
+        {
+          "name": "YANDEX_MARKET_API_KEY",
+          "description": "Yandex Market Partner API key (partner.market.yandex.ru → Settings → API access). Optional.",
+          "isRequired": false,
+          "isSecret": true
+        },
+        {
+          "name": "AVITO_CLIENT_ID",
+          "description": "Avito API client_id (avito.ru → Для бизнеса → Интеграции → API). Optional.",
+          "isRequired": false,
+          "isSecret": false
+        },
+        {
+          "name": "AVITO_CLIENT_SECRET",
+          "description": "Avito API client_secret paired with the client_id. Optional.",
+          "isRequired": false,
+          "isSecret": true
+        }
+      ]
+    },
+    {
       "registryType": "pypi",
       "registryBaseUrl": "https://pypi.org",
       "identifier": "marketplaces-mcp-ru",
-      "version": "0.5.1",
+      "version": "0.5.2",
       "runtimeHint": "uvx",
       "transport": {
         "type": "stdio"
@@ -72,7 +132,7 @@
     },
     {
       "registryType": "oci",
-      "identifier": "ghcr.io/ilyautov/marketplaces-mcp-ru:0.5.1",
+      "identifier": "ghcr.io/ilyautov/marketplaces-mcp-ru:0.5.2",
       "runtimeHint": "docker",
       "transport": {
         "type": "stdio"

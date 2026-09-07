@@ -12,14 +12,14 @@ without keys it starts but every call reports `missing credentials`.
 
 ## Fastest install (no clone)
 
-Requires `uv` (https://docs.astral.sh/uv/). Add an MCP server entry:
+No prerequisites with npm: the launcher fetches `uv` and the pinned PyPI version itself. Add an MCP server entry:
 
 ```json
 {
   "mcpServers": {
     "marketplaces-ru": {
-      "command": "uvx",
-      "args": ["marketplaces-mcp-ru"],
+      "command": "npx",
+      "args": ["-y", "marketplaces-mcp-ru"],
       "env": {
         "WB_API_TOKEN": "<wildberries seller token, optional>",
         "OZON_CLIENT_ID": "<ozon client id, optional>",
@@ -69,8 +69,9 @@ config (or prints the `mcp add` command), and stores keys in
 ## Verify
 
 ```bash
-uvx marketplaces-mcp-ru doctor          # tools mounted, catalogs, keys found?
-uvx marketplaces-mcp-ru doctor --live   # plus one real read call per marketplace
+npx -y marketplaces-mcp-ru doctor          # tools mounted, catalogs, keys found?
+npx -y marketplaces-mcp-ru doctor --live   # plus one real read call per marketplace
+# same with uv installed: uvx marketplaces-mcp-ru doctor [--live]
 ```
 
 Exit code 0 means every configured marketplace answered. Exit code 1 with

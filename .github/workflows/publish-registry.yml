@@ -5,8 +5,8 @@ name: Publish Docker image + MCP Registry
 #      (+ :latest), carrying the io.modelcontextprotocol.server.name label the
 #      registry uses to verify ownership;
 #   2. smoke-test the pushed image with a real `docker run`;
-#   3. wait until PyPI serves the same version (the registry validates the
-#      PyPI package too), then publish server.json via GitHub OIDC — no
+#   3. wait until PyPI and npm serve the same version (the registry validates
+#      every package), then publish server.json via GitHub OIDC — no
 #      long-lived token anywhere.
 #
 # One-time setup (GitHub web UI): after the first push, open the package
@@ -135,6 +135,20 @@ jobs:
             echo "PyPI does not have $V yet (attempt $i/30)"; sleep 30
           done
           echo "PyPI never served $V — publish-pypi.yml failed or is still running" >&2
+          exit 1
+
+      - name: Wait for npm to serve this version
+        shell: bash
+        env:
+          V: ${{ needs.image.outputs.version }}
+        run: |
+          for i in $(seq 1 20); do
+            if curl -fsS "https://registry.npmjs.org/marketplaces-mcp-ru/$V" >/dev/null; then
+              echo "npm has $V"; exit 0
+            fi
+            echo "npm does not have $V yet (attempt $i/20)"; sleep 30
+          done
+          echo "npm never served $V — publish-npm.yml failed or is still running" >&2
           exit 1
 
       - name: Install mcp-publisher

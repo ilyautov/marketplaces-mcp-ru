@@ -47,7 +47,7 @@ A detailed guide for any audience is in [QUICKSTART.md](QUICKSTART.md). Three wa
 1. **Ask your AI (no terminal).** Open Claude or Cowork and say "install the WB + Ozon MCP". The agent walks the bundled `install-skill/`. In the Cowork sandbox the final click stays with you; in Claude Code it installs fully on its own.
 2. **Download and click.** Grab `marketplaces-mcp-ru-v<version>.zip` from [GitHub Releases](https://github.com/ilyautov/marketplaces-mcp-ru/releases), unzip, double-click `install.command` (macOS) / `install.bat` (Windows), paste your keys. On Windows the installer can fetch Python via winget if it's missing.
 3. **Terminal.** `git clone https://github.com/ilyautov/marketplaces-mcp-ru`, then `python3 install.py --client <your-client>` (`claude-desktop`, `claude-code`, `codex` or `opencode`).
-4. **PyPI / `uvx`.** `uvx marketplaces-mcp-ru` runs the combined WB + Ozon + Ozon Performance + Yandex Market + Avito server straight from PyPI; `wb-mcp` / `ozon-mcp` / `ozon-perf-mcp` / `yandex-mcp` / `avito-mcp` run a single service. Keys via env vars or `*_add_cabinet` from chat.
+4. **npm / PyPI.** `npx -y marketplaces-mcp-ru` — the install line every MCP client documents; no Python setup, the npm launcher fetches `uv` and the pinned PyPI version itself. `uvx marketplaces-mcp-ru` runs the combined WB + Ozon + Ozon Performance + Yandex Market + Avito server straight from PyPI; `wb-mcp` / `ozon-mcp` / `ozon-perf-mcp` / `yandex-mcp` / `avito-mcp` run a single service. Keys via env vars or `*_add_cabinet` from chat.
 5. **VS Code / Cursor, one click.** The install badges at the top open the editor and add `uvx marketplaces-mcp-ru` to its MCP config; VS Code prompts for the keys, Cursor opens the JSON for you to fill in.
 6. **Docker.** `docker run -i --rm -e WB_API_TOKEN=… -e OZON_CLIENT_ID=… -e OZON_API_KEY=… ghcr.io/ilyautov/marketplaces-mcp-ru` — the same combined server over stdio, no Python on the host. This image is what the [MCP Registry](https://registry.modelcontextprotocol.io/) lists as the OCI package. For remote use add `-e MCP_TRANSPORT=http -e MCP_HTTP_HOST=0.0.0.0 -p 8000:8000` and the server listens on `http://…:8000/mcp` (Streamable HTTP). HTTP mode has no auth of its own — keep it behind a proxy or firewall.
 
@@ -55,7 +55,7 @@ You need Python 3.10+. Dependencies install themselves into a local `.venv` on f
 
 **Where to get keys.** Wildberries: seller.wildberries.ru → Settings → API access. Ozon: seller.ozon.ru → Settings → API keys. Yandex Market: partner.market.yandex.ru → Settings → API access (Api-Key). Avito: avito.ru → For business → Integrations → API (client_id + client_secret). Keys are stored locally in `~/.marketplace-mcp/cabinets.json` (`chmod 600`) and never written to the client config or printed into the chat.
 
-**Verify:** `python3 serve.py doctor --live` (or `uvx marketplaces-mcp-ru doctor --live`) — tools and catalog sizes for all five servers, whether keys were found and where, plus one real read call per configured marketplace. Exit code 0 means every configured marketplace answered; secrets are never printed.
+**Verify:** `python3 serve.py doctor --live` (or `uvx marketplaces-mcp-ru doctor --live`, or `npx -y marketplaces-mcp-ru doctor --live`) — tools and catalog sizes for all five servers, whether keys were found and where, plus one real read call per configured marketplace. Exit code 0 means every configured marketplace answered; secrets are never printed.
 
 ## Security
 

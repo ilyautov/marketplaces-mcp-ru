@@ -58,7 +58,7 @@
 2. **Попросить своего ИИ (без терминала).** Откройте Claude или Cowork и скажите: «установи marketplaces-mcp-ru». Агент проведёт по встроенному скиллу `install-skill/`. В песочнице Cowork финальный клик остаётся за вами; в Claude Code установка проходит полностью сама.
 3. **Скачать и кликнуть.** Возьмите `marketplaces-mcp-ru-v<версия>.zip` из [GitHub Releases](https://github.com/ilyautov/marketplaces-mcp-ru/releases), распакуйте, дважды кликните `install.command` (macOS) или `install.bat` (Windows), вставьте ключи. На macOS при первом запуске: правый клик → «Открыть» → «Открыть» (так обходится Gatekeeper для скачанного файла).
 4. **Через терминал.** `git clone https://github.com/ilyautov/marketplaces-mcp-ru`, затем `python3 install.py --client <ваш-клиент>`.
-5. **Для разработчиков (`uvx`).** `uvx marketplaces-mcp-ru` запускает объединённый сервер прямо из PyPI; отдельные серверы — консольными командами `wb-mcp` / `ozon-mcp` / `ozon-perf-mcp` / `yandex-mcp` / `avito-mcp`. Ключи — через переменные окружения или те же `*_add_cabinet` из чата.
+5. **Для разработчиков (`npx` / `uvx`).** `npx -y marketplaces-mcp-ru` — та же строка, что в конфигах всех MCP-клиентов; Python ставить не нужно, запускалка с npm сама подтянет `uv` и нужную версию с PyPI. `uvx marketplaces-mcp-ru` запускает объединённый сервер прямо из PyPI; отдельные серверы — консольными командами `wb-mcp` / `ozon-mcp` / `ozon-perf-mcp` / `yandex-mcp` / `avito-mcp`. Ключи — через переменные окружения или те же `*_add_cabinet` из чата.
 6. **VS Code / Cursor в один клик.** Кнопки «поставить» над этим текстом открывают редактор и прописывают `uvx marketplaces-mcp-ru` в его конфиг MCP; VS Code сразу спросит ключи, в Cursor их вписывают в открывшийся JSON.
 7. **Docker.** `docker run -i --rm -e WB_API_TOKEN=… -e OZON_CLIENT_ID=… -e OZON_API_KEY=… ghcr.io/ilyautov/marketplaces-mcp-ru` — тот же объединённый сервер по stdio, без Python на машине. Этот образ и указан в [MCP Registry](https://registry.modelcontextprotocol.io/) как OCI-пакет. Для удалённого доступа добавьте `-e MCP_TRANSPORT=http -e MCP_HTTP_HOST=0.0.0.0 -p 8000:8000`: сервер поднимется на `http://…:8000/mcp` (Streamable HTTP). Своей авторизации у HTTP-режима нет, закрывайте его прокси или файрволом.
 
@@ -71,6 +71,7 @@
 ```bash
 python3 serve.py doctor --live          # из клона
 uvx marketplaces-mcp-ru doctor --live   # из PyPI
+npx -y marketplaces-mcp-ru doctor --live  # то же через npm, без Python
 ```
 
 Код возврата 0 означает, что все настроенные кабинеты ответили. Секреты в вывод не попадают.
