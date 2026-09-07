@@ -1,10 +1,10 @@
 {
   "manifest_version": "0.3",
   "name": "marketplaces-mcp-ru",
-  "display_name": "Wildberries и Ozon (marketplaces-mcp-ru)",
-  "version": "0.4.0",
-  "description": "Wildberries и Ozon Seller API прямо в Claude: продажи, остатки, цены, финансы, отзывы. Спрашивайте по-русски.",
-  "long_description": "Подключает ассистента напрямую к кабинетам Wildberries и Ozon через Seller API. Цифры берутся из ответа маркетплейса с указанием источника, а не выдумываются. Перед изменением цены или остатка агент просит подтверждение. Один сервер объединяет WB + Ozon + Ozon Performance (58 инструментов). Заполните только те ключи, которые у вас есть — остальные можно оставить пустыми.",
+  "display_name": "Wildberries, Ozon, Яндекс Маркет и Авито (marketplaces-mcp-ru)",
+  "version": "0.5.0",
+  "description": "Wildberries, Ozon, Яндекс Маркет и Авито прямо в Claude: продажи, заказы, остатки, цены, отзывы. Спрашивайте по-русски.",
+  "long_description": "Подключает ассистента напрямую к кабинетам Wildberries, Ozon, Яндекс Маркета и Авито через их API. Цифры берутся из ответа маркетплейса с указанием источника, а не выдумываются. Перед изменением цены или остатка агент просит подтверждение. Один сервер объединяет WB + Ozon + Ozon Performance + Яндекс Маркет + Авито (105 инструментов, 1022 метода API). Заполните только те ключи, которые у вас есть — остальные можно оставить пустыми.",
   "author": {
     "name": "Ilya Utov",
     "url": "https://github.com/ilyautov"
@@ -23,7 +23,16 @@
     "marketplace",
     "seller-api",
     "ecommerce",
-    "ru"
+    "ru",
+    "yandex-market",
+    "yandex",
+    "яндекс маркет",
+    "ozon-seller-api",
+    "wildberries-api",
+    "yandex-market-api",
+    "avito",
+    "avito-api",
+    "авито"
   ],
   "server": {
     "type": "python",
@@ -40,7 +49,10 @@
         "OZON_CLIENT_ID": "${user_config.ozon_client_id}",
         "OZON_API_KEY": "${user_config.ozon_api_key}",
         "OZON_PERF_CLIENT_ID": "${user_config.ozon_perf_client_id}",
-        "OZON_PERF_CLIENT_SECRET": "${user_config.ozon_perf_client_secret}"
+        "OZON_PERF_CLIENT_SECRET": "${user_config.ozon_perf_client_secret}",
+        "YANDEX_MARKET_API_KEY": "${user_config.yandex_api_key}",
+        "AVITO_CLIENT_ID": "${user_config.avito_client_id}",
+        "AVITO_CLIENT_SECRET": "${user_config.avito_client_secret}"
       }
     }
   },
@@ -77,6 +89,27 @@
       "type": "string",
       "title": "Ozon Performance Client Secret",
       "description": "Пара к Performance Client ID. Опционально.",
+      "sensitive": true,
+      "required": false
+    },
+    "yandex_api_key": {
+      "type": "string",
+      "title": "Яндекс Маркет Api-Key",
+      "description": "partner.market.yandex.ru → Настройки → Доступ к API. Оставьте пустым, если не торгуете на Маркете.",
+      "sensitive": true,
+      "required": false
+    },
+    "avito_client_id": {
+      "type": "string",
+      "title": "Avito client_id",
+      "description": "avito.ru → Для бизнеса → Интеграции → API. Оставьте пустым, если не торгуете на Авито.",
+      "sensitive": false,
+      "required": false
+    },
+    "avito_client_secret": {
+      "type": "string",
+      "title": "Avito client_secret",
+      "description": "Пара к Avito client_id из того же раздела.",
       "sensitive": true,
       "required": false
     }

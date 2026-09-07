@@ -3,6 +3,51 @@
 Формат — [Keep a Changelog](https://keepachangelog.com/ru/1.1.0/),
 версии — [SemVer](https://semver.org/lang/ru/).
 
+## [0.5.0] — 2026-09-07
+
+Два новых маркетплейса: Яндекс Маркет и Авито. Те же мета-инструменты, тот же
+safety-гейт, те же кабинеты. Каталог вырос с 793 до 1022 методов, объединённый
+сервер — с 80 до 106 инструментов.
+
+### Добавлено
+- **Яндекс Маркет** (`yandex_mcp`, префикс `ym_`, команда `yandex-mcp`, `serve.py yandex`).
+  Каталог из официальной OpenAPI-спецификации Partner API: 165 методов, 29 секций
+  (заказы, товары, остатки, цены, карантин цен, акции, отзывы, чаты, 27 отчётов,
+  индекс качества). Авторизация одним `Api-Key` (`YANDEX_MARKET_API_KEY`).
+  Типизированные инструменты: `ym_get_campaigns`, `ym_get_orders`, `ym_get_offers`,
+  `ym_get_stocks`, `ym_get_prices`, `ym_set_price` (запись, с подтверждением).
+  Четыре сценария в `yandex_mcp/workflows.yaml`.
+- **Авито** (`avito_mcp`, префикс `avito_`, команда `avito-mcp`, `serve.py avito`).
+  64 метода из восьми разделов API для бизнеса: заказы Авито Доставки, остатки
+  и цены объявлений, статистика, рейтинг и отзывы, мессенджер, продвижение,
+  автозагрузка, баланс. OAuth2 client_credentials (`AVITO_CLIENT_ID` +
+  `AVITO_CLIENT_SECRET`), токен кешируется. Типизированные инструменты:
+  `avito_whoami`, `avito_get_items`, `avito_get_orders`, `avito_get_stocks`,
+  `avito_get_item_stats`, `avito_get_reviews`, `avito_get_chats`,
+  `avito_get_balance`, `avito_update_price`, `avito_update_stock`.
+  Четыре сценария в `avito_mcp/workflows.yaml`.
+- **Пагинация**: стили `page_token` (Яндекс, `pageToken` в query и
+  `paging.nextPageToken` в ответе) и `page_query` (Авито, `page=1,2,3…`).
+- **OAuth**: `ServiceConfig.token_encoding="form"` — токен-запрос в
+  `application/x-www-form-urlencoded` (Авито). Ozon Performance по-прежнему JSON.
+- **Ingest**: `scripts/ingest_openapi.py` — общий импорт OpenAPI 3 с выводом
+  `items_path` из схемы ответа и картой секций; `scripts/ingest_avito.py` собирает
+  каталог Авито из компактных описаний разделов (`scripts/avito_specs/`).
+- Оба сервиса подключены везде: `install.py` (флаги `--yandex-api-key`,
+  `--avito-client-id/--avito-client-secret`, записи `yandex-market` и `avito` в
+  конфигах клиентов), `.mcpb`, `server.json`, Docker-образ, `doctor`, кнопки
+  VS Code / Cursor, тесты.
+
+### Изменено
+- README (RU/EN), лендинг, описания в PyPI / MCP Registry / .mcpb / plugin:
+  проект теперь описан как MCP для Wildberries, Ozon, Яндекс Маркета и Авито.
+- Таксономия сущностей: «объявления» (Авито) относятся к товарам.
+
+### Известные ограничения
+- Каталоги Яндекс Маркета и Авито собраны по спецификациям и не прогнаны на
+  реальных кабинетах. Ошибки в именах полей возможны; `describe_method` и
+  `call_raw` помогут поправить запрос на месте.
+
 ## [0.4.0] — 2026-09-07
 
 Дистрибуция, часть вторая: Docker-образ и второй пакет в MCP Registry, HTTP-режим

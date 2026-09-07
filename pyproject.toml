@@ -1,7 +1,8 @@
 [project]
 name = "marketplaces-mcp-ru"
-version = "0.4.0"
-description = "MCP servers for Wildberries and Ozon Seller APIs (schema-driven, safety-gated)"
+version = "0.5.0"
+description = "MCP servers for Wildberries, Ozon, Yandex Market and Avito seller APIs (schema-driven, safety-gated)"
+keywords = ["mcp", "model-context-protocol", "wildberries", "ozon", "yandex-market", "avito", "seller-api", "marketplace", "ecommerce", "russia", "claude", "cursor", "codex"]
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
@@ -18,6 +19,8 @@ marketplaces-mcp-ru = "core.combined:main"
 wb-mcp = "wb_mcp.server:main"
 ozon-mcp = "ozon_mcp.server:main"
 ozon-perf-mcp = "ozon_perf_mcp.server:main"
+yandex-mcp = "yandex_mcp.server:main"
+avito-mcp = "avito_mcp.server:main"
 
 [project.optional-dependencies]
 dev = [
@@ -33,7 +36,7 @@ requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools]
-packages = ["core", "wb_mcp", "ozon_mcp", "ozon_perf_mcp"]
+packages = ["core", "wb_mcp", "ozon_mcp", "ozon_perf_mcp", "yandex_mcp", "avito_mcp"]
 
 [tool.setuptools.package-data]
 core = ["entities.yaml"]
@@ -42,3 +45,5 @@ wb_mcp = ["endpoints.yaml", "workflows.yaml"]
 # it from ../ozon_mcp/perf_endpoints.yaml — it MUST ship inside ozon_mcp.
 ozon_mcp = ["endpoints.yaml", "perf_endpoints.yaml", "workflows.yaml"]
 ozon_perf_mcp = ["workflows.yaml"]
+yandex_mcp = ["endpoints.yaml", "workflows.yaml"]
+avito_mcp = ["endpoints.yaml", "workflows.yaml"]

@@ -1,0 +1,77 @@
+{
+ "promotion": {
+  "section": "Продвижение объявлений (реклама)",
+  "doc": "https://developers.avito.ru/api-catalog/promotion/documentation",
+  "ops": [
+   {
+    "id": "get_dict_of_services_v1",
+    "m": "POST",
+    "path": "/promotion/v1/items/services/dict",
+    "sum": "Словарь типов услуг продвижения (slug, название)",
+    "q": [],
+    "body": "",
+    "ip": "",
+    "safety": "read"
+   },
+   {
+    "id": "get_services_by_items_v1",
+    "m": "POST",
+    "path": "/promotion/v1/items/services/get",
+    "sum": "Список активных услуг продвижения по объявлениям (до 100 itemIds)",
+    "q": [],
+    "body": "itemIds",
+    "ip": "items",
+    "safety": "read"
+   },
+   {
+    "id": "get_bbip_suggests_by_items_v1",
+    "m": "POST",
+    "path": "/promotion/v1/items/services/bbip/suggests/get",
+    "sum": "BBIP «Продвижение с прогнозом»: доступные варианты бюджета и периода по объявлениям",
+    "q": [],
+    "body": "itemIds",
+    "ip": "items",
+    "safety": "read"
+   },
+   {
+    "id": "get_bbip_forecasts_by_items_v1",
+    "m": "POST",
+    "path": "/promotion/v1/items/services/bbip/forecasts/get",
+    "sum": "BBIP: прогноз прироста просмотров и стоимость по выбранному бюджету/периоду",
+    "q": [],
+    "body": "items",
+    "ip": "items",
+    "safety": "read"
+   },
+   {
+    "id": "create_bbip_order_for_items_v1",
+    "m": "PUT",
+    "path": "/promotion/v1/items/services/bbip/orders/create",
+    "sum": "BBIP: создать заявку на подключение продвижения по объявлениям — списывает деньги с кошелька",
+    "q": [],
+    "body": "items",
+    "ip": "errors"
+   },
+   {
+    "id": "list_orders_by_user_v1",
+    "m": "POST",
+    "path": "/promotion/v1/items/services/orders/get",
+    "sum": "Список заявок на подключение услуг продвижения (pagination page/perPage)",
+    "q": [],
+    "body": "pagination",
+    "ip": "orders",
+    "safety": "read"
+   },
+   {
+    "id": "get_order_status_v1",
+    "m": "POST",
+    "path": "/promotion/v1/items/services/orders/status",
+    "sum": "Статус заявки на подключение услуг продвижения по orderId",
+    "q": [],
+    "body": "orderId",
+    "ip": "items",
+    "safety": "read"
+   }
+  ]
+ }
+}

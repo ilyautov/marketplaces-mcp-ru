@@ -16,7 +16,7 @@ description: "Установить MCP-серверы Wildberries + Ozon (market
 перемещать или удалять — MCP не сломается. Остальные пути (склонируй сам, pip) —
 для тех, кто хочет повозиться руками.
 
-Что внутри: два MCP-сервера — `wb` (Wildberries Seller API) и `ozon` (Ozon Seller API), плюс опциональный `ozon-perf` (рекламный кабинет Ozon Performance). Ключи хранятся локально в `~/.marketplace-mcp/cabinets.json` (chmod 600), НЕ в конфиге клиента и НЕ в репозитории.
+Что внутри: MCP-серверы `wb` (Wildberries Seller API), `ozon` (Ozon Seller API), `yandex` (Yandex Market Partner API), `avito` (Avito API для бизнеса), плюс опциональный `ozon-perf` (рекламный кабинет Ozon Performance). Ключи хранятся локально в `~/.marketplace-mcp/cabinets.json` (chmod 600), НЕ в конфиге клиента и НЕ в репозитории.
 
 ---
 
@@ -100,7 +100,7 @@ python3 --version   # или: py -3 --version  (Windows)
 | **Codex** (CLI) | `python3 install.py --client codex` | ПЕЧАТАЕТ `codex mcp add ...` команды |
 | **OpenCode** | `python3 install.py --client opencode` | Пишет `~/.config/opencode/opencode.json` |
 
-Важно про CLI-клиенты: для `claude-code` и `codex` install.py НЕ пишет конфиг сам — он печатает команды `* mcp add wildberries -- ... wb` и т.д. Эти строки нужно реально выполнить (в Claude Code ты можешь сделать это сам через bash; для Codex — выполнить напечатанные команды). При этом ключи, переданные флагами (`--wb-token`, `--ozon-client-id`, `--ozon-api-key`, `--ozon-perf-*`), install.py СОХРАНЯЕТ в общий кабинет-стор `~/.marketplace-mcp/cabinets.json` и для этих клиентов тоже — можно передать их сразу одной командой, отдельный запуск для сохранения ключей не нужен.
+Важно про CLI-клиенты: для `claude-code` и `codex` install.py НЕ пишет конфиг сам — он печатает команды `* mcp add wildberries -- ... wb` и т.д. Эти строки нужно реально выполнить (в Claude Code ты можешь сделать это сам через bash; для Codex — выполнить напечатанные команды). При этом ключи, переданные флагами (`--wb-token`, `--ozon-client-id`, `--ozon-api-key`, `--yandex-api-key`, `--avito-client-id`, `--avito-client-secret`, `--ozon-perf-*`), install.py СОХРАНЯЕТ в общий кабинет-стор `~/.marketplace-mcp/cabinets.json` и для этих клиентов тоже — можно передать их сразу одной командой, отдельный запуск для сохранения ключей не нужен.
 
 Только посмотреть блок конфига, ничего не меняя:
 ```bash
@@ -118,6 +118,8 @@ python3 install.py --print
 **Где взять:**
 - **Wildberries:** seller.wildberries.ru → Настройки → Доступ к API. Создать токен, отметить нужные категории (Контент, Цены, Статистика, Маркетплейс и т.д.). Это один токен.
 - **Ozon (Seller):** seller.ozon.ru → Настройки → API-ключи. Нужны `Client-Id` (число) и `Api-Key`.
+- **Яндекс Маркет (опционально):** один `Api-Key` из partner.market.yandex.ru → Настройки → Доступ к API. Флаг `--yandex-api-key`.
+- **Авито (опционально):** `client_id` + `client_secret` из avito.ru → Для бизнеса → Интеграции → API (OAuth2 client_credentials). Флаги `--avito-client-id` / `--avito-client-secret`.
 - **Ozon Performance (реклама, ОПЦИОНАЛЬНО):** отдельные `Client-Id` + `Client-Secret` из РЕКЛАМНОГО кабинета Ozon Performance (OAuth2). Это НЕ те же ключи, что у Seller API. Нужны только если пользователь хочет работать с рекламой. **По умолчанию интерактив их НЕ спрашивает** (чтобы продавец вводил 3 поля, а не 5) — добавь флаг `--with-ads`, только если реклама реально нужна.
 
 **Как сохранить — два пути:**
@@ -136,6 +138,7 @@ python3 install.py \
   --ozon-api-key <API_KEY>
 # опционально реклама:
 #   --ozon-perf-client-id <ID> --ozon-perf-client-secret <SECRET>
+#   --yandex-api-key <KEY> --avito-client-id <ID> --avito-client-secret <SECRET>
 # несколько магазинов: добавь --cabinet shop2 (по умолчанию 'main')
 ```
 

@@ -35,7 +35,8 @@ HERE = Path(__file__).resolve().parent
 APP_HOME = Path(os.environ.get("MARKETPLACE_MCP_HOME", Path.home() / ".marketplace-mcp"))
 APP_DIR = APP_HOME / "app"
 # Everything serve.py needs at runtime (packages carry their own *.yaml).
-RUNTIME_ITEMS = ["core", "wb_mcp", "ozon_mcp", "ozon_perf_mcp", "serve.py", "pyproject.toml"]
+RUNTIME_ITEMS = ["core", "wb_mcp", "ozon_mcp", "ozon_perf_mcp", "yandex_mcp", "avito_mcp",
+                 "serve.py", "pyproject.toml"]
 # SERVE points at the canonical copy once installed; reassigned in main().
 SERVE = APP_DIR / "serve.py"
 sys.path.insert(0, str(HERE))
@@ -103,11 +104,16 @@ def build_entries() -> dict:
         "ozon": {"command": py, "args": [str(SERVE), "ozon"]},
         # Ozon Performance (advertising) API — OAuth2, separate perf credentials.
         "ozon-perf": {"command": py, "args": [str(SERVE), "ozon-perf"]},
+        # Yandex Market Partner API — one Api-Key.
+        "yandex-market": {"command": py, "args": [str(SERVE), "yandex"]},
+        # Avito API — OAuth2 client_credentials (client_id + client_secret).
+        "avito": {"command": py, "args": [str(SERVE), "avito"]},
     }
 
 
 def save_cabinet(cabinet: str, wb_token: str, oid: str, okey: str,
-                 perf_id: str = "", perf_secret: str = "") -> None:
+                 perf_id: str = "", perf_secret: str = "",
+                 ym_key: str = "", avito_id: str = "", avito_secret: str = "") -> None:
     """Persist provided keys as a named cabinet in the local store.
 
     Ozon Performance (advertising) creds are SEPARATE from the Seller API keys
@@ -121,6 +127,12 @@ def save_cabinet(cabinet: str, wb_token: str, oid: str, okey: str,
     if perf_id and perf_secret:
         store.add_cabinet("ozon_perf", cabinet,
                           {"client_id": perf_id, "client_secret": perf_secret},
+                          make_active=True)
+    if ym_key:
+        store.add_cabinet("yandex", cabinet, {"api_key": ym_key}, make_active=True)
+    if avito_id and avito_secret:
+        store.add_cabinet("avito", cabinet,
+                          {"client_id": avito_id, "client_secret": avito_secret},
                           make_active=True)
 
 
@@ -141,6 +153,8 @@ def claude_code_commands() -> str:
         f'claude mcp add wildberries -- "{py}" "{SERVE}" wb\n'
         f'claude mcp add ozon -- "{py}" "{SERVE}" ozon\n'
         f'claude mcp add ozon-perf -- "{py}" "{SERVE}" ozon-perf\n'
+        f'claude mcp add yandex-market -- "{py}" "{SERVE}" yandex\n'
+        f'claude mcp add avito -- "{py}" "{SERVE}" avito\n'
         "# then add a cabinet from chat: ozon_add_cabinet / wb_add_cabinet, "
         "or re-run: python3 install.py"
     )
@@ -153,6 +167,8 @@ def codex_commands() -> str:
         f'codex mcp add wildberries -- "{py}" "{SERVE}" wb\n'
         f'codex mcp add ozon -- "{py}" "{SERVE}" ozon\n'
         f'codex mcp add ozon-perf -- "{py}" "{SERVE}" ozon-perf\n'
+        f'codex mcp add yandex-market -- "{py}" "{SERVE}" yandex\n'
+        f'codex mcp add avito -- "{py}" "{SERVE}" avito\n'
         "# then add a cabinet: python3 install.py  (keys -> ~/.marketplace-mcp)"
     )
 
@@ -169,6 +185,8 @@ def build_opencode_entries() -> dict:
         "wildberries": {"type": "local", "command": [py, str(SERVE), "wb"], "enabled": True},
         "ozon": {"type": "local", "command": [py, str(SERVE), "ozon"], "enabled": True},
         "ozon-perf": {"type": "local", "command": [py, str(SERVE), "ozon-perf"], "enabled": True},
+        "yandex-market": {"type": "local", "command": [py, str(SERVE), "yandex"], "enabled": True},
+        "avito": {"type": "local", "command": [py, str(SERVE), "avito"], "enabled": True},
     }
 
 
@@ -284,6 +302,11 @@ def main() -> None:
                     help="Ozon Performance (ads) Client-Id — optional, OAuth2")
     ap.add_argument("--ozon-perf-client-secret", default="",
                     help="Ozon Performance (ads) Client-Secret — optional, OAuth2")
+    ap.add_argument("--yandex-api-key", default="",
+                    help="Yandex Market Partner API key (Api-Key) — optional")
+    ap.add_argument("--avito-client-id", default="", help="Avito API client_id — optional")
+    ap.add_argument("--avito-client-secret", default="",
+                    help="Avito API client_secret — optional")
     ap.add_argument("--print", action="store_true", dest="print_only",
                     help="print the config block and exit (change nothing)")
     ap.add_argument("--claude-code", action="store_true",
@@ -316,11 +339,14 @@ def main() -> None:
         # clients — keys passed as flags must be saved here too, not dropped.
         save_cabinet(args.cabinet, args.wb_token, args.ozon_client_id,
                      args.ozon_api_key, args.ozon_perf_client_id,
-                     args.ozon_perf_client_secret)
+                     args.ozon_perf_client_secret, args.yandex_api_key,
+                     args.avito_client_id, args.avito_client_secret)
         saved = [s for s, v in (
             ("WB", args.wb_token),
             ("Ozon", args.ozon_client_id and args.ozon_api_key),
             ("Ozon-Perf", args.ozon_perf_client_id and args.ozon_perf_client_secret),
+            ("Yandex Market", args.yandex_api_key),
+            ("Avito", args.avito_client_id and args.avito_client_secret),
         ) if v]
         if saved:
             print(f"✅ Cabinet '{args.cabinet}' saved for: {', '.join(saved)} "
@@ -344,10 +370,15 @@ def main() -> None:
           "Keys are saved to ~/.marketplace-mcp/cabinets.json (local, chmod 600), "
           "never to the repo.\n"
           "Get WB token: seller.wildberries.ru → Settings → Access tokens.\n"
-          "Get Ozon keys: seller.ozon.ru → Settings → API keys.\n")
+          "Get Ozon keys: seller.ozon.ru → Settings → API keys.\n"
+          "Get Yandex Market key: partner.market.yandex.ru → Настройки → Доступ к API.\n"
+          "Get Avito keys: avito.ru → Для бизнеса → Интеграции → API (client_id/secret).\n")
     wb = _ask("Wildberries API token (Enter to skip): ", args.wb_token)
     oid = _ask("Ozon Client-Id (Enter to skip): ", args.ozon_client_id)
     okey = _ask("Ozon Api-Key (Enter to skip): ", args.ozon_api_key)
+    ym_key = _ask("Yandex Market Api-Key (Enter to skip): ", args.yandex_api_key)
+    avito_id = _ask("Avito client_id (Enter to skip): ", args.avito_client_id)
+    avito_secret = _ask("Avito client_secret (Enter to skip): ", args.avito_client_secret) if avito_id else args.avito_client_secret
     # Performance (ads) API — optional, separate OAuth2 credentials. Hidden by
     # default so a non-technical seller answers 3 fields, not 5; surfaced with
     # --with-ads (or implicitly when perf keys are passed as flags).
@@ -361,7 +392,8 @@ def main() -> None:
         perf_id, perf_secret = args.ozon_perf_client_id, args.ozon_perf_client_secret
 
     # 1) save credentials to the cabinet store
-    save_cabinet(args.cabinet, wb, oid, okey, perf_id, perf_secret)
+    save_cabinet(args.cabinet, wb, oid, okey, perf_id, perf_secret, ym_key,
+                 avito_id, avito_secret)
 
     # 1b) multi-shop: offer to add more cabinets in one go (interactive only —
     #     skipped when stdin is piped / non-interactive, e.g. CI).
@@ -372,7 +404,10 @@ def main() -> None:
             w2 = _ask("  Wildberries API token (Enter to skip): ", "")
             o2 = _ask("  Ozon Client-Id (Enter to skip): ", "")
             k2 = _ask("  Ozon Api-Key (Enter to skip): ", "")
-            save_cabinet(cab, w2, o2, k2, "", "")
+            y2 = _ask("  Yandex Market Api-Key (Enter to skip): ", "")
+            a2 = _ask("  Avito client_id (Enter to skip): ", "")
+            s2 = _ask("  Avito client_secret (Enter to skip): ", "") if a2 else ""
+            save_cabinet(cab, w2, o2, k2, "", "", y2, a2, s2)
             print(f"  ✅ Cabinet '{cab}' saved.")
             n += 1
 
@@ -390,13 +425,15 @@ def main() -> None:
     for cfg_path in targets:
         merge_into_config(cfg_path, cfg_key, entries)
 
-    print(f"\n✅ Config ({client}: servers 'wildberries', 'ozon', 'ozon-perf', no secrets):")
+    print(f"\n✅ Config ({client}: servers 'wildberries', 'ozon', 'ozon-perf', 'yandex-market', 'avito', no secrets):")
     for cfg_path in targets:
         print(f"   • {cfg_path}")
     crumb = write_breadcrumb(targets, entries, SERVE, HERE)
     print(f"✅ Install record → {crumb} (verify after restart, no secrets)")
     saved = [s for s, v in (("WB", wb), ("Ozon", oid and okey),
-                            ("Ozon-Perf", perf_id and perf_secret)) if v]
+                            ("Ozon-Perf", perf_id and perf_secret),
+                            ("Yandex Market", ym_key),
+                            ("Avito", avito_id and avito_secret)) if v]
     print(f"✅ Cabinet '{args.cabinet}' saved for: {', '.join(saved) or '(nothing — keys skipped)'}")
     print("\n👉 Restart Claude / Cowork. First launch auto-installs dependencies, "
           "then the tools appear.")

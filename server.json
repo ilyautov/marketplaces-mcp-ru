@@ -1,9 +1,9 @@
 {
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
   "name": "io.github.ilyautov/marketplaces-mcp-ru",
-  "title": "Marketplaces MCP (RU) — Wildberries & Ozon",
-  "description": "Wildberries & Ozon Seller APIs in your AI assistant — schema-driven, safety-gated.",
-  "version": "0.4.0",
+  "title": "Marketplaces MCP (RU) — Wildberries, Ozon, Yandex Market, Avito",
+  "description": "Wildberries, Ozon, Yandex Market & Avito seller APIs in your AI assistant — schema-driven, safety-gated (Вайлдберриз, Озон, Яндекс Маркет, Авито).",
+  "version": "0.5.0",
   "repository": {
     "url": "https://github.com/ilyautov/marketplaces-mcp-ru",
     "source": "github"
@@ -14,7 +14,7 @@
       "registryType": "pypi",
       "registryBaseUrl": "https://pypi.org",
       "identifier": "marketplaces-mcp-ru",
-      "version": "0.4.0",
+      "version": "0.5.0",
       "runtimeHint": "uvx",
       "transport": {
         "type": "stdio"
@@ -49,12 +49,30 @@
           "description": "Ozon Performance API Client Secret. Optional.",
           "isRequired": false,
           "isSecret": true
+        },
+        {
+          "name": "YANDEX_MARKET_API_KEY",
+          "description": "Yandex Market Partner API key (partner.market.yandex.ru → Settings → API access). Optional.",
+          "isRequired": false,
+          "isSecret": true
+        },
+        {
+          "name": "AVITO_CLIENT_ID",
+          "description": "Avito API client_id (avito.ru → Для бизнеса → Интеграции → API). Optional.",
+          "isRequired": false,
+          "isSecret": false
+        },
+        {
+          "name": "AVITO_CLIENT_SECRET",
+          "description": "Avito API client_secret paired with the client_id. Optional.",
+          "isRequired": false,
+          "isSecret": true
         }
       ]
     },
     {
       "registryType": "oci",
-      "identifier": "ghcr.io/ilyautov/marketplaces-mcp-ru:0.4.0",
+      "identifier": "ghcr.io/ilyautov/marketplaces-mcp-ru:0.5.0",
       "runtimeHint": "docker",
       "transport": {
         "type": "stdio"
@@ -87,6 +105,24 @@
         {
           "name": "OZON_PERF_CLIENT_SECRET",
           "description": "Ozon Performance API Client Secret. Optional.",
+          "isRequired": false,
+          "isSecret": true
+        },
+        {
+          "name": "YANDEX_MARKET_API_KEY",
+          "description": "Yandex Market Partner API key (partner.market.yandex.ru → Settings → API access). Optional.",
+          "isRequired": false,
+          "isSecret": true
+        },
+        {
+          "name": "AVITO_CLIENT_ID",
+          "description": "Avito API client_id (avito.ru → Для бизнеса → Интеграции → API). Optional.",
+          "isRequired": false,
+          "isSecret": false
+        },
+        {
+          "name": "AVITO_CLIENT_SECRET",
+          "description": "Avito API client_secret paired with the client_id. Optional.",
           "isRequired": false,
           "isSecret": true
         }

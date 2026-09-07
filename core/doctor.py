@@ -29,6 +29,8 @@ SERVICES: tuple[tuple[str, str, str], ...] = (
     ("wb", "Wildberries", "wb_mcp.server"),
     ("ozon", "Ozon Seller", "ozon_mcp.server"),
     ("ozon_perf", "Ozon Performance", "ozon_perf_mcp.server"),
+    ("ym", "Yandex Market", "yandex_mcp.server"),
+    ("avito", "Avito", "avito_mcp.server"),
 )
 
 

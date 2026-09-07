@@ -1,0 +1,48 @@
+{
+ "ratings": {
+  "section": "Рейтинг и отзывы",
+  "doc": "https://developers.avito.ru/api-catalog/ratings/documentation",
+  "ops": [
+   {
+    "id": "getRatingsInfoV1",
+    "m": "GET",
+    "path": "/ratings/v1/info",
+    "sum": "Рейтинг продавца: оценка (score), число отзывов, включён ли рейтинг",
+    "q": [],
+    "body": "",
+    "ip": ""
+   },
+   {
+    "id": "getReviewsV1",
+    "m": "GET",
+    "path": "/ratings/v1/reviews",
+    "sum": "Список опубликованных отзывов на продавца с пагинацией offset/limit (<=50): оценка, текст, стадия сделки, ответ",
+    "q": [
+     "offset",
+     "limit"
+    ],
+    "body": "",
+    "ip": "reviews",
+    "pag": "offset"
+   },
+   {
+    "id": "createReviewAnswerV1",
+    "m": "POST",
+    "path": "/ratings/v1/answers",
+    "sum": "Отправка ответа на отзыв (уходит на модерацию)",
+    "q": [],
+    "body": "reviewId,message",
+    "ip": ""
+   },
+   {
+    "id": "removeReviewAnswerV1",
+    "m": "DELETE",
+    "path": "/ratings/v1/answers/{answer_id}",
+    "sum": "Удаление ответа на отзыв",
+    "q": [],
+    "body": "",
+    "ip": ""
+   }
+  ]
+ }
+}

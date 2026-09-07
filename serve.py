@@ -34,7 +34,8 @@ VENV = Path(os.environ.get("MARKETPLACE_MCP_VENV", HERE / ".venv"))
 # break existing installs on their next automatic dependency refresh.
 DEPS = ["mcp>=1.2,<2", "httpx>=0.27,<1", "pyyaml>=6.0,<7"]
 SERVICES = {"wb": "wb_mcp.server", "ozon": "ozon_mcp.server",
-            "ozon-perf": "ozon_perf_mcp.server"}
+            "ozon-perf": "ozon_perf_mcp.server", "yandex": "yandex_mcp.server",
+            "avito": "avito_mcp.server"}
 # "all" mounts every service's tools onto a single MCP server so one process
 # (one Claude Desktop / .mcpb entry) exposes WB + Ozon + Ozon-Perf at once.
 COMBINED = "all"

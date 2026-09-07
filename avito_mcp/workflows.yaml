@@ -1,0 +1,75 @@
+# Avito analytical workflows — curated recipes over the catalog.
+# Step operation_ids reference avito_mcp/endpoints.yaml. Field names come from
+# the official per-section OpenAPI documents (not yet live-verified).
+
+workflows:
+  - name: orders_to_confirm
+    category: orders
+    when_to_use: Morning check — which Авито Доставка orders need action right now.
+    steps:
+      - operation_id: avito_get_orders
+        why: statuses=on_confirmation,ready_to_ship gives orders waiting on the seller.
+      - operation_id: avito_apply_transition
+        why: confirm / reject an order once stock is checked (WRITE, needs confirmation).
+    interpret: >
+      Each order carries availableActions[] with required=true for the action
+      that moves it forward and schedules.confirmTill / shipTill deadlines.
+      Sort by confirmTill ascending; an order past its deadline cancels itself.
+      Use prices.total (what the seller receives after commission), not prices.price.
+    common_mistakes:
+      - Passing marketplaceId where the API expects id (id is the API key; marketplaceId is the UI number).
+      - Forgetting DBS orders also need setOrderTrackingNumber before shipTill.
+
+  - name: listing_health
+    category: analytics
+    when_to_use: Find listings that get views but no contacts, or are out of stock.
+    steps:
+      - operation_id: avito_get_items_info
+        why: All active listings with ids and categories.
+      - operation_id: avito_item_stats_shallow
+        why: uniqViews / uniqContacts / uniqFavorites per listing per day.
+      - operation_id: avito_get_stocks_info
+        why: quantity and is_out_of_stock per listing.
+    interpret: >
+      Compute contacts / views per listing over the period; listings far below
+      the account median with healthy views usually have a price or photo
+      problem. Listings with is_out_of_stock=true still cost placement fees —
+      restock (avito_update_stocks) or archive them.
+    common_mistakes:
+      - Using the deprecated views/contacts fields instead of uniqViews/uniqContacts.
+      - Asking for more than 200 itemIds or more than 270 days in one stats call.
+
+  - name: spend_vs_results
+    category: finance
+    when_to_use: Understand where the wallet money went and what it bought.
+    steps:
+      - operation_id: avito_account_spendings
+        why: Spend by type (promotion, presence, commission) per day/week/month.
+      - operation_id: avito_item_analytics
+        why: Profile metrics incl. averageContactCost, orderedItems, deliveredItemsPrice.
+      - operation_id: avito_get_user_balance
+        why: Current wallet balance (real + bonus).
+    interpret: >
+      Amounts are in kopecks — divide by 100. averageContactCost = spend /
+      contacts; compare across weeks. A rising presenceSpending with flat
+      contacts means the tariff is oversized for the current catalogue.
+    common_mistakes:
+      - Reading kopecks as roubles.
+      - Calling itemAnalytics more than once per minute (rate limit 1/min).
+
+  - name: reviews_triage
+    category: reviews
+    when_to_use: Answer new reviews and track the seller rating.
+    steps:
+      - operation_id: avito_get_ratings_info_v1
+        why: Current rating score and how many reviews count toward it.
+      - operation_id: avito_get_reviews_v1
+        why: Reviews with score, text, stage and whether an answer exists.
+      - operation_id: avito_create_review_answer_v1
+        why: Reply to a review (WRITE; goes to moderation).
+    interpret: >
+      Filter reviews where canAnswer is true and answer is null; reply to low
+      scores first. stage=fell_through / not_agree reviews often describe a
+      delivery or communication issue rather than the product.
+    common_mistakes:
+      - Replying to reviews that already have an answer on moderation.

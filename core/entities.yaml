@@ -8,11 +8,12 @@ entities:
     title_en: Products & cards
     synonyms: [товар, товары, товаром, товарами, карточка, карточки, карточек,
                карточками, контент, описание, характеристики, категория,
-               категории, медиа, штрихкод, сертификат,
-               product, card, content, category, sku, barcode]
+               категории, медиа, штрихкод, сертификат, объявление, объявления,
+               product, card, content, category, sku, barcode, listing]
     match: [товар, карточк, контент, характеристик, категори, предмет, медиа,
             штрихкод, рекомендац, скрыт, предложен, content, product, categor,
-            barcode, quant, digital, certificat, сертификат, offer, brand]
+            barcode, quant, digital, certificat, сертификат, offer, brand,
+            объявлен]
   - key: prices
     title_ru: Цены и скидки
     title_en: Prices & discounts

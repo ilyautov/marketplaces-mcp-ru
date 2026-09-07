@@ -1,0 +1,180 @@
+{
+ "user": {
+  "section": "Пользователь, баланс и операции",
+  "doc": "https://developers.avito.ru/api-catalog/user/documentation",
+  "ops": [
+   {
+    "id": "getUserInfoSelf",
+    "m": "GET",
+    "path": "/core/v1/accounts/self",
+    "sum": "Получение информации об авторизованном пользователе (id, имя, телефон, email, ссылка на профиль)",
+    "q": [],
+    "body": "",
+    "ip": ""
+   },
+   {
+    "id": "getUserBalance",
+    "m": "GET",
+    "path": "/core/v1/accounts/{user_id}/balance/",
+    "sum": "Получение баланса кошелька пользователя (реальные деньги и бонусы)",
+    "q": [],
+    "body": "",
+    "ip": ""
+   },
+   {
+    "id": "postOperationsHistory",
+    "m": "POST",
+    "path": "/core/v1/accounts/operations_history/",
+    "sum": "Получение истории операций пользователя (списания и пополнения кошелька) за период до недели",
+    "q": [],
+    "body": "dateTimeFrom,dateTimeTo",
+    "ip": "result.operations",
+    "safety": "read"
+   }
+  ]
+ },
+ "stock-management": {
+  "section": "Остатки в объявлениях",
+  "doc": "https://developers.avito.ru/api-catalog/stock-management/documentation",
+  "ops": [
+   {
+    "id": "getStocksInfo",
+    "m": "POST",
+    "path": "/stock-management/1/info",
+    "sum": "Получение остатков по списку объявлений (quantity, is_unlimited, is_out_of_stock)",
+    "q": [],
+    "body": "item_ids,strong_consistency",
+    "ip": "stocks",
+    "safety": "read"
+   },
+   {
+    "id": "updateStocks",
+    "m": "PUT",
+    "path": "/stock-management/1/stocks",
+    "sum": "Редактирование остатков в объявлениях (до 200 позиций за запрос)",
+    "q": [],
+    "body": "stocks",
+    "ip": "stocks"
+   }
+  ]
+ },
+ "item": {
+  "section": "Объявления и статистика",
+  "doc": "https://developers.avito.ru/api-catalog/item/documentation",
+  "ops": [
+   {
+    "id": "vasPrices",
+    "m": "POST",
+    "path": "/core/v1/accounts/{user_id}/vas/prices",
+    "sum": "Стоимость услуг продвижения и доступные значки для объявлений",
+    "q": [],
+    "body": "itemIds",
+    "ip": "",
+    "safety": "read"
+   },
+   {
+    "id": "postCallsStats",
+    "m": "POST",
+    "path": "/core/v1/accounts/{user_id}/calls/stats/",
+    "sum": "Статистика звонков по объявлениям за период",
+    "q": [],
+    "body": "dateFrom,dateTo,itemIds",
+    "ip": "result.items",
+    "safety": "read"
+   },
+   {
+    "id": "getItemInfo",
+    "m": "GET",
+    "path": "/core/v1/accounts/{user_id}/items/{item_id}/",
+    "sum": "Информация по объявлению: статус, применённые услуги",
+    "q": [],
+    "body": "",
+    "ip": ""
+   },
+   {
+    "id": "putItemVas",
+    "m": "PUT",
+    "path": "/core/v1/accounts/{user_id}/items/{item_id}/vas",
+    "sum": "Применение дополнительной услуги к объявлению (устарело, используйте /core/v2/items/{itemId}/vas/)",
+    "q": [],
+    "body": "vas_id",
+    "ip": "",
+    "dep": true
+   },
+   {
+    "id": "getItemsInfo",
+    "m": "GET",
+    "path": "/core/v1/items",
+    "sum": "Список объявлений пользователя: статус, категория, ссылка (per_page/page)",
+    "q": [
+     "per_page",
+     "page",
+     "status",
+     "updatedAtFrom",
+     "category"
+    ],
+    "body": "",
+    "ip": "resources",
+    "pag": "avito_page"
+   },
+   {
+    "id": "putItemVasPackageV2",
+    "m": "PUT",
+    "path": "/core/v2/accounts/{user_id}/items/{item_id}/vas_packages",
+    "sum": "Применение пакета услуг продвижения (устарело, используйте /core/v2/items/{itemId}/vas/)",
+    "q": [],
+    "body": "package_id",
+    "ip": "",
+    "dep": true
+   },
+   {
+    "id": "applyVas",
+    "m": "PUT",
+    "path": "/core/v2/items/{itemId}/vas/",
+    "sum": "Применение услуг продвижения к объявлению (XL, выделение, x2..x20, значки) — списывает деньги",
+    "q": [],
+    "body": "slugs,stickers",
+    "ip": ""
+   },
+   {
+    "id": "itemStatsShallow",
+    "m": "POST",
+    "path": "/stats/v1/accounts/{user_id}/items",
+    "sum": "Статистика по списку объявлений: просмотры, контакты, избранное (до 200 id, глубина 270 дней)",
+    "q": [],
+    "body": "dateFrom,dateTo,fields,itemIds,periodGrouping",
+    "ip": "result.items",
+    "safety": "read"
+   },
+   {
+    "id": "itemAnalytics",
+    "m": "POST",
+    "path": "/stats/v2/accounts/{user_id}/items",
+    "sum": "Статистические показатели по профилю: просмотры, контакты, конверсии, расходы, заказы с Авито Доставкой (группировки day/week/month/item/totals)",
+    "q": [],
+    "body": "dateFrom,dateTo,filter,grouping,limit,metrics,offset,sort",
+    "ip": "result.groupings",
+    "safety": "read"
+   },
+   {
+    "id": "accountSpendings",
+    "m": "POST",
+    "path": "/stats/v2/accounts/{user_id}/spendings",
+    "sum": "Статистика расходов профиля по типам (продвижение, размещение, комиссия) за период",
+    "q": [],
+    "body": "dateFrom,dateTo,filter,grouping,spendingTypes",
+    "ip": "result.groupings",
+    "safety": "read"
+   },
+   {
+    "id": "updatePrice",
+    "m": "POST",
+    "path": "/core/v1/items/{item_id}/update_price",
+    "sum": "Обновление цены объявления по id (Товары, Запчасти, Авто, Недвижимость)",
+    "q": [],
+    "body": "price",
+    "ip": ""
+   }
+  ]
+ }
+}

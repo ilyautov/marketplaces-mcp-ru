@@ -12,8 +12,8 @@ Five channels, one repo:
 | **MCP Registry** | Discovery inside MCP clients | `server.json` metadata (PyPI + OCI packages) | `publish-registry.yml` via GitHub OIDC after PyPI is live; manual `mcp-publisher` as fallback |
 
 All five are backed by the **combined server** (`core/combined.py`): WB + Ozon +
-Ozon Performance on one FastMCP (58 tools). `uvx marketplaces-mcp-ru` and the
-`.mcpb` both run it; `wb-mcp` / `ozon-mcp` / `ozon-perf-mcp` remain available
+Ozon Performance, Yandex Market and Avito on one FastMCP (106 tools). `uvx marketplaces-mcp-ru` and the
+`.mcpb` both run it; `wb-mcp` / `ozon-mcp` / `ozon-perf-mcp` / `yandex-mcp` / `avito-mcp` remain available
 for running a single service.
 
 ---

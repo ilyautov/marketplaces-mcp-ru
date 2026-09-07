@@ -23,9 +23,13 @@ def test_map_tool_registered_on_all_servers():
     import wb_mcp.server as wb
     import ozon_mcp.server as oz
     import ozon_perf_mcp.server as pf
+    import yandex_mcp.server as ym
+    import avito_mcp.server as av
     assert "wb_map" in _tools(wb)
     assert "ozon_map" in _tools(oz)
     assert "ozon_perf_map" in _tools(pf)
+    assert "ym_map" in _tools(ym)
+    assert "avito_map" in _tools(av)
 
 
 def test_map_overview_lists_entities_with_counts():

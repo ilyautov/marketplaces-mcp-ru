@@ -63,6 +63,9 @@ class ServiceConfig:
     # which cred field feeds the token request's client_id / client_secret.
     oauth_id_field: str = "client_id"
     oauth_secret_field: str = "client_secret"
+    # How the token request is encoded: "json" (Ozon Performance) or "form"
+    # (application/x-www-form-urlencoded — Avito, and most RFC 6749 servers).
+    token_encoding: str = "json"
     # Optional "whoami" lookup for auto-naming a cabinet from the marketplace's
     # own seller-info endpoint: (operation_id, [candidate dotted name fields]).
     # None disables auto-naming for this service.
@@ -187,13 +190,16 @@ class MarketplaceClient:
             "client_secret": creds.get(cfg.oauth_secret_field, ""),
             "grant_type": "client_credentials",
         }
+        as_form = cfg.token_encoding == "form"
         try:
             async with httpx.AsyncClient(timeout=DEFAULT_TIMEOUT) as client:
                 resp = await client.post(
                     cfg.token_url,
-                    json=payload,
+                    data=payload if as_form else None,
+                    json=None if as_form else payload,
                     headers={"User-Agent": cfg.user_agent,
-                             "Content-Type": "application/json",
+                             "Content-Type": ("application/x-www-form-urlencoded"
+                                              if as_form else "application/json"),
                              "Accept": "application/json"},
                 )
         except Exception as exc:  # noqa: BLE001

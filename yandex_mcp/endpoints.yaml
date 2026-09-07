@@ -1,0 +1,2660 @@
+default_host: api.partner.market.yandex.ru
+endpoints:
+- operation_id: ym_get_business_settings
+  section: Настройки продавца
+  method: POST
+  host: api.partner.market.yandex.ru
+  path: /v2/businesses/{businessId}/settings
+  scope: seller
+  safety: read
+  pagination: none
+  summary: Настройки кабинета
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/businesses/getBusinessSettings
+  items_path: result.traits
+  keywords:
+  - business
+  - settings
+- operation_id: ym_get_campaigns
+  section: Магазины (кампании) продавца
+  method: GET
+  host: api.partner.market.yandex.ru
+  path: /v2/campaigns
+  scope: seller
+  safety: read
+  pagination: page_token
+  summary: Список магазинов пользователя
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/campaigns/getCampaigns
+  items_path: campaigns
+  params:
+    query: pageToken, limit, page, pageSize
+  keywords:
+  - campaigns
+- operation_id: ym_get_campaign
+  section: Магазины (кампании) продавца
+  method: GET
+  host: api.partner.market.yandex.ru
+  path: /v2/campaigns/{campaignId}
+  scope: seller
+  safety: read
+  pagination: none
+  summary: Информация о магазине
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/campaigns/getCampaign
+  keywords:
+  - campaign
+- operation_id: ym_get_campaign_settings
+  section: Настройки продавца
+  method: GET
+  host: api.partner.market.yandex.ru
+  path: /v2/campaigns/{campaignId}/settings
+  scope: seller
+  safety: read
+  pagination: none
+  summary: Настройки магазина
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/campaigns/getCampaignSettings
+  keywords:
+  - campaign
+  - settings
+- operation_id: ym_get_order
+  section: Заказы
+  method: GET
+  host: api.partner.market.yandex.ru
+  path: /v2/campaigns/{campaignId}/orders/{orderId}
+  scope: seller
+  safety: read
+  pagination: none
+  summary: Информация об одном заказе в магазине
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/orders/getOrder
+  keywords:
+  - order
+- operation_id: ym_get_orders
+  section: Заказы
+  method: GET
+  host: api.partner.market.yandex.ru
+  path: /v2/campaigns/{campaignId}/orders
+  scope: seller
+  safety: read
+  pagination: page_token
+  summary: Информация о заказах в магазине
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/orders/getOrders
+  items_path: orders
+  params:
+    query: orderIds, status, substatus, fromDate, toDate, supplierShipmentDateFrom,
+      supplierShipmentDateTo, updatedAtFrom, updatedAtTo, dispatchType, fake, hasCis,
+      onlyWaitingForCancellationApprove, onlyEstimatedDelivery, buyerType, page, pageSize,
+      pageToken, limit
+  keywords:
+  - orders
+- operation_id: ym_get_business_orders
+  section: Заказы
+  method: POST
+  host: api.partner.market.yandex.ru
+  path: /v1/businesses/{businessId}/orders
+  scope: seller
+  safety: read
+  pagination: page_token
+  summary: Информация о заказах в кабинете
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/orders/getBusinessOrders
+  items_path: orders
+  params:
+    query: pageToken, limit
+    body: GetBusinessOrdersRequest
+  keywords:
+  - business
+  - orders
+- operation_id: ym_provide_order_item_identifiers
+  section: Заказы
+  method: PUT
+  host: api.partner.market.yandex.ru
+  path: /v2/campaigns/{campaignId}/orders/{orderId}/identifiers
+  scope: seller
+  safety: write
+  pagination: none
+  summary: Передача кодов маркировки единиц товара
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/orders/provideOrderItemIdentifiers
+  params:
+    body: ProvideOrderItemIdentifiersRequest
+  keywords:
+  - provide
+  - order
+  - item
+  - identifiers
+- operation_id: ym_update_order_items
+  section: Заказы
+  method: PUT
+  host: api.partner.market.yandex.ru
+  path: /v2/campaigns/{campaignId}/orders/{orderId}/items
+  scope: seller
+  safety: write
+  pagination: none
+  summary: Удаление товаров из заказа или уменьшение их числа
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/orders/updateOrderItems
+  params:
+    body: UpdateOrderItemRequest
+  keywords:
+  - update
+  - order
+  - items
+- operation_id: ym_update_order_status
+  section: Заказы
+  method: PUT
+  host: api.partner.market.yandex.ru
+  path: /v2/campaigns/{campaignId}/orders/{orderId}/status
+  scope: seller
+  safety: write
+  pagination: none
+  summary: Изменение статуса одного заказа
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/orders/updateOrderStatus
+  params:
+    body: UpdateOrderStatusRequest
+  keywords:
+  - update
+  - order
+  - status
+- operation_id: ym_update_order_statuses
+  section: Заказы
+  method: POST
+  host: api.partner.market.yandex.ru
+  path: /v2/campaigns/{campaignId}/orders/status-update
+  scope: seller
+  safety: write
+  pagination: none
+  summary: Изменение статусов нескольких заказов
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/orders/updateOrderStatuses
+  items_path: result.orders
+  params:
+    body: UpdateOrderStatusesRequest
+  keywords:
+  - update
+  - order
+  - statuses
+- operation_id: ym_set_order_shipment_boxes
+  section: Заказы
+  method: PUT
+  host: api.partner.market.yandex.ru
+  path: /v2/campaigns/{campaignId}/orders/{orderId}/delivery/shipments/{shipmentId}/boxes
+  scope: seller
+  safety: write
+  pagination: none
+  summary: Передача количества грузовых мест в заказе
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/orders/setOrderShipmentBoxes
+  params:
+    body: SetOrderShipmentBoxesRequest
+  keywords:
+  - set
+  - order
+  - shipment
+  - boxes
+- operation_id: ym_accept_order_cancellation
+  section: Заказы
+  method: PUT
+  host: api.partner.market.yandex.ru
+  path: /v2/campaigns/{campaignId}/orders/{orderId}/cancellation/accept
+  scope: seller
+  safety: write
+  pagination: none
+  summary: Отмена заказа покупателем
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/orders/acceptOrderCancellation
+  params:
+    body: AcceptOrderCancellationRequest
+  keywords:
+  - accept
+  - order
+  - cancellation
+- operation_id: ym_provide_order_digital_codes
+  section: Заказы
+  method: POST
+  host: api.partner.market.yandex.ru
+  path: /v2/campaigns/{campaignId}/orders/{orderId}/deliverDigitalGoods
+  scope: seller
+  safety: write
+  pagination: none
+  summary: Передача ключей цифровых товаров
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/orders/provideOrderDigitalCodes
+  params:
+    body: ProvideOrderDigitalCodesRequest
+  keywords:
+  - provide
+  - order
+  - digital
+  - codes
+- operation_id: ym_set_order_box_layout
+  section: Заказы
+  method: PUT
+  host: api.partner.market.yandex.ru
+  path: /v2/campaigns/{campaignId}/orders/{orderId}/boxes
+  scope: seller
+  safety: write
+  pagination: none
+  summary: Подготовка заказа
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/orders/setOrderBoxLayout
+  params:
+    body: SetOrderBoxLayoutRequest
+  keywords:
+  - set
+  - order
+  - box
+  - layout
+- operation_id: ym_update_external_order_id
+  section: Заказы
+  method: POST
+  host: api.partner.market.yandex.ru
+  path: /v2/campaigns/{campaignId}/orders/{orderId}/external-id
+  scope: seller
+  safety: write
+  pagination: none
+  summary: Передача внешнего идентификатора заказа
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/orders/updateExternalOrderId
+  params:
+    body: UpdateExternalOrderIdRequest
+  keywords:
+  - update
+  - external
+  - order
+- operation_id: ym_get_order_identifiers_status
+  section: Заказы
+  method: POST
+  host: api.partner.market.yandex.ru
+  path: /v2/campaigns/{campaignId}/orders/{orderId}/identifiers/status
+  scope: seller
+  safety: read
+  pagination: none
+  summary: Статусы проверки кодов маркировки
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/orders/getOrderIdentifiersStatus
+  items_path: result.items
+  keywords:
+  - order
+  - identifiers
+  - status
+- operation_id: ym_create_order
+  section: Заказы
+  method: POST
+  host: api.partner.market.yandex.ru
+  path: /v1/campaigns/{campaignId}/orders/create
+  scope: seller
+  safety: write
+  pagination: none
+  summary: Создание заказа
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/orders/createOrder
+  items_path: result.orders
+  params:
+    body: CreateOrderRequest
+  keywords:
+  - create
+  - order
+- operation_id: ym_update_order
+  section: Заказы
+  method: POST
+  host: api.partner.market.yandex.ru
+  path: /v1/campaigns/{campaignId}/orders/update
+  scope: seller
+  safety: write
+  pagination: none
+  summary: Изменение заказа
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/orders/updateOrder
+  items_path: result.operations
+  params:
+    body: UpdateOrderRequest
+  keywords:
+  - update
+  - order
+- operation_id: ym_get_order_update_options
+  section: Заказы
+  method: POST
+  host: api.partner.market.yandex.ru
+  path: /v1/campaigns/{campaignId}/orders/update-options
+  scope: seller
+  safety: read
+  pagination: none
+  summary: Получение временных интервалов для изменения заказа
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/orders/getOrderUpdateOptions
+  items_path: result.deliveryIntervals.availableDeliveryIntervals
+  params:
+    body: GetOrderUpdateOptionsRequest
+  keywords:
+  - order
+  - update
+  - options
+- operation_id: ym_set_order_delivery_date
+  section: Заказы
+  method: PUT
+  host: api.partner.market.yandex.ru
+  path: /v2/campaigns/{campaignId}/orders/{orderId}/delivery/date
+  scope: seller
+  safety: write
+  pagination: none
+  summary: Изменение даты доставки заказа
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/order-delivery/setOrderDeliveryDate
+  params:
+    body: SetOrderDeliveryDateRequest
+  keywords:
+  - set
+  - order
+  - delivery
+  - date
+- operation_id: ym_set_order_delivery_track_code
+  section: Заказы
+  method: POST
+  host: api.partner.market.yandex.ru
+  path: /v2/campaigns/{campaignId}/orders/{orderId}/delivery/track
+  scope: seller
+  safety: write
+  pagination: none
+  summary: Передача трек‑номера посылки
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/order-delivery/setOrderDeliveryTrackCode
+  params:
+    body: SetOrderDeliveryTrackCodeRequest
+  keywords:
+  - set
+  - order
+  - delivery
+  - track
+  - code
+- operation_id: ym_get_order_buyer_info
+  section: Заказы
+  method: GET
+  host: api.partner.market.yandex.ru
+  path: /v2/campaigns/{campaignId}/orders/{orderId}/buyer
+  scope: seller
+  safety: read
+  pagination: none
+  summary: Информация о покупателе — физическом лице
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/order-delivery/getOrderBuyerInfo
+  keywords:
+  - order
+  - buyer
+  - info
+- operation_id: ym_verify_order_eac
+  section: Заказы
+  method: PUT
+  host: api.partner.market.yandex.ru
+  path: /v2/campaigns/{campaignId}/orders/{orderId}/verifyEac
+  scope: seller
+  safety: write
+  pagination: none
+  summary: Передача кода подтверждения
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/order-delivery/verifyOrderEac
+  params:
+    body: VerifyOrderEacRequest
+  keywords:
+  - verify
+  - order
+  - eac
+- operation_id: ym_update_order_storage_limit
+  section: Заказы
+  method: PUT
+  host: api.partner.market.yandex.ru
+  path: /v2/campaigns/{campaignId}/orders/{orderId}/delivery/storage-limit
+  scope: seller
+  safety: write
+  pagination: none
+  summary: Продление срока хранения заказа
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/order-delivery/updateOrderStorageLimit
+  params:
+    body: UpdateOrderStorageLimitRequest
+  keywords:
+  - update
+  - order
+  - storage
+  - limit
+- operation_id: ym_generate_order_label
+  section: Заказы
+  method: GET
+  host: api.partner.market.yandex.ru
+  path: /v2/campaigns/{campaignId}/orders/{orderId}/delivery/shipments/{shipmentId}/boxes/{boxId}/label
+  scope: seller
+  safety: read
+  pagination: none
+  summary: Готовый ярлык‑наклейка для коробки в заказе
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/order-labels/generateOrderLabel
+  params:
+    query: format
+  keywords:
+  - order
+  - label
+- operation_id: ym_generate_order_labels
+  section: Заказы
+  method: GET
+  host: api.partner.market.yandex.ru
+  path: /v2/campaigns/{campaignId}/orders/{orderId}/delivery/labels
+  scope: seller
+  safety: read
+  pagination: none
+  summary: Готовые ярлыки‑наклейки на все коробки в одном заказе
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/order-labels/generateOrderLabels
+  params:
+    query: format
+  keywords:
+  - order
+  - labels
+- operation_id: ym_get_order_labels_data
+  section: Заказы
+  method: GET
+  host: api.partner.market.yandex.ru
+  path: /v2/campaigns/{campaignId}/orders/{orderId}/delivery/labels/data
+  scope: seller
+  safety: read
+  pagination: none
+  summary: Данные для самостоятельного изготовления ярлыков
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/order-labels/getOrderLabelsData
+  items_path: result.parcelBoxLabels
+  keywords:
+  - order
+  - labels
+  - data
+- operation_id: ym_get_order_business_buyer_info
+  section: Заказы
+  method: POST
+  host: api.partner.market.yandex.ru
+  path: /v2/campaigns/{campaignId}/orders/{orderId}/business-buyer
+  scope: seller
+  safety: read
+  pagination: none
+  summary: Информация о покупателе — юридическом лице
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/order-business-information/getOrderBusinessBuyerInfo
+  keywords:
+  - order
+  - business
+  - buyer
+  - info
+- operation_id: ym_get_order_business_documents_info
+  section: Заказы
+  method: POST
+  host: api.partner.market.yandex.ru
+  path: /v2/campaigns/{campaignId}/orders/{orderId}/documents
+  scope: seller
+  safety: read
+  pagination: none
+  summary: Информация о документах
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/order-business-information/getOrderBusinessDocumentsInfo
+  keywords:
+  - order
+  - business
+  - documents
+  - info
+- operation_id: ym_get_returns
+  section: Возвраты и невыкупы
+  method: GET
+  host: api.partner.market.yandex.ru
+  path: /v2/campaigns/{campaignId}/returns
+  scope: seller
+  safety: read
+  pagination: page_token
+  summary: Список невыкупов и возвратов
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/returns/getReturns
+  items_path: result.returns
+  params:
+    query: pageToken, limit, orderIds, statuses, shipmentStatuses, type, fromDate,
+      toDate, from_date, to_date
+  keywords:
+  - returns
+- operation_id: ym_get_return
+  section: Заказы
+  method: GET
+  host: api.partner.market.yandex.ru
+  path: /v2/campaigns/{campaignId}/orders/{orderId}/returns/{returnId}
+  scope: seller
+  safety: read
+  pagination: none
+  summary: Информация о невыкупе или возврате
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/returns/getReturn
+  items_path: result.items
+  keywords:
+  - return
+- operation_id: ym_set_return_decision
+  section: Заказы
+  method: POST
+  host: api.partner.market.yandex.ru
+  path: /v2/campaigns/{campaignId}/orders/{orderId}/returns/{returnId}/decision
+  scope: seller
+  safety: write
+  pagination: none
+  summary: Принятие или изменение решения по возврату
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/returns/setReturnDecision
+  params:
+    body: SetReturnDecisionRequest
+  keywords:
+  - set
+  - return
+  - decision
+- operation_id: ym_submit_return_decision
+  section: Заказы
+  method: POST
+  host: api.partner.market.yandex.ru
+  path: /v2/campaigns/{campaignId}/orders/{orderId}/returns/{returnId}/decision/submit
+  scope: seller
+  safety: write
+  pagination: none
+  summary: Передача решения по возврату
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/returns/submitReturnDecision
+  params:
+    body: SubmitReturnDecisionRequest
+  keywords:
+  - submit
+  - return
+  - decision
+- operation_id: ym_get_return_available_decisions
+  section: Возвраты и невыкупы
+  method: POST
+  host: api.partner.market.yandex.ru
+  path: /v1/businesses/{businessId}/returns/decisions
+  scope: seller
+  safety: read
+  pagination: none
+  summary: Получение возможных решений по возврату
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/returns/getReturnAvailableDecisions
+  items_path: result.availableDecisions
+  params:
+    body: GetReturnAvailableDecisionsRequest
+  keywords:
+  - return
+  - available
+  - decisions
+- operation_id: ym_get_return_application
+  section: Заказы
+  method: GET
+  host: api.partner.market.yandex.ru
+  path: /v2/campaigns/{campaignId}/orders/{orderId}/returns/{returnId}/application
+  scope: seller
+  safety: read
+  pagination: none
+  summary: Получение заявления на возврат
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/returns/getReturnApplication
+  keywords:
+  - return
+  - application
+- operation_id: ym_get_return_photo
+  section: Заказы
+  method: GET
+  host: api.partner.market.yandex.ru
+  path: /v2/campaigns/{campaignId}/orders/{orderId}/returns/{returnId}/decision/{itemId}/image/{imageHash}
+  scope: seller
+  safety: read
+  pagination: none
+  summary: Получение фотографий товаров в возврате
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/returns/getReturnPhoto
+  keywords:
+  - return
+  - photo
+- operation_id: ym_create_return
+  section: Возвраты и невыкупы
+  method: POST
+  host: api.partner.market.yandex.ru
+  path: /v1/campaigns/{campaignId}/returns/create
+  scope: seller
+  safety: write
+  pagination: none
+  summary: Создание возврата
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/returns/createReturn
+  params:
+    body: CreateReturnRequest
+  keywords:
+  - create
+  - return
+- operation_id: ym_cancel_return
+  section: Возвраты и невыкупы
+  method: POST
+  host: api.partner.market.yandex.ru
+  path: /v1/campaigns/{campaignId}/returns/cancel
+  scope: seller
+  safety: write
+  pagination: none
+  summary: Отмена возврата
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/returns/cancelReturn
+  params:
+    body: CancelReturnRequest
+  keywords:
+  - cancel
+  - return
+- operation_id: ym_search_regions_by_name
+  section: Регионы доставки
+  method: GET
+  host: api.partner.market.yandex.ru
+  path: /v2/regions
+  scope: seller
+  safety: read
+  pagination: page_token
+  summary: Поиск регионов по их имени
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/regions/searchRegionsByName
+  items_path: regions
+  params:
+    query: name, pageToken, limit
+  keywords:
+  - regions
+  - name
+- operation_id: ym_search_regions_by_id
+  section: Регионы доставки
+  method: GET
+  host: api.partner.market.yandex.ru
+  path: /v2/regions/{regionId}
+  scope: seller
+  safety: read
+  pagination: none
+  summary: Информация о регионе
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/regions/searchRegionsById
+  items_path: regions
+  keywords:
+  - regions
+- operation_id: ym_search_region_children
+  section: Регионы доставки
+  method: GET
+  host: api.partner.market.yandex.ru
+  path: /v2/regions/{regionId}/children
+  scope: seller
+  safety: read
+  pagination: page_token
+  summary: Информация о дочерних регионах
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/regions/searchRegionChildren
+  params:
+    query: pageToken, limit, page, pageSize
+  keywords:
+  - region
+  - children
+- operation_id: ym_get_regions_codes
+  section: Регионы доставки
+  method: POST
+  host: api.partner.market.yandex.ru
+  path: /v2/regions/countries
+  scope: seller
+  safety: read
+  pagination: none
+  summary: Список допустимых кодов стран
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/regions/getRegionsCodes
+  items_path: countries
+  keywords:
+  - regions
+  - codes
+- operation_id: ym_download_shipment_reception_transfer_act
+  section: Отгрузки и поставки (first-mile)
+  method: GET
+  host: api.partner.market.yandex.ru
+  path: /v2/campaigns/{campaignId}/shipments/reception-transfer-act
+  scope: seller
+  safety: read
+  pagination: none
+  summary: Подтверждение ближайшей отгрузки и получение акта приема-передачи для нее
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/shipments/downloadShipmentReceptionTransferAct
+  params:
+    query: warehouse_id, signatory
+  keywords:
+  - shipment
+  - reception
+  - transfer
+  - act
+- operation_id: ym_get_shipment
+  section: Отгрузки и поставки (first-mile)
+  method: GET
+  host: api.partner.market.yandex.ru
+  path: /v2/campaigns/{campaignId}/first-mile/shipments/{shipmentId}
+  scope: seller
+  safety: read
+  pagination: none
+  summary: Получение информации об одной отгрузке
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/shipments/getShipment
+  params:
+    query: cancelledOrders
+  keywords:
+  - shipment
+- operation_id: ym_get_shipment_orders_info
+  section: Отгрузки и поставки (first-mile)
+  method: GET
+  host: api.partner.market.yandex.ru
+  path: /v2/campaigns/{campaignId}/first-mile/shipments/{shipmentId}/orders/info
+  scope: seller
+  safety: read
+  pagination: none
+  summary: Получение информации о возможности печати ярлыков
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/shipments/getShipmentOrdersInfo
+  keywords:
+  - shipment
+  - orders
+  - info
+- operation_id: ym_confirm_shipment
+  section: Отгрузки и поставки (first-mile)
+  method: POST
+  host: api.partner.market.yandex.ru
+  path: /v2/campaigns/{campaignId}/first-mile/shipments/{shipmentId}/confirm
+  scope: seller
+  safety: write
+  pagination: none
+  summary: Подтверждение отгрузки
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/shipments/confirmShipment
+  params:
+    body: ConfirmShipmentRequest
+  keywords:
+  - confirm
+  - shipment
+- operation_id: ym_download_shipment_act
+  section: Отгрузки и поставки (first-mile)
+  method: GET
+  host: api.partner.market.yandex.ru
+  path: /v2/campaigns/{campaignId}/first-mile/shipments/{shipmentId}/act
+  scope: seller
+  safety: read
+  pagination: none
+  summary: Получение акта приема-передачи
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/shipments/downloadShipmentAct
+  keywords:
+  - shipment
+  - act
+- operation_id: ym_download_shipment_inbound_act
+  section: Отгрузки и поставки (first-mile)
+  method: GET
+  host: api.partner.market.yandex.ru
+  path: /v2/campaigns/{campaignId}/first-mile/shipments/{shipmentId}/inbound-act
+  scope: seller
+  safety: read
+  pagination: none
+  summary: Получение фактического акта приема-передачи
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/shipments/downloadShipmentInboundAct
+  keywords:
+  - shipment
+  - inbound
+  - act
+- operation_id: ym_download_shipment_transportation_waybill
+  section: Отгрузки и поставки (first-mile)
+  method: GET
+  host: api.partner.market.yandex.ru
+  path: /v2/campaigns/{campaignId}/first-mile/shipments/{shipmentId}/transportation-waybill
+  scope: seller
+  safety: read
+  pagination: none
+  summary: Получение транспортной накладной
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/shipments/downloadShipmentTransportationWaybill
+  keywords:
+  - shipment
+  - transportation
+  - waybill
+- operation_id: ym_download_shipment_discrepancy_act
+  section: Отгрузки и поставки (first-mile)
+  method: GET
+  host: api.partner.market.yandex.ru
+  path: /v2/campaigns/{campaignId}/first-mile/shipments/{shipmentId}/discrepancy-act
+  scope: seller
+  safety: read
+  pagination: none
+  summary: Получение акта расхождений
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/shipments/downloadShipmentDiscrepancyAct
+  keywords:
+  - shipment
+  - discrepancy
+  - act
+- operation_id: ym_set_shipment_pallets_count
+  section: Отгрузки и поставки (first-mile)
+  method: PUT
+  host: api.partner.market.yandex.ru
+  path: /v2/campaigns/{campaignId}/first-mile/shipments/{shipmentId}/pallets
+  scope: seller
+  safety: write
+  pagination: none
+  summary: Передача количества упаковок для доверительной приемки
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/shipments/setShipmentPalletsCount
+  params:
+    body: SetShipmentPalletsCountRequest
+  keywords:
+  - set
+  - shipment
+  - pallets
+- operation_id: ym_download_shipment_pallet_labels
+  section: Отгрузки и поставки (first-mile)
+  method: GET
+  host: api.partner.market.yandex.ru
+  path: /v2/campaigns/{campaignId}/first-mile/shipments/{shipmentId}/pallet/labels
+  scope: seller
+  safety: read
+  pagination: none
+  summary: Ярлыки для доверительной приемки
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/shipments/downloadShipmentPalletLabels
+  params:
+    query: format
+  keywords:
+  - shipment
+  - pallet
+  - labels
+- operation_id: ym_search_shipments
+  section: Отгрузки и поставки (first-mile)
+  method: PUT
+  host: api.partner.market.yandex.ru
+  path: /v2/campaigns/{campaignId}/first-mile/shipments
+  scope: seller
+  safety: write
+  pagination: page_token
+  summary: Получение информации о нескольких отгрузках
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/shipments/searchShipments
+  params:
+    query: pageToken, limit
+    body: SearchShipmentsRequest
+  keywords:
+  - shipments
+- operation_id: ym_transfer_orders_from_shipment
+  section: Отгрузки и поставки (first-mile)
+  method: POST
+  host: api.partner.market.yandex.ru
+  path: /v2/campaigns/{campaignId}/first-mile/shipments/{shipmentId}/orders/transfer
+  scope: seller
+  safety: write
+  pagination: none
+  summary: Перенос заказов в следующую отгрузку
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/shipments/transferOrdersFromShipment
+  params:
+    body: TransferOrdersFromShipmentRequest
+  keywords:
+  - transfer
+  - orders
+  - from
+  - shipment
+- operation_id: ym_delete_offers
+  section: Товары (каталог)
+  method: POST
+  host: api.partner.market.yandex.ru
+  path: /v2/businesses/{businessId}/offer-mappings/delete
+  scope: seller
+  safety: destructive
+  pagination: none
+  summary: Удаление товаров из каталога
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/business-offer-mappings/deleteOffers
+  items_path: result.notDeletedOfferIds
+  params:
+    body: DeleteOffersRequest
+  keywords:
+  - delete
+  - offers
+- operation_id: ym_get_offer_mappings
+  section: Товары (каталог)
+  method: POST
+  host: api.partner.market.yandex.ru
+  path: /v2/businesses/{businessId}/offer-mappings
+  scope: seller
+  safety: read
+  pagination: page_token
+  summary: Информация о товарах в каталоге
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/business-offer-mappings/getOfferMappings
+  items_path: result.offerMappings
+  params:
+    query: pageToken, limit, language
+    body: GetOfferMappingsRequest
+  keywords:
+  - offer
+  - mappings
+- operation_id: ym_update_offer_mappings
+  section: Товары (каталог)
+  method: POST
+  host: api.partner.market.yandex.ru
+  path: /v2/businesses/{businessId}/offer-mappings/update
+  scope: seller
+  safety: write
+  pagination: none
+  summary: Добавление товаров в каталог и изменение информации о них
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/business-offer-mappings/updateOfferMappings
+  items_path: results
+  params:
+    query: language
+    body: UpdateOfferMappingsRequest
+  keywords:
+  - update
+  - offer
+  - mappings
+- operation_id: ym_add_offers_to_archive
+  section: Товары (каталог)
+  method: POST
+  host: api.partner.market.yandex.ru
+  path: /v2/businesses/{businessId}/offer-mappings/archive
+  scope: seller
+  safety: write
+  pagination: none
+  summary: Добавление товаров в архив
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/business-offer-mappings/addOffersToArchive
+  items_path: result.notArchivedOffers
+  params:
+    body: AddOffersToArchiveRequest
+  keywords:
+  - add
+  - offers
+  - archive
+- operation_id: ym_delete_offers_from_archive
+  section: Товары (каталог)
+  method: POST
+  host: api.partner.market.yandex.ru
+  path: /v2/businesses/{businessId}/offer-mappings/unarchive
+  scope: seller
+  safety: write
+  pagination: none
+  summary: Удаление товаров из архива
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/business-offer-mappings/deleteOffersFromArchive
+  items_path: result.notUnarchivedOfferIds
+  params:
+    body: DeleteOffersFromArchiveRequest
+  keywords:
+  - delete
+  - offers
+  - from
+  - archive
+- operation_id: ym_generate_offer_barcodes
+  section: Товары (каталог)
+  method: POST
+  host: api.partner.market.yandex.ru
+  path: /v1/businesses/{businessId}/offer-mappings/barcodes/generate
+  scope: seller
+  safety: read
+  pagination: none
+  summary: Генерация штрихкодов
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/business-offer-mappings/generateOfferBarcodes
+  items_path: result.unprocessedOfferIds
+  params:
+    body: GenerateOfferBarcodesRequest
+  keywords:
+  - offer
+  - barcodes
+- operation_id: ym_update_business_prices
+  section: Цены
+  method: POST
+  host: api.partner.market.yandex.ru
+  path: /v2/businesses/{businessId}/offer-prices/updates
+  scope: seller
+  safety: write
+  pagination: none
+  summary: Установка цен на товары для всех магазинов
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/prices/updateBusinessPrices
+  params:
+    body: UpdateBusinessPricesRequest
+  keywords:
+  - update
+  - business
+  - prices
+- operation_id: ym_update_prices
+  section: Цены
+  method: POST
+  host: api.partner.market.yandex.ru
+  path: /v2/campaigns/{campaignId}/offer-prices/updates
+  scope: seller
+  safety: write
+  pagination: none
+  summary: Установка цен на товары в конкретном магазине
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/prices/updatePrices
+  params:
+    body: UpdatePricesRequest
+  keywords:
+  - update
+  - prices
+- operation_id: ym_get_prices
+  section: Цены
+  method: GET
+  host: api.partner.market.yandex.ru
+  path: /v2/campaigns/{campaignId}/offer-prices
+  scope: seller
+  safety: read
+  pagination: page_token
+  summary: Список цен
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/prices/getPrices
+  items_path: result.offers
+  params:
+    query: pageToken, limit, archived
+  keywords:
+  - prices
+- operation_id: ym_get_prices_by_offer_ids
+  section: Цены
+  method: POST
+  host: api.partner.market.yandex.ru
+  path: /v2/campaigns/{campaignId}/offer-prices
+  scope: seller
+  safety: read
+  pagination: page_token
+  summary: Просмотр цен на указанные товары в конкретном магазине
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/prices/getPricesByOfferIds
+  items_path: result.offers
+  params:
+    query: pageToken, limit
+    body: GetPricesByOfferIdsRequest
+  keywords:
+  - prices
+  - offer
+  - ids
+- operation_id: ym_get_default_prices
+  section: Цены
+  method: POST
+  host: api.partner.market.yandex.ru
+  path: /v2/businesses/{businessId}/offer-prices
+  scope: seller
+  safety: read
+  pagination: page_token
+  summary: Просмотр цен на указанные товары во всех магазинах
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/prices/getDefaultPrices
+  items_path: result.offers
+  params:
+    query: pageToken, limit
+    body: GetDefaultPricesRequest
+  keywords:
+  - default
+  - prices
+- operation_id: ym_get_business_quarantine_offers
+  section: Карантин цен
+  method: POST
+  host: api.partner.market.yandex.ru
+  path: /v2/businesses/{businessId}/price-quarantine
+  scope: seller
+  safety: read
+  pagination: page_token
+  summary: Список товаров, находящихся в карантине по цене в кабинете
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/price-quarantine/getBusinessQuarantineOffers
+  items_path: result.offers
+  params:
+    query: pageToken, limit
+    body: GetQuarantineOffersRequest
+  keywords:
+  - business
+  - quarantine
+  - offers
+- operation_id: ym_confirm_business_prices
+  section: Карантин цен
+  method: POST
+  host: api.partner.market.yandex.ru
+  path: /v2/businesses/{businessId}/price-quarantine/confirm
+  scope: seller
+  safety: write
+  pagination: none
+  summary: Удаление товара из карантина по цене в кабинете
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/price-quarantine/confirmBusinessPrices
+  params:
+    body: ConfirmPricesRequest
+  keywords:
+  - confirm
+  - business
+  - prices
+- operation_id: ym_get_campaign_quarantine_offers
+  section: Карантин цен
+  method: POST
+  host: api.partner.market.yandex.ru
+  path: /v2/campaigns/{campaignId}/price-quarantine
+  scope: seller
+  safety: read
+  pagination: page_token
+  summary: Список товаров, находящихся в карантине по цене в магазине
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/price-quarantine/getCampaignQuarantineOffers
+  items_path: result.offers
+  params:
+    query: pageToken, limit
+    body: GetQuarantineOffersRequest
+  keywords:
+  - campaign
+  - quarantine
+  - offers
+- operation_id: ym_confirm_campaign_prices
+  section: Карантин цен
+  method: POST
+  host: api.partner.market.yandex.ru
+  path: /v2/campaigns/{campaignId}/price-quarantine/confirm
+  scope: seller
+  safety: write
+  pagination: none
+  summary: Удаление товара из карантина по цене в магазине
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/price-quarantine/confirmCampaignPrices
+  params:
+    body: ConfirmPricesRequest
+  keywords:
+  - confirm
+  - campaign
+  - prices
+- operation_id: ym_add_hidden_offers
+  section: Скрытые товары
+  method: POST
+  host: api.partner.market.yandex.ru
+  path: /v2/campaigns/{campaignId}/hidden-offers
+  scope: seller
+  safety: write
+  pagination: none
+  summary: Скрытие товаров и настройки скрытия
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/hidden-offers/addHiddenOffers
+  params:
+    body: AddHiddenOffersRequest
+  keywords:
+  - add
+  - hidden
+  - offers
+- operation_id: ym_get_hidden_offers
+  section: Скрытые товары
+  method: GET
+  host: api.partner.market.yandex.ru
+  path: /v2/campaigns/{campaignId}/hidden-offers
+  scope: seller
+  safety: read
+  pagination: page_token
+  summary: Информация о скрытых вами товарах
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/hidden-offers/getHiddenOffers
+  items_path: result.hiddenOffers
+  params:
+    query: offer_id, pageToken, limit
+  keywords:
+  - hidden
+  - offers
+- operation_id: ym_delete_hidden_offers
+  section: Скрытые товары
+  method: POST
+  host: api.partner.market.yandex.ru
+  path: /v2/campaigns/{campaignId}/hidden-offers/delete
+  scope: seller
+  safety: destructive
+  pagination: none
+  summary: Возобновление показа товаров
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/hidden-offers/deleteHiddenOffers
+  params:
+    body: DeleteHiddenOffersRequest
+  keywords:
+  - delete
+  - hidden
+  - offers
+- operation_id: ym_update_stocks
+  section: Товары
+  method: PUT
+  host: api.partner.market.yandex.ru
+  path: /v2/campaigns/{campaignId}/offers/stocks
+  scope: seller
+  safety: write
+  pagination: none
+  summary: Передача информации об остатках
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/stocks/updateStocks
+  params:
+    body: UpdateStocksRequest
+  keywords:
+  - update
+  - stocks
+- operation_id: ym_get_stocks
+  section: Товары
+  method: POST
+  host: api.partner.market.yandex.ru
+  path: /v2/campaigns/{campaignId}/offers/stocks
+  scope: seller
+  safety: read
+  pagination: page_token
+  summary: Информация об остатках и оборачиваемости
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/stocks/getStocks
+  items_path: result.warehouses
+  params:
+    query: pageToken, limit
+    body: GetWarehouseStocksRequest
+  keywords:
+  - stocks
+- operation_id: ym_update_stocks_on_partner_warehouses
+  section: Товары
+  method: POST
+  host: api.partner.market.yandex.ru
+  path: /v3/businesses/{businessId}/offers/stocks/update
+  scope: seller
+  safety: write
+  pagination: none
+  summary: Передача информации об остатках
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/stocks/updateStocksOnPartnerWarehouses
+  params:
+    body: UpdateStocksOnWarehousesRequest
+  keywords:
+  - update
+  - stocks
+  - partner
+  - warehouses
+- operation_id: ym_get_stocks_on_partner_warehouses
+  section: Товары
+  method: POST
+  host: api.partner.market.yandex.ru
+  path: /v3/businesses/{businessId}/offers/stocks
+  scope: seller
+  safety: read
+  pagination: page_token
+  summary: Информация об остатках
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/stocks/getStocksOnPartnerWarehouses
+  items_path: result.offers
+  params:
+    query: pageToken, limit
+    body: GetStocksOnPartnerWarehousesRequest
+  keywords:
+  - stocks
+  - partner
+  - warehouses
+- operation_id: ym_get_delivery_services
+  section: Доставка
+  method: GET
+  host: api.partner.market.yandex.ru
+  path: /v2/delivery/services
+  scope: seller
+  safety: read
+  pagination: none
+  summary: Справочник служб доставки
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/delivery-services/getDeliveryServices
+  items_path: result.deliveryService
+  keywords:
+  - delivery
+  - services
+- operation_id: ym_get_delivery_options
+  section: Доставка
+  method: POST
+  host: api.partner.market.yandex.ru
+  path: /v1/campaigns/{campaignId}/delivery-options
+  scope: seller
+  safety: read
+  pagination: none
+  summary: Получение доступных вариантов доставки заказов
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/delivery-options/getDeliveryOptions
+  items_path: result.warehousesDeliveryOptions
+  params:
+    body: GetDeliveryOptionsRequest
+  keywords:
+  - delivery
+  - options
+- operation_id: ym_get_return_delivery_options
+  section: Доставка возвратов
+  method: POST
+  host: api.partner.market.yandex.ru
+  path: /v1/campaigns/{campaignId}/return-delivery-options
+  scope: seller
+  safety: read
+  pagination: none
+  summary: Получение подходящих для возврата пунктов выдачи
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/delivery-options/getReturnDeliveryOptions
+  items_path: result.pickupDelivery.logisticPointIds
+  params:
+    body: GetReturnDeliveryOptionsRequest
+  keywords:
+  - return
+  - delivery
+  - options
+- operation_id: ym_get_orders_stats
+  section: Статистика заказов и товаров
+  method: POST
+  host: api.partner.market.yandex.ru
+  path: /v2/campaigns/{campaignId}/stats/orders
+  scope: seller
+  safety: read
+  pagination: page_token
+  summary: Детальная информация по заказам
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/orders-stats/getOrdersStats
+  items_path: result.orders
+  params:
+    query: pageToken, limit
+    body: GetOrdersStatsRequest
+  keywords:
+  - orders
+  - stats
+- operation_id: ym_get_goods_stats
+  section: Статистика заказов и товаров
+  method: POST
+  host: api.partner.market.yandex.ru
+  path: /v2/campaigns/{campaignId}/stats/skus
+  scope: seller
+  safety: read
+  pagination: none
+  summary: Отчет по товарам
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/goods-stats/getGoodsStats
+  items_path: result.shopSkus
+  params:
+    body: GetGoodsStatsRequest
+  keywords:
+  - goods
+  - stats
+- operation_id: ym_get_report_info
+  section: Отчёты
+  method: GET
+  host: api.partner.market.yandex.ru
+  path: /v2/reports/info/{reportId}
+  scope: seller
+  safety: read
+  pagination: none
+  summary: Получение заданного отчета или документа
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/reports/getReportInfo
+  params:
+    query: sourceType
+  keywords:
+  - report
+  - info
+- operation_id: ym_generate_united_netting_report
+  section: Отчёты
+  method: POST
+  host: api.partner.market.yandex.ru
+  path: /v2/reports/united-netting/generate
+  scope: seller
+  safety: read
+  pagination: none
+  summary: Отчет по платежам
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/reports/generateUnitedNettingReport
+  params:
+    query: format, language
+    body: GenerateUnitedNettingReportRequest
+  keywords:
+  - united
+  - netting
+  - report
+- operation_id: ym_generate_united_marketplace_services_report
+  section: Отчёты
+  method: POST
+  host: api.partner.market.yandex.ru
+  path: /v2/reports/united-marketplace-services/generate
+  scope: seller
+  safety: read
+  pagination: none
+  summary: Отчет по стоимости услуг
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/reports/generateUnitedMarketplaceServicesReport
+  params:
+    query: format, language
+    body: GenerateUnitedMarketplaceServicesReportRequest
+  keywords:
+  - united
+  - marketplace
+  - services
+  - report
+- operation_id: ym_generate_united_orders_report
+  section: Отчёты
+  method: POST
+  host: api.partner.market.yandex.ru
+  path: /v2/reports/united-orders/generate
+  scope: seller
+  safety: read
+  pagination: none
+  summary: Отчет по заказам
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/reports/generateUnitedOrdersReport
+  params:
+    query: format, language
+    body: GenerateUnitedOrdersRequest
+  keywords:
+  - united
+  - orders
+  - report
+- operation_id: ym_generate_united_returns_report
+  section: Отчёты
+  method: POST
+  host: api.partner.market.yandex.ru
+  path: /v2/reports/united-returns/generate
+  scope: seller
+  safety: read
+  pagination: none
+  summary: Отчет по невыкупам и возвратам
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/reports/generateUnitedReturnsReport
+  params:
+    query: format
+    body: GenerateUnitedReturnsRequest
+  keywords:
+  - united
+  - returns
+  - report
+- operation_id: ym_generate_goods_realization_report
+  section: Отчёты
+  method: POST
+  host: api.partner.market.yandex.ru
+  path: /v2/reports/goods-realization/generate
+  scope: seller
+  safety: read
+  pagination: none
+  summary: Отчет по реализации
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/reports/generateGoodsRealizationReport
+  params:
+    query: format
+    body: GenerateGoodsRealizationReportRequest
+  keywords:
+  - goods
+  - realization
+  - report
+- operation_id: ym_generate_stocks_on_warehouses_report
+  section: Отчёты
+  method: POST
+  host: api.partner.market.yandex.ru
+  path: /v2/reports/stocks-on-warehouses/generate
+  scope: seller
+  safety: read
+  pagination: none
+  summary: Отчет по остаткам на складах
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/reports/generateStocksOnWarehousesReport
+  params:
+    query: format
+    body: GenerateStocksOnWarehousesReportRequest
+  keywords:
+  - stocks
+  - warehouses
+  - report
+- operation_id: ym_generate_stocks_report
+  section: Отчёты
+  method: POST
+  host: api.partner.market.yandex.ru
+  path: /v3/businesses/{businessId}/reports/stocks/generate
+  scope: seller
+  safety: read
+  pagination: none
+  summary: Отчет по остаткам на складах партнера
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/reports/generateStocksReport
+  params:
+    query: format
+    body: GenerateStocksReportRequest
+  keywords:
+  - stocks
+  - report
+- operation_id: ym_generate_goods_movement_report
+  section: Отчёты
+  method: POST
+  host: api.partner.market.yandex.ru
+  path: /v2/reports/goods-movement/generate
+  scope: seller
+  safety: read
+  pagination: none
+  summary: Отчет по движению товаров
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/reports/generateGoodsMovementReport
+  params:
+    query: format
+    body: GenerateGoodsMovementReportRequest
+  keywords:
+  - goods
+  - movement
+  - report
+- operation_id: ym_generate_shows_sales_report
+  section: Отчёты
+  method: POST
+  host: api.partner.market.yandex.ru
+  path: /v2/reports/shows-sales/generate
+  scope: seller
+  safety: read
+  pagination: none
+  summary: Отчет «Аналитика продаж»
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/reports/generateShowsSalesReport
+  params:
+    query: format
+    body: GenerateShowsSalesReportRequest
+  keywords:
+  - shows
+  - sales
+  - report
+- operation_id: ym_generate_competitors_position_report
+  section: Отчёты
+  method: POST
+  host: api.partner.market.yandex.ru
+  path: /v2/reports/competitors-position/generate
+  scope: seller
+  safety: read
+  pagination: none
+  summary: Отчет «Конкурентная позиция»
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/reports/generateCompetitorsPositionReport
+  params:
+    query: format
+    body: GenerateCompetitorsPositionReportRequest
+  keywords:
+  - competitors
+  - position
+  - report
+- operation_id: ym_generate_goods_prices_report
+  section: Отчёты
+  method: POST
+  host: api.partner.market.yandex.ru
+  path: /v2/reports/goods-prices/generate
+  scope: seller
+  safety: read
+  pagination: none
+  summary: Отчет «Цены»
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/reports/generateGoodsPricesReport
+  params:
+    query: format
+    body: GenerateGoodsPricesReportRequest
+  keywords:
+  - goods
+  - prices
+  - report
+- operation_id: ym_generate_goods_turnover_report
+  section: Отчёты
+  method: POST
+  host: api.partner.market.yandex.ru
+  path: /v2/reports/goods-turnover/generate
+  scope: seller
+  safety: read
+  pagination: none
+  summary: Отчет по оборачиваемости
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/reports/generateGoodsTurnoverReport
+  params:
+    query: format
+    body: GenerateGoodsTurnoverRequest
+  keywords:
+  - goods
+  - turnover
+  - report
+- operation_id: ym_generate_boost_consolidated_report
+  section: Отчёты
+  method: POST
+  host: api.partner.market.yandex.ru
+  path: /v2/reports/boost-consolidated/generate
+  scope: seller
+  safety: read
+  pagination: none
+  summary: Отчет по бусту продаж
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/reports/generateBoostConsolidatedReport
+  params:
+    query: format, sourceType
+    body: GenerateBoostConsolidatedRequest
+  keywords:
+  - boost
+  - consolidated
+  - report
+- operation_id: ym_generate_shipment_list_document_report
+  section: Отчёты
+  method: POST
+  host: api.partner.market.yandex.ru
+  path: /v2/reports/documents/shipment-list/generate
+  scope: seller
+  safety: read
+  pagination: none
+  summary: Получение листа сборки
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/reports/generateShipmentListDocumentReport
+  params:
+    body: GenerateShipmentListDocumentReportRequest
+  keywords:
+  - shipment
+  - document
+  - report
+- operation_id: ym_generate_shelfs_statistics_report
+  section: Отчёты
+  method: POST
+  host: api.partner.market.yandex.ru
+  path: /v2/reports/shelf-statistics/generate
+  scope: seller
+  safety: read
+  pagination: none
+  summary: Отчет по полкам
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/reports/generateShelfsStatisticsReport
+  params:
+    query: format, sourceType
+    body: GenerateShelfsStatisticsRequest
+  keywords:
+  - shelfs
+  - statistics
+  - report
+- operation_id: ym_generate_mass_order_labels_report
+  section: Отчёты
+  method: POST
+  host: api.partner.market.yandex.ru
+  path: /v2/reports/documents/labels/generate
+  scope: seller
+  safety: read
+  pagination: none
+  summary: Готовые ярлыки‑наклейки на все коробки в нескольких заказах
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/reports/generateMassOrderLabelsReport
+  params:
+    query: format
+    body: GenerateMassOrderLabelsRequest
+  keywords:
+  - mass
+  - order
+  - labels
+  - report
+- operation_id: ym_generate_goods_feedback_report
+  section: Отчёты
+  method: POST
+  host: api.partner.market.yandex.ru
+  path: /v2/reports/goods-feedback/generate
+  scope: seller
+  safety: read
+  pagination: none
+  summary: Отчет по отзывам о товарах
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/reports/generateGoodsFeedbackReport
+  params:
+    query: format
+    body: GenerateGoodsFeedbackRequest
+  keywords:
+  - goods
+  - feedback
+  - report
+- operation_id: ym_generate_shows_boost_report
+  section: Отчёты
+  method: POST
+  host: api.partner.market.yandex.ru
+  path: /v2/reports/shows-boost/generate
+  scope: seller
+  safety: read
+  pagination: none
+  summary: Отчет по бусту показов
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/reports/generateShowsBoostReport
+  params:
+    query: format, sourceType
+    body: GenerateShowsBoostRequest
+  keywords:
+  - shows
+  - boost
+  - report
+- operation_id: ym_generate_banners_statistics_report
+  section: Отчёты
+  method: POST
+  host: api.partner.market.yandex.ru
+  path: /v2/reports/banners-statistics/generate
+  scope: seller
+  safety: read
+  pagination: none
+  summary: Отчет по охватному продвижению
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/reports/generateBannersStatisticsReport
+  params:
+    query: format, sourceType
+    body: GenerateBannersStatisticsRequest
+  keywords:
+  - banners
+  - statistics
+  - report
+- operation_id: ym_generate_closure_documents_report
+  section: Отчёты
+  method: POST
+  host: api.partner.market.yandex.ru
+  path: /v2/reports/closure-documents/generate
+  scope: seller
+  safety: read
+  pagination: none
+  summary: Закрывающие документы
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/reports/generateClosureDocumentsReport
+  params:
+    body: GenerateClosureDocumentsRequest
+  keywords:
+  - closure
+  - documents
+  - report
+- operation_id: ym_generate_jewelry_fiscal_report
+  section: Отчёты
+  method: POST
+  host: api.partner.market.yandex.ru
+  path: /v2/reports/jewelry-fiscal/generate
+  scope: seller
+  safety: read
+  pagination: none
+  summary: Отчет по заказам с ювелирными изделиями
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/reports/generateJewelryFiscalReport
+  params:
+    query: format
+    body: GenerateJewelryFiscalReportRequest
+  keywords:
+  - jewelry
+  - fiscal
+  - report
+- operation_id: ym_generate_sales_geography_report
+  section: Отчёты
+  method: POST
+  host: api.partner.market.yandex.ru
+  path: /v2/reports/sales-geography/generate
+  scope: seller
+  safety: read
+  pagination: none
+  summary: Отчет по географии продаж
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/reports/generateSalesGeographyReport
+  params:
+    query: format
+    body: GenerateSalesGeographyRequest
+  keywords:
+  - sales
+  - geography
+  - report
+- operation_id: ym_generate_key_indicators_report
+  section: Отчёты
+  method: POST
+  host: api.partner.market.yandex.ru
+  path: /v2/reports/key-indicators/generate
+  scope: seller
+  safety: read
+  pagination: none
+  summary: Отчет по ключевым показателям
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/reports/generateKeyIndicatorsReport
+  params:
+    query: format
+    body: GenerateKeyIndicatorsRequest
+  keywords:
+  - key
+  - indicators
+  - report
+- operation_id: ym_generate_closure_documents_detalization_report
+  section: Отчёты
+  method: POST
+  host: api.partner.market.yandex.ru
+  path: /v2/reports/closure-documents/detalization/generate
+  scope: seller
+  safety: read
+  pagination: none
+  summary: Отчет по схождению с закрывающими документами
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/reports/generateClosureDocumentsDetalizationReport
+  params:
+    query: format
+    body: GenerateClosureDocumentsDetalizationRequest
+  keywords:
+  - closure
+  - documents
+  - detalization
+  - report
+- operation_id: ym_generate_marketing_detalization_report
+  section: Отчёты
+  method: POST
+  host: api.partner.market.yandex.ru
+  path: /v1/businesses/{businessId}/reports/marketing-detalization/generate
+  scope: seller
+  safety: read
+  pagination: none
+  summary: Отчет по счету маркетинга
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/reports/generateMarketingDetalizationReport
+  params:
+    query: format, sourceType
+    body: GenerateMarketingDetalizationRequest
+  keywords:
+  - marketing
+  - detalization
+  - report
+- operation_id: ym_generate_barcodes_report
+  section: Отчёты
+  method: POST
+  host: api.partner.market.yandex.ru
+  path: /v1/reports/documents/barcodes/generate
+  scope: seller
+  safety: read
+  pagination: none
+  summary: Получение файла со штрихкодами
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/reports/generateBarcodesReport
+  params:
+    body: GenerateBarcodesReportRequest
+  keywords:
+  - barcodes
+  - report
+- operation_id: ym_create_outlet
+  section: Точки продаж и ПВЗ (самовывоз)
+  method: POST
+  host: api.partner.market.yandex.ru
+  path: /v2/campaigns/{campaignId}/outlets
+  scope: seller
+  safety: write
+  pagination: none
+  summary: Создание точки продаж
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/outlets/createOutlet
+  params:
+    body: ChangeOutletRequest
+  keywords:
+  - create
+  - outlet
+- operation_id: ym_get_outlets
+  section: Точки продаж и ПВЗ (самовывоз)
+  method: GET
+  host: api.partner.market.yandex.ru
+  path: /v2/campaigns/{campaignId}/outlets
+  scope: seller
+  safety: read
+  pagination: page_token
+  summary: Информация о нескольких точках продаж
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/outlets/getOutlets
+  items_path: outlets
+  params:
+    query: pageToken, limit, region_id, shop_outlet_code, regionId
+  keywords:
+  - outlets
+- operation_id: ym_update_outlet
+  section: Точки продаж и ПВЗ (самовывоз)
+  method: PUT
+  host: api.partner.market.yandex.ru
+  path: /v2/campaigns/{campaignId}/outlets/{outletId}
+  scope: seller
+  safety: write
+  pagination: none
+  summary: Изменение информации о точке продаж
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/outlets/updateOutlet
+  params:
+    body: ChangeOutletRequest
+  keywords:
+  - update
+  - outlet
+- operation_id: ym_get_outlet
+  section: Точки продаж и ПВЗ (самовывоз)
+  method: GET
+  host: api.partner.market.yandex.ru
+  path: /v2/campaigns/{campaignId}/outlets/{outletId}
+  scope: seller
+  safety: read
+  pagination: none
+  summary: Информация об одной точке продаж
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/outlets/getOutlet
+  keywords:
+  - outlet
+- operation_id: ym_delete_outlet
+  section: Точки продаж и ПВЗ (самовывоз)
+  method: DELETE
+  host: api.partner.market.yandex.ru
+  path: /v2/campaigns/{campaignId}/outlets/{outletId}
+  scope: seller
+  safety: destructive
+  pagination: none
+  summary: Удаление точки продаж
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/outlets/deleteOutlet
+  keywords:
+  - delete
+  - outlet
+- operation_id: ym_get_logistic_points
+  section: Точки продаж и ПВЗ (самовывоз)
+  method: POST
+  host: api.partner.market.yandex.ru
+  path: /v1/businesses/{businessId}/logistics-points
+  scope: seller
+  safety: read
+  pagination: page_token
+  summary: Получение точек ПВЗ Маркета
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/logistic-points/getLogisticPoints
+  items_path: result.logisticPoints
+  params:
+    query: pageToken, limit
+  keywords:
+  - logistic
+  - points
+- operation_id: ym_get_outlet_licenses
+  section: Точки продаж и ПВЗ (самовывоз)
+  method: GET
+  host: api.partner.market.yandex.ru
+  path: /v2/campaigns/{campaignId}/outlets/licenses
+  scope: seller
+  safety: read
+  pagination: none
+  summary: Информация о лицензиях для точек продаж
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/outlet-licenses/getOutletLicenses
+  items_path: result.licenses
+  params:
+    query: outletIds, ids
+  keywords:
+  - outlet
+  - licenses
+- operation_id: ym_delete_outlet_licenses
+  section: Точки продаж и ПВЗ (самовывоз)
+  method: DELETE
+  host: api.partner.market.yandex.ru
+  path: /v2/campaigns/{campaignId}/outlets/licenses
+  scope: seller
+  safety: destructive
+  pagination: none
+  summary: Удаление лицензий для точек продаж
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/outlet-licenses/deleteOutletLicenses
+  params:
+    query: ids
+  keywords:
+  - delete
+  - outlet
+  - licenses
+- operation_id: ym_update_outlet_licenses
+  section: Точки продаж и ПВЗ (самовывоз)
+  method: POST
+  host: api.partner.market.yandex.ru
+  path: /v2/campaigns/{campaignId}/outlets/licenses
+  scope: seller
+  safety: write
+  pagination: none
+  summary: Создание и изменение лицензий для точек продаж
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/outlet-licenses/updateOutletLicenses
+  params:
+    body: UpdateOutletLicenseRequest
+  keywords:
+  - update
+  - outlet
+  - licenses
+- operation_id: ym_get_goods_feedbacks
+  section: Отзывы о товарах
+  method: POST
+  host: api.partner.market.yandex.ru
+  path: /v2/businesses/{businessId}/goods-feedback
+  scope: seller
+  safety: read
+  pagination: page_token
+  summary: Получение отзывов о товарах продавца
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/goods-feedback/getGoodsFeedbacks
+  items_path: result.feedbacks
+  params:
+    query: pageToken, limit
+    body: GetGoodsFeedbackRequest
+  keywords:
+  - goods
+  - feedbacks
+- operation_id: ym_skip_goods_feedbacks_reaction
+  section: Отзывы о товарах
+  method: POST
+  host: api.partner.market.yandex.ru
+  path: /v2/businesses/{businessId}/goods-feedback/skip-reaction
+  scope: seller
+  safety: write
+  pagination: none
+  summary: Пропуск реакции на отзывы
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/goods-feedback/skipGoodsFeedbacksReaction
+  params:
+    query: sourceType
+    body: SkipGoodsFeedbackReactionRequest
+  keywords:
+  - skip
+  - goods
+  - feedbacks
+  - reaction
+- operation_id: ym_update_goods_feedback_comment
+  section: Отзывы о товарах
+  method: POST
+  host: api.partner.market.yandex.ru
+  path: /v2/businesses/{businessId}/goods-feedback/comments/update
+  scope: seller
+  safety: write
+  pagination: none
+  summary: Добавление нового или изменение созданного комментария
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/goods-feedback/updateGoodsFeedbackComment
+  params:
+    query: sourceType
+    body: UpdateGoodsFeedbackCommentRequest
+  keywords:
+  - update
+  - goods
+  - feedback
+  - comment
+- operation_id: ym_delete_goods_feedback_comment
+  section: Отзывы о товарах
+  method: POST
+  host: api.partner.market.yandex.ru
+  path: /v2/businesses/{businessId}/goods-feedback/comments/delete
+  scope: seller
+  safety: destructive
+  pagination: none
+  summary: Удаление комментария к отзыву
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/goods-feedback/deleteGoodsFeedbackComment
+  params:
+    query: sourceType
+    body: DeleteGoodsFeedbackCommentRequest
+  keywords:
+  - delete
+  - goods
+  - feedback
+  - comment
+- operation_id: ym_get_goods_feedback_comments
+  section: Отзывы о товарах
+  method: POST
+  host: api.partner.market.yandex.ru
+  path: /v2/businesses/{businessId}/goods-feedback/comments
+  scope: seller
+  safety: read
+  pagination: page_token
+  summary: Получение комментариев к отзыву
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/goods-feedback/getGoodsFeedbackComments
+  items_path: result.comments
+  params:
+    query: pageToken, limit, sourceType
+    body: GetGoodsFeedbackCommentsRequest
+  keywords:
+  - goods
+  - feedback
+  - comments
+- operation_id: ym_get_goods_feedbacks_urbanads
+  section: Отзывы о товарах
+  method: POST
+  host: api.partner.market.yandex.ru
+  path: /v1/businesses/{businessId}/goods-feedback-advertiser
+  scope: seller
+  safety: read
+  pagination: page_token
+  summary: Получение отзывов о товарах для рекламодателей
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/goods-feedback/getGoodsFeedbacksUrbanads
+  items_path: result.feedbacks
+  params:
+    query: pageToken, limit, sourceType
+    body: GetGoodsFeedbackUrbanadsRequest
+  keywords:
+  - goods
+  - feedbacks
+  - urbanads
+- operation_id: ym_get_goods_questions
+  section: Вопросы о товарах
+  method: POST
+  host: api.partner.market.yandex.ru
+  path: /v1/businesses/{businessId}/goods-questions
+  scope: seller
+  safety: read
+  pagination: page_token
+  summary: Получение вопросов о товарах продавца
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/goods-questions/getGoodsQuestions
+  items_path: result.questions
+  params:
+    query: pageToken, limit
+    body: GetQuestionsRequest
+  keywords:
+  - goods
+  - questions
+- operation_id: ym_get_goods_question_answers
+  section: Вопросы о товарах
+  method: POST
+  host: api.partner.market.yandex.ru
+  path: /v1/businesses/{businessId}/goods-questions/answers
+  scope: seller
+  safety: read
+  pagination: page_token
+  summary: Получение ответов на вопрос
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/goods-questions/getGoodsQuestionAnswers
+  items_path: result.answers
+  params:
+    query: pageToken, limit
+    body: GetAnswersRequest
+  keywords:
+  - goods
+  - question
+  - answers
+- operation_id: ym_update_goods_question_text_entity
+  section: Вопросы о товарах
+  method: POST
+  host: api.partner.market.yandex.ru
+  path: /v1/businesses/{businessId}/goods-questions/update
+  scope: seller
+  safety: write
+  pagination: none
+  summary: Создание, изменение и удаление ответа или комментария
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/goods-questions/updateGoodsQuestionTextEntity
+  params:
+    body: UpdateGoodsQuestionTextEntityRequest
+  keywords:
+  - update
+  - goods
+  - question
+  - text
+  - entity
+- operation_id: ym_get_campaign_offers
+  section: Товары
+  method: POST
+  host: api.partner.market.yandex.ru
+  path: /v2/campaigns/{campaignId}/offers
+  scope: seller
+  safety: read
+  pagination: page_token
+  summary: Информация о товарах, которые размещены в заданном магазине
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/offers/getCampaignOffers
+  items_path: result.offers
+  params:
+    query: pageToken, limit
+    body: GetCampaignOffersRequest
+  keywords:
+  - campaign
+  - offers
+- operation_id: ym_update_campaign_offers
+  section: Товары
+  method: POST
+  host: api.partner.market.yandex.ru
+  path: /v2/campaigns/{campaignId}/offers/update
+  scope: seller
+  safety: write
+  pagination: none
+  summary: Изменение условий продажи товаров в магазине
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/offers/updateCampaignOffers
+  params:
+    body: UpdateCampaignOffersRequest
+  keywords:
+  - update
+  - campaign
+  - offers
+- operation_id: ym_delete_campaign_offers
+  section: Товары
+  method: POST
+  host: api.partner.market.yandex.ru
+  path: /v2/campaigns/{campaignId}/offers/delete
+  scope: seller
+  safety: destructive
+  pagination: none
+  summary: Удаление товаров из ассортимента магазина
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/offers/deleteCampaignOffers
+  items_path: result.notDeletedOfferIds
+  params:
+    body: DeleteCampaignOffersRequest
+  keywords:
+  - delete
+  - campaign
+  - offers
+- operation_id: ym_get_offer_recommendations
+  section: Товары
+  method: POST
+  host: api.partner.market.yandex.ru
+  path: /v2/businesses/{businessId}/offers/recommendations
+  scope: seller
+  safety: read
+  pagination: page_token
+  summary: Рекомендации Маркета, касающиеся цен
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/offers/getOfferRecommendations
+  items_path: result.offerRecommendations
+  params:
+    query: pageToken, limit
+    body: GetOfferRecommendationsRequest
+  keywords:
+  - offer
+  - recommendations
+- operation_id: ym_put_bids_for_business
+  section: Буст продаж и ставки (реклама)
+  method: PUT
+  host: api.partner.market.yandex.ru
+  path: /v2/businesses/{businessId}/bids
+  scope: seller
+  safety: write
+  pagination: none
+  summary: Включение буста продаж и установка ставок
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/bids/putBidsForBusiness
+  params:
+    body: PutSkuBidsRequest
+  keywords:
+  - put
+  - bids
+  - for
+  - business
+- operation_id: ym_put_bids_for_campaign
+  section: Буст продаж и ставки (реклама)
+  method: PUT
+  host: api.partner.market.yandex.ru
+  path: /v2/campaigns/{campaignId}/bids
+  scope: seller
+  safety: write
+  pagination: none
+  summary: Включение буста продаж и установка ставок для магазина
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/bids/putBidsForCampaign
+  params:
+    body: PutSkuBidsRequest
+  keywords:
+  - put
+  - bids
+  - for
+  - campaign
+- operation_id: ym_get_bids_info_for_business
+  section: Буст продаж и ставки (реклама)
+  method: POST
+  host: api.partner.market.yandex.ru
+  path: /v2/businesses/{businessId}/bids/info
+  scope: seller
+  safety: read
+  pagination: page_token
+  summary: Информация об установленных ставках
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/bids/getBidsInfoForBusiness
+  items_path: result.bids
+  params:
+    query: pageToken, limit
+    body: GetBidsInfoRequest
+  keywords:
+  - bids
+  - info
+  - for
+  - business
+- operation_id: ym_get_bids_recommendations
+  section: Буст продаж и ставки (реклама)
+  method: POST
+  host: api.partner.market.yandex.ru
+  path: /v2/businesses/{businessId}/bids/recommendations
+  scope: seller
+  safety: read
+  pagination: none
+  summary: Рекомендованные ставки для заданных товаров
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/bids/getBidsRecommendations
+  items_path: result.recommendations
+  params:
+    body: GetBidsRecommendationsRequest
+  keywords:
+  - bids
+  - recommendations
+- operation_id: ym_get_warehouses
+  section: Склады
+  method: GET
+  host: api.partner.market.yandex.ru
+  path: /v2/businesses/{businessId}/warehouses
+  scope: seller
+  safety: read
+  pagination: none
+  summary: Список складов и групп складов
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/warehouses/getWarehouses
+  keywords:
+  - warehouses
+- operation_id: ym_get_paged_warehouses
+  section: Склады
+  method: POST
+  host: api.partner.market.yandex.ru
+  path: /v2/businesses/{businessId}/warehouses
+  scope: seller
+  safety: read
+  pagination: page_token
+  summary: Список складов
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/warehouses/getPagedWarehouses
+  items_path: result.warehouses
+  params:
+    query: pageToken, limit
+    body: GetPagedWarehousesRequest
+  keywords:
+  - paged
+  - warehouses
+- operation_id: ym_get_partner_warehouses
+  section: Склады
+  method: POST
+  host: api.partner.market.yandex.ru
+  path: /v3/businesses/{businessId}/warehouses
+  scope: seller
+  safety: read
+  pagination: page_token
+  summary: Список складов
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/warehouses/getPartnerWarehouses
+  items_path: result.warehouses
+  params:
+    query: pageToken, limit
+    body: GetPartnerWarehousesRequest
+  keywords:
+  - partner
+  - warehouses
+- operation_id: ym_get_fulfillment_warehouses
+  section: Склады
+  method: GET
+  host: api.partner.market.yandex.ru
+  path: /v2/warehouses
+  scope: seller
+  safety: read
+  pagination: none
+  summary: Идентификаторы фулфилмент-складов Маркета
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/warehouses/getFulfillmentWarehouses
+  items_path: result.warehouses
+  params:
+    query: campaignId
+  keywords:
+  - fulfillment
+  - warehouses
+- operation_id: ym_update_warehouse_status
+  section: Склады
+  method: POST
+  host: api.partner.market.yandex.ru
+  path: /v2/campaigns/{campaignId}/warehouse/status
+  scope: seller
+  safety: write
+  pagination: none
+  summary: Изменение статуса склада
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/warehouses/updateWarehouseStatus
+  params:
+    body: UpdateWarehouseStatusRequest
+  keywords:
+  - update
+  - warehouse
+  - status
+- operation_id: ym_update_warehouse_model_status
+  section: Склады
+  method: POST
+  host: api.partner.market.yandex.ru
+  path: /v3/businesses/{businessId}/warehouse/models/status
+  scope: seller
+  safety: write
+  pagination: none
+  summary: Включение/выключение модели работы склада
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/warehouses/updateWarehouseModelStatus
+  params:
+    body: UpdateWarehouseModelStatusRequest
+  keywords:
+  - update
+  - warehouse
+  - model
+  - status
+- operation_id: ym_get_category_content_parameters
+  section: Категории
+  method: POST
+  host: api.partner.market.yandex.ru
+  path: /v2/category/{categoryId}/parameters
+  scope: seller
+  safety: read
+  pagination: none
+  summary: Списки характеристик товаров по категориям
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/content/getCategoryContentParameters
+  items_path: result.parameters
+  params:
+    query: businessId
+  keywords:
+  - category
+  - content
+  - parameters
+- operation_id: ym_get_offer_cards_content_status
+  section: Карточки товаров (контент)
+  method: POST
+  host: api.partner.market.yandex.ru
+  path: /v2/businesses/{businessId}/offer-cards
+  scope: seller
+  safety: read
+  pagination: page_token
+  summary: Получение информации о заполненности карточек магазина
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/content/getOfferCardsContentStatus
+  items_path: result.offerCards
+  params:
+    query: pageToken, limit
+    body: GetOfferCardsContentStatusRequest
+  keywords:
+  - offer
+  - cards
+  - content
+  - status
+- operation_id: ym_update_offer_content
+  section: Карточки товаров (контент)
+  method: POST
+  host: api.partner.market.yandex.ru
+  path: /v2/businesses/{businessId}/offer-cards/update
+  scope: seller
+  safety: write
+  pagination: none
+  summary: Редактирование категорийных характеристик товара
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/content/updateOfferContent
+  items_path: results
+  params:
+    body: UpdateOfferContentRequest
+  keywords:
+  - update
+  - offer
+  - content
+- operation_id: ym_create_chat
+  section: Чаты с покупателями
+  method: POST
+  host: api.partner.market.yandex.ru
+  path: /v2/businesses/{businessId}/chats/new
+  scope: seller
+  safety: write
+  pagination: none
+  summary: Создание нового чата с покупателем
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/chats/createChat
+  params:
+    body: CreateChatRequest
+  keywords:
+  - create
+  - chat
+- operation_id: ym_get_chats
+  section: Чаты с покупателями
+  method: POST
+  host: api.partner.market.yandex.ru
+  path: /v2/businesses/{businessId}/chats
+  scope: seller
+  safety: read
+  pagination: page_token
+  summary: Получение доступных чатов
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/chats/getChats
+  items_path: result.chats
+  params:
+    query: pageToken, limit
+    body: GetChatsRequest
+  keywords:
+  - chats
+- operation_id: ym_get_chat
+  section: Чаты с покупателями
+  method: GET
+  host: api.partner.market.yandex.ru
+  path: /v2/businesses/{businessId}/chat
+  scope: seller
+  safety: read
+  pagination: none
+  summary: Получение чата по идентификатору
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/chats/getChat
+  params:
+    query: chatId
+  keywords:
+  - chat
+- operation_id: ym_send_file_to_chat
+  section: Чаты с покупателями
+  method: POST
+  host: api.partner.market.yandex.ru
+  path: /v2/businesses/{businessId}/chats/file/send
+  scope: seller
+  safety: write
+  pagination: none
+  summary: Отправка файла в чат
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/chats/sendFileToChat
+  params:
+    query: chatId
+  keywords:
+  - send
+  - file
+  - chat
+- operation_id: ym_send_message_to_chat
+  section: Чаты с покупателями
+  method: POST
+  host: api.partner.market.yandex.ru
+  path: /v2/businesses/{businessId}/chats/message
+  scope: seller
+  safety: write
+  pagination: none
+  summary: Отправка сообщения в чат
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/chats/sendMessageToChat
+  params:
+    query: chatId
+    body: SendMessageToChatRequest
+  keywords:
+  - send
+  - message
+  - chat
+- operation_id: ym_get_chat_message
+  section: Чаты с покупателями
+  method: GET
+  host: api.partner.market.yandex.ru
+  path: /v2/businesses/{businessId}/chats/message
+  scope: seller
+  safety: read
+  pagination: none
+  summary: Получение сообщения в чате
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/chats/getChatMessage
+  items_path: result.payload
+  params:
+    query: chatId, messageId
+  keywords:
+  - chat
+  - message
+- operation_id: ym_get_chat_history
+  section: Чаты с покупателями
+  method: POST
+  host: api.partner.market.yandex.ru
+  path: /v2/businesses/{businessId}/chats/history
+  scope: seller
+  safety: read
+  pagination: page_token
+  summary: Получение истории сообщений в чате
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/chats/getChatHistory
+  items_path: result.messages
+  params:
+    query: chatId, pageToken, limit
+    body: GetChatHistoryRequest
+  keywords:
+  - chat
+  - history
+- operation_id: ym_calculate_tariffs
+  section: Тарифы и комиссии
+  method: POST
+  host: api.partner.market.yandex.ru
+  path: /v2/tariffs/calculate
+  scope: seller
+  safety: read
+  pagination: none
+  summary: Калькулятор стоимости услуг
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/tariffs/calculateTariffs
+  items_path: result.offers
+  params:
+    body: CalculateTariffsRequest
+  keywords:
+  - tariffs
+- operation_id: ym_get_categories_tree
+  section: Категории
+  method: POST
+  host: api.partner.market.yandex.ru
+  path: /v2/categories/tree
+  scope: seller
+  safety: read
+  pagination: none
+  summary: Дерево категорий
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/categories/getCategoriesTree
+  items_path: result.children
+  params:
+    body: GetCategoriesRequest
+  keywords:
+  - categories
+  - tree
+- operation_id: ym_get_categories_max_sale_quantum
+  section: Категории
+  method: POST
+  host: api.partner.market.yandex.ru
+  path: /v2/categories/max-sale-quantum
+  scope: seller
+  safety: read
+  pagination: none
+  summary: Лимит на установку кванта продажи и минимального количества товаров в заказе
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/categories/getCategoriesMaxSaleQuantum
+  items_path: results
+  params:
+    body: GetCategoriesMaxSaleQuantumRequest
+  keywords:
+  - categories
+  - max
+  - sale
+  - quantum
+- operation_id: ym_get_quality_ratings
+  section: Рейтинг и индекс качества
+  method: POST
+  host: api.partner.market.yandex.ru
+  path: /v2/businesses/{businessId}/ratings/quality
+  scope: seller
+  safety: read
+  pagination: none
+  summary: Индекс качества магазинов
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/ratings/getQualityRatings
+  items_path: result.campaignRatings
+  params:
+    body: GetQualityRatingRequest
+  keywords:
+  - quality
+  - ratings
+- operation_id: ym_get_quality_rating_details
+  section: Рейтинг и индекс качества
+  method: POST
+  host: api.partner.market.yandex.ru
+  path: /v2/campaigns/{campaignId}/ratings/quality/details
+  scope: seller
+  safety: read
+  pagination: none
+  summary: Заказы, которые повлияли на индекс качества
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/ratings/getQualityRatingDetails
+  items_path: result.affectedOrders
+  keywords:
+  - quality
+  - rating
+  - details
+- operation_id: ym_get_promos
+  section: Акции и продвижение
+  method: POST
+  host: api.partner.market.yandex.ru
+  path: /v2/businesses/{businessId}/promos
+  scope: seller
+  safety: read
+  pagination: none
+  summary: Получение списка акций
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/promos/getPromos
+  items_path: result.promos
+  params:
+    body: GetPromosRequest
+  keywords:
+  - promos
+- operation_id: ym_get_promo_offers
+  section: Акции и продвижение
+  method: POST
+  host: api.partner.market.yandex.ru
+  path: /v2/businesses/{businessId}/promos/offers
+  scope: seller
+  safety: read
+  pagination: page_token
+  summary: Получение списка товаров, которые участвуют или могут участвовать в акции
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/promos/getPromoOffers
+  items_path: result.offers
+  params:
+    query: pageToken, limit
+    body: GetPromoOffersRequest
+  keywords:
+  - promo
+  - offers
+- operation_id: ym_update_promo_offers
+  section: Акции и продвижение
+  method: POST
+  host: api.partner.market.yandex.ru
+  path: /v2/businesses/{businessId}/promos/offers/update
+  scope: seller
+  safety: write
+  pagination: none
+  summary: Добавление товаров в акцию или изменение их цен
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/promos/updatePromoOffers
+  params:
+    body: UpdatePromoOffersRequest
+  keywords:
+  - update
+  - promo
+  - offers
+- operation_id: ym_delete_promo_offers
+  section: Акции и продвижение
+  method: POST
+  host: api.partner.market.yandex.ru
+  path: /v2/businesses/{businessId}/promos/offers/delete
+  scope: seller
+  safety: destructive
+  pagination: none
+  summary: Удаление товаров из акции
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/promos/deletePromoOffers
+  items_path: result.rejectedOffers
+  params:
+    body: DeletePromoOffersRequest
+  keywords:
+  - delete
+  - promo
+  - offers
+- operation_id: ym_get_supply_requests
+  section: Заявки на поставку
+  method: POST
+  host: api.partner.market.yandex.ru
+  path: /v2/campaigns/{campaignId}/supply-requests
+  scope: seller
+  safety: read
+  pagination: page_token
+  summary: Получение информации о заявках на поставку, вывоз и утилизацию
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/supply-requests/getSupplyRequests
+  items_path: result.requests
+  params:
+    query: pageToken, limit
+    body: GetSupplyRequestsRequest
+  keywords:
+  - supply
+  - requests
+- operation_id: ym_get_supply_request_items
+  section: Заявки на поставку
+  method: POST
+  host: api.partner.market.yandex.ru
+  path: /v2/campaigns/{campaignId}/supply-requests/items
+  scope: seller
+  safety: read
+  pagination: page_token
+  summary: Получение товаров в заявке на поставку, вывоз или утилизацию
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/supply-requests/getSupplyRequestItems
+  items_path: result.items
+  params:
+    query: pageToken, limit
+    body: GetSupplyRequestItemsRequest
+  keywords:
+  - supply
+  - request
+  - items
+- operation_id: ym_get_supply_request_documents
+  section: Заявки на поставку
+  method: POST
+  host: api.partner.market.yandex.ru
+  path: /v2/campaigns/{campaignId}/supply-requests/documents
+  scope: seller
+  safety: read
+  pagination: none
+  summary: Получение документов по заявке на поставку, вывоз или утилизацию
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/supply-requests/getSupplyRequestDocuments
+  items_path: result.documents
+  params:
+    body: GetSupplyRequestDocumentsRequest
+  keywords:
+  - supply
+  - request
+  - documents
+- operation_id: ym_get_auth_token_info
+  section: Токен и доступ (пользователь)
+  method: POST
+  host: api.partner.market.yandex.ru
+  path: /v2/auth/token
+  scope: seller
+  safety: read
+  pagination: none
+  summary: Получение информации о токене авторизации
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/auth/getAuthTokenInfo
+  items_path: result.apiKey.authScopes
+  keywords:
+  - auth
+  - token
+  - info
+- operation_id: ym_get_operations
+  section: Статусы операций (система)
+  method: POST
+  host: api.partner.market.yandex.ru
+  path: /v1/businesses/{businessId}/operations
+  scope: seller
+  safety: read
+  pagination: none
+  summary: Получение статусов операций
+  doc: https://yandex.ru/dev/market/partner-api/doc/ru/reference/operations/getOperations
+  items_path: result.operations
+  params:
+    body: GetOperationsRequest
+  keywords:
+  - operations

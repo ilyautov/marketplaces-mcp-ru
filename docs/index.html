@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>marketplaces-mcp-ru — Wildberries и Ozon в вашем ИИ-ассистенте</title>
-<meta name="description" content="Подключает ИИ-ассистента (Claude, Cursor, Codex, Cowork) напрямую к кабинетам Wildberries и Ozon. Продажи, остатки, цены, финансы, отзывы — из Seller API с указанием источника, а не выдумка. Перед изменением цены агент просит подтверждение. Без браузера и капчи. Ставится в один клик.">
-<meta property="og:title" content="marketplaces-mcp-ru — Wildberries и Ozon в вашем ИИ-ассистенте">
-<meta property="og:description" content="Кабинеты WB и Ozon прямо в чате. Цифры из Seller API с источником, а не из воздуха. Safety-гейт перед записью. Ставится в один клик — .mcpb, uvx или Docker.">
+<title>marketplaces-mcp-ru — Wildberries, Ozon, Яндекс Маркет и Авито в вашем ИИ-ассистенте</title>
+<meta name="description" content="MCP-сервер для маркетплейсов: подключает ИИ-ассистента (Claude, Cursor, Codex, Cowork) напрямую к кабинетам Wildberries, Ozon, Яндекс Маркета и Авито. Продажи, заказы, остатки, цены, финансы, отзывы — из API с указанием источника, а не выдумка. Перед изменением цены агент просит подтверждение. Без браузера и капчи. Ставится в один клик.">
+<meta property="og:title" content="marketplaces-mcp-ru — Wildberries, Ozon, Яндекс Маркет и Авито в вашем ИИ-ассистенте">
+<meta property="og:description" content="Кабинеты WB, Ozon, Яндекс Маркета и Авито прямо в чате. Цифры из Seller API с источником, а не из воздуха. Safety-гейт перед записью. Ставится в один клик — .mcpb, uvx или Docker.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://marketplaces-mcp-ru.aifrontier.tech/">
 <meta property="og:image" content="https://marketplaces-mcp-ru.aifrontier.tech/assets/social-preview.png">
@@ -44,13 +44,13 @@
     <div class="wrap hero-grid">
       <div>
         <div class="kicker">marketplaces-mcp-ru · alpha</div>
-        <h1>Wildberries и Ozon <span class="accent">прямо в чате</span></h1>
-        <p class="sub">Подключает ИИ-ассистента напрямую к вашим кабинетам WB и Ozon. Продажи, остатки, цены, финансы, отзывы — приходят из Seller API с указанием источника, а не выдумываются. Два кабинета в двух браузерах превращаются в один разговор обычными словами.</p>
+        <h1>Wildberries, Ozon, Яндекс Маркет и Авито <span class="accent">прямо в чате</span></h1>
+        <p class="sub">Подключает ИИ-ассистента напрямую к вашим кабинетам WB, Ozon, Яндекс Маркета и Авито. Продажи, заказы, остатки, цены, финансы, отзывы — приходят из API маркетплейса с указанием источника, а не выдумываются. Четыре кабинета в четырёх браузерах превращаются в один разговор обычными словами.</p>
         <div class="cta-row">
           <a class="btn btn-primary" href="https://github.com/ilyautov/marketplaces-mcp-ru" aria-label="Открыть репозиторий на GitHub">★ Открыть на GitHub</a>
           <a class="btn btn-ghost" href="#install">Как поставить</a>
         </div>
-        <div class="trust-mini"><span class="tl" aria-hidden="true"><i class="g"></i><i class="a"></i><i class="r"></i></span><span class="tm-text">Открытый код · MIT · 793 метода Seller API WB + Ozon, ядро выверено на реальных кабинетах</span></div>
+        <div class="trust-mini"><span class="tl" aria-hidden="true"><i class="g"></i><i class="a"></i><i class="r"></i></span><span class="tm-text">Открытый код · MIT · 1022 метода API WB + Ozon + Яндекс Маркет + Авито, ядро выверено на реальных кабинетах</span></div>
       </div>
       <div class="art" role="img" aria-label="Два кабинета маркетплейсов сводятся в один ответ с источником">
         <div class="win w1"><div class="lines"><b></b><b></b><b></b></div></div>
@@ -72,7 +72,7 @@
         <span class="n">445 200</span>
       </div>
       <p class="small">Модель не смотрит в кабинет — она достраивает похоже выглядящую цифру. Для решения о закупке или цене на такой цифре опираться нельзя. А браузерные агенты спотыкаются о капчу и авторизацию.</p>
-      <p class="verdict">Здесь цифра берётся из <b>ответа Wildberries и Ozon</b> — с методом и полем, из которого она пришла. Не пересказ, не догадка.</p>
+      <p class="verdict">Здесь цифра берётся из <b>ответа маркетплейса</b> — с методом и полем, из которого она пришла. Не пересказ, не догадка.</p>
     </div>
   </section>
 
@@ -87,7 +87,7 @@
         <div class="card">
           <div class="ico" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></div>
           <h3>Цифры из Seller API</h3>
-          <p>Продажи, остатки, цены, финансы приходят из ответа Wildberries и Ozon с указанием источника и полей. Не пересказ и не «прикидка» модели.</p>
+          <p>Продажи, остатки, цены, финансы приходят из ответа Wildberries, Ozon, Яндекс Маркета и Авито с указанием источника и полей. Не пересказ и не «прикидка» модели.</p>
         </div>
         <div class="card">
           <div class="ico" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
@@ -108,7 +108,7 @@
     <div class="wrap">
       <div class="sec-head">
         <h2>Готовые сценарии, а не только сырой API</h2>
-        <p>Внутри 793 метода Seller API обоих кабинетов. Поверх них — пошаговые сценарии под ежедневные задачи продавца: с трактовкой результата и типичными ошибками.</p>
+        <p>Внутри 1022 метода API четырёх площадок: Wildberries, Ozon, Яндекс Маркет, Авито. Поверх них — пошаговые сценарии под ежедневные задачи продавца: с трактовкой результата и типичными ошибками.</p>
       </div>
       <div class="grid3">
         <div class="card">
@@ -166,7 +166,7 @@
         </div>
       </div>
       <p class="small" style="color:var(--mute);margin-top:20px;max-width:62ch">
-        Совет: первым делом скажите <b class="mono">«что ты умеешь по моему кабинету»</b> — агент покажет готовые сценарии для WB и Ozon. Несколько магазинов подключаются и переключаются прямо из чата.
+        Совет: первым делом скажите <b class="mono">«что ты умеешь по моему кабинету»</b> — агент покажет готовые сценарии для WB, Ozon, Яндекс Маркета и Авито. Несколько магазинов подключаются и переключаются прямо из чата.
       </p>
     </div>
   </section>
@@ -182,19 +182,19 @@
         <div class="step">
           <div>
             <h3>Claude Desktop — в один клик</h3>
-            <p>Скачайте <b class="mono">.mcpb</b> из <a href="https://github.com/ilyautov/marketplaces-mcp-ru/releases">GitHub Releases</a> и дважды кликните. Claude Desktop сам поставит расширение и спросит ключи. Без терминала и Gatekeeper. Один бандл поднимает WB + Ozon + Performance сразу.</p>
+            <p>Скачайте <b class="mono">.mcpb</b> из <a href="https://github.com/ilyautov/marketplaces-mcp-ru/releases">GitHub Releases</a> и дважды кликните. Claude Desktop сам поставит расширение и спросит ключи. Без терминала и Gatekeeper. Один бандл поднимает WB + Ozon + Performance + Яндекс Маркет + Авито сразу.</p>
           </div>
         </div>
         <div class="step">
           <div>
             <h3>Попросить своего ИИ — без терминала</h3>
-            <p>Откройте Claude или Cowork и скажите «установи WB + Ozon MCP». Агент проведёт по встроенному скиллу установки. В Claude Code ставится полностью сам.</p>
+            <p>Откройте Claude или Cowork и скажите «установи marketplaces-mcp-ru». Агент проведёт по встроенному скиллу установки. В Claude Code ставится полностью сам.</p>
           </div>
         </div>
         <div class="step">
           <div>
             <h3>Для разработчиков — uvx</h3>
-            <p><b class="mono">uvx marketplaces-mcp-ru</b> запускает объединённый сервер прямо из PyPI. Отдельные серверы — командами <b class="mono">wb-mcp</b> / <b class="mono">ozon-mcp</b> / <b class="mono">ozon-perf-mcp</b>. В VS Code и Cursor ставится кнопкой из <a href="https://github.com/ilyautov/marketplaces-mcp-ru#установка">README</a>.</p>
+            <p><b class="mono">uvx marketplaces-mcp-ru</b> запускает объединённый сервер прямо из PyPI. Отдельные серверы — командами <b class="mono">wb-mcp</b> / <b class="mono">ozon-mcp</b> / <b class="mono">ozon-perf-mcp</b> / <b class="mono">yandex-mcp</b> / <b class="mono">avito-mcp</b>. В VS Code и Cursor ставится кнопкой из <a href="https://github.com/ilyautov/marketplaces-mcp-ru#установка">README</a>.</p>
           </div>
         </div>
         <div class="step">
@@ -223,7 +223,7 @@
       <div class="oss">
         <div class="kicker">открытый проект</div>
         <h2>Это всё в опен-сорсе. Берите, форкайте, улучшайте.</h2>
-        <p>Открытый инструмент для продавцов WB и Ozon под MIT: проверенное вручную ядро (продажи, остатки, цены, финансы, отзывы) выверено на реальных кабинетах, остальные методы импортированы из спецификаций как карта для разведки. Поставьте звезду, чтобы проект нашли другие. Нашли косяк или есть идея — заводите issue.</p>
+        <p>Открытый инструмент для продавцов Wildberries, Ozon, Яндекс Маркета и Авито под MIT: проверенное вручную ядро (продажи, остатки, цены, финансы, отзывы) выверено на реальных кабинетах, остальные методы импортированы из спецификаций как карта для разведки. Поставьте звезду, чтобы проект нашли другие. Нашли косяк или есть идея — заводите issue.</p>
         <div class="cta-row">
           <a class="btn btn-primary" href="https://github.com/ilyautov/marketplaces-mcp-ru">★ Открыть на GitHub</a>
           <a class="btn btn-ghost" href="https://github.com/ilyautov/marketplaces-mcp-ru/issues">Завести issue</a>

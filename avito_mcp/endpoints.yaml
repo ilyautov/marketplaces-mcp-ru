@@ -1,0 +1,995 @@
+default_host: api.avito.ru
+endpoints:
+- operation_id: avito_get_chats_v2
+  section: Мессенджер (чаты с покупателями)
+  method: GET
+  host: api.avito.ru
+  path: /messenger/v2/accounts/{user_id}/chats
+  scope: seller
+  safety: read
+  pagination: offset
+  summary: Список чатов пользователя (по объявлениям u2i, между пользователями u2u),
+    фильтр по item_ids и unread_only; limit/offset
+  doc: https://developers.avito.ru/api-catalog/messenger/documentation#operation/getChatsV2
+  items_path: chats
+  params:
+    query: item_ids, unread_only, chat_types, limit, offset
+  keywords:
+  - chats
+- operation_id: avito_get_chat_by_id_v2
+  section: Мессенджер (чаты с покупателями)
+  method: GET
+  host: api.avito.ru
+  path: /messenger/v2/accounts/{user_id}/chats/{chat_id}
+  scope: seller
+  safety: read
+  pagination: none
+  summary: Информация по чату и последнее сообщение в нём
+  doc: https://developers.avito.ru/api-catalog/messenger/documentation#operation/getChatByIdV2
+  keywords:
+  - chat
+- operation_id: avito_get_messages_v3
+  section: Мессенджер (чаты с покупателями)
+  method: GET
+  host: api.avito.ru
+  path: /messenger/v3/accounts/{user_id}/chats/{chat_id}/messages/
+  scope: seller
+  safety: read
+  pagination: offset
+  summary: Список сообщений чата (не помечает чат прочитанным); limit/offset
+  doc: https://developers.avito.ru/api-catalog/messenger/documentation#operation/getMessagesV3
+  params:
+    query: limit, offset
+  keywords:
+  - messages
+- operation_id: avito_post_send_message
+  section: Мессенджер (чаты с покупателями)
+  method: POST
+  host: api.avito.ru
+  path: /messenger/v1/accounts/{user_id}/chats/{chat_id}/messages
+  scope: seller
+  safety: write
+  pagination: none
+  summary: Отправка текстового сообщения в чат (до 1000 символов)
+  doc: https://developers.avito.ru/api-catalog/messenger/documentation#operation/postSendMessage
+  params:
+    body: message,type
+  keywords:
+  - post
+  - send
+  - message
+- operation_id: avito_post_send_image_message
+  section: Мессенджер (чаты с покупателями)
+  method: POST
+  host: api.avito.ru
+  path: /messenger/v1/accounts/{user_id}/chats/{chat_id}/messages/image
+  scope: seller
+  safety: write
+  pagination: none
+  summary: Отправка сообщения с изображением (image_id из uploadImages)
+  doc: https://developers.avito.ru/api-catalog/messenger/documentation#operation/postSendImageMessage
+  params:
+    body: image_id
+  keywords:
+  - post
+  - send
+  - image
+  - message
+- operation_id: avito_upload_images
+  section: Мессенджер (чаты с покупателями)
+  method: POST
+  host: api.avito.ru
+  path: /messenger/v1/accounts/{user_id}/uploadImages
+  scope: seller
+  safety: write
+  pagination: none
+  summary: Загрузка изображения для отправки в чат (multipart/form-data, до 24 МБ)
+  doc: https://developers.avito.ru/api-catalog/messenger/documentation#operation/uploadImages
+  params:
+    body: uploadfile[]
+  keywords:
+  - upload
+  - images
+- operation_id: avito_delete_message
+  section: Мессенджер (чаты с покупателями)
+  method: POST
+  host: api.avito.ru
+  path: /messenger/v1/accounts/{user_id}/chats/{chat_id}/messages/{message_id}
+  scope: seller
+  safety: destructive
+  pagination: none
+  summary: Удаление сообщения (тип меняется на deleted; не позднее часа после отправки)
+  doc: https://developers.avito.ru/api-catalog/messenger/documentation#operation/deleteMessage
+  keywords:
+  - delete
+  - message
+- operation_id: avito_chat_read
+  section: Мессенджер (чаты с покупателями)
+  method: POST
+  host: api.avito.ru
+  path: /messenger/v1/accounts/{user_id}/chats/{chat_id}/read
+  scope: seller
+  safety: write
+  pagination: none
+  summary: Отметить чат прочитанным
+  doc: https://developers.avito.ru/api-catalog/messenger/documentation#operation/chatRead
+  keywords:
+  - chat
+- operation_id: avito_get_voice_files
+  section: Мессенджер (чаты с покупателями)
+  method: GET
+  host: api.avito.ru
+  path: /messenger/v1/accounts/{user_id}/getVoiceFiles
+  scope: seller
+  safety: read
+  pagination: none
+  summary: Ссылки на файлы голосовых сообщений по voice_ids (действуют 1 час)
+  doc: https://developers.avito.ru/api-catalog/messenger/documentation#operation/getVoiceFiles
+  params:
+    query: voice_ids
+  keywords:
+  - voice
+  - files
+- operation_id: avito_post_blacklist_v2
+  section: Мессенджер (чаты с покупателями)
+  method: POST
+  host: api.avito.ru
+  path: /messenger/v2/accounts/{user_id}/blacklist
+  scope: seller
+  safety: write
+  pagination: none
+  summary: Добавление пользователя в чёрный список (спам, мошенничество, оскорбления)
+  doc: https://developers.avito.ru/api-catalog/messenger/documentation#operation/postBlacklistV2
+  params:
+    body: users
+  keywords:
+  - post
+  - blacklist
+- operation_id: avito_get_subscriptions
+  section: Мессенджер (чаты с покупателями)
+  method: POST
+  host: api.avito.ru
+  path: /messenger/v1/subscriptions
+  scope: seller
+  safety: read
+  pagination: none
+  summary: Список подписок на webhook-уведомления о сообщениях
+  doc: https://developers.avito.ru/api-catalog/messenger/documentation#operation/getSubscriptions
+  items_path: subscriptions
+  keywords:
+  - subscriptions
+- operation_id: avito_post_webhook_v3
+  section: Мессенджер (чаты с покупателями)
+  method: POST
+  host: api.avito.ru
+  path: /messenger/v3/webhook
+  scope: seller
+  safety: write
+  pagination: none
+  summary: Включение webhook-уведомлений о новых сообщениях (url)
+  doc: https://developers.avito.ru/api-catalog/messenger/documentation#operation/postWebhookV3
+  params:
+    body: url
+  keywords:
+  - post
+  - webhook
+- operation_id: avito_post_webhook_unsubscribe
+  section: Мессенджер (чаты с покупателями)
+  method: POST
+  host: api.avito.ru
+  path: /messenger/v1/webhook/unsubscribe
+  scope: seller
+  safety: write
+  pagination: none
+  summary: Отключение webhook-уведомлений для url
+  doc: https://developers.avito.ru/api-catalog/messenger/documentation#operation/postWebhookUnsubscribe
+  params:
+    body: url
+  keywords:
+  - post
+  - webhook
+  - unsubscribe
+- operation_id: avito_get_orders
+  section: Заказы и Авито Доставка
+  method: GET
+  host: api.avito.ru
+  path: /order-management/1/orders
+  scope: seller
+  safety: read
+  pagination: avito_page
+  summary: Получение заказов по статусу (on_confirmation, ready_to_ship, in_transit,
+    canceled, delivered, on_return, in_dispute, closed); page/limit (<=20), dateFrom
+    (unix)
+  doc: https://developers.avito.ru/api-catalog/order-management/documentation#operation/getOrders
+  items_path: orders
+  params:
+    query: ids, statuses, dateFrom, page, limit
+  keywords:
+  - orders
+- operation_id: avito_apply_transition
+  section: Заказы и Авито Доставка
+  method: POST
+  host: api.avito.ru
+  path: /order-management/1/order/applyTransition
+  scope: seller
+  safety: write
+  pagination: none
+  summary: 'Изменение статуса заказа: confirm (подтвердить), reject (отменить), perform
+    (отправлен, RDBS), receive (доставлен, RDBS/CNC)'
+  doc: https://developers.avito.ru/api-catalog/order-management/documentation#operation/applyTransition
+  params:
+    body: orderId,transition,params
+  keywords:
+  - apply
+  - transition
+- operation_id: avito_markings
+  section: Заказы и Авито Доставка
+  method: POST
+  host: api.avito.ru
+  path: /order-management/1/markings
+  scope: seller
+  safety: write
+  pagination: none
+  summary: Передача кодов маркировки «Честный знак» для товаров в заказе (до подтверждения
+    заказа)
+  doc: https://developers.avito.ru/api-catalog/order-management/documentation#operation/markings
+  items_path: results
+  params:
+    body: markings
+  keywords:
+  - markings
+- operation_id: avito_set_order_tracking_number
+  section: Заказы и Авито Доставка
+  method: POST
+  host: api.avito.ru
+  path: /order-management/1/order/setTrackingNumber
+  scope: seller
+  safety: write
+  pagination: none
+  summary: Передача трек-номера посылки для доставки партнёрами продавца (DBS)
+  doc: https://developers.avito.ru/api-catalog/order-management/documentation#operation/setOrderTrackingNumber
+  params:
+    body: orderId,trackingNumber
+  keywords:
+  - set
+  - order
+  - tracking
+  - number
+- operation_id: avito_accept_return_order
+  section: Заказы и Авито Доставка
+  method: POST
+  host: api.avito.ru
+  path: /order-management/1/order/acceptReturnOrder
+  scope: seller
+  safety: write
+  pagination: none
+  summary: Подтверждение возврата и выбор отделения Почты России для получения возврата
+    (спор по заказу)
+  doc: https://developers.avito.ru/api-catalog/order-management/documentation#operation/acceptReturnOrder
+  params:
+    body: orderId,recipient,terminalNumber
+  keywords:
+  - accept
+  - return
+  - order
+- operation_id: avito_get_courier_delivery_range
+  section: Заказы и Авито Доставка
+  method: GET
+  host: api.avito.ru
+  path: /order-management/1/order/getCourierDeliveryRange
+  scope: seller
+  safety: read
+  pagination: none
+  summary: Доступные временные интервалы приезда курьера за заказом (Courier)
+  doc: https://developers.avito.ru/api-catalog/order-management/documentation#operation/getCourierDeliveryRange
+  items_path: result.dateOptions
+  params:
+    query: orderId, address
+  keywords:
+  - courier
+  - delivery
+  - range
+- operation_id: avito_set_courier_delivery_range
+  section: Заказы и Авито Доставка
+  method: POST
+  host: api.avito.ru
+  path: /order-management/1/order/setCourierDeliveryRange
+  scope: seller
+  safety: write
+  pagination: none
+  summary: Выбор/изменение времени приезда курьера — подтверждает курьерский заказ
+  doc: https://developers.avito.ru/api-catalog/order-management/documentation#operation/setCourierDeliveryRange
+  params:
+    body: orderId,address,addressDetails,startDate,endDate,intervalType,phone,name
+  keywords:
+  - set
+  - courier
+  - delivery
+  - range
+- operation_id: avito_cnc_set_details
+  section: Заказы и Авито Доставка
+  method: POST
+  host: api.avito.ru
+  path: /order-management/1/order/cncSetDetails
+  scope: seller
+  safety: write
+  pagination: none
+  summary: 'Подготовка заказа с самовывозом (CNC): адрес, срок бронирования, комментарий
+    покупателю'
+  doc: https://developers.avito.ru/api-catalog/order-management/documentation#operation/cncSetDetails
+  params:
+    body: id,marketplaceId,bookingPeriod,address,details
+  keywords:
+  - cnc
+  - set
+  - details
+- operation_id: avito_check_confirmation_code
+  section: Заказы и Авито Доставка
+  method: POST
+  host: api.avito.ru
+  path: /order-management/1/order/checkConfirmationCode
+  scope: seller
+  safety: read
+  pagination: none
+  summary: Проверка кода подтверждения при выдаче заказа в ПВЗ (для служб доставки)
+  doc: https://developers.avito.ru/api-catalog/order-management/documentation#operation/checkConfirmationCode
+  params:
+    body: confirmCode,parcelID
+  keywords:
+  - confirmation
+  - code
+- operation_id: avito_generate_labels
+  section: Заказы и Авито Доставка
+  method: POST
+  host: api.avito.ru
+  path: /order-management/1/orders/labels
+  scope: seller
+  safety: read
+  pagination: none
+  summary: Создать задачу на генерацию PDF-этикеток для заказов ПВЗ (до 100)
+  doc: https://developers.avito.ru/api-catalog/order-management/documentation#operation/generateLabels
+  params:
+    body: orderIDs
+  keywords:
+  - labels
+- operation_id: avito_generate_labels_extended
+  section: Заказы и Авито Доставка
+  method: POST
+  host: api.avito.ru
+  path: /order-management/1/orders/labels/extended
+  scope: seller
+  safety: read
+  pagination: none
+  summary: Создать задачу на генерацию PDF-этикеток для заказов ПВЗ (до 1000, 1 запрос/мин)
+  doc: https://developers.avito.ru/api-catalog/order-management/documentation#operation/generateLabelsExtended
+  params:
+    body: orderIDs
+  keywords:
+  - labels
+  - extended
+- operation_id: avito_download_label
+  section: Заказы и Авито Доставка
+  method: GET
+  host: api.avito.ru
+  path: /order-management/1/orders/labels/{taskID}/download
+  scope: seller
+  safety: read
+  pagination: none
+  summary: Скачать сгенерированный PDF с этикетками по ID задачи
+  doc: https://developers.avito.ru/api-catalog/order-management/documentation#operation/downloadLabel
+  keywords:
+  - label
+- operation_id: avito_get_dict_of_services_v1
+  section: Продвижение объявлений (реклама)
+  method: POST
+  host: api.avito.ru
+  path: /promotion/v1/items/services/dict
+  scope: seller
+  safety: read
+  pagination: none
+  summary: Словарь типов услуг продвижения (slug, название)
+  doc: https://developers.avito.ru/api-catalog/promotion/documentation#operation/get_dict_of_services_v1
+  keywords:
+  - dict
+  - services
+- operation_id: avito_get_services_by_items_v1
+  section: Продвижение объявлений (реклама)
+  method: POST
+  host: api.avito.ru
+  path: /promotion/v1/items/services/get
+  scope: seller
+  safety: read
+  pagination: none
+  summary: Список активных услуг продвижения по объявлениям (до 100 itemIds)
+  doc: https://developers.avito.ru/api-catalog/promotion/documentation#operation/get_services_by_items_v1
+  items_path: items
+  params:
+    body: itemIds
+  keywords:
+  - services
+  - items
+- operation_id: avito_get_bbip_suggests_by_items_v1
+  section: Продвижение объявлений (реклама)
+  method: POST
+  host: api.avito.ru
+  path: /promotion/v1/items/services/bbip/suggests/get
+  scope: seller
+  safety: read
+  pagination: none
+  summary: 'BBIP «Продвижение с прогнозом»: доступные варианты бюджета и периода по
+    объявлениям'
+  doc: https://developers.avito.ru/api-catalog/promotion/documentation#operation/get_bbip_suggests_by_items_v1
+  items_path: items
+  params:
+    body: itemIds
+  keywords:
+  - bbip
+  - suggests
+  - items
+- operation_id: avito_get_bbip_forecasts_by_items_v1
+  section: Продвижение объявлений (реклама)
+  method: POST
+  host: api.avito.ru
+  path: /promotion/v1/items/services/bbip/forecasts/get
+  scope: seller
+  safety: read
+  pagination: none
+  summary: 'BBIP: прогноз прироста просмотров и стоимость по выбранному бюджету/периоду'
+  doc: https://developers.avito.ru/api-catalog/promotion/documentation#operation/get_bbip_forecasts_by_items_v1
+  items_path: items
+  params:
+    body: items
+  keywords:
+  - bbip
+  - forecasts
+  - items
+- operation_id: avito_create_bbip_order_for_items_v1
+  section: Продвижение объявлений (реклама)
+  method: PUT
+  host: api.avito.ru
+  path: /promotion/v1/items/services/bbip/orders/create
+  scope: seller
+  safety: write
+  pagination: none
+  summary: 'BBIP: создать заявку на подключение продвижения по объявлениям — списывает
+    деньги с кошелька'
+  doc: https://developers.avito.ru/api-catalog/promotion/documentation#operation/create_bbip_order_for_items_v1
+  items_path: errors
+  params:
+    body: items
+  keywords:
+  - create
+  - bbip
+  - order
+  - for
+  - items
+- operation_id: avito_list_orders_by_user_v1
+  section: Продвижение объявлений (реклама)
+  method: POST
+  host: api.avito.ru
+  path: /promotion/v1/items/services/orders/get
+  scope: seller
+  safety: read
+  pagination: none
+  summary: Список заявок на подключение услуг продвижения (pagination page/perPage)
+  doc: https://developers.avito.ru/api-catalog/promotion/documentation#operation/list_orders_by_user_v1
+  items_path: orders
+  params:
+    body: pagination
+  keywords:
+  - orders
+  - user
+- operation_id: avito_get_order_status_v1
+  section: Продвижение объявлений (реклама)
+  method: POST
+  host: api.avito.ru
+  path: /promotion/v1/items/services/orders/status
+  scope: seller
+  safety: read
+  pagination: none
+  summary: Статус заявки на подключение услуг продвижения по orderId
+  doc: https://developers.avito.ru/api-catalog/promotion/documentation#operation/get_order_status_v1
+  items_path: items
+  params:
+    body: orderId
+  keywords:
+  - order
+  - status
+- operation_id: avito_get_ratings_info_v1
+  section: Рейтинг и отзывы
+  method: GET
+  host: api.avito.ru
+  path: /ratings/v1/info
+  scope: seller
+  safety: read
+  pagination: none
+  summary: 'Рейтинг продавца: оценка (score), число отзывов, включён ли рейтинг'
+  doc: https://developers.avito.ru/api-catalog/ratings/documentation#operation/getRatingsInfoV1
+  keywords:
+  - ratings
+  - info
+- operation_id: avito_get_reviews_v1
+  section: Рейтинг и отзывы
+  method: GET
+  host: api.avito.ru
+  path: /ratings/v1/reviews
+  scope: seller
+  safety: read
+  pagination: offset
+  summary: 'Список опубликованных отзывов на продавца с пагинацией offset/limit (<=50):
+    оценка, текст, стадия сделки, ответ'
+  doc: https://developers.avito.ru/api-catalog/ratings/documentation#operation/getReviewsV1
+  items_path: reviews
+  params:
+    query: offset, limit
+  keywords:
+  - reviews
+- operation_id: avito_create_review_answer_v1
+  section: Рейтинг и отзывы
+  method: POST
+  host: api.avito.ru
+  path: /ratings/v1/answers
+  scope: seller
+  safety: write
+  pagination: none
+  summary: Отправка ответа на отзыв (уходит на модерацию)
+  doc: https://developers.avito.ru/api-catalog/ratings/documentation#operation/createReviewAnswerV1
+  params:
+    body: reviewId,message
+  keywords:
+  - create
+  - review
+  - answer
+- operation_id: avito_remove_review_answer_v1
+  section: Рейтинг и отзывы
+  method: DELETE
+  host: api.avito.ru
+  path: /ratings/v1/answers/{answer_id}
+  scope: seller
+  safety: destructive
+  pagination: none
+  summary: Удаление ответа на отзыв
+  doc: https://developers.avito.ru/api-catalog/ratings/documentation#operation/removeReviewAnswerV1
+  keywords:
+  - remove
+  - review
+  - answer
+- operation_id: avito_get_user_info_self
+  section: Пользователь, баланс и операции
+  method: GET
+  host: api.avito.ru
+  path: /core/v1/accounts/self
+  scope: seller
+  safety: read
+  pagination: none
+  summary: Получение информации об авторизованном пользователе (id, имя, телефон,
+    email, ссылка на профиль)
+  doc: https://developers.avito.ru/api-catalog/user/documentation#operation/getUserInfoSelf
+  keywords:
+  - user
+  - info
+  - self
+- operation_id: avito_get_user_balance
+  section: Пользователь, баланс и операции
+  method: GET
+  host: api.avito.ru
+  path: /core/v1/accounts/{user_id}/balance/
+  scope: seller
+  safety: read
+  pagination: none
+  summary: Получение баланса кошелька пользователя (реальные деньги и бонусы)
+  doc: https://developers.avito.ru/api-catalog/user/documentation#operation/getUserBalance
+  keywords:
+  - user
+  - balance
+- operation_id: avito_post_operations_history
+  section: Пользователь, баланс и операции
+  method: POST
+  host: api.avito.ru
+  path: /core/v1/accounts/operations_history/
+  scope: seller
+  safety: read
+  pagination: none
+  summary: Получение истории операций пользователя (списания и пополнения кошелька)
+    за период до недели
+  doc: https://developers.avito.ru/api-catalog/user/documentation#operation/postOperationsHistory
+  items_path: result.operations
+  params:
+    body: dateTimeFrom,dateTimeTo
+  keywords:
+  - post
+  - operations
+  - history
+- operation_id: avito_get_stocks_info
+  section: Остатки в объявлениях
+  method: POST
+  host: api.avito.ru
+  path: /stock-management/1/info
+  scope: seller
+  safety: read
+  pagination: none
+  summary: Получение остатков по списку объявлений (quantity, is_unlimited, is_out_of_stock)
+  doc: https://developers.avito.ru/api-catalog/stock-management/documentation#operation/getStocksInfo
+  items_path: stocks
+  params:
+    body: item_ids,strong_consistency
+  keywords:
+  - stocks
+  - info
+- operation_id: avito_update_stocks
+  section: Остатки в объявлениях
+  method: PUT
+  host: api.avito.ru
+  path: /stock-management/1/stocks
+  scope: seller
+  safety: write
+  pagination: none
+  summary: Редактирование остатков в объявлениях (до 200 позиций за запрос)
+  doc: https://developers.avito.ru/api-catalog/stock-management/documentation#operation/updateStocks
+  items_path: stocks
+  params:
+    body: stocks
+  keywords:
+  - update
+  - stocks
+- operation_id: avito_vas_prices
+  section: Объявления и статистика
+  method: POST
+  host: api.avito.ru
+  path: /core/v1/accounts/{user_id}/vas/prices
+  scope: seller
+  safety: read
+  pagination: none
+  summary: Стоимость услуг продвижения и доступные значки для объявлений
+  doc: https://developers.avito.ru/api-catalog/item/documentation#operation/vasPrices
+  params:
+    body: itemIds
+  keywords:
+  - vas
+  - prices
+- operation_id: avito_post_calls_stats
+  section: Объявления и статистика
+  method: POST
+  host: api.avito.ru
+  path: /core/v1/accounts/{user_id}/calls/stats/
+  scope: seller
+  safety: read
+  pagination: none
+  summary: Статистика звонков по объявлениям за период
+  doc: https://developers.avito.ru/api-catalog/item/documentation#operation/postCallsStats
+  items_path: result.items
+  params:
+    body: dateFrom,dateTo,itemIds
+  keywords:
+  - post
+  - calls
+  - stats
+- operation_id: avito_get_item_info
+  section: Объявления и статистика
+  method: GET
+  host: api.avito.ru
+  path: /core/v1/accounts/{user_id}/items/{item_id}/
+  scope: seller
+  safety: read
+  pagination: none
+  summary: 'Информация по объявлению: статус, применённые услуги'
+  doc: https://developers.avito.ru/api-catalog/item/documentation#operation/getItemInfo
+  keywords:
+  - item
+  - info
+- operation_id: avito_put_item_vas
+  section: Объявления и статистика
+  method: PUT
+  host: api.avito.ru
+  path: /core/v1/accounts/{user_id}/items/{item_id}/vas
+  scope: seller
+  safety: write
+  pagination: none
+  summary: '[устарело] Применение дополнительной услуги к объявлению (устарело, используйте
+    /core/v2/items/{itemId}/vas/)'
+  doc: https://developers.avito.ru/api-catalog/item/documentation#operation/putItemVas
+  params:
+    body: vas_id
+  keywords:
+  - put
+  - item
+  - vas
+- operation_id: avito_get_items_info
+  section: Объявления и статистика
+  method: GET
+  host: api.avito.ru
+  path: /core/v1/items
+  scope: seller
+  safety: read
+  pagination: avito_page
+  summary: 'Список объявлений пользователя: статус, категория, ссылка (per_page/page)'
+  doc: https://developers.avito.ru/api-catalog/item/documentation#operation/getItemsInfo
+  items_path: resources
+  params:
+    query: per_page, page, status, updatedAtFrom, category
+  keywords:
+  - items
+  - info
+- operation_id: avito_put_item_vas_package_v2
+  section: Объявления и статистика
+  method: PUT
+  host: api.avito.ru
+  path: /core/v2/accounts/{user_id}/items/{item_id}/vas_packages
+  scope: seller
+  safety: write
+  pagination: none
+  summary: '[устарело] Применение пакета услуг продвижения (устарело, используйте
+    /core/v2/items/{itemId}/vas/)'
+  doc: https://developers.avito.ru/api-catalog/item/documentation#operation/putItemVasPackageV2
+  params:
+    body: package_id
+  keywords:
+  - put
+  - item
+  - vas
+  - package
+- operation_id: avito_apply_vas
+  section: Объявления и статистика
+  method: PUT
+  host: api.avito.ru
+  path: /core/v2/items/{itemId}/vas/
+  scope: seller
+  safety: write
+  pagination: none
+  summary: Применение услуг продвижения к объявлению (XL, выделение, x2..x20, значки)
+    — списывает деньги
+  doc: https://developers.avito.ru/api-catalog/item/documentation#operation/applyVas
+  params:
+    body: slugs,stickers
+  keywords:
+  - apply
+  - vas
+- operation_id: avito_item_stats_shallow
+  section: Объявления и статистика
+  method: POST
+  host: api.avito.ru
+  path: /stats/v1/accounts/{user_id}/items
+  scope: seller
+  safety: read
+  pagination: none
+  summary: 'Статистика по списку объявлений: просмотры, контакты, избранное (до 200
+    id, глубина 270 дней)'
+  doc: https://developers.avito.ru/api-catalog/item/documentation#operation/itemStatsShallow
+  items_path: result.items
+  params:
+    body: dateFrom,dateTo,fields,itemIds,periodGrouping
+  keywords:
+  - item
+  - stats
+  - shallow
+- operation_id: avito_item_analytics
+  section: Объявления и статистика
+  method: POST
+  host: api.avito.ru
+  path: /stats/v2/accounts/{user_id}/items
+  scope: seller
+  safety: read
+  pagination: none
+  summary: 'Статистические показатели по профилю: просмотры, контакты, конверсии,
+    расходы, заказы с Авито Доставкой (группировки day/week/month/item/totals)'
+  doc: https://developers.avito.ru/api-catalog/item/documentation#operation/itemAnalytics
+  items_path: result.groupings
+  params:
+    body: dateFrom,dateTo,filter,grouping,limit,metrics,offset,sort
+  keywords:
+  - item
+  - analytics
+- operation_id: avito_account_spendings
+  section: Объявления и статистика
+  method: POST
+  host: api.avito.ru
+  path: /stats/v2/accounts/{user_id}/spendings
+  scope: seller
+  safety: read
+  pagination: none
+  summary: Статистика расходов профиля по типам (продвижение, размещение, комиссия)
+    за период
+  doc: https://developers.avito.ru/api-catalog/item/documentation#operation/accountSpendings
+  items_path: result.groupings
+  params:
+    body: dateFrom,dateTo,filter,grouping,spendingTypes
+  keywords:
+  - account
+  - spendings
+- operation_id: avito_update_price
+  section: Объявления и статистика
+  method: POST
+  host: api.avito.ru
+  path: /core/v1/items/{item_id}/update_price
+  scope: seller
+  safety: write
+  pagination: none
+  summary: Обновление цены объявления по id (Товары, Запчасти, Авто, Недвижимость)
+  doc: https://developers.avito.ru/api-catalog/item/documentation#operation/updatePrice
+  params:
+    body: price
+  keywords:
+  - update
+  - price
+- operation_id: avito_upload
+  section: Автозагрузка (выгрузка объявлений файлом)
+  method: POST
+  host: api.avito.ru
+  path: /autoload/v1/upload
+  scope: seller
+  safety: write
+  pagination: none
+  summary: Загрузка файла по ссылке
+  doc: https://developers.avito.ru/api-catalog/autoload/documentation#operation/upload
+  keywords:
+  - upload
+- operation_id: avito_user_docs_node_fields
+  section: Автозагрузка (выгрузка объявлений файлом)
+  method: GET
+  host: api.avito.ru
+  path: /autoload/v1/user-docs/node/{node_slug}/fields
+  scope: seller
+  safety: read
+  pagination: none
+  summary: Получения полей категории
+  doc: https://developers.avito.ru/api-catalog/autoload/documentation#operation/userDocsNodeFields
+  items_path: fields
+  keywords:
+  - user
+  - docs
+  - node
+  - fields
+- operation_id: avito_user_docs_tree
+  section: Автозагрузка (выгрузка объявлений файлом)
+  method: GET
+  host: api.avito.ru
+  path: /autoload/v1/user-docs/tree
+  scope: seller
+  safety: read
+  pagination: none
+  summary: Получение дерева категорий
+  doc: https://developers.avito.ru/api-catalog/autoload/documentation#operation/userDocsTree
+  items_path: categories
+  keywords:
+  - user
+  - docs
+  - tree
+- operation_id: avito_get_ad_ids_by_avito_ids
+  section: Автозагрузка (выгрузка объявлений файлом)
+  method: GET
+  host: api.avito.ru
+  path: /autoload/v2/items/ad_ids
+  scope: seller
+  safety: read
+  pagination: none
+  summary: ID объявлений из файла
+  doc: https://developers.avito.ru/api-catalog/autoload/documentation#operation/getAdIdsByAvitoIds
+  items_path: items
+  params:
+    query: query
+  keywords:
+  - ids
+  - avito
+  - ids
+- operation_id: avito_get_avito_ids_by_ad_ids
+  section: Автозагрузка (выгрузка объявлений файлом)
+  method: GET
+  host: api.avito.ru
+  path: /autoload/v2/items/avito_ids
+  scope: seller
+  safety: read
+  pagination: none
+  summary: ID объявлений на Авито
+  doc: https://developers.avito.ru/api-catalog/autoload/documentation#operation/getAvitoIdsByAdIds
+  items_path: items
+  params:
+    query: query
+  keywords:
+  - avito
+  - ids
+  - ids
+- operation_id: avito_get_profile_v2
+  section: Автозагрузка (выгрузка объявлений файлом)
+  method: GET
+  host: api.avito.ru
+  path: /autoload/v2/profile
+  scope: seller
+  safety: read
+  pagination: none
+  summary: Получение профиля пользователя автозагрузки
+  doc: https://developers.avito.ru/api-catalog/autoload/documentation#operation/getProfileV2
+  keywords:
+  - profile
+- operation_id: avito_create_or_update_profile_v2
+  section: Автозагрузка (выгрузка объявлений файлом)
+  method: POST
+  host: api.avito.ru
+  path: /autoload/v2/profile
+  scope: seller
+  safety: write
+  pagination: none
+  summary: Создание/редактирование настроек профиля пользователя автозагрузки
+  doc: https://developers.avito.ru/api-catalog/autoload/documentation#operation/createOrUpdateProfileV2
+  params:
+    body: object
+  keywords:
+  - create
+  - update
+  - profile
+- operation_id: avito_get_uploads
+  section: Автозагрузка (выгрузка объявлений файлом)
+  method: GET
+  host: api.avito.ru
+  path: /autoload/v4/uploads
+  scope: seller
+  safety: read
+  pagination: page_query
+  summary: История загрузок
+  doc: https://developers.avito.ru/api-catalog/autoload/documentation#operation/getUploads
+  items_path: uploads
+  params:
+    query: perPage, page, dateFrom, dateTo
+  keywords:
+  - uploads
+- operation_id: avito_get_current_upload
+  section: Автозагрузка (выгрузка объявлений файлом)
+  method: GET
+  host: api.avito.ru
+  path: /autoload/v4/uploads/current
+  scope: seller
+  safety: read
+  pagination: none
+  summary: Текущая загрузка
+  doc: https://developers.avito.ru/api-catalog/autoload/documentation#operation/getCurrentUpload
+  keywords:
+  - current
+  - upload
+- operation_id: avito_get_current_upload_items
+  section: Автозагрузка (выгрузка объявлений файлом)
+  method: GET
+  host: api.avito.ru
+  path: /autoload/v4/uploads/current/items
+  scope: seller
+  safety: read
+  pagination: page_query
+  summary: Объявления текущей загрузки
+  doc: https://developers.avito.ru/api-catalog/autoload/documentation#operation/getCurrentUploadItems
+  items_path: items
+  params:
+    query: query, sections, perPage, page
+  keywords:
+  - current
+  - upload
+  - items
+- operation_id: avito_get_last_successful_upload
+  section: Автозагрузка (выгрузка объявлений файлом)
+  method: GET
+  host: api.avito.ru
+  path: /autoload/v4/uploads/last_successful
+  scope: seller
+  safety: read
+  pagination: none
+  summary: Последняя успешно завершённая загрузка
+  doc: https://developers.avito.ru/api-catalog/autoload/documentation#operation/getLastSuccessfulUpload
+  keywords:
+  - last
+  - successful
+  - upload
+- operation_id: avito_get_last_successful_upload_items
+  section: Автозагрузка (выгрузка объявлений файлом)
+  method: GET
+  host: api.avito.ru
+  path: /autoload/v4/uploads/last_successful/items
+  scope: seller
+  safety: read
+  pagination: page_query
+  summary: Объявления последней успешно завершённой загрузки
+  doc: https://developers.avito.ru/api-catalog/autoload/documentation#operation/getLastSuccessfulUploadItems
+  items_path: items
+  params:
+    query: query, sections, perPage, page
+  keywords:
+  - last
+  - successful
+  - upload
+  - items

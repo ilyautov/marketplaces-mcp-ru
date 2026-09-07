@@ -33,7 +33,7 @@ def _make_config() -> ServiceConfig:
         scheme="https",
         fields=["client_id", "client_secret"],
         env_map={"client_id": "OZON_PERF_CLIENT_ID",
-                 "client_secret": "OZON_PERF_CLIENT_SECRET"},
+                 "client_secret": "OZON_PERF_CLIENT_SECRET"},  # pragma: allowlist secret
         build_headers=lambda creds: {"Content-Type": "application/json"},
         token_url=TOKEN_URL,
     )
@@ -113,7 +113,7 @@ def test_token_request_payload_is_client_credentials(monkeypatch):
     asyncio.run(client.request("GET", API_HOST, API_PATH))
     assert rec.token_payloads[0] == {
         "client_id": "cid-123",
-        "client_secret": "secret-xyz",
+        "client_secret": "secret-xyz",  # pragma: allowlist secret
         "grant_type": "client_credentials",
     }
 
@@ -156,3 +156,38 @@ def test_static_service_does_not_call_token_endpoint(monkeypatch):
     assert rec.token_calls == 0  # no OAuth
     # static service sends no Bearer; it used Client-Id/Api-Key instead
     assert rec.seen_auth == [""]
+
+
+def test_form_encoded_token_request(monkeypatch):
+    """token_encoding="form" (Avito) must POST application/x-www-form-urlencoded,
+    not JSON — the payload fields are the same client_credentials triple."""
+    _creds(monkeypatch)
+    seen: dict = {}
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        if request.url.path == "/api/client/token":
+            seen["content_type"] = request.headers.get("Content-Type", "")
+            seen["body"] = request.content.decode()
+            return httpx.Response(200, json={"access_token": "FORM-TKN",
+                                             "expires_in": 3600,
+                                             "token_type": "Bearer"})
+        seen["auth"] = request.headers.get("Authorization", "")
+        return httpx.Response(200, json={"ok": 1})
+
+    transport = httpx.MockTransport(handler)
+    real_init = httpx.AsyncClient.__init__
+
+    def patched_init(self, *args, **kwargs):
+        kwargs["transport"] = transport
+        real_init(self, *args, **kwargs)
+
+    monkeypatch.setattr(httpx.AsyncClient, "__init__", patched_init)
+    cfg = _make_config()
+    cfg.token_encoding = "form"
+    client = MarketplaceClient(cfg)
+    r = asyncio.run(client.request("GET", API_HOST, API_PATH))
+    assert r["ok"] is True
+    assert seen["content_type"].startswith("application/x-www-form-urlencoded")
+    assert "grant_type=client_credentials" in seen["body"]
+    assert "client_id=cid-123" in seen["body"]
+    assert seen["auth"] == "Bearer FORM-TKN"

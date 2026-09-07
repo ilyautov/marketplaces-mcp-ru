@@ -1,35 +1,35 @@
-# marketplaces-mcp-ru: Wildberries и Ozon в вашем ИИ-ассистенте
+# marketplaces-mcp-ru: Wildberries, Ozon, Яндекс Маркет и Авито в вашем ИИ-ассистенте
 
 <!-- mcp-name: io.github.ilyautov/marketplaces-mcp-ru -->
 
 > 🇬🇧 [English version](README.en.md)
 
-Подключает ИИ-ассистента (Claude, Cursor, Codex, Cowork и др.) напрямую к вашим кабинетам Wildberries и Ozon. Вы спрашиваете обычными словами, агент берёт продажи, остатки, цены, финансы и отзывы прямо из API маркетплейса, а не выдумывает цифры.
+Подключает ИИ-ассистента (Claude, Cursor, Codex, Cowork и др.) напрямую к вашим кабинетам Wildberries, Ozon, Яндекс Маркета и Авито. Вы спрашиваете обычными словами, агент берёт продажи, заказы, остатки, цены, финансы и отзывы прямо из API маркетплейса (WB Seller API, Ozon Seller API, Yandex Market Partner API, Avito API), а не выдумывает цифры.
 
 [![PyPI](https://img.shields.io/pypi/v/marketplaces-mcp-ru?label=pypi&color=B5491F)](https://pypi.org/project/marketplaces-mcp-ru/)
 [![MCP Registry](https://img.shields.io/badge/MCP-Registry-2D7D4F)](https://registry.modelcontextprotocol.io/)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-[![Методов](https://img.shields.io/badge/%D0%BC%D0%B5%D1%82%D0%BE%D0%B4%D0%BE%D0%B2-793-2D7D4F)](#как-это-устроено)
+[![Методов](https://img.shields.io/badge/%D0%BC%D0%B5%D1%82%D0%BE%D0%B4%D0%BE%D0%B2-1022-2D7D4F)](#как-это-устроено)
 [![Сайт](https://img.shields.io/badge/%D1%81%D0%B0%D0%B9%D1%82-aifrontier.tech-9A3E1A)](https://marketplaces-mcp-ru.aifrontier.tech/)
 [![Звёзды](https://img.shields.io/github/stars/ilyautov/marketplaces-mcp-ru?style=flat&label=%D0%B7%D0%B2%D1%91%D0%B7%D0%B4%D1%8B&color=B5491F&logo=github&logoColor=white)](https://github.com/ilyautov/marketplaces-mcp-ru/stargazers)
 [![Docker](https://img.shields.io/badge/docker-ghcr.io-2D7D4F?logo=docker&logoColor=white)](https://github.com/ilyautov/marketplaces-mcp-ru/pkgs/container/marketplaces-mcp-ru)
-[![Install in VS Code](https://img.shields.io/badge/VS_Code-%D0%BF%D0%BE%D1%81%D1%82%D0%B0%D0%B2%D0%B8%D1%82%D1%8C-0098FF?logo=visualstudiocode&logoColor=white)](https://vscode.dev/redirect/mcp/install?name=marketplaces-ru&config=%7B%22command%22%3A%22uvx%22%2C%22args%22%3A%5B%22marketplaces-mcp-ru%22%5D%2C%22env%22%3A%7B%22WB_API_TOKEN%22%3A%22%24%7Binput%3Awb_api_token%7D%22%2C%22OZON_CLIENT_ID%22%3A%22%24%7Binput%3Aozon_client_id%7D%22%2C%22OZON_API_KEY%22%3A%22%24%7Binput%3Aozon_api_key%7D%22%7D%7D&inputs=%5B%7B%22id%22%3A%22wb_api_token%22%2C%22type%22%3A%22promptString%22%2C%22description%22%3A%22Wildberries%20API%20token%20%28leave%20empty%20if%20you%20don%27t%20sell%20on%20WB%29%22%2C%22password%22%3Atrue%7D%2C%7B%22id%22%3A%22ozon_client_id%22%2C%22type%22%3A%22promptString%22%2C%22description%22%3A%22Ozon%20Client-Id%20%28leave%20empty%20if%20you%20don%27t%20sell%20on%20Ozon%29%22%7D%2C%7B%22id%22%3A%22ozon_api_key%22%2C%22type%22%3A%22promptString%22%2C%22description%22%3A%22Ozon%20Api-Key%22%2C%22password%22%3Atrue%7D%5D)
-[![Install in Cursor](https://img.shields.io/badge/Cursor-%D0%BF%D0%BE%D1%81%D1%82%D0%B0%D0%B2%D0%B8%D1%82%D1%8C-000000?logo=cursor&logoColor=white)](https://cursor.com/en/install-mcp?name=marketplaces-ru&config=eyJjb21tYW5kIjoidXZ4IiwiYXJncyI6WyJtYXJrZXRwbGFjZXMtbWNwLXJ1Il0sImVudiI6eyJXQl9BUElfVE9LRU4iOiIiLCJPWk9OX0NMSUVOVF9JRCI6IiIsIk9aT05fQVBJX0tFWSI6IiJ9fQ==)
+[![Install in VS Code](https://img.shields.io/badge/VS_Code-%D0%BF%D0%BE%D1%81%D1%82%D0%B0%D0%B2%D0%B8%D1%82%D1%8C-0098FF?logo=visualstudiocode&logoColor=white)](https://vscode.dev/redirect/mcp/install?name=marketplaces-ru&config=%7B%22command%22%3A%22uvx%22%2C%22args%22%3A%5B%22marketplaces-mcp-ru%22%5D%2C%22env%22%3A%7B%22WB_API_TOKEN%22%3A%22%24%7Binput%3Awb_api_token%7D%22%2C%22OZON_CLIENT_ID%22%3A%22%24%7Binput%3Aozon_client_id%7D%22%2C%22OZON_API_KEY%22%3A%22%24%7Binput%3Aozon_api_key%7D%22%2C%22YANDEX_MARKET_API_KEY%22%3A%22%24%7Binput%3Ayandex_api_key%7D%22%2C%22AVITO_CLIENT_ID%22%3A%22%24%7Binput%3Aavito_client_id%7D%22%2C%22AVITO_CLIENT_SECRET%22%3A%22%24%7Binput%3Aavito_client_secret%7D%22%7D%7D&inputs=%5B%7B%22id%22%3A%22wb_api_token%22%2C%22type%22%3A%22promptString%22%2C%22description%22%3A%22Wildberries%20API%20token%20%28leave%20empty%20if%20you%20don%27t%20sell%20on%20WB%29%22%2C%22password%22%3Atrue%7D%2C%7B%22id%22%3A%22ozon_client_id%22%2C%22type%22%3A%22promptString%22%2C%22description%22%3A%22Ozon%20Client-Id%20%28leave%20empty%20if%20you%20don%27t%20sell%20on%20Ozon%29%22%7D%2C%7B%22id%22%3A%22ozon_api_key%22%2C%22type%22%3A%22promptString%22%2C%22description%22%3A%22Ozon%20Api-Key%22%2C%22password%22%3Atrue%7D%2C%7B%22id%22%3A%22yandex_api_key%22%2C%22type%22%3A%22promptString%22%2C%22description%22%3A%22Yandex%20Market%20Api-Key%20%28leave%20empty%20if%20you%20don%27t%20sell%20there%29%22%2C%22password%22%3Atrue%7D%2C%7B%22id%22%3A%22avito_client_id%22%2C%22type%22%3A%22promptString%22%2C%22description%22%3A%22Avito%20client_id%20%28leave%20empty%20if%20you%20don%27t%20sell%20on%20Avito%29%22%7D%2C%7B%22id%22%3A%22avito_client_secret%22%2C%22type%22%3A%22promptString%22%2C%22description%22%3A%22Avito%20client_secret%22%2C%22password%22%3Atrue%7D%5D)
+[![Install in Cursor](https://img.shields.io/badge/Cursor-%D0%BF%D0%BE%D1%81%D1%82%D0%B0%D0%B2%D0%B8%D1%82%D1%8C-000000?logo=cursor&logoColor=white)](https://cursor.com/en/install-mcp?name=marketplaces-ru&config=eyJjb21tYW5kIjoidXZ4IiwiYXJncyI6WyJtYXJrZXRwbGFjZXMtbWNwLXJ1Il0sImVudiI6eyJXQl9BUElfVE9LRU4iOiIiLCJPWk9OX0NMSUVOVF9JRCI6IiIsIk9aT05fQVBJX0tFWSI6IiIsIllBTkRFWF9NQVJLRVRfQVBJX0tFWSI6IiIsIkFWSVRPX0NMSUVOVF9JRCI6IiIsIkFWSVRPX0NMSUVOVF9TRUNSRVQiOiIifX0=)
 
 <!-- social preview: assets/social-preview.png → Settings → Social preview.
      Сайт: marketplaces-mcp-ru.aifrontier.tech (GitHub Pages из docs/). -->
 
 ## Зачем
 
-Вы продаёте на двух площадках, а данные лежат в двух разных кабинетах. Продажи, остатки, цены, финансы, отзывы: всё руками, по очереди, через два браузера. Обычный ИИ-ассистент тут мало помогает. Либо ходит через браузер и спотыкается о капчу, либо называет цифры, которые звучат уверенно, но взяты из воздуха.
+Вы продаёте на нескольких площадках, а данные лежат в разных кабинетах. Продажи, остатки, цены, финансы, отзывы: всё руками, по очереди, через несколько браузеров. Обычный ИИ-ассистент тут мало помогает. Либо ходит через браузер и спотыкается о капчу, либо называет цифры, которые звучат уверенно, но взяты из воздуха.
 
-Этот проект решает задачу иначе. Он даёт ассистенту прямой доступ к Seller API обоих кабинетов:
+Этот проект решает задачу иначе. Он даёт ассистенту прямой доступ к API всех четырёх площадок:
 
-- Цифры приходят из ответа Wildberries и Ozon, с указанием источника и полей. Не пересказ, не догадка.
+- Цифры приходят из ответа Wildberries, Ozon, Яндекс Маркета и Авито, с указанием источника и полей. Не пересказ, не догадка.
 - Перед тем как менять цену или остаток, агент просит подтверждение. Случайно «уронить цену в три раза» не получится.
 - Никакого браузера и капчи: обращение идёт по токену кабинета напрямую.
 
-Спросите обычными словами: «покажи продажи за неделю на обоих», «что пора дозаказать», «сравни мои цены с рынком». Агент подберёт нужный метод или готовый сценарий и проведёт по шагам.
+Спросите обычными словами: «покажи продажи за неделю на всех площадках», «что пора дозаказать», «сравни мои цены с рынком». Агент подберёт нужный метод или готовый сценарий и проведёт по шагам.
 
 > ⚠️ Версия alpha. Помогает с операционкой продавца, но это инструмент, а не замена аналитику. Проверенное вручную ядро (продажи, остатки, цены, финансы, отзывы) выверено на реальных кабинетах. Остальные методы импортированы из спецификаций и служат картой для разведки. Подробности в разделе [Оговорки](#оговорки).
 
@@ -39,6 +39,8 @@
 
 ```
 покажи продажи за неделю на WB и Ozon и сравни
+какие заказы на Яндекс Маркете ждут отгрузки сегодня
+подтверди новые заказы Авито Доставки и покажи, где кончается остаток
 что пора дозаказать, посчитай дни покрытия по остаткам и продажам
 вытащи финотчёт реализации WB за прошлый месяц
 какие товары на Ozon с красным индексом цены
@@ -46,25 +48,25 @@
 сделай ABC-анализ по выручке и покажи товары-хвост
 ```
 
-Не знаете, с чего начать, скажите «что ты умеешь по моему кабинету». Агент покажет готовые сценарии: для Wildberries это пульс продаж, здоровье остатков, аудит цен, планировщик дозаказа, ABC-анализ, сводка отзывов; для Ozon: риск out-of-stock, анализ цен, юнит-экономика, синхронизация каталога, аудит контента и те же ABC и отзывы. Каждый сценарий это пошаговый рецепт с трактовкой результата и типичными ошибками.
+Не знаете, с чего начать, скажите «что ты умеешь по моему кабинету». Агент покажет готовые сценарии: для Wildberries это пульс продаж, здоровье остатков, аудит цен, планировщик дозаказа, ABC-анализ, сводка отзывов; для Ozon: риск out-of-stock, анализ цен, юнит-экономика, синхронизация каталога, аудит контента и те же ABC и отзывы; для Яндекс Маркета: риск out-of-stock, анализ цен, разбор отзывов, индекс качества; для Авито: заказы на подтверждение, здоровье объявлений, расходы против результата, разбор отзывов. Каждый сценарий это пошаговый рецепт с трактовкой результата и типичными ошибками.
 
 ## Установка
 
 Подробный гайд под любую аудиторию лежит в [QUICKSTART.md](QUICKSTART.md). Несколько способов, результат один.
 
-1. **Claude Desktop в один клик (`.mcpb`).** Возьмите `marketplaces-mcp-ru-v<версия>.mcpb` из [GitHub Releases](https://github.com/ilyautov/marketplaces-mcp-ru/releases) и дважды кликните — Claude Desktop сам поставит расширение и спросит ключи в окне настроек. Без терминала и без Gatekeeper. Один бандл поднимает WB + Ozon + Ozon Performance сразу.
-2. **Попросить своего ИИ (без терминала).** Откройте Claude или Cowork и скажите: «установи WB + Ozon MCP». Агент проведёт по встроенному скиллу `install-skill/`. В песочнице Cowork финальный клик остаётся за вами; в Claude Code установка проходит полностью сама.
+1. **Claude Desktop в один клик (`.mcpb`).** Возьмите `marketplaces-mcp-ru-v<версия>.mcpb` из [GitHub Releases](https://github.com/ilyautov/marketplaces-mcp-ru/releases) и дважды кликните — Claude Desktop сам поставит расширение и спросит ключи в окне настроек. Без терминала и без Gatekeeper. Один бандл поднимает WB + Ozon + Ozon Performance + Яндекс Маркет + Авито сразу.
+2. **Попросить своего ИИ (без терминала).** Откройте Claude или Cowork и скажите: «установи marketplaces-mcp-ru». Агент проведёт по встроенному скиллу `install-skill/`. В песочнице Cowork финальный клик остаётся за вами; в Claude Code установка проходит полностью сама.
 3. **Скачать и кликнуть.** Возьмите `marketplaces-mcp-ru-v<версия>.zip` из [GitHub Releases](https://github.com/ilyautov/marketplaces-mcp-ru/releases), распакуйте, дважды кликните `install.command` (macOS) или `install.bat` (Windows), вставьте ключи. На macOS при первом запуске: правый клик → «Открыть» → «Открыть» (так обходится Gatekeeper для скачанного файла).
 4. **Через терминал.** `git clone https://github.com/ilyautov/marketplaces-mcp-ru`, затем `python3 install.py --client <ваш-клиент>`.
-5. **Для разработчиков (`uvx`).** `uvx marketplaces-mcp-ru` запускает объединённый сервер прямо из PyPI; отдельные серверы — консольными командами `wb-mcp` / `ozon-mcp` / `ozon-perf-mcp`. Ключи — через переменные окружения или те же `*_add_cabinet` из чата.
+5. **Для разработчиков (`uvx`).** `uvx marketplaces-mcp-ru` запускает объединённый сервер прямо из PyPI; отдельные серверы — консольными командами `wb-mcp` / `ozon-mcp` / `ozon-perf-mcp` / `yandex-mcp` / `avito-mcp`. Ключи — через переменные окружения или те же `*_add_cabinet` из чата.
 6. **VS Code / Cursor в один клик.** Кнопки «поставить» над этим текстом открывают редактор и прописывают `uvx marketplaces-mcp-ru` в его конфиг MCP; VS Code сразу спросит ключи, в Cursor их вписывают в открывшийся JSON.
 7. **Docker.** `docker run -i --rm -e WB_API_TOKEN=… -e OZON_CLIENT_ID=… -e OZON_API_KEY=… ghcr.io/ilyautov/marketplaces-mcp-ru` — тот же объединённый сервер по stdio, без Python на машине. Этот образ и указан в [MCP Registry](https://registry.modelcontextprotocol.io/) как OCI-пакет. Для удалённого доступа добавьте `-e MCP_TRANSPORT=http -e MCP_HTTP_HOST=0.0.0.0 -p 8000:8000`: сервер поднимется на `http://…:8000/mcp` (Streamable HTTP). Своей авторизации у HTTP-режима нет, закрывайте его прокси или файрволом.
 
 Установщик копирует приложение в стабильную папку (`~/.marketplace-mcp/app`) и привязывает конфиг туда, так что исходную папку потом можно перемещать или удалять, ничего не сломается. Ни `pip install`, ни ручной правки JSON: зависимости ставятся сами при первом запуске. От вас нужны только ключи. Поддерживается 4 клиента через `--client`: `claude-desktop` и `opencode` получают готовый конфиг, `claude-code` и `codex` получают готовые команды `mcp add`.
 
-**Где взять ключи.** Wildberries: seller.wildberries.ru → Настройки → Доступ к API. Ozon: seller.ozon.ru → Настройки → API-ключи. Ключи хранятся в `~/.marketplace-mcp/cabinets.json` локально (`chmod 600`), в репозиторий и в чат не попадают. Можно подключить несколько магазинов и переключаться между ними прямо из чата (`*_add_cabinet` / `*_use_cabinet`).
+**Где взять ключи.** Wildberries: seller.wildberries.ru → Настройки → Доступ к API. Ozon: seller.ozon.ru → Настройки → API-ключи. Яндекс Маркет: partner.market.yandex.ru → Настройки → Доступ к API (Api-Key). Авито: avito.ru → Для бизнеса → Интеграции → API (client_id + client_secret). Ключи хранятся в `~/.marketplace-mcp/cabinets.json` локально (`chmod 600`), в репозиторий и в чат не попадают. Можно подключить несколько магазинов и переключаться между ними прямо из чата (`*_add_cabinet` / `*_use_cabinet`).
 
-**Проверка после установки:** одна команда показывает по всем трём серверам, сколько инструментов и методов загрузилось, найдены ли ключи и где (кабинет / env), а с `--live` делает по одному реальному read-вызову в каждый кабинет.
+**Проверка после установки:** одна команда показывает по всем пяти серверам, сколько инструментов и методов загрузилось, найдены ли ключи и где (кабинет / env), а с `--live` делает по одному реальному read-вызову в каждый кабинет.
 
 ```bash
 python3 serve.py doctor --live          # из клона
@@ -87,7 +89,7 @@ uvx marketplaces-mcp-ru doctor --live   # из PyPI
 
 ## Как это устроено
 
-Под капотом два MCP-сервера (Wildberries и Ozon) на общем ядре. Вместо «один инструмент на каждый эндпоинт» (это 300+ инструментов, в которых агент теряется) сделано иначе: 8 универсальных мета-инструментов поверх каталога методов. Полное покрытие API при компактной поверхности.
+Под капотом пять MCP-серверов (Wildberries, Ozon Seller, Ozon Performance, Яндекс Маркет, Авито) на общем ядре. Вместо «один инструмент на каждый эндпоинт» (это 300+ инструментов, в которых агент теряется) сделано иначе: 8 универсальных мета-инструментов поверх каталога методов. Полное покрытие API при компактной поверхности.
 
 ```
 ваш ИИ-агент
@@ -98,10 +100,10 @@ uvx marketplaces-mcp-ru doctor --live   # из PyPI
  call / call_raw /                                        пагинация · реестр
  fetch_all / ...                                                │
  + типизированные инструменты (wb_get_sales, …)                 ▼
-                                            Wildberries / Ozon HTTPS API
+                          Wildberries / Ozon / Яндекс Маркет / Авито HTTPS API
 ```
 
-Мета-инструменты одинаковы на обоих серверах (префикс `wb_` или `ozon_`):
+Мета-инструменты одинаковы на всех серверах (префикс `wb_`, `ozon_`, `ozon_perf_`, `ym_` или `avito_`):
 
 | Инструмент | Что делает |
 |---|---|
@@ -110,9 +112,9 @@ uvx marketplaces-mcp-ru doctor --live   # из PyPI
 | `*_describe_method` | Полное описание: метод, хост, путь, scope, уровень риска, лимит, ссылка на доку |
 | `*_call_method` | Вызывает любой метод каталога через проверку безопасности |
 | `*_call_raw` | Вызывает любой путь, даже которого ещё нет в каталоге (полное покрытие) |
-| `*_fetch_all` | Авто-пагинация (offset / last_id / cursor / date-курсор WB) |
+| `*_fetch_all` | Авто-пагинация (offset / last_id / cursor / date-курсор WB / pageToken Маркета / page Авито) |
 
-Плюс типизированные инструменты для частых задач (`wb_get_sales`, `wb_get_stocks`, `ozon_get_products`, `ozon_get_prices` и др.) и инструменты управления кабинетами.
+Плюс типизированные инструменты для частых задач (`wb_get_sales`, `wb_get_stocks`, `ozon_get_products`, `ozon_get_prices`, `ym_get_orders`, `ym_set_price`, `avito_get_orders`, `avito_update_stock` и др.) и инструменты управления кабинетами.
 
 Каталог собран schema-driven из официальных OpenAPI-спецификаций:
 
@@ -121,6 +123,8 @@ uvx marketplaces-mcp-ru doctor --live   # из PyPI
 | Wildberries | `wb_mcp/endpoints.yaml` | 307 | 70 |
 | Ozon Seller | `ozon_mcp/endpoints.yaml` | 441 | 67 |
 | Ozon Performance (реклама) | `ozon_mcp/perf_endpoints.yaml` | 45 | 6 |
+| Яндекс Маркет (Partner API) | `yandex_mcp/endpoints.yaml` | 165 | 29 |
+| Авито (API для бизнеса) | `avito_mcp/endpoints.yaml` | 64 | 8 |
 
 Ядро (продажи, остатки, цены, финансы, отзывы) выверено вживую; остальное импортировано из спецификаций, а `call_raw` достаёт то, чего ещё нет в каталоге. Что покрыто по бизнес-областям:
 
@@ -133,6 +137,17 @@ uvx marketplaces-mcp-ru doctor --live   # из PyPI
 | Контент и карточки | карточки, категории, характеристики, медиа | товары, атрибуты, категории, сертификаты |
 | Отзывы и вопросы | отзывы, вопросы | отзывы (нужен Premium Plus), вопросы и ответы |
 | Реклама | управление кампаниями, статистика | Performance API (отдельный сервер) |
+
+Яндекс Маркет и Авито (добавлены в 0.5.0):
+
+| Область | Яндекс Маркет | Авито |
+|---|---|---|
+| Заказы | заказы FBS / DBS / Экспресс, статусы, возвраты, отгрузки | заказы Авито Доставки, подтверждение, трек-номера, маркировка |
+| Товары и остатки | каталог, карточки, остатки по складам, скрытые товары | объявления, остатки в объявлениях, автозагрузка |
+| Цены | цены, карантин цен, акции, рекомендации | цена объявления |
+| Отзывы и чаты | отзывы, вопросы, чаты с покупателями | рейтинг, отзывы и ответы, мессенджер |
+| Аналитика | статистика заказов и товаров, 27 отчётов, индекс качества | просмотры и контакты, расходы, звонки |
+| Продвижение | буст продаж, ставки | услуги продвижения, BBIP |
 | Аналитика | воронка продаж, отчёты | аналитические отчёты, оборачиваемость |
 
 Полный список секций покажет `*_list_sections` прямо в чате, точечный поиск делает `wb_search_methods("остатки")`.
@@ -144,12 +159,12 @@ uvx marketplaces-mcp-ru doctor --live   # из PyPI
 **Структура.** Вся общая логика живёт в `core/`, серверы это тонкие обёртки над ней:
 
 ```
-core/                общее ядро обоих серверов
+core/                общее ядро всех серверов
   client.py          HTTPS-клиент (хосты, заголовки, ретраи)
   credentials.py     загрузка ключей из cabinets.json / env
   safety.py          гейт read / write / destructive
   registry.py        загрузка и индексация каталога endpoints.yaml
-  paginate.py        авто-пагинация (offset / last_id / cursor / date)
+  paginate.py        авто-пагинация (offset / last_id / cursor / date / pageToken / page)
   entities.py        нормализация сущностей (товары, заказы и т.д.)
   workflows.py       движок пошаговых сценариев
   tools.py           регистрация мета-инструментов в MCP
@@ -158,6 +173,9 @@ core/                общее ядро обоих серверов
   errors.py          единый формат ошибок
 wb_mcp/              сервер WB: server.py + endpoints.yaml + workflows.yaml
 ozon_mcp/            сервер Ozon: server.py + endpoints.yaml + perf_endpoints.yaml + workflows.yaml
+ozon_perf_mcp/       сервер Ozon Performance (реклама, OAuth2)
+yandex_mcp/          сервер Яндекс Маркета: server.py + endpoints.yaml + workflows.yaml
+avito_mcp/           сервер Авито: server.py + endpoints.yaml + workflows.yaml (OAuth2)
 scripts/             сборка каталогов, валидация, релиз
 tests/               офлайн-тесты (токены не нужны)
 ```
@@ -171,10 +189,12 @@ cd marketplaces-mcp-ru
 # офлайн-тесты, ключи не нужны — все офлайн-тесты зелёные
 env -u OZON_CLIENT_ID -u OZON_API_KEY -u WB_API_TOKEN python3 -m pytest tests/ -q
 
-# selfcheck серверов: отдаёт 21 тул для wb, 21 для ozon, 16 для ozon-perf
+# selfcheck серверов: 21 тул для wb, 21 для ozon, 16 для ozon-perf, 22 для yandex, 26 для avito
 python3 serve.py wb --selfcheck
 python3 serve.py ozon --selfcheck
 python3 serve.py ozon-perf --selfcheck
+python3 serve.py yandex --selfcheck
+python3 serve.py avito --selfcheck
 
 # всё сразу: инструменты, каталоги, ключи, живой пинг кабинетов
 python3 serve.py doctor --live
@@ -208,6 +228,10 @@ docker run --rm marketplaces-mcp-ru doctor
 
 **Это бесплатно?** Да, открытый код под лицензией MIT. Берите, форкайте, дорабатывайте.
 
+**Работает ли с Яндекс Маркетом и Авито?** Да, с версии 0.5.0. Яндекс Маркет подключается по Api-Key из кабинета партнёра (Partner API: заказы, товары, остатки, цены, отчёты, чаты, индекс качества). Авито — по паре client_id / client_secret из раздела «Интеграции» (заказы Авито Доставки, остатки и цены объявлений, статистика, отзывы, мессенджер, продвижение). Сервера `yandex-mcp` и `avito-mcp` работают и отдельно, и в составе объединённого.
+
+**Что такое MCP и зачем он продавцу?** MCP (Model Context Protocol) — открытый стандарт, по которому ИИ-ассистент подключает внешние инструменты. Этот проект — MCP-сервер для маркетплейсов: он превращает API Wildberries, Ozon, Яндекс Маркета и Авито в инструменты, которые агент вызывает сам, по вашему вопросу на русском языке.
+
 ## Оговорки
 
 Сверяйте с живой документацией маркетплейсов:
@@ -216,6 +240,7 @@ docker run --rm marketplaces-mcp-ru doctor
 - **Импортированные из спецификаций методы: пути надёжны, HTTP-глаголы не всегда.** Live-проба находила методы, помеченные GET, которые на деле POST (ответ 405). Считайте такие записи картой для разведки: подтверждайте глагол и тело по докам или вызывайте через `call_raw`. Курированное ядро (7 категорий WB, 4 секции Ozon) и live-выверенный набор надёжны.
 - **Ozon дрейфует по версиям** (list v3, attributes v4, prices v5). При 404 проверьте версию; `ingest_ozon.py` пере-выравнивает пути.
 - **Ozon Performance**: пока каталог-артефакт плюс OAuth-обвязка по докам. Контракт токен-эндпоинта вживую не выверен, нужны рекламные креды.
+- **Яндекс Маркет и Авито (новое в 0.5.0)**: каталоги собраны из официальных OpenAPI-документов, типизированные инструменты написаны по спецификации, но живой прогон на реальных кабинетах ещё не делался. Ошибки в именах полей возможны, `describe_method` и `call_raw` помогут поправить запрос на месте.
 - **Кабинет затеняет переменные окружения.** Активный кабинет в `cabinets.json` имеет приоритет над env. Необъяснимый 401 или «Client-Id should be positive integer»: первым делом проверьте этот файл.
 
 ## Чем это не является

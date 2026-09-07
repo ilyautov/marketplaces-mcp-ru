@@ -1,13 +1,13 @@
-# marketplaces-mcp-ru — Wildberries & Ozon inside your AI assistant
+# marketplaces-mcp-ru — Wildberries, Ozon, Yandex Market & Avito inside your AI assistant
 
 > 🇷🇺 [Русская версия](README.md)
 
-Connects an AI assistant (Claude, Cursor, Codex, Cowork and others) directly to your Wildberries and Ozon seller accounts. You ask in plain words; the agent pulls sales, stock, prices, finance and reviews straight from the marketplace API instead of inventing numbers.
+Connects an AI assistant (Claude, Cursor, Codex, Cowork and others) directly to your Wildberries, Ozon, Yandex Market and Avito seller accounts. You ask in plain words; the agent pulls sales, orders, stock, prices, finance and reviews straight from the marketplace API (WB Seller API, Ozon Seller API, Yandex Market Partner API, Avito API) instead of inventing numbers.
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Docker](https://img.shields.io/badge/docker-ghcr.io-2D7D4F?logo=docker&logoColor=white)](https://github.com/ilyautov/marketplaces-mcp-ru/pkgs/container/marketplaces-mcp-ru)
-[![Install in VS Code](https://img.shields.io/badge/VS_Code-install-0098FF?logo=visualstudiocode&logoColor=white)](https://vscode.dev/redirect/mcp/install?name=marketplaces-ru&config=%7B%22command%22%3A%22uvx%22%2C%22args%22%3A%5B%22marketplaces-mcp-ru%22%5D%2C%22env%22%3A%7B%22WB_API_TOKEN%22%3A%22%24%7Binput%3Awb_api_token%7D%22%2C%22OZON_CLIENT_ID%22%3A%22%24%7Binput%3Aozon_client_id%7D%22%2C%22OZON_API_KEY%22%3A%22%24%7Binput%3Aozon_api_key%7D%22%7D%7D&inputs=%5B%7B%22id%22%3A%22wb_api_token%22%2C%22type%22%3A%22promptString%22%2C%22description%22%3A%22Wildberries%20API%20token%20%28leave%20empty%20if%20you%20don%27t%20sell%20on%20WB%29%22%2C%22password%22%3Atrue%7D%2C%7B%22id%22%3A%22ozon_client_id%22%2C%22type%22%3A%22promptString%22%2C%22description%22%3A%22Ozon%20Client-Id%20%28leave%20empty%20if%20you%20don%27t%20sell%20on%20Ozon%29%22%7D%2C%7B%22id%22%3A%22ozon_api_key%22%2C%22type%22%3A%22promptString%22%2C%22description%22%3A%22Ozon%20Api-Key%22%2C%22password%22%3Atrue%7D%5D)
-[![Install in Cursor](https://img.shields.io/badge/Cursor-install-000000?logo=cursor&logoColor=white)](https://cursor.com/en/install-mcp?name=marketplaces-ru&config=eyJjb21tYW5kIjoidXZ4IiwiYXJncyI6WyJtYXJrZXRwbGFjZXMtbWNwLXJ1Il0sImVudiI6eyJXQl9BUElfVE9LRU4iOiIiLCJPWk9OX0NMSUVOVF9JRCI6IiIsIk9aT05fQVBJX0tFWSI6IiJ9fQ==)
+[![Install in VS Code](https://img.shields.io/badge/VS_Code-install-0098FF?logo=visualstudiocode&logoColor=white)](https://vscode.dev/redirect/mcp/install?name=marketplaces-ru&config=%7B%22command%22%3A%22uvx%22%2C%22args%22%3A%5B%22marketplaces-mcp-ru%22%5D%2C%22env%22%3A%7B%22WB_API_TOKEN%22%3A%22%24%7Binput%3Awb_api_token%7D%22%2C%22OZON_CLIENT_ID%22%3A%22%24%7Binput%3Aozon_client_id%7D%22%2C%22OZON_API_KEY%22%3A%22%24%7Binput%3Aozon_api_key%7D%22%2C%22YANDEX_MARKET_API_KEY%22%3A%22%24%7Binput%3Ayandex_api_key%7D%22%2C%22AVITO_CLIENT_ID%22%3A%22%24%7Binput%3Aavito_client_id%7D%22%2C%22AVITO_CLIENT_SECRET%22%3A%22%24%7Binput%3Aavito_client_secret%7D%22%7D%7D&inputs=%5B%7B%22id%22%3A%22wb_api_token%22%2C%22type%22%3A%22promptString%22%2C%22description%22%3A%22Wildberries%20API%20token%20%28leave%20empty%20if%20you%20don%27t%20sell%20on%20WB%29%22%2C%22password%22%3Atrue%7D%2C%7B%22id%22%3A%22ozon_client_id%22%2C%22type%22%3A%22promptString%22%2C%22description%22%3A%22Ozon%20Client-Id%20%28leave%20empty%20if%20you%20don%27t%20sell%20on%20Ozon%29%22%7D%2C%7B%22id%22%3A%22ozon_api_key%22%2C%22type%22%3A%22promptString%22%2C%22description%22%3A%22Ozon%20Api-Key%22%2C%22password%22%3Atrue%7D%2C%7B%22id%22%3A%22yandex_api_key%22%2C%22type%22%3A%22promptString%22%2C%22description%22%3A%22Yandex%20Market%20Api-Key%20%28leave%20empty%20if%20you%20don%27t%20sell%20there%29%22%2C%22password%22%3Atrue%7D%2C%7B%22id%22%3A%22avito_client_id%22%2C%22type%22%3A%22promptString%22%2C%22description%22%3A%22Avito%20client_id%20%28leave%20empty%20if%20you%20don%27t%20sell%20on%20Avito%29%22%7D%2C%7B%22id%22%3A%22avito_client_secret%22%2C%22type%22%3A%22promptString%22%2C%22description%22%3A%22Avito%20client_secret%22%2C%22password%22%3Atrue%7D%5D)
+[![Install in Cursor](https://img.shields.io/badge/Cursor-install-000000?logo=cursor&logoColor=white)](https://cursor.com/en/install-mcp?name=marketplaces-ru&config=eyJjb21tYW5kIjoidXZ4IiwiYXJncyI6WyJtYXJrZXRwbGFjZXMtbWNwLXJ1Il0sImVudiI6eyJXQl9BUElfVE9LRU4iOiIiLCJPWk9OX0NMSUVOVF9JRCI6IiIsIk9aT05fQVBJX0tFWSI6IiIsIllBTkRFWF9NQVJLRVRfQVBJX0tFWSI6IiIsIkFWSVRPX0NMSUVOVF9JRCI6IiIsIkFWSVRPX0NMSUVOVF9TRUNSRVQiOiIifX0=)
 
 ## Why
 
@@ -29,6 +29,8 @@ Just type to the agent in plain language:
 
 ```
 show this week's sales on WB and Ozon and compare them
+which Yandex Market orders are waiting to ship today
+confirm new Avito Delivery orders and show where stock is running out
 what should I reorder — compute days of cover from stock and sales
 pull the WB realization finance report for last month
 which Ozon products have a red price index
@@ -36,7 +38,7 @@ collect reviews below 4 stars this week and group complaints by product
 run an ABC analysis by revenue and show the tail products
 ```
 
-Not sure where to start? Say "what can you do with my account". The agent will show ready-made workflows: for Wildberries — sales pulse, stock health, price audit, reorder planner, ABC analysis, reviews summary; for Ozon — out-of-stock risk, pricing analysis, unit economics, catalog sync, content audit, plus the same ABC and reviews. Each workflow is a step-by-step recipe with interpretation and common pitfalls.
+Not sure where to start? Say "what can you do with my account". The agent will show ready-made workflows: for Wildberries — sales pulse, stock health, price audit, reorder planner, ABC analysis, reviews summary; for Ozon — out-of-stock risk, pricing analysis, unit economics, catalog sync, content audit, plus the same ABC and reviews; for Yandex Market — out-of-stock risk, pricing, reviews triage, quality index; for Avito — orders to confirm, listing health, spend vs results, reviews triage. Each workflow is a step-by-step recipe with interpretation and common pitfalls.
 
 ## Install
 
@@ -45,15 +47,15 @@ A detailed guide for any audience is in [QUICKSTART.md](QUICKSTART.md). Three wa
 1. **Ask your AI (no terminal).** Open Claude or Cowork and say "install the WB + Ozon MCP". The agent walks the bundled `install-skill/`. In the Cowork sandbox the final click stays with you; in Claude Code it installs fully on its own.
 2. **Download and click.** Grab `marketplaces-mcp-ru-v<version>.zip` from [GitHub Releases](https://github.com/ilyautov/marketplaces-mcp-ru/releases), unzip, double-click `install.command` (macOS) / `install.bat` (Windows), paste your keys. On Windows the installer can fetch Python via winget if it's missing.
 3. **Terminal.** `git clone https://github.com/ilyautov/marketplaces-mcp-ru`, then `python3 install.py --client <your-client>` (`claude-desktop`, `claude-code`, `codex` or `opencode`).
-4. **PyPI / `uvx`.** `uvx marketplaces-mcp-ru` runs the combined WB + Ozon + Ozon Performance server straight from PyPI; `wb-mcp` / `ozon-mcp` / `ozon-perf-mcp` run a single service. Keys via env vars or `*_add_cabinet` from chat.
+4. **PyPI / `uvx`.** `uvx marketplaces-mcp-ru` runs the combined WB + Ozon + Ozon Performance + Yandex Market + Avito server straight from PyPI; `wb-mcp` / `ozon-mcp` / `ozon-perf-mcp` / `yandex-mcp` / `avito-mcp` run a single service. Keys via env vars or `*_add_cabinet` from chat.
 5. **VS Code / Cursor, one click.** The install badges at the top open the editor and add `uvx marketplaces-mcp-ru` to its MCP config; VS Code prompts for the keys, Cursor opens the JSON for you to fill in.
 6. **Docker.** `docker run -i --rm -e WB_API_TOKEN=… -e OZON_CLIENT_ID=… -e OZON_API_KEY=… ghcr.io/ilyautov/marketplaces-mcp-ru` — the same combined server over stdio, no Python on the host. This image is what the [MCP Registry](https://registry.modelcontextprotocol.io/) lists as the OCI package. For remote use add `-e MCP_TRANSPORT=http -e MCP_HTTP_HOST=0.0.0.0 -p 8000:8000` and the server listens on `http://…:8000/mcp` (Streamable HTTP). HTTP mode has no auth of its own — keep it behind a proxy or firewall.
 
 You need Python 3.10+. Dependencies install themselves into a local `.venv` on first run, so there's no `pip install` or manual JSON editing — all you provide are the keys. Several stores can be connected and switched from chat (`*_add_cabinet` / `*_use_cabinet`).
 
-**Where to get keys.** Wildberries: seller.wildberries.ru → Settings → API access. Ozon: seller.ozon.ru → Settings → API keys. Keys are stored locally in `~/.marketplace-mcp/cabinets.json` (`chmod 600`) and never written to the client config or printed into the chat.
+**Where to get keys.** Wildberries: seller.wildberries.ru → Settings → API access. Ozon: seller.ozon.ru → Settings → API keys. Yandex Market: partner.market.yandex.ru → Settings → API access (Api-Key). Avito: avito.ru → For business → Integrations → API (client_id + client_secret). Keys are stored locally in `~/.marketplace-mcp/cabinets.json` (`chmod 600`) and never written to the client config or printed into the chat.
 
-**Verify:** `python3 serve.py doctor --live` (or `uvx marketplaces-mcp-ru doctor --live`) — tools and catalog sizes for all three servers, whether keys were found and where, plus one real read call per configured marketplace. Exit code 0 means every configured marketplace answered; secrets are never printed.
+**Verify:** `python3 serve.py doctor --live` (or `uvx marketplaces-mcp-ru doctor --live`) — tools and catalog sizes for all five servers, whether keys were found and where, plus one real read call per configured marketplace. Exit code 0 means every configured marketplace answered; secrets are never printed.
 
 ## Security
 
@@ -67,9 +69,9 @@ The check runs locally; nothing leaves without confirmation. A CI test (`test_sa
 
 ## How it works
 
-Under the hood are two MCP servers (Wildberries and Ozon) on a shared core. Instead of "one tool per endpoint" (that's 300+ tools the agent drowns in), there are 8 generic meta-tools over a catalog of methods — full API coverage with a small surface.
+Under the hood are five MCP servers (Wildberries, Ozon Seller, Ozon Performance, Yandex Market, Avito) on a shared core. Instead of "one tool per endpoint" (that's 300+ tools the agent drowns in), there are 8 generic meta-tools over a catalog of methods — full API coverage with a small surface.
 
-Meta-tools are the same on both servers (prefixed `wb_` / `ozon_`): `*_check_auth`, `*_search_methods` (search in Russian or English), `*_describe_method`, `*_call_method` (through the safety gate), `*_call_raw` (any path, even outside the catalog — full coverage), `*_fetch_all` (auto-pagination). Plus typed convenience tools (`wb_get_sales`, `ozon_get_prices`, …) and account tools. Selfcheck reports 19 tools for `wb`, 19 for `ozon`, 14 for `ozon-perf`.
+Meta-tools are the same on every server (prefixed `wb_` / `ozon_` / `ozon_perf_` / `ym_` / `avito_`): `*_check_auth`, `*_search_methods` (search in Russian or English), `*_describe_method`, `*_call_method` (through the safety gate), `*_call_raw` (any path, even outside the catalog — full coverage), `*_fetch_all` (auto-pagination). Plus typed convenience tools (`wb_get_sales`, `ozon_get_prices`, …) and account tools. Selfcheck reports 21 tools for `wb`, 21 for `ozon`, 16 for `ozon-perf`, 22 for `yandex`, 26 for `avito`.
 
 The catalog is built schema-driven from the official OpenAPI specs:
 
@@ -78,6 +80,8 @@ The catalog is built schema-driven from the official OpenAPI specs:
 | Wildberries | `wb_mcp/endpoints.yaml` | 307 | 70 |
 | Ozon Seller | `ozon_mcp/endpoints.yaml` | 441 | 67 |
 | Ozon Performance (ads) | `ozon_mcp/perf_endpoints.yaml` | 45 | 6 |
+| Yandex Market (Partner API) | `yandex_mcp/endpoints.yaml` | 165 | 29 |
+| Avito (business API) | `avito_mcp/endpoints.yaml` | 64 | 8 |
 
 The core (sales, stock, prices, finance, reviews) is verified live; the rest is imported from specs, and `call_raw` reaches anything not yet in the catalog.
 
@@ -113,10 +117,12 @@ cd marketplaces-mcp-ru
 # offline tests, no keys needed — all offline tests pass
 env -u OZON_CLIENT_ID -u OZON_API_KEY -u WB_API_TOKEN python3 -m pytest tests/ -q
 
-# selfcheck: 19 tools for wb, 19 for ozon, 14 for ozon-perf
+# selfcheck: 21 tools for wb, 21 for ozon, 16 for ozon-perf, 22 for yandex, 26 for avito
 python3 serve.py wb --selfcheck
 python3 serve.py ozon --selfcheck
 python3 serve.py ozon-perf --selfcheck
+python3 serve.py yandex --selfcheck
+python3 serve.py avito --selfcheck
 ```
 
 The `endpoints.yaml` catalogs are built schema-driven from the official OpenAPI specs (`ingest_specs.py` for WB, `ingest_ozon.py` for Ozon). Import is idempotent and additive: curated risk levels and descriptions are never overwritten. `validate_items_path.py` is a live validator (run locally on your own keys), `package_release.py` builds a clean versioned zip, `smoke_mcp.py` is a smoke test.
@@ -133,6 +139,8 @@ Most useful contributions: battle-verifying HTTP verbs (paths are reliable, verb
 
 **Is it free?** Yes, open source under MIT.
 
+**Does it support Yandex Market and Avito?** Yes, since 0.5.0. Yandex Market uses the Partner API key from the seller cabinet (orders, offers, stocks, prices, reports, chats, quality index). Avito uses the client_id / client_secret pair from the Integrations page (Avito Delivery orders, listing stock and prices, stats, reviews, messenger, promotion). `yandex-mcp` and `avito-mcp` run standalone or inside the combined server.
+
 ## Caveats
 
 Check against the marketplaces' live docs:
@@ -141,6 +149,7 @@ Check against the marketplaces' live docs:
 - **Methods imported from specs: paths are reliable, HTTP verbs aren't always.** A live probe found methods tagged GET that are actually POST (405). Treat such entries as a reconnaissance map: confirm the verb and body against the docs, or call via `call_raw`. The curated core and the live-verified set are reliable.
 - **Ozon drifts across versions** (list v3, attributes v4, prices v5). On a 404, check the version; `ingest_ozon.py` realigns paths.
 - **Ozon Performance** is a catalog artifact plus an OAuth wrapper from the docs; the token-endpoint contract isn't verified live yet (needs ad credentials).
+- **Yandex Market and Avito (new in 0.5.0)** — catalogs come from the official OpenAPI documents and the typed tools follow the spec, but there has been no live run against real accounts yet. Field-name mistakes are possible; `describe_method` and `call_raw` let you fix a request on the spot.
 - **An account shadows env vars.** The active account in `cabinets.json` takes priority over environment variables. An unexplained 401 or "Client-Id should be positive integer" — check that file first.
 
 ## License

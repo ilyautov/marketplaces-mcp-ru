@@ -35,7 +35,7 @@ def test_no_credentials_exits_1_but_reports_every_service(tmp_path):
     proc = _run(tmp_path, None, "--json")
     assert proc.returncode == 1, proc.stderr
     reports = json.loads(proc.stdout)
-    assert [r["service"] for r in reports] == ["wb", "ozon", "ozon_perf"]
+    assert [r["service"] for r in reports] == ["wb", "ozon", "ozon_perf", "ym", "avito"]
     for r in reports:
         assert not r["error"], r
         assert r["tools"] > 0 and r["methods"] > 0

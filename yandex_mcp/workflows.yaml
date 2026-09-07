@@ -1,0 +1,70 @@
+# Yandex Market analytical workflows — curated recipes over the catalog.
+# Step operation_ids reference yandex_mcp/endpoints.yaml. Field names come from
+# the official OpenAPI spec (not yet live-verified — treat as a map, not gospel).
+
+workflows:
+  - name: oos_risk_analysis
+    category: analytics
+    when_to_use: Find offers about to run out of stock in a shop so you can resupply in time.
+    steps:
+      - operation_id: ym_get_stocks
+        why: Stock per warehouse per offer; pass withTurnover=true to get turnover days.
+      - operation_id: ym_get_orders_stats
+        why: Recent orders per SKU to estimate daily sales where turnover is missing.
+    interpret: >
+      result.warehouses[].offers[].stocks[] carries count by type (AVAILABLE,
+      FIT, FREEZE, QUARANTINE...). Use AVAILABLE as sellable stock. With
+      withTurnover the offer has turnoverSummary.turnover (days of stock);
+      flag offers where turnover is LOW / VERY_LOW or AVAILABLE count is 0.
+    common_mistakes:
+      - Summing FIT + AVAILABLE — FIT includes reserved stock.
+      - Forgetting that stocks are per campaign (shop), not per business.
+
+  - name: pricing_analysis
+    category: pricing
+    when_to_use: Find offers whose price is above Market's recommendation or losing the buy box.
+    steps:
+      - operation_id: ym_get_default_prices
+        why: Current base prices per offer for the whole cabinet.
+      - operation_id: ym_get_offer_recommendations
+        why: Market's recommended competitive price per offer.
+    interpret: >
+      Compare result.offers[].price.value with the recommendation's
+      recommendation.competitivenessThresholds (optimal / average). Offers above
+      the average threshold are candidates for a cut; check discountBase so the
+      strikethrough stays above the new price.
+    common_mistakes:
+      - Setting a price with currencyId "RUB" — Yandex expects "RUR".
+      - Cutting below the cost of delivery + commission (see ym_calculate_tariffs).
+
+  - name: reviews_triage
+    category: reviews
+    when_to_use: Answer new product reviews and find the offers with the worst ratings.
+    steps:
+      - operation_id: ym_get_goods_feedbacks
+        why: Reviews with rating, text and whether the seller has reacted.
+      - operation_id: ym_get_goods_feedback_comments
+        why: Existing seller comments for a review before replying.
+    interpret: >
+      Filter result.feedbacks[] where needReaction is true; sort by
+      statistics.rating ascending. Group by identifiers.offerId to spot
+      offers that collect low ratings — a product problem, not a support one.
+    common_mistakes:
+      - Replying twice — check comments before ym_update_goods_feedback_comment.
+      - Treating the 5-star reviews without text as needing a reaction.
+
+  - name: quality_index
+    category: analytics
+    when_to_use: Check the shop quality index and what is dragging it down.
+    steps:
+      - operation_id: ym_get_quality_ratings
+        why: Quality index per campaign with the components (cancellations, late shipments...).
+      - operation_id: ym_get_quality_rating_details
+        why: The specific orders that hurt the rating in one shop.
+    interpret: >
+      result.campaignRatings[].rating is 0..100; components[] show the share of
+      cancelled / late / with-claims orders. Details list the affected orders —
+      fix the operational cause (shipment SLA) before the index drops below
+      the threshold where Market limits the shop.
+    common_mistakes:
+      - Reading the index once — it is recalculated daily, compare over time.

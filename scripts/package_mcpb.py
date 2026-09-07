@@ -40,7 +40,7 @@ MANIFEST_SRC = ROOT / "mcpb" / "manifest.json"
 
 # Runtime that ships inside the bundle under server/. Only what the server
 # needs at import/run time — no install scripts, no docs, no tests.
-INCLUDE_DIRS = ["core", "wb_mcp", "ozon_mcp", "ozon_perf_mcp"]
+INCLUDE_DIRS = ["core", "wb_mcp", "ozon_mcp", "ozon_perf_mcp", "yandex_mcp", "avito_mcp"]
 INCLUDE_FILES = ["serve.py", "LICENSE"]
 
 

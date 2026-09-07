@@ -14,10 +14,12 @@
 |---|---|---|
 | **Wildberries** | [seller.wildberries.ru](https://seller.wildberries.ru) → Настройки → Доступ к API → создать токен (отметьте нужные категории) | один **токен** |
 | **Ozon** | [seller.ozon.ru](https://seller.ozon.ru) → Настройки → API-ключи | **Client-Id** и **Api-Key** |
+| **Яндекс Маркет** | [partner.market.yandex.ru](https://partner.market.yandex.ru) → Настройки → Доступ к API | один **Api-Key** |
+| **Авито** | [avito.ru](https://www.avito.ru/professionals/api) → Для бизнеса → Интеграции → API | **client_id** и **client_secret** |
 
 Ключи хранятся **только на вашем компьютере** (`~/.marketplace-mcp/cabinets.json`,
 права 600). Они никогда не попадают в репозиторий, в конфиг Claude или к нам.
-Можно начать с одного маркетплейса — второй добавите позже.
+Можно начать с одного маркетплейса — остальные добавите позже.
 
 ---
 

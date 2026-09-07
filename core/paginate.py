@@ -10,6 +10,11 @@ Supported styles (EndpointSpec.pagination):
 - cursor          : Ozon v4/v5 — top-level "cursor" token + "total"
 - page            : body page/page_size, response result.page_count
 - lastchangedate  : WB statistics — query dateFrom = last row's lastChangeDate
+- page_query      : Avito — query page=1,2,3… (page size left to the caller /
+                    server default); stops on the first empty page
+- page_token      : Yandex Market — query pageToken (even on POST), response
+                    (result.)paging.nextPageToken; page size is left to the
+                    server unless the caller passes ``limit`` in the query
 - none            : single request
 
 Item paths vary per endpoint (result.items, items, result.rows,
@@ -93,6 +98,13 @@ async def fetch_all(
         elif style == "page":
             body.setdefault("page_size", limit)
             body["page"] = pages + 1
+        elif style == "page_query":
+            query["page"] = pages + 1
+        elif style == "page_token":
+            # Yandex: the token is a QUERY param for GET and POST alike; the
+            # per-endpoint limit ceiling varies (20..200), so we don't force one.
+            if seen_cursor:
+                query["pageToken"] = seen_cursor
 
         resp = await client.call_spec(
             spec, path_values=path_values, query=query or None, json_body=body or None
@@ -144,6 +156,15 @@ async def fetch_all(
                 return _result(items, pages, truncated=False)
             seen_cursor = lcd
             query["dateFrom"] = lcd
+        elif style == "page_query":
+            has_more = _dig(data, "hasMore")
+            if has_more is False:
+                return _result(items, pages, truncated=False)
+        elif style == "page_token":
+            nxt = _dig(data, "result.paging.nextPageToken") or _dig(data, "paging.nextPageToken")
+            if not nxt or nxt == seen_cursor:
+                return _result(items, pages, truncated=False)
+            seen_cursor = nxt
         else:  # none / unsupported -> single page
             return _result(items, pages, truncated=False)
 

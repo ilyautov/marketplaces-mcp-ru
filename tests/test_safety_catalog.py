@@ -21,6 +21,8 @@ CATALOGS = {
     "wb": ROOT / "wb_mcp" / "endpoints.yaml",
     "ozon": ROOT / "ozon_mcp" / "endpoints.yaml",
     "ozon-perf": ROOT / "ozon_mcp" / "perf_endpoints.yaml",
+    "yandex": ROOT / "yandex_mcp" / "endpoints.yaml",
+    "avito": ROOT / "avito_mcp" / "endpoints.yaml",
 }
 MUTATING_VERBS = {"PUT", "PATCH", "DELETE"}
 

@@ -23,7 +23,10 @@ Requires `uv` (https://docs.astral.sh/uv/). Add an MCP server entry:
       "env": {
         "WB_API_TOKEN": "<wildberries seller token, optional>",
         "OZON_CLIENT_ID": "<ozon client id, optional>",
-        "OZON_API_KEY": "<ozon api key, optional>"
+        "OZON_API_KEY": "<ozon api key, optional>",
+        "YANDEX_MARKET_API_KEY": "<yandex market api key, optional>",
+        "AVITO_CLIENT_ID": "<avito client id, optional>",
+        "AVITO_CLIENT_SECRET": "<avito client secret, optional>"
       }
     }
   }
@@ -32,6 +35,8 @@ Requires `uv` (https://docs.astral.sh/uv/). Add an MCP server entry:
 
 Leave out the variables for marketplaces the user does not sell on. Ozon
 Performance (ads) is optional: `OZON_PERF_CLIENT_ID` + `OZON_PERF_CLIENT_SECRET`.
+Yandex Market: `YANDEX_MARKET_API_KEY` (partner.market.yandex.ru → Settings → API access).
+Avito: `AVITO_CLIENT_ID` + `AVITO_CLIENT_SECRET` (avito.ru → For business → Integrations → API).
 
 Docker alternative (same env vars):
 

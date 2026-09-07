@@ -1,0 +1,140 @@
+{
+ "messenger": {
+  "section": "Мессенджер (чаты с покупателями)",
+  "doc": "https://developers.avito.ru/api-catalog/messenger/documentation",
+  "ops": [
+   {
+    "id": "getChatsV2",
+    "m": "GET",
+    "path": "/messenger/v2/accounts/{user_id}/chats",
+    "sum": "Список чатов пользователя (по объявлениям u2i, между пользователями u2u), фильтр по item_ids и unread_only; limit/offset",
+    "q": [
+     "item_ids",
+     "unread_only",
+     "chat_types",
+     "limit",
+     "offset"
+    ],
+    "body": "",
+    "ip": "chats",
+    "pag": "offset"
+   },
+   {
+    "id": "getChatByIdV2",
+    "m": "GET",
+    "path": "/messenger/v2/accounts/{user_id}/chats/{chat_id}",
+    "sum": "Информация по чату и последнее сообщение в нём",
+    "q": [],
+    "body": "",
+    "ip": ""
+   },
+   {
+    "id": "getMessagesV3",
+    "m": "GET",
+    "path": "/messenger/v3/accounts/{user_id}/chats/{chat_id}/messages/",
+    "sum": "Список сообщений чата (не помечает чат прочитанным); limit/offset",
+    "q": [
+     "limit",
+     "offset"
+    ],
+    "body": "",
+    "ip": "",
+    "pag": "offset"
+   },
+   {
+    "id": "postSendMessage",
+    "m": "POST",
+    "path": "/messenger/v1/accounts/{user_id}/chats/{chat_id}/messages",
+    "sum": "Отправка текстового сообщения в чат (до 1000 символов)",
+    "q": [],
+    "body": "message,type",
+    "ip": ""
+   },
+   {
+    "id": "postSendImageMessage",
+    "m": "POST",
+    "path": "/messenger/v1/accounts/{user_id}/chats/{chat_id}/messages/image",
+    "sum": "Отправка сообщения с изображением (image_id из uploadImages)",
+    "q": [],
+    "body": "image_id",
+    "ip": ""
+   },
+   {
+    "id": "uploadImages",
+    "m": "POST",
+    "path": "/messenger/v1/accounts/{user_id}/uploadImages",
+    "sum": "Загрузка изображения для отправки в чат (multipart/form-data, до 24 МБ)",
+    "q": [],
+    "body": "uploadfile[]",
+    "ip": ""
+   },
+   {
+    "id": "deleteMessage",
+    "m": "POST",
+    "path": "/messenger/v1/accounts/{user_id}/chats/{chat_id}/messages/{message_id}",
+    "sum": "Удаление сообщения (тип меняется на deleted; не позднее часа после отправки)",
+    "q": [],
+    "body": "",
+    "ip": "",
+    "safety": "destructive"
+   },
+   {
+    "id": "chatRead",
+    "m": "POST",
+    "path": "/messenger/v1/accounts/{user_id}/chats/{chat_id}/read",
+    "sum": "Отметить чат прочитанным",
+    "q": [],
+    "body": "",
+    "ip": ""
+   },
+   {
+    "id": "getVoiceFiles",
+    "m": "GET",
+    "path": "/messenger/v1/accounts/{user_id}/getVoiceFiles",
+    "sum": "Ссылки на файлы голосовых сообщений по voice_ids (действуют 1 час)",
+    "q": [
+     "voice_ids"
+    ],
+    "body": "",
+    "ip": ""
+   },
+   {
+    "id": "postBlacklistV2",
+    "m": "POST",
+    "path": "/messenger/v2/accounts/{user_id}/blacklist",
+    "sum": "Добавление пользователя в чёрный список (спам, мошенничество, оскорбления)",
+    "q": [],
+    "body": "users",
+    "ip": ""
+   },
+   {
+    "id": "getSubscriptions",
+    "m": "POST",
+    "path": "/messenger/v1/subscriptions",
+    "sum": "Список подписок на webhook-уведомления о сообщениях",
+    "q": [],
+    "body": "",
+    "ip": "subscriptions",
+    "safety": "read"
+   },
+   {
+    "id": "postWebhookV3",
+    "m": "POST",
+    "path": "/messenger/v3/webhook",
+    "sum": "Включение webhook-уведомлений о новых сообщениях (url)",
+    "q": [],
+    "body": "url",
+    "ip": ""
+   },
+   {
+    "id": "postWebhookUnsubscribe",
+    "m": "POST",
+    "path": "/messenger/v1/webhook/unsubscribe",
+    "sum": "Отключение webhook-уведомлений для url",
+    "q": [],
+    "body": "url",
+    "ip": ""
+   }
+  ]
+ }
+}

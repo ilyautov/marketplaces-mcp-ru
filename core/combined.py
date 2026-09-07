@@ -20,7 +20,8 @@ from mcp.server.fastmcp import FastMCP
 
 from core.transport import run as run_transport
 
-SERVICE_MODULES = ("wb_mcp.server", "ozon_mcp.server", "ozon_perf_mcp.server")
+SERVICE_MODULES = ("wb_mcp.server", "ozon_mcp.server", "ozon_perf_mcp.server",
+                   "yandex_mcp.server", "avito_mcp.server")
 
 
 def build() -> FastMCP:

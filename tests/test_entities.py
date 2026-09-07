@@ -48,6 +48,8 @@ CATALOGS = {
     "wb": "wb_mcp/endpoints.yaml",
     "ozon": "ozon_mcp/endpoints.yaml",
     "ozon_perf": "ozon_mcp/perf_endpoints.yaml",
+    "ym": "yandex_mcp/endpoints.yaml",
+    "avito": "avito_mcp/endpoints.yaml",
 }
 
 

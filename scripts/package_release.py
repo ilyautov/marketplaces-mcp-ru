@@ -33,6 +33,8 @@ INCLUDE_DIRS = [
     "wb_mcp",
     "ozon_mcp",
     "ozon_perf_mcp",
+    "yandex_mcp",
+    "avito_mcp",
     "install-skill",   # optional — added by another agent; skipped if absent
 ]
 INCLUDE_FILES = [

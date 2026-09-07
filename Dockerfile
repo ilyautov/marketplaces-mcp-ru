@@ -34,6 +34,8 @@ COPY core/ /src/core/
 COPY wb_mcp/ /src/wb_mcp/
 COPY ozon_mcp/ /src/ozon_mcp/
 COPY ozon_perf_mcp/ /src/ozon_perf_mcp/
+COPY yandex_mcp/ /src/yandex_mcp/
+COPY avito_mcp/ /src/avito_mcp/
 
 RUN pip install /src \
     && rm -rf /src /root/.cache \

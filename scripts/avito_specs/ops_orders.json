@@ -1,0 +1,127 @@
+{
+ "order-management": {
+  "section": "Заказы и Авито Доставка",
+  "doc": "https://developers.avito.ru/api-catalog/order-management/documentation",
+  "ops": [
+   {
+    "id": "getOrders",
+    "m": "GET",
+    "path": "/order-management/1/orders",
+    "sum": "Получение заказов по статусу (on_confirmation, ready_to_ship, in_transit, canceled, delivered, on_return, in_dispute, closed); page/limit (<=20), dateFrom (unix)",
+    "q": [
+     "ids",
+     "statuses",
+     "dateFrom",
+     "page",
+     "limit"
+    ],
+    "body": "",
+    "ip": "orders",
+    "pag": "avito_page"
+   },
+   {
+    "id": "applyTransition",
+    "m": "POST",
+    "path": "/order-management/1/order/applyTransition",
+    "sum": "Изменение статуса заказа: confirm (подтвердить), reject (отменить), perform (отправлен, RDBS), receive (доставлен, RDBS/CNC)",
+    "q": [],
+    "body": "orderId,transition,params",
+    "ip": ""
+   },
+   {
+    "id": "markings",
+    "m": "POST",
+    "path": "/order-management/1/markings",
+    "sum": "Передача кодов маркировки «Честный знак» для товаров в заказе (до подтверждения заказа)",
+    "q": [],
+    "body": "markings",
+    "ip": "results"
+   },
+   {
+    "id": "setOrderTrackingNumber",
+    "m": "POST",
+    "path": "/order-management/1/order/setTrackingNumber",
+    "sum": "Передача трек-номера посылки для доставки партнёрами продавца (DBS)",
+    "q": [],
+    "body": "orderId,trackingNumber",
+    "ip": ""
+   },
+   {
+    "id": "acceptReturnOrder",
+    "m": "POST",
+    "path": "/order-management/1/order/acceptReturnOrder",
+    "sum": "Подтверждение возврата и выбор отделения Почты России для получения возврата (спор по заказу)",
+    "q": [],
+    "body": "orderId,recipient,terminalNumber",
+    "ip": ""
+   },
+   {
+    "id": "getCourierDeliveryRange",
+    "m": "GET",
+    "path": "/order-management/1/order/getCourierDeliveryRange",
+    "sum": "Доступные временные интервалы приезда курьера за заказом (Courier)",
+    "q": [
+     "orderId",
+     "address"
+    ],
+    "body": "",
+    "ip": "result.dateOptions"
+   },
+   {
+    "id": "setCourierDeliveryRange",
+    "m": "POST",
+    "path": "/order-management/1/order/setCourierDeliveryRange",
+    "sum": "Выбор/изменение времени приезда курьера — подтверждает курьерский заказ",
+    "q": [],
+    "body": "orderId,address,addressDetails,startDate,endDate,intervalType,phone,name",
+    "ip": ""
+   },
+   {
+    "id": "cncSetDetails",
+    "m": "POST",
+    "path": "/order-management/1/order/cncSetDetails",
+    "sum": "Подготовка заказа с самовывозом (CNC): адрес, срок бронирования, комментарий покупателю",
+    "q": [],
+    "body": "id,marketplaceId,bookingPeriod,address,details",
+    "ip": ""
+   },
+   {
+    "id": "checkConfirmationCode",
+    "m": "POST",
+    "path": "/order-management/1/order/checkConfirmationCode",
+    "sum": "Проверка кода подтверждения при выдаче заказа в ПВЗ (для служб доставки)",
+    "q": [],
+    "body": "confirmCode,parcelID",
+    "ip": "",
+    "safety": "read"
+   },
+   {
+    "id": "generateLabels",
+    "m": "POST",
+    "path": "/order-management/1/orders/labels",
+    "sum": "Создать задачу на генерацию PDF-этикеток для заказов ПВЗ (до 100)",
+    "q": [],
+    "body": "orderIDs",
+    "ip": ""
+   },
+   {
+    "id": "generateLabelsExtended",
+    "m": "POST",
+    "path": "/order-management/1/orders/labels/extended",
+    "sum": "Создать задачу на генерацию PDF-этикеток для заказов ПВЗ (до 1000, 1 запрос/мин)",
+    "q": [],
+    "body": "orderIDs",
+    "ip": ""
+   },
+   {
+    "id": "downloadLabel",
+    "m": "GET",
+    "path": "/order-management/1/orders/labels/{taskID}/download",
+    "sum": "Скачать сгенерированный PDF с этикетками по ID задачи",
+    "q": [],
+    "body": "",
+    "ip": ""
+   }
+  ]
+ }
+}
