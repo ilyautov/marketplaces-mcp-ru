@@ -36,6 +36,7 @@ from core.entities import EntityIndex
 from core.registry import Catalog
 from core.tools import register_cabinet_tools, register_generic_tools
 from core.workflows import Workflows, register_workflow_tools
+from core.transport import run as run_transport
 
 # The perf catalog lives next to the Ozon Seller catalog (already prepared:
 # 45 endpoints, host api-performance.ozon.ru, default_host set).
@@ -86,8 +87,8 @@ def _j(obj) -> str:
 
 
 def main() -> None:
-    """Console entry point (stdio transport)."""
-    mcp.run()
+    """Console entry point: stdio by default, HTTP with MCP_TRANSPORT=http."""
+    run_transport(mcp)
 
 
 if __name__ == "__main__":

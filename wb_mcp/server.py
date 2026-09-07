@@ -25,6 +25,7 @@ from core.entities import EntityIndex
 from core.registry import Catalog
 from core.tools import register_cabinet_tools, register_generic_tools
 from core.workflows import Workflows, register_workflow_tools
+from core.transport import run as run_transport
 
 CATALOG_PATH = Path(__file__).with_name("endpoints.yaml")
 WORKFLOWS_PATH = Path(__file__).with_name("workflows.yaml")
@@ -176,8 +177,8 @@ async def wb_set_price(nm_id: int, price: int, discount: int = 0,
 
 
 def main() -> None:
-    """Console entry point (stdio transport)."""
-    mcp.run()
+    """Console entry point: stdio by default, HTTP with MCP_TRANSPORT=http."""
+    run_transport(mcp)
 
 
 if __name__ == "__main__":

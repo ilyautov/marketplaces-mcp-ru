@@ -54,16 +54,20 @@
 3. **Скачать и кликнуть.** Возьмите `marketplaces-mcp-ru-v<версия>.zip` из [GitHub Releases](https://github.com/ilyautov/marketplaces-mcp-ru/releases), распакуйте, дважды кликните `install.command` (macOS) или `install.bat` (Windows), вставьте ключи. На macOS при первом запуске: правый клик → «Открыть» → «Открыть» (так обходится Gatekeeper для скачанного файла).
 4. **Через терминал.** `git clone https://github.com/ilyautov/marketplaces-mcp-ru`, затем `python3 install.py --client <ваш-клиент>`.
 5. **Для разработчиков (`uvx`).** `uvx marketplaces-mcp-ru` запускает объединённый сервер прямо из PyPI; отдельные серверы — консольными командами `wb-mcp` / `ozon-mcp` / `ozon-perf-mcp`. Ключи — через переменные окружения или те же `*_add_cabinet` из чата.
+6. **Docker.** `docker run -i --rm -e WB_API_TOKEN=… -e OZON_CLIENT_ID=… -e OZON_API_KEY=… ghcr.io/ilyautov/marketplaces-mcp-ru` — тот же объединённый сервер по stdio, без Python на машине. Этот образ и указан в [MCP Registry](https://registry.modelcontextprotocol.io/) как OCI-пакет. Для удалённого доступа добавьте `-e MCP_TRANSPORT=http -e MCP_HTTP_HOST=0.0.0.0 -p 8000:8000`: сервер поднимется на `http://…:8000/mcp` (Streamable HTTP). Своей авторизации у HTTP-режима нет, закрывайте его прокси или файрволом.
 
 Установщик копирует приложение в стабильную папку (`~/.marketplace-mcp/app`) и привязывает конфиг туда, так что исходную папку потом можно перемещать или удалять, ничего не сломается. Ни `pip install`, ни ручной правки JSON: зависимости ставятся сами при первом запуске. От вас нужны только ключи. Поддерживается 4 клиента через `--client`: `claude-desktop` и `opencode` получают готовый конфиг, `claude-code` и `codex` получают готовые команды `mcp add`.
 
 **Где взять ключи.** Wildberries: seller.wildberries.ru → Настройки → Доступ к API. Ozon: seller.ozon.ru → Настройки → API-ключи. Ключи хранятся в `~/.marketplace-mcp/cabinets.json` локально (`chmod 600`), в репозиторий и в чат не попадают. Можно подключить несколько магазинов и переключаться между ними прямо из чата (`*_add_cabinet` / `*_use_cabinet`).
 
-**Проверка после установки:**
+**Проверка после установки:** одна команда показывает по всем трём серверам, сколько инструментов и методов загрузилось, найдены ли ключи и где (кабинет / env), а с `--live` делает по одному реальному read-вызову в каждый кабинет.
 
 ```bash
-python3 serve.py ozon --selfcheck
+python3 serve.py doctor --live          # из клона
+uvx marketplaces-mcp-ru doctor --live   # из PyPI
 ```
+
+Код возврата 0 означает, что все настроенные кабинеты ответили. Секреты в вывод не попадают.
 
 ## Безопасность
 
@@ -145,6 +149,8 @@ core/                общее ядро обоих серверов
   entities.py        нормализация сущностей (товары, заказы и т.д.)
   workflows.py       движок пошаговых сценариев
   tools.py           регистрация мета-инструментов в MCP
+  transport.py       выбор транспорта: stdio (по умолчанию) или Streamable HTTP
+  doctor.py          диагностика: инструменты, каталоги, ключи, живой пинг
   errors.py          единый формат ошибок
 wb_mcp/              сервер WB: server.py + endpoints.yaml + workflows.yaml
 ozon_mcp/            сервер Ozon: server.py + endpoints.yaml + perf_endpoints.yaml + workflows.yaml
@@ -161,11 +167,20 @@ cd marketplaces-mcp-ru
 # офлайн-тесты, ключи не нужны — все офлайн-тесты зелёные
 env -u OZON_CLIENT_ID -u OZON_API_KEY -u WB_API_TOKEN python3 -m pytest tests/ -q
 
-# selfcheck серверов: отдаёт 19 тулов для wb, 19 для ozon, 14 для ozon-perf
+# selfcheck серверов: отдаёт 21 тул для wb, 21 для ozon, 16 для ozon-perf
 python3 serve.py wb --selfcheck
 python3 serve.py ozon --selfcheck
 python3 serve.py ozon-perf --selfcheck
+
+# всё сразу: инструменты, каталоги, ключи, живой пинг кабинетов
+python3 serve.py doctor --live
+
+# образ для MCP Registry / удалённого запуска
+docker build -t marketplaces-mcp-ru .
+docker run --rm marketplaces-mcp-ru doctor
 ```
+
+**Транспорт.** По умолчанию stdio, как ждут Claude Desktop, Cursor, Codex и Claude Code. `MCP_TRANSPORT=http` переключает любой из серверов (и объединённый) на Streamable HTTP: `MCP_HTTP_HOST` (по умолчанию `127.0.0.1`), `MCP_HTTP_PORT` (`8000`), `MCP_HTTP_ALLOWED_HOSTS` — список допустимых заголовков `Host` через запятую, защита от DNS-rebinding при публикации наружу. Аутентификации у HTTP-режима нет: кто дотянулся до порта, тот работает с вашими ключами. Держите его на localhost или за прокси.
 
 **Как устроен и растёт каталог.** `endpoints.yaml` собирается schema-driven из официальных OpenAPI-спеков: `ingest_specs.py` (WB) и `ingest_ozon.py` (Ozon) тянут пути, `derive_pagination.py` и `fix_items_path_from_examples.py` настраивают пагинацию и `items_path`, `sync_swagger.py` подтягивает свежие спеки. Запись каждого метода описывает `operation_id`, метод, хост, путь, scope, уровень риска и пагинацию. Импорт идемпотентный и аддитивный: курированные уровни риска и описания не перетираются. `validate_items_path.py` это live-валидатор (гонять локально на своих ключах), `package_release.py` собирает чистый версионный zip, `smoke_mcp.py` это дымовой тест.
 

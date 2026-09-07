@@ -13,8 +13,12 @@ internal surface is stable within the pinned ``mcp>=1.2,<2`` range.
 from __future__ import annotations
 
 import importlib
+import sys
+from typing import Optional, Sequence
 
 from mcp.server.fastmcp import FastMCP
+
+from core.transport import run as run_transport
 
 SERVICE_MODULES = ("wb_mcp.server", "ozon_mcp.server", "ozon_perf_mcp.server")
 
@@ -28,8 +32,22 @@ def build() -> FastMCP:
     return combined
 
 
-def main() -> None:
-    build().run()
+def main(argv: Optional[Sequence[str]] = None) -> None:
+    """Console entry point.
+
+    ``marketplaces-mcp-ru``          serve (stdio; HTTP with MCP_TRANSPORT=http)
+    ``marketplaces-mcp-ru doctor``   diagnostics, see ``core.doctor``
+    """
+    args = list(sys.argv[1:] if argv is None else argv)
+    if args and args[0] == "doctor":
+        from core.doctor import main as doctor_main
+
+        raise SystemExit(doctor_main(args[1:]))
+    if args:
+        print(f"marketplaces-mcp-ru: unknown argument {args[0]!r} "
+              "(only 'doctor' is accepted)", file=sys.stderr)
+        raise SystemExit(2)
+    run_transport(build())
 
 
 if __name__ == "__main__":

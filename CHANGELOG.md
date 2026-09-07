@@ -3,6 +3,37 @@
 Формат — [Keep a Changelog](https://keepachangelog.com/ru/1.1.0/),
 версии — [SemVer](https://semver.org/lang/ru/).
 
+## [0.4.0] — 2026-09-07
+
+Дистрибуция, часть вторая: Docker-образ и второй пакет в MCP Registry, HTTP-режим
+для серверов и контейнеров, команда `doctor`. Логика работы с API не менялась.
+
+### Добавлено
+- **Docker / GHCR.** `Dockerfile` собирает объединённый сервер в образ
+  `ghcr.io/ilyautov/marketplaces-mcp-ru:<версия>` (плюс `:latest`), непривилегированный
+  пользователь, том `/data` под `cabinets.json`. Образ несёт метку
+  `io.modelcontextprotocol.server.name`, по которой MCP Registry проверяет владельца.
+- **MCP Registry: OCI-пакет** рядом с PyPI в `server.json`. Публикация теперь
+  автоматическая: `publish-registry.yml` на каждом теге собирает образ, гоняет по
+  нему настоящий `docker run`, ждёт появления версии на PyPI и публикует
+  `server.json` через GitHub OIDC. Ручной `mcp-publisher` остался как запасной путь.
+- **HTTP-транспорт** (`core/transport.py`). `MCP_TRANSPORT=http` переводит любой
+  сервер (и объединённый) на Streamable HTTP: `MCP_HTTP_HOST`, `MCP_HTTP_PORT`,
+  `MCP_HTTP_ALLOWED_HOSTS`. По умолчанию по-прежнему stdio. Аутентификации у
+  HTTP-режима нет, об этом сказано в README и в предупреждении на stderr при
+  привязке не к localhost.
+- **`doctor`** (`core/doctor.py`): `python3 serve.py doctor`, `marketplaces-mcp-ru doctor`,
+  `docker run … doctor`. По всем трём серверам: сколько инструментов и методов,
+  найдены ли ключи и где (кабинет / env), а с `--live` один реальный read-вызов
+  в каждый настроенный кабинет. `--json` для машин. Секреты не печатает.
+  Код возврата 0 только если все настроенные кабинеты ответили.
+- **`llms-install.md`** — короткая инструкция для агентов (Cline, Claude Code, Cursor).
+- CI: leg на macOS, сборка и смоук Docker-образа на каждом PR;
+  `tests/test_versions.py` держит одну версию во всех файлах релиза.
+
+### Исправлено
+- README: число инструментов у серверов (21 / 21 / 16, было 19 / 19 / 14).
+
 ## [0.3.3] — 2026-07-16
 
 Патч по итогам отладочной сессии на Windows: сервер не поднимался ни у одного

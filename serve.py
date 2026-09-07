@@ -9,6 +9,9 @@ server. Subsequent runs start instantly.
     python3 serve.py wb            # launch the Wildberries server
     python3 serve.py ozon          # launch the Ozon server
     python3 serve.py ozon --selfcheck   # verify install, print tool count, exit
+    python3 serve.py doctor [--live]    # tools, catalogs, keys — all three at once
+
+Transport is stdio unless MCP_TRANSPORT=http is set (see core/transport.py).
 
 Why no process re-exec: an MCP stdio server must stay in the SAME process that
 owns stdin/stdout. Swapping the process (os.exec*) is fragile on Windows and can
@@ -35,6 +38,7 @@ SERVICES = {"wb": "wb_mcp.server", "ozon": "ozon_mcp.server",
 # "all" mounts every service's tools onto a single MCP server so one process
 # (one Claude Desktop / .mcpb entry) exposes WB + Ozon + Ozon-Perf at once.
 COMBINED = "all"
+DOCTOR = "doctor"
 
 
 def _log(msg: str) -> None:
@@ -193,9 +197,10 @@ def main() -> None:
     args = [a for a in sys.argv[1:]]
     selfcheck = "--selfcheck" in args
     positional = [a for a in args if not a.startswith("-")]
-    valid = set(SERVICES) | {COMBINED}
+    valid = set(SERVICES) | {COMBINED, DOCTOR}
     if not positional or positional[0] not in valid:
-        _log(f"usage: python serve.py [{'|'.join(SERVICES)}|{COMBINED}] [--selfcheck]")
+        _log(f"usage: python serve.py [{'|'.join(SERVICES)}|{COMBINED}] [--selfcheck]"
+             f"  |  python serve.py {DOCTOR} [--live] [--json]")
         sys.exit(2)
     service = positional[0]
 
@@ -206,6 +211,10 @@ def main() -> None:
         sys.exit(1)
 
     import importlib
+
+    if service == DOCTOR:
+        doctor = importlib.import_module("core.doctor")
+        sys.exit(doctor.main(args[1:]))
 
     if service == COMBINED:
         server = _build_combined(importlib)
@@ -230,7 +239,9 @@ class _Combined:
         self.mcp = mcp
 
     def main(self) -> None:
-        self.mcp.run()
+        from core.transport import run as run_transport
+
+        run_transport(self.mcp)
 
 
 def _build_combined(importlib):

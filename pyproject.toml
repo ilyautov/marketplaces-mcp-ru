@@ -1,6 +1,6 @@
 [project]
 name = "marketplaces-mcp-ru"
-version = "0.3.3"
+version = "0.4.0"
 description = "MCP servers for Wildberries and Ozon Seller APIs (schema-driven, safety-gated)"
 readme = "README.md"
 requires-python = ">=3.10"

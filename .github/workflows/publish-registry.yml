@@ -1,0 +1,153 @@
+name: Publish Docker image + MCP Registry
+
+# On every v* tag (after the PyPI publish of the same version):
+#   1. build the OCI image and push it to ghcr.io/ilyautov/marketplaces-mcp-ru:<version>
+#      (+ :latest), carrying the io.modelcontextprotocol.server.name label the
+#      registry uses to verify ownership;
+#   2. smoke-test the pushed image with a real `docker run`;
+#   3. wait until PyPI serves the same version (the registry validates the
+#      PyPI package too), then publish server.json via GitHub OIDC — no
+#      long-lived token anywhere.
+#
+# One-time setup (GitHub web UI): after the first push, open the package
+# ghcr.io/ilyautov/marketplaces-mcp-ru → Package settings → change visibility
+# to Public. Personal-account packages are created private by default and the
+# registry cannot verify a private image.
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Existing release tag to (re)publish, e.g. v0.4.0"
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+env:
+  IMAGE: ghcr.io/ilyautov/marketplaces-mcp-ru
+
+jobs:
+  image:
+    name: Build and push OCI image
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    outputs:
+      version: ${{ steps.version.outputs.value }}
+    steps:
+      - name: Resolve tag
+        id: tag
+        shell: bash
+        run: |
+          TAG="${{ github.event.inputs.tag || github.ref_name }}"
+          case "$TAG" in v*) ;; *) echo "not a release tag: $TAG" >&2; exit 1 ;; esac
+          echo "value=$TAG" >> "$GITHUB_OUTPUT"
+
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          ref: ${{ steps.tag.outputs.value }}
+          persist-credentials: false
+
+      - name: Version from tag must match pyproject and server.json
+        id: version
+        shell: bash
+        run: |
+          V="${TAG#v}"
+          PY=$(sed -nE 's/^version *= *"([^"]+)"/\1/p' pyproject.toml | head -1)
+          SJ=$(python3 -c 'import json;print(json.load(open("server.json"))["version"])')
+          echo "tag=$V pyproject=$PY server.json=$SJ"
+          [ "$V" = "$PY" ] && [ "$V" = "$SJ" ] || { echo "version mismatch" >&2; exit 1; }
+          echo "value=$V" >> "$GITHUB_OUTPUT"
+        env:
+          TAG: ${{ steps.tag.outputs.value }}
+
+      - uses: docker/setup-buildx-action@37fe631027851001ddb9b187196cc803df7f5f0e # v4.3.0
+
+      - uses: docker/login-action@dbcb813823bdd20940b903addbd779551569679f # v4.6.0
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Image metadata
+        id: meta
+        uses: docker/metadata-action@dc802804100637a589fabce1cb79ff13a1411302 # v6.2.0
+        with:
+          images: ${{ env.IMAGE }}
+          tags: |
+            type=raw,value=${{ steps.version.outputs.value }}
+            type=raw,value=latest
+
+      - name: Build and push
+        uses: docker/build-push-action@53b7df96c91f9c12dcc8a07bcb9ccacbed38856a # v7.3.0
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          provenance: false
+
+      - name: Smoke-test the pushed image
+        shell: bash
+        env:
+          REF: ${{ env.IMAGE }}:${{ steps.version.outputs.value }}
+        run: |
+          docker pull "$REF"
+          # the label the registry verifies
+          docker inspect "$REF" --format '{{ index .Config.Labels "io.modelcontextprotocol.server.name" }}' \
+            | grep -qx 'io.github.ilyautov/marketplaces-mcp-ru'
+          # combined server mounts every tool
+          docker run --rm --entrypoint python "$REF" -c \
+            'import asyncio; from core.combined import build; n=len(asyncio.run(build().list_tools())); assert n>=50, n; print("tools:", n)'
+          # doctor: exit 1 without keys, but every service listed
+          set +e
+          OUT=$(docker run --rm "$REF" doctor); RC=$?
+          set -e
+          echo "$OUT"
+          [ "$RC" = "1" ] && echo "$OUT" | grep -q "Ozon Performance"
+
+  registry:
+    name: Publish server.json to the MCP Registry
+    needs: image
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write # GitHub OIDC → registry auth for io.github.ilyautov/*
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          ref: v${{ needs.image.outputs.version }}
+          persist-credentials: false
+
+      - name: Wait for PyPI to serve this version
+        shell: bash
+        env:
+          V: ${{ needs.image.outputs.version }}
+        run: |
+          for i in $(seq 1 30); do
+            if curl -fsS "https://pypi.org/pypi/marketplaces-mcp-ru/$V/json" >/dev/null; then
+              echo "PyPI has $V"; exit 0
+            fi
+            echo "PyPI does not have $V yet (attempt $i/30)"; sleep 30
+          done
+          echo "PyPI never served $V — publish-pypi.yml failed or is still running" >&2
+          exit 1
+
+      - name: Install mcp-publisher
+        shell: bash
+        run: |
+          curl -fsSL "https://github.com/modelcontextprotocol/registry/releases/download/v1.8.1/mcp-publisher_linux_amd64.tar.gz" \
+            | tar xz mcp-publisher
+          ./mcp-publisher --help >/dev/null
+
+      - name: Login (GitHub OIDC)
+        run: ./mcp-publisher login github-oidc
+
+      - name: Validate and publish
+        run: |
+          ./mcp-publisher publish --dry-run
+          ./mcp-publisher publish

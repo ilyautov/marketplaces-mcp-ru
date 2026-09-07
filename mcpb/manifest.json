@@ -2,7 +2,7 @@
   "manifest_version": "0.3",
   "name": "marketplaces-mcp-ru",
   "display_name": "Wildberries и Ozon (marketplaces-mcp-ru)",
-  "version": "0.3.3",
+  "version": "0.4.0",
   "description": "Wildberries и Ozon Seller API прямо в Claude: продажи, остатки, цены, финансы, отзывы. Спрашивайте по-русски.",
   "long_description": "Подключает ассистента напрямую к кабинетам Wildberries и Ozon через Seller API. Цифры берутся из ответа маркетплейса с указанием источника, а не выдумываются. Перед изменением цены или остатка агент просит подтверждение. Один сервер объединяет WB + Ozon + Ozon Performance (58 инструментов). Заполните только те ключи, которые у вас есть — остальные можно оставить пустыми.",
   "author": {
@@ -17,13 +17,23 @@
     "url": "https://github.com/ilyautov/marketplaces-mcp-ru"
   },
   "license": "MIT",
-  "keywords": ["wildberries", "ozon", "marketplace", "seller-api", "ecommerce", "ru"],
+  "keywords": [
+    "wildberries",
+    "ozon",
+    "marketplace",
+    "seller-api",
+    "ecommerce",
+    "ru"
+  ],
   "server": {
     "type": "python",
     "entry_point": "server/serve.py",
     "mcp_config": {
       "command": "python",
-      "args": ["${__dirname}/server/serve.py", "all"],
+      "args": [
+        "${__dirname}/server/serve.py",
+        "all"
+      ],
       "env": {
         "MARKETPLACE_MCP_HOME": "${HOME}/.marketplace-mcp",
         "WB_API_TOKEN": "${user_config.wb_api_token}",

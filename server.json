@@ -3,20 +3,62 @@
   "name": "io.github.ilyautov/marketplaces-mcp-ru",
   "title": "Marketplaces MCP (RU) — Wildberries & Ozon",
   "description": "Wildberries & Ozon Seller APIs in your AI assistant — schema-driven, safety-gated.",
-  "version": "0.3.3",
+  "version": "0.4.0",
   "repository": {
     "url": "https://github.com/ilyautov/marketplaces-mcp-ru",
     "source": "github"
   },
-  "websiteUrl": "https://github.com/ilyautov/marketplaces-mcp-ru",
+  "websiteUrl": "https://marketplaces-mcp-ru.aifrontier.tech/",
   "packages": [
     {
       "registryType": "pypi",
       "registryBaseUrl": "https://pypi.org",
       "identifier": "marketplaces-mcp-ru",
-      "version": "0.3.3",
+      "version": "0.4.0",
       "runtimeHint": "uvx",
-      "transport": { "type": "stdio" },
+      "transport": {
+        "type": "stdio"
+      },
+      "environmentVariables": [
+        {
+          "name": "WB_API_TOKEN",
+          "description": "Wildberries Seller API token (seller.wildberries.ru → Settings → API access). Leave unset if you do not sell on WB.",
+          "isRequired": false,
+          "isSecret": true
+        },
+        {
+          "name": "OZON_CLIENT_ID",
+          "description": "Ozon Seller Client ID (seller.ozon.ru → Settings → API keys).",
+          "isRequired": false,
+          "isSecret": false
+        },
+        {
+          "name": "OZON_API_KEY",
+          "description": "Ozon Seller API key paired with the Client ID.",
+          "isRequired": false,
+          "isSecret": true
+        },
+        {
+          "name": "OZON_PERF_CLIENT_ID",
+          "description": "Ozon Performance (ads) API Client ID. Optional.",
+          "isRequired": false,
+          "isSecret": false
+        },
+        {
+          "name": "OZON_PERF_CLIENT_SECRET",
+          "description": "Ozon Performance API Client Secret. Optional.",
+          "isRequired": false,
+          "isSecret": true
+        }
+      ]
+    },
+    {
+      "registryType": "oci",
+      "identifier": "ghcr.io/ilyautov/marketplaces-mcp-ru:0.4.0",
+      "runtimeHint": "docker",
+      "transport": {
+        "type": "stdio"
+      },
       "environmentVariables": [
         {
           "name": "WB_API_TOKEN",

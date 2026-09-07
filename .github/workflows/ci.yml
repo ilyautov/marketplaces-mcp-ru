@@ -19,6 +19,10 @@ jobs:
           # without blowing up the matrix.
           - os: windows-latest
             python-version: "3.12"
+          # One macOS leg: the .command installer and Claude Desktop paths are
+          # macOS-first for most sellers.
+          - os: macos-latest
+            python-version: "3.12"
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
       - name: Set up Python ${{ matrix.python-version }}
@@ -42,3 +46,21 @@ jobs:
           python serve.py wb --selfcheck
           python serve.py ozon --selfcheck
           python serve.py ozon-perf --selfcheck
+
+  docker:
+    # The image is what the MCP Registry advertises; a Dockerfile that stops
+    # building must fail here, not on the release tag.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - name: Build image
+        run: docker build -t marketplaces-mcp-ru:ci .
+      - name: Combined server mounts every tool inside the container
+        run: |
+          docker run --rm --entrypoint python marketplaces-mcp-ru:ci -c \
+            'import asyncio; from core.combined import build; n=len(asyncio.run(build().list_tools())); assert n>=50, n; print("tools:", n)'
+      - name: "doctor lists every service (exit 1 without keys, by design)"
+        shell: bash
+        run: |
+          set +e; OUT=$(docker run --rm marketplaces-mcp-ru:ci doctor); RC=$?; set -e
+          echo "$OUT"; [ "$RC" = "1" ]; echo "$OUT" | grep -q "Ozon Performance"
