@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400" viewBox="0 0 400 400">
+  <rect width="400" height="400" rx="72" fill="#0d1117"/>
+  <text x="200" y="200" font-family="Menlo, DejaVu Sans Mono, monospace" font-weight="bold" font-size="140" fill="#f0f3f6" text-anchor="middle" letter-spacing="-8">mcp</text>
+  <text x="122" y="330" font-family="Menlo, DejaVu Sans Mono, monospace" font-weight="bold" font-size="112" fill="#D97757" text-anchor="middle" letter-spacing="-4">ru</text>
+  <rect x="232" y="244" width="86" height="86" rx="16" fill="#B5491F"/>
+</svg>
