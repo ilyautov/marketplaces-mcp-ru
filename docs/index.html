@@ -6,7 +6,7 @@
 <title>marketplaces-mcp-ru — Wildberries и Ozon в вашем ИИ-ассистенте</title>
 <meta name="description" content="Подключает ИИ-ассистента (Claude, Cursor, Codex, Cowork) напрямую к кабинетам Wildberries и Ozon. Продажи, остатки, цены, финансы, отзывы — из Seller API с указанием источника, а не выдумка. Перед изменением цены агент просит подтверждение. Без браузера и капчи. Ставится в один клик.">
 <meta property="og:title" content="marketplaces-mcp-ru — Wildberries и Ozon в вашем ИИ-ассистенте">
-<meta property="og:description" content="Кабинеты WB и Ozon прямо в чате. Цифры из Seller API с источником, а не из воздуха. Safety-гейт перед записью. Ставится в один клик — .mcpb или uvx.">
+<meta property="og:description" content="Кабинеты WB и Ozon прямо в чате. Цифры из Seller API с источником, а не из воздуха. Safety-гейт перед записью. Ставится в один клик — .mcpb, uvx или Docker.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://marketplaces-mcp-ru.aifrontier.tech/">
 <meta property="og:image" content="https://marketplaces-mcp-ru.aifrontier.tech/assets/social-preview.png">
@@ -194,15 +194,23 @@
         <div class="step">
           <div>
             <h3>Для разработчиков — uvx</h3>
-            <p><b class="mono">uvx marketplaces-mcp-ru</b> запускает объединённый сервер прямо из PyPI. Отдельные серверы — командами <b class="mono">wb-mcp</b> / <b class="mono">ozon-mcp</b> / <b class="mono">ozon-perf-mcp</b>.</p>
+            <p><b class="mono">uvx marketplaces-mcp-ru</b> запускает объединённый сервер прямо из PyPI. Отдельные серверы — командами <b class="mono">wb-mcp</b> / <b class="mono">ozon-mcp</b> / <b class="mono">ozon-perf-mcp</b>. В VS Code и Cursor ставится кнопкой из <a href="https://github.com/ilyautov/marketplaces-mcp-ru#установка">README</a>.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div>
+            <h3>Docker — без Python на машине</h3>
+            <p><b class="mono">docker run -i --rm -e WB_API_TOKEN=… ghcr.io/ilyautov/marketplaces-mcp-ru</b> — тот же сервер по stdio. Этот образ указан в MCP Registry как OCI-пакет. Для удалённого доступа есть HTTP-режим (<b class="mono">MCP_TRANSPORT=http</b>).</p>
           </div>
         </div>
       </div>
+      <p class="small" style="margin-top:16px">Проверка после установки: <b class="mono">uvx marketplaces-mcp-ru doctor --live</b> — по каждому маркетплейсу покажет, сколько инструментов загрузилось, найдены ли ключи и отвечает ли кабинет.</p>
       <div class="stacks">
         <span class="chip">Claude Desktop — .mcpb</span>
         <span class="chip">Claude Code / Cowork — родной</span>
         <span class="chip">Codex — mcp add</span>
-        <span class="chip">Cursor</span>
+        <span class="chip">Cursor / VS Code — в один клик</span>
+        <span class="chip">Docker — ghcr.io</span>
         <span class="chip">Gemini — GEMINI.md</span>
       </div>
       <p class="small" style="color:var(--mute);margin-top:16px">Где взять ключи: Wildberries — seller.wildberries.ru → Настройки → Доступ к API; Ozon — seller.ozon.ru → Настройки → API-ключи. Ключи хранятся локально (<b class="mono">chmod 600</b>), в репозиторий и в чат не попадают.</p>
