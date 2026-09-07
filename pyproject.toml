@@ -1,6 +1,6 @@
 [project]
 name = "marketplaces-mcp-ru"
-version = "0.5.0"
+version = "0.5.1"
 description = "MCP servers for Wildberries, Ozon, Yandex Market and Avito seller APIs (schema-driven, safety-gated)"
 keywords = ["mcp", "model-context-protocol", "wildberries", "ozon", "yandex-market", "avito", "seller-api", "marketplace", "ecommerce", "russia", "claude", "cursor", "codex"]
 readme = "README.md"

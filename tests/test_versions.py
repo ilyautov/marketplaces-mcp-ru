@@ -42,3 +42,12 @@ def test_dockerfile_label_matches_server_name():
     sj = json.loads((ROOT / "server.json").read_text(encoding="utf-8"))
     dockerfile = (ROOT / "Dockerfile").read_text(encoding="utf-8")
     assert f'io.modelcontextprotocol.server.name="{sj["name"]}"' in dockerfile
+
+
+def test_server_json_fits_registry_limits():
+    """The MCP Registry rejects server.json with description > 100 chars (422 on
+    publish — this bit 0.5.0). Keep title and description within the limit so a
+    tag never ships a package the registry will refuse."""
+    sj = json.loads((ROOT / "server.json").read_text(encoding="utf-8"))
+    assert len(sj["description"]) <= 100, len(sj["description"])
+    assert len(sj["title"]) <= 100, len(sj["title"])
