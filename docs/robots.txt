@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://marketplaces-mcp-ru.aifrontier.tech/sitemap.xml
