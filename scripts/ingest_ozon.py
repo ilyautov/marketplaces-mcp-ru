@@ -12,11 +12,20 @@ HOST="api-seller.ozon.ru"
 READ=re.compile(r"(list|info|get|report|analytics|financ|rating|history|search|/stocks\b|/stock\b|description|timeslot|available|status|tree|attribute|certificate|/info/)",re.I)
 MUTATE=re.compile(r"(import|update|create|delete|/set|/add|ship|cancel|activate|deactivat|archive|move|send|confirm|reject|refund|/change|assign|generate|exemplar/set|unpublish|publish|upload|/act/|/draft/|register)",re.I)
 
+# Last path segment = the action. A read action cannot be a mutation, however
+# mutating the nouns before it look: /conditional-cancellation/list contains
+# "cancel", /certificate/rejection_reasons/list contains "reject", and MUTATE
+# used to fire on both and mark a pure read as write. Deliberately excludes
+# `status`, which really is mixed here (/order/cancel/status writes).
+READ_TAIL=re.compile(r"/(list|get|info|search|tree|report)$",re.I)
+
 def safety(method,path,oid):
     m=(method or "").lower()
     if m=="delete": return "destructive"
     # PUT/PATCH always mutate — never let a read-ish path keyword downgrade them.
     if m in ("put","patch"): return "write"
+    # Checked before MUTATE on purpose: the tail wins over nouns in the middle.
+    if READ_TAIL.search(path): return "read"
     t=path+" "+(oid or "")
     if MUTATE.search(t): return "destructive" if re.search(r"delete",t,re.I) else "write"
     if READ.search(t): return "read"
