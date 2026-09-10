@@ -145,23 +145,23 @@
     <div class="wrap">
       <div class="sec-head">
         <h2>Карта методов</h2>
-        <p>Таблицы собраны из того же каталога, который грузит сервер, поэтому они не расходятся с кодом. Колонки показывают, как метод классифицирует safety-гейт: перед записью агент предупреждает, перед необратимым действием требует подтверждения. Отдельная оговорка про Ozon: он использует POST и для чтения тоже, а у методов, импортированных из спецификации, класс выведен из HTTP-глагола. Поэтому часть читающих методов посчитана здесь как запись, и гейт относится к ним строже, чем нужно. Ошибка безопасная, но лишняя.</p>
+        <p>Таблицы собраны из того же каталога, который грузит сервер, поэтому они не расходятся с кодом. Колонки показывают, как метод классифицирует safety-гейт: перед записью агент предупреждает, перед необратимым действием требует подтверждения. Оговорка про Ozon: он использует POST и для чтения тоже, поэтому класс тут определяется по последнему сегменту пути, а не по HTTP-глаголу. /v1/report/list читает, /v1/report/create пишет.</p>
       </div>
       <div class="tw">
       <table class="mtable">
         <caption>Seller API, 441 метода</caption>
         <thead><tr><th>Раздел</th><th class="num">Методов</th><th class="num">Чтение</th><th class="num">Запись</th><th class="num">Необратимые</th></tr></thead>
         <tbody>
-        <tr><td>Заказы FBS и доставка</td><td class="num">112</td><td class="num">20</td><td class="num">90</td><td class="num">2</td></tr>
-        <tr><td>Заказы FBO и склады</td><td class="num">64</td><td class="num">26</td><td class="num">36</td><td class="num">2</td></tr>
-        <tr><td>Товары и карточки</td><td class="num">55</td><td class="num">15</td><td class="num">39</td><td class="num">1</td></tr>
-        <tr><td>Кросс-док FBP</td><td class="num">45</td><td class="num">8</td><td class="num">34</td><td class="num">3</td></tr>
-        <tr><td>Акции и продвижение</td><td class="num">31</td><td class="num">8</td><td class="num">22</td><td class="num">1</td></tr>
-        <tr><td>Возвраты и отмены</td><td class="num">30</td><td class="num">0</td><td class="num">30</td><td class="num">0</td></tr>
-        <tr><td>Отзывы, вопросы и чаты</td><td class="num">27</td><td class="num">6</td><td class="num">20</td><td class="num">1</td></tr>
-        <tr><td>Финансы и отчёты</td><td class="num">25</td><td class="num">7</td><td class="num">18</td><td class="num">0</td></tr>
+        <tr><td>Заказы FBS и доставка</td><td class="num">112</td><td class="num">37</td><td class="num">73</td><td class="num">2</td></tr>
+        <tr><td>Заказы FBO и склады</td><td class="num">64</td><td class="num">37</td><td class="num">25</td><td class="num">2</td></tr>
+        <tr><td>Товары и карточки</td><td class="num">55</td><td class="num">30</td><td class="num">24</td><td class="num">1</td></tr>
+        <tr><td>Кросс-док FBP</td><td class="num">45</td><td class="num">15</td><td class="num">27</td><td class="num">3</td></tr>
+        <tr><td>Акции и продвижение</td><td class="num">31</td><td class="num">9</td><td class="num">21</td><td class="num">1</td></tr>
+        <tr><td>Возвраты и отмены</td><td class="num">30</td><td class="num">11</td><td class="num">19</td><td class="num">0</td></tr>
+        <tr><td>Отзывы, вопросы и чаты</td><td class="num">27</td><td class="num">10</td><td class="num">16</td><td class="num">1</td></tr>
+        <tr><td>Финансы и отчёты</td><td class="num">25</td><td class="num">11</td><td class="num">14</td><td class="num">0</td></tr>
         <tr><td>Кабинет и служебное</td><td class="num">22</td><td class="num">12</td><td class="num">9</td><td class="num">1</td></tr>
-        <tr><td>Цены и остатки</td><td class="num">21</td><td class="num">6</td><td class="num">15</td><td class="num">0</td></tr>
+        <tr><td>Цены и остатки</td><td class="num">21</td><td class="num">11</td><td class="num">10</td><td class="num">0</td></tr>
         <tr><td>Аналитика</td><td class="num">9</td><td class="num">7</td><td class="num">2</td><td class="num">0</td></tr>
         </tbody>
         <tfoot><tr><th>Всего</th><th class="num">441</th><th class="num"></th><th class="num"></th><th class="num"></th></tr></tfoot>

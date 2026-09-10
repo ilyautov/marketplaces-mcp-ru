@@ -504,7 +504,7 @@ endpoints:
   host: api-seller.ozon.ru
   path: /v1/brand/company-certification/list
   scope: seller
-  safety: write
+  safety: read
   summary: List (auto-imported from go-client; UNVERIFIED — confirm body/params in
     docs).
   doc: https://docs.ozon.ru/api/seller/
@@ -516,7 +516,7 @@ endpoints:
   host: api-seller.ozon.ru
   path: /v1/conditional-cancellation/get
   scope: seller
-  safety: write
+  safety: read
   summary: GetInfo (auto-imported from go-client; UNVERIFIED — confirm body/params
     in docs).
   doc: https://docs.ozon.ru/api/seller/
@@ -526,7 +526,7 @@ endpoints:
   host: api-seller.ozon.ru
   path: /v1/conditional-cancellation/list
   scope: seller
-  safety: write
+  safety: read
   summary: List (auto-imported from go-client; UNVERIFIED — confirm body/params in
     docs).
   doc: https://docs.ozon.ru/api/seller/
@@ -568,7 +568,7 @@ endpoints:
   host: api-seller.ozon.ru
   path: /v1/description-category/attribute/values/search
   scope: seller
-  safety: write
+  safety: read
   summary: SearchAttributesDictionary (auto-imported from go-client; UNVERIFIED —
     confirm body/params in docs).
   doc: https://docs.ozon.ru/api/seller/
@@ -604,7 +604,7 @@ endpoints:
   host: api-seller.ozon.ru
   path: /v2/product/certification/list
   scope: seller
-  safety: write
+  safety: read
   summary: ListOfCertifiedCategories (auto-imported from go-client; UNVERIFIED — confirm
     body/params in docs).
   doc: https://docs.ozon.ru/api/seller/
@@ -638,7 +638,7 @@ endpoints:
   host: api-seller.ozon.ru
   path: /v1/product/certificate/info
   scope: seller
-  safety: write
+  safety: read
   summary: GetInfo (auto-imported from go-client; UNVERIFIED — confirm body/params
     in docs).
   doc: https://docs.ozon.ru/api/seller/
@@ -649,7 +649,7 @@ endpoints:
   host: api-seller.ozon.ru
   path: /v1/product/certificate/list
   scope: seller
-  safety: write
+  safety: read
   summary: List (auto-imported from go-client; UNVERIFIED — confirm body/params in
     docs).
   doc: https://docs.ozon.ru/api/seller/
@@ -661,7 +661,7 @@ endpoints:
   host: api-seller.ozon.ru
   path: /v1/product/certificate/products/list
   scope: seller
-  safety: write
+  safety: read
   summary: ListProductsForCertificate (auto-imported from go-client; UNVERIFIED —
     confirm body/params in docs).
   doc: https://docs.ozon.ru/api/seller/
@@ -685,7 +685,7 @@ endpoints:
   host: api-seller.ozon.ru
   path: /v1/product/certificate/rejection_reasons/list
   scope: seller
-  safety: write
+  safety: read
   summary: PossibleRejectReasons (auto-imported from go-client; UNVERIFIED — confirm
     body/params in docs).
   doc: https://docs.ozon.ru/api/seller/
@@ -697,7 +697,7 @@ endpoints:
   host: api-seller.ozon.ru
   path: /v1/product/certificate/status/list
   scope: seller
-  safety: write
+  safety: read
   summary: PossibleStatuses (auto-imported from go-client; UNVERIFIED — confirm body/params
     in docs).
   doc: https://docs.ozon.ru/api/seller/
@@ -720,7 +720,7 @@ endpoints:
   host: api-seller.ozon.ru
   path: /v2/chat/list
   scope: seller
-  safety: write
+  safety: read
   summary: List (auto-imported from go-client; UNVERIFIED — confirm body/params in
     docs).
   doc: https://docs.ozon.ru/api/seller/
@@ -797,7 +797,7 @@ endpoints:
   host: api-seller.ozon.ru
   path: /v1/cluster/list
   scope: seller
-  safety: write
+  safety: read
   summary: List (auto-imported from go-client; UNVERIFIED — confirm body/params in
     docs).
   doc: https://docs.ozon.ru/api/seller/
@@ -809,7 +809,7 @@ endpoints:
   host: api-seller.ozon.ru
   path: /v2/supply-order/list
   scope: seller
-  safety: write
+  safety: read
   summary: ListSupplyRequests (auto-imported from go-client; UNVERIFIED — confirm
     body/params in docs).
   doc: https://docs.ozon.ru/api/seller/
@@ -819,7 +819,7 @@ endpoints:
   host: api-seller.ozon.ru
   path: /v2/supply-order/get
   scope: seller
-  safety: write
+  safety: read
   summary: GetSupplyRequestInfo (auto-imported from go-client; UNVERIFIED — confirm
     body/params in docs).
   doc: https://docs.ozon.ru/api/seller/
@@ -1017,7 +1017,7 @@ endpoints:
   host: api-seller.ozon.ru
   path: /v2/posting/fbs/act/list
   scope: seller
-  safety: write
+  safety: read
   summary: ListOfShipmentCertificates (auto-imported from go-client; UNVERIFIED —
     confirm body/params in docs).
   doc: https://docs.ozon.ru/api/seller/
@@ -1097,7 +1097,7 @@ endpoints:
   host: api-seller.ozon.ru
   path: /v1/posting/fbs/package-label/get
   scope: seller
-  safety: write
+  safety: read
   summary: GetLabeling (auto-imported from go-client; UNVERIFIED — confirm body/params
     in docs).
   doc: https://docs.ozon.ru/api/seller/
@@ -1178,7 +1178,7 @@ endpoints:
   host: api-seller.ozon.ru
   path: /v2/posting/fbs/product/country/list
   scope: seller
-  safety: write
+  safety: read
   summary: ListManufacturingCountries (auto-imported from go-client; UNVERIFIED —
     confirm body/params in docs).
   doc: https://docs.ozon.ru/api/seller/
@@ -1212,7 +1212,7 @@ endpoints:
   host: api-seller.ozon.ru
   path: /v1/posting/carriage-available/list
   scope: seller
-  safety: write
+  safety: read
   summary: AvailableFreightsList (auto-imported from go-client; UNVERIFIED — confirm
     body/params in docs).
   doc: https://docs.ozon.ru/api/seller/
@@ -1279,7 +1279,7 @@ endpoints:
   host: api-seller.ozon.ru
   path: /v2/posting/fbs/cancel-reason/list
   scope: seller
-  safety: write
+  safety: read
   summary: ShipmentsCancellationReasons (auto-imported from go-client; UNVERIFIED
     — confirm body/params in docs).
   doc: https://docs.ozon.ru/api/seller/
@@ -1404,7 +1404,7 @@ endpoints:
   host: api-seller.ozon.ru
   path: /v1/carriage/get
   scope: seller
-  safety: write
+  safety: read
   summary: GetCarriage (auto-imported from go-client; UNVERIFIED — confirm body/params
     in docs).
   doc: https://docs.ozon.ru/api/seller/
@@ -1416,7 +1416,7 @@ endpoints:
   host: api-seller.ozon.ru
   path: /v1/posting/fbo/cancel-reason/list
   scope: seller
-  safety: write
+  safety: read
   summary: GetCancellationReasons (auto-imported from go-client; UNVERIFIED — confirm
     body/params in docs).
   doc: https://docs.ozon.ru/api/seller/
@@ -1451,7 +1451,7 @@ endpoints:
   host: api-seller.ozon.ru
   path: /v1/posting/unpaid-legal/product/list
   scope: seller
-  safety: write
+  safety: read
   summary: ListUnpaidProducts (auto-imported from go-client; UNVERIFIED — confirm
     body/params in docs).
   doc: https://docs.ozon.ru/api/seller/
@@ -1530,7 +1530,7 @@ endpoints:
   host: api-seller.ozon.ru
   path: /v2/invoice/get
   scope: seller
-  safety: write
+  safety: read
   summary: Get (auto-imported from go-client; UNVERIFIED — confirm body/params in
     docs).
   doc: https://docs.ozon.ru/api/seller/
@@ -1564,7 +1564,7 @@ endpoints:
   host: api-seller.ozon.ru
   path: /v1/pass/list
   scope: seller
-  safety: write
+  safety: read
   summary: List (auto-imported from go-client; UNVERIFIED — confirm body/params in
     docs).
   doc: https://docs.ozon.ru/api/seller/
@@ -1688,7 +1688,7 @@ endpoints:
   host: api-seller.ozon.ru
   path: /v2/product/pictures/info
   scope: seller
-  safety: write
+  safety: read
   summary: CheckImageUploadingStatus (auto-imported from go-client; UNVERIFIED — confirm
     body/params in docs).
   doc: https://docs.ozon.ru/api/seller/
@@ -1754,7 +1754,7 @@ endpoints:
   host: api-seller.ozon.ru
   path: /v1/product/upload_digital_codes/info
   scope: seller
-  safety: write
+  safety: read
   summary: StatusOfUploadingActivationCodes (auto-imported from go-client; UNVERIFIED
     — confirm body/params in docs).
   doc: https://docs.ozon.ru/api/seller/
@@ -1798,7 +1798,7 @@ endpoints:
   host: api-seller.ozon.ru
   path: /v1/product/related-sku/get
   scope: seller
-  safety: write
+  safety: read
   summary: GetRelatedSKUs (auto-imported from go-client; UNVERIFIED — confirm body/params
     in docs).
   doc: https://docs.ozon.ru/api/seller/
@@ -1809,7 +1809,7 @@ endpoints:
   host: api-seller.ozon.ru
   path: /v1/product/quant/info
   scope: seller
-  safety: write
+  safety: read
   summary: EconomyInfo (auto-imported from go-client; UNVERIFIED — confirm body/params
     in docs).
   doc: https://docs.ozon.ru/api/seller/
@@ -1821,7 +1821,7 @@ endpoints:
   host: api-seller.ozon.ru
   path: /v1/product/quant/list
   scope: seller
-  safety: write
+  safety: read
   summary: ListEconomy (auto-imported from go-client; UNVERIFIED — confirm body/params
     in docs).
   doc: https://docs.ozon.ru/api/seller/
@@ -1904,7 +1904,7 @@ endpoints:
   host: api-seller.ozon.ru
   path: /v1/actions/discounts-task/list
   scope: seller
-  safety: write
+  safety: read
   summary: ListDiscountRequests (auto-imported from go-client; UNVERIFIED — confirm
     body/params in docs).
   doc: https://docs.ozon.ru/api/seller/
@@ -1940,7 +1940,7 @@ endpoints:
   host: api-seller.ozon.ru
   path: /v1/quant/list
   scope: seller
-  safety: write
+  safety: read
   summary: List (auto-imported from go-client; UNVERIFIED — confirm body/params in
     docs).
   doc: https://docs.ozon.ru/api/seller/
@@ -1950,7 +1950,7 @@ endpoints:
   host: api-seller.ozon.ru
   path: /v1/quant/get
   scope: seller
-  safety: write
+  safety: read
   summary: Get (auto-imported from go-client; UNVERIFIED — confirm body/params in
     docs).
   doc: https://docs.ozon.ru/api/seller/
@@ -1992,7 +1992,7 @@ endpoints:
   host: api-seller.ozon.ru
   path: /v1/report/list
   scope: seller
-  safety: write
+  safety: read
   summary: GetList (auto-imported from go-client; UNVERIFIED — confirm body/params
     in docs).
   doc: https://docs.ozon.ru/api/seller/
@@ -2004,7 +2004,7 @@ endpoints:
   host: api-seller.ozon.ru
   path: /v1/report/info
   scope: seller
-  safety: write
+  safety: read
   summary: GetReportDetails (auto-imported from go-client; UNVERIFIED — confirm body/params
     in docs).
   doc: https://docs.ozon.ru/api/seller/
@@ -2015,7 +2015,7 @@ endpoints:
   host: api-seller.ozon.ru
   path: /v1/finance/cash-flow-statement/list
   scope: seller
-  safety: write
+  safety: read
   summary: GetFinancial (auto-imported from go-client; UNVERIFIED — confirm body/params
     in docs).
   doc: https://docs.ozon.ru/api/seller/
@@ -2082,7 +2082,7 @@ endpoints:
   host: api-seller.ozon.ru
   path: /v2/returns/rfbs/list
   scope: seller
-  safety: write
+  safety: read
   summary: GetRFBSReturns (auto-imported from go-client; UNVERIFIED — confirm body/params
     in docs).
   doc: https://docs.ozon.ru/api/seller/
@@ -2093,7 +2093,7 @@ endpoints:
   host: api-seller.ozon.ru
   path: /v2/returns/rfbs/get
   scope: seller
-  safety: write
+  safety: read
   summary: GetRFBSReturn (auto-imported from go-client; UNVERIFIED — confirm body/params
     in docs).
   doc: https://docs.ozon.ru/api/seller/
@@ -2218,7 +2218,7 @@ endpoints:
   host: api-seller.ozon.ru
   path: /v1/return/giveout/list
   scope: seller
-  safety: write
+  safety: read
   summary: GetGiveoutList (auto-imported from go-client; UNVERIFIED — confirm body/params
     in docs).
   doc: https://docs.ozon.ru/api/seller/
@@ -2230,7 +2230,7 @@ endpoints:
   host: api-seller.ozon.ru
   path: /v1/return/giveout/info
   scope: seller
-  safety: write
+  safety: read
   summary: GetGiveoutInfo (auto-imported from go-client; UNVERIFIED — confirm body/params
     in docs).
   doc: https://docs.ozon.ru/api/seller/
@@ -2242,7 +2242,7 @@ endpoints:
   host: api-seller.ozon.ru
   path: /v1/returns/company/fbs/info
   scope: seller
-  safety: write
+  safety: read
   summary: FBSQuantity (auto-imported from go-client; UNVERIFIED — confirm body/params
     in docs).
   doc: https://docs.ozon.ru/api/seller/
@@ -2254,7 +2254,7 @@ endpoints:
   host: api-seller.ozon.ru
   path: /v1/returns/list
   scope: seller
-  safety: write
+  safety: read
   summary: List (auto-imported from go-client; UNVERIFIED — confirm body/params in
     docs).
   doc: https://docs.ozon.ru/api/seller/
@@ -2288,7 +2288,7 @@ endpoints:
   host: api-seller.ozon.ru
   path: /v1/review/comment/list
   scope: seller
-  safety: write
+  safety: read
   summary: ListComments (auto-imported from go-client; UNVERIFIED — confirm body/params
     in docs).
   doc: https://docs.ozon.ru/api/seller/
@@ -2322,7 +2322,7 @@ endpoints:
   host: api-seller.ozon.ru
   path: /v1/review/info
   scope: seller
-  safety: write
+  safety: read
   summary: Get (auto-imported from go-client; UNVERIFIED — confirm body/params in
     docs).
   doc: https://docs.ozon.ru/api/seller/
@@ -2334,7 +2334,7 @@ endpoints:
   host: api-seller.ozon.ru
   path: /v1/review/list
   scope: seller
-  safety: write
+  safety: read
   summary: List (auto-imported from go-client; UNVERIFIED — confirm body/params in
     docs).
   doc: https://docs.ozon.ru/api/seller/
@@ -2346,7 +2346,7 @@ endpoints:
   host: api-seller.ozon.ru
   path: /v1/pricing-strategy/competitors/list
   scope: seller
-  safety: write
+  safety: read
   summary: ListCompetitors (auto-imported from go-client; UNVERIFIED — confirm body/params
     in docs).
   doc: https://docs.ozon.ru/api/seller/
@@ -2358,7 +2358,7 @@ endpoints:
   host: api-seller.ozon.ru
   path: /v1/pricing-strategy/list
   scope: seller
-  safety: write
+  safety: read
   summary: List (auto-imported from go-client; UNVERIFIED — confirm body/params in
     docs).
   doc: https://docs.ozon.ru/api/seller/
@@ -2381,7 +2381,7 @@ endpoints:
   host: api-seller.ozon.ru
   path: /v1/pricing-strategy/info
   scope: seller
-  safety: write
+  safety: read
   summary: Info (auto-imported from go-client; UNVERIFIED — confirm body/params in
     docs).
   doc: https://docs.ozon.ru/api/seller/
@@ -2428,7 +2428,7 @@ endpoints:
   host: api-seller.ozon.ru
   path: /v1/pricing-strategy/products/list
   scope: seller
-  safety: write
+  safety: read
   summary: ListProducts (auto-imported from go-client; UNVERIFIED — confirm body/params
     in docs).
   doc: https://docs.ozon.ru/api/seller/
@@ -2440,7 +2440,7 @@ endpoints:
   host: api-seller.ozon.ru
   path: /v1/pricing-strategy/product/info
   scope: seller
-  safety: write
+  safety: read
   summary: GetCompetitorPrice (auto-imported from go-client; UNVERIFIED — confirm
     body/params in docs).
   doc: https://docs.ozon.ru/api/seller/
@@ -2496,7 +2496,7 @@ endpoints:
   host: api-seller.ozon.ru
   path: /v1/delivery-method/list
   scope: seller
-  safety: write
+  safety: read
   summary: GetListOfDeliveryMethods (auto-imported from go-client; UNVERIFIED — confirm
     body/params in docs).
   doc: https://docs.ozon.ru/api/seller/
@@ -2508,7 +2508,7 @@ endpoints:
   host: api-seller.ozon.ru
   path: /v1/warehouse/fbo/list
   scope: seller
-  safety: write
+  safety: read
   summary: ListForShipping (auto-imported from go-client; UNVERIFIED — confirm body/params
     in docs).
   doc: https://docs.ozon.ru/api/seller/
@@ -2650,7 +2650,7 @@ endpoints:
   host: api-seller.ozon.ru
   path: /v1/delivery-method/return/settings/get
   scope: seller
-  safety: write
+  safety: read
   summary: Получить информацию по возвратным настройкам rFBS и rFBS Express
   doc: ''
   items_path: settings.transport_company_details.transport_company_names
@@ -2845,7 +2845,7 @@ endpoints:
   host: api-seller.ozon.ru
   path: /v1/draft/timeslot/info
   scope: seller
-  safety: write
+  safety: read
   summary: Доступные таймслоты
   doc: ''
   items_path: drop_off_warehouse_timeslots
@@ -2856,7 +2856,7 @@ endpoints:
   host: api-seller.ozon.ru
   path: /v2/draft/create/info
   scope: seller
-  safety: write
+  safety: read
   summary: Получить информацию о черновике заявки на поставку
   doc: ''
   items_path: clusters
@@ -2878,7 +2878,7 @@ endpoints:
   host: api-seller.ozon.ru
   path: /v2/draft/timeslot/info
   scope: seller
-  safety: write
+  safety: read
   summary: Получить список доступных таймслотов
   doc: ''
   items_path: result.drop_off_warehouse_timeslots.days
@@ -2900,7 +2900,7 @@ endpoints:
   host: api-seller.ozon.ru
   path: /v1/cargoes/create/info
   scope: seller
-  safety: write
+  safety: read
   summary: Получить информацию по установке грузомест
   doc: ''
   items_path: result.cargoes
@@ -2911,7 +2911,7 @@ endpoints:
   host: api-seller.ozon.ru
   path: /v2/cargoes/create/info
   scope: seller
-  safety: write
+  safety: read
   summary: Получить информацию по установке грузомест
   doc: ''
   items_path: result.cargoes
@@ -3205,7 +3205,7 @@ endpoints:
   host: api-seller.ozon.ru
   path: /v2/conditional-cancellation/list
   scope: seller
-  safety: write
+  safety: read
   summary: Получить список заявок на отмену rFBS
   doc: ''
   items_path: result
@@ -3249,7 +3249,7 @@ endpoints:
   host: api-seller.ozon.ru
   path: /v1/returns/settings/utilization/info
   scope: seller
-  safety: write
+  safety: read
   summary: Получить настройки автоутилизации
   doc: ''
   pagination: none
@@ -3631,7 +3631,7 @@ endpoints:
   host: api-seller.ozon.ru
   path: /v1/warehouse/fbs/create/drop-off/list
   scope: seller
-  safety: write
+  safety: read
   summary: Получить список drop-off пунктов для создания склада
   doc: ''
   items_path: points
@@ -3642,7 +3642,7 @@ endpoints:
   host: api-seller.ozon.ru
   path: /v1/warehouse/fbs/update/drop-off/list
   scope: seller
-  safety: write
+  safety: read
   summary: Получить список drop-off пунктов для изменения информации склада
   doc: ''
   items_path: points
@@ -3653,7 +3653,7 @@ endpoints:
   host: api-seller.ozon.ru
   path: /v1/warehouse/fbs/create/drop-off/timeslot/list
   scope: seller
-  safety: write
+  safety: read
   summary: Получить список таймслотов для создания склада с отгрузкой drop-off
   doc: ''
   items_path: timeslots
@@ -3664,7 +3664,7 @@ endpoints:
   host: api-seller.ozon.ru
   path: /v1/warehouse/fbs/update/drop-off/timeslot/list
   scope: seller
-  safety: write
+  safety: read
   summary: Получить список таймслотов для обновления склада с отгрузкой drop-off
   doc: ''
   items_path: timeslots
@@ -3675,7 +3675,7 @@ endpoints:
   host: api-seller.ozon.ru
   path: /v1/warehouse/fbs/create/pick-up/timeslot/list
   scope: seller
-  safety: write
+  safety: read
   summary: Получить список таймслотов для создания склада с отгрузкой pick-up
   doc: ''
   items_path: timeslots
@@ -3686,7 +3686,7 @@ endpoints:
   host: api-seller.ozon.ru
   path: /v1/warehouse/fbs/update/pick-up/timeslot/list
   scope: seller
-  safety: write
+  safety: read
   summary: Получить список таймслотов для обновления склада с отгрузкой pick-up
   doc: ''
   items_path: timeslots
@@ -3727,7 +3727,7 @@ endpoints:
   host: api-seller.ozon.ru
   path: /v1/warehouse/fbs/create/return-point/list
   scope: seller
-  safety: write
+  safety: read
   summary: Получить список пунктов возврата для создания склада
   doc: ''
   items_path: points
@@ -3738,7 +3738,7 @@ endpoints:
   host: api-seller.ozon.ru
   path: /v1/warehouse/fbs/update/return-point/list
   scope: seller
-  safety: write
+  safety: read
   summary: Получить список пунктов возврата для обновления склада
   doc: ''
   items_path: points
@@ -4292,7 +4292,7 @@ endpoints:
   host: api-seller.ozon.ru
   path: /v1/fbp/draft/direct/timeslot/get
   scope: seller
-  safety: write
+  safety: read
   summary: Получить список таймслотов для прямой поставки
   doc: ''
   items_path: reasons
@@ -4386,7 +4386,7 @@ endpoints:
   host: api-seller.ozon.ru
   path: /v1/fbp/draft/drop-off/province/list
   scope: seller
-  safety: write
+  safety: read
   summary: Получить список провинций
   doc: ''
   items_path: provinces
@@ -4397,7 +4397,7 @@ endpoints:
   host: api-seller.ozon.ru
   path: /v1/fbp/draft/drop-off/point/list
   scope: seller
-  safety: write
+  safety: read
   summary: Получить список drop-off пунктов в провинции
   doc: ''
   items_path: drop_off_points
@@ -4515,7 +4515,7 @@ endpoints:
   host: api-seller.ozon.ru
   path: /v1/fbp/archive/get
   scope: seller
-  safety: write
+  safety: read
   summary: Получить информацию о завершённой поставке
   doc: ''
   pagination: none
@@ -4525,7 +4525,7 @@ endpoints:
   host: api-seller.ozon.ru
   path: /v1/fbp/archive/list
   scope: seller
-  safety: write
+  safety: read
   summary: Получить список завершённых поставок
   doc: ''
   items_path: items
@@ -4619,7 +4619,7 @@ endpoints:
   host: api-seller.ozon.ru
   path: /v1/fbp/draft/get
   scope: seller
-  safety: write
+  safety: read
   summary: Получить информацию о черновике поставки
   doc: ''
   items_path: decline_reason.failed_sku_ids
@@ -4630,7 +4630,7 @@ endpoints:
   host: api-seller.ozon.ru
   path: /v1/fbp/draft/list
   scope: seller
-  safety: write
+  safety: read
   summary: Список черновиков поставки
   doc: ''
   items_path: items
@@ -4794,7 +4794,7 @@ endpoints:
   host: api-seller.ozon.ru
   path: /v1/cancel-reason/list
   scope: seller
-  safety: write
+  safety: read
   summary: Причины отмены отправлений
   doc: ''
   items_path: reasons
