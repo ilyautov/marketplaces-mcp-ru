@@ -253,3 +253,19 @@ docker run --rm marketplaces-mcp-ru doctor
 ## Лицензия
 
 MIT.
+
+---
+
+## Кто это сделал
+
+[Илья Утов](https://github.com/ilyautov), лаборатория [AI Frontier](https://aifrontier.tech). Как эти инструменты устроены внутри, пишу в [Telegram](https://t.me/gorilla_under_hood) и [LinkedIn](https://www.linkedin.com/in/ilyautov).
+
+**Рядом стоят:**
+
+- [**humanizer-ru**](https://github.com/ilyautov/humanizer-ru): убирает следы нейросети из русского текста
+- [**small-business-ru**](https://github.com/ilyautov/small-business-ru): 34 скилла для малого бизнеса, считают налоги и проверяют контрагента по ИНН
+- [**consilium-principis**](https://github.com/ilyautov/consilium-principis): совет мыслителей, где каждая цитата сверяется дословно
+- [**hefest**](https://github.com/ilyautov/hefest): химическая безопасность завода, целиком офлайн
+- [**cordon**](https://github.com/ilyautov/cordon): детерминированный слой между недоверенным контентом и действиями агента
+
+Все проекты: [github.com/ilyautov](https://github.com/ilyautov). Пригодилось, поставьте звезду: по ней это находят другие.
