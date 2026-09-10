@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>API Яндекс Маркета для продавцов: Api-Key, методы и ошибки</title>
+<meta name="description" content="Как получить Api-Key в кабинете партнёра Яндекс Маркета, что умеет Partner API, карта из 165 методов по темам: заказы, отчёты, поставки, товары, цены, отзывы и индекс качества.">
+<meta property="og:title" content="API Яндекс Маркета для продавцов: Api-Key, методы и ошибки">
+<meta property="og:description" content="Как получить Api-Key в кабинете партнёра Яндекс Маркета, что умеет Partner API, карта из 165 методов по темам: заказы, отчёты, поставки, товары, цены, отзывы и индекс качества.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://marketplaces-mcp-ru.aifrontier.tech/yandex-market-api.html">
+<meta property="og:image" content="https://marketplaces-mcp-ru.aifrontier.tech/assets/social-preview.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://marketplaces-mcp-ru.aifrontier.tech/yandex-market-api.html">
+<link rel="icon" type="image/png" href="assets/social-preview.png">
+<link rel="apple-touch-icon" href="assets/social-preview.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Lora:wght@500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "marketplaces-mcp-ru",
+      "item": "https://marketplaces-mcp-ru.aifrontier.tech/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "API Яндекс Маркета: ключ и карта методов",
+      "item": "https://marketplaces-mcp-ru.aifrontier.tech/yandex-market-api.html"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Как получить API-ключ Яндекс Маркета?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "partner.market.yandex.ru, раздел Настройки, пункт Доступ к API. Ключ уходит в заголовок Api-Key, хост api.partner.market.yandex.ru."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Почему Partner API возвращает пустой ответ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Чаще всего перепутаны идентификатор бизнеса и номер кампании. Часть методов адресуется бизнесом, часть кампанией, и подстановка одного вместо другого даёт не ошибку доступа, а корректный пустой ответ."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Сколько методов Яндекс Маркета поддерживает marketplaces-mcp-ru?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "165, собранных из официального OpenAPI-документа: заказы, отчёты, поставки, товары, цены, отзывы, чаты и индекс качества. Живой прогон на реальных кабинетах пока не делался, поэтому неточности в именах полей возможны."
+      }
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <a class="brand" href="https://marketplaces-mcp-ru.aifrontier.tech/" aria-label="marketplaces-mcp-ru, на главную">
+      <span class="bars" aria-hidden="true"><span></span><span></span><span></span></span>
+      marketplaces-mcp-ru <small>· AI Frontier</small>
+    </a>
+    <nav class="nav-links" aria-label="Основная навигация">
+      <a href="ozon-api.html">Ozon</a>
+      <a href="wildberries-api.html">Wildberries</a>
+      <a href="yandex-market-api.html">Яндекс Маркет</a>
+      <a href="avito-api.html">Авито</a>
+      <a class="btn btn-primary" href="https://github.com/ilyautov/marketplaces-mcp-ru">GitHub</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+  <section class="s">
+    <div class="wrap">
+      <nav class="crumbs" aria-label="Хлебные крошки">
+        <a href="index.html">Главная</a> · API Яндекс Маркета: ключ и карта методов
+      </nav>
+      <div class="sec-head">
+        <h1>API Яндекс Маркета: ключ и карта методов</h1>
+        <p>У Яндекс Маркета одна точка входа и один ключ, так что подключение проще, чем у соседей. Тонкость в другом: методы адресуются не только магазином, но и бизнесом, и перепутать эти два идентификатора легко.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- КЛЮЧИ -->
+  <section class="s alt" id="keys">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>Как получить доступ</h2>
+      </div>
+      <div class="steps">
+        <div class="step">
+          <div>
+            <h3>Где взять Api-Key</h3>
+            <p>Кабинет партнёра <b class="mono">partner.market.yandex.ru</b>, раздел <b>Настройки</b>, пункт <b>Доступ к API</b>. Ключ уходит в заголовок <b class="mono">Api-Key</b>, хост <b class="mono">api.partner.market.yandex.ru</b>.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div>
+            <h3>Бизнес и кампания это разные идентификаторы</h3>
+            <p>Часть методов адресуется идентификатором бизнеса, часть номером кампании (магазина). Подставить один вместо другого даёт не ошибку доступа, а пустой ответ, что путает сильнее.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div>
+            <h3>Где он лежит</h3>
+            <p>В <b class="mono">~/.marketplace-mcp/cabinets.json</b> с правами <b class="mono">chmod 600</b>, локально.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- КАРТА МЕТОДОВ -->
+  <section class="s" id="methods">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>Карта методов</h2>
+        <p>Таблицы собраны из того же каталога, который грузит сервер, поэтому они не расходятся с кодом. Колонки показывают, как метод классифицирует safety-гейт: перед записью агент предупреждает, перед необратимым действием требует подтверждения.</p>
+      </div>
+      <div class="tw">
+      <table class="mtable">
+        <caption>Partner API, 165 метода</caption>
+        <thead><tr><th>Раздел</th><th class="num">Методов</th><th class="num">Чтение</th><th class="num">Запись</th><th class="num">Необратимые</th></tr></thead>
+        <tbody>
+        <tr><td>Заказы, возвраты и невыкупы</td><td class="num">38</td><td class="num">19</td><td class="num">19</td><td class="num">0</td></tr>
+        <tr><td>Отчёты</td><td class="num">27</td><td class="num">27</td><td class="num">0</td><td class="num">0</td></tr>
+        <tr><td>Товары и карточки</td><td class="num">22</td><td class="num">11</td><td class="num">8</td><td class="num">3</td></tr>
+        <tr><td>Отгрузки, поставки и склады</td><td class="num">21</td><td class="num">15</td><td class="num">6</td><td class="num">0</td></tr>
+        <tr><td>Отзывы, вопросы и чаты</td><td class="num">18</td><td class="num">11</td><td class="num">6</td><td class="num">1</td></tr>
+        <tr><td>Самовывоз и регионы доставки</td><td class="num">15</td><td class="num">10</td><td class="num">3</td><td class="num">2</td></tr>
+        <tr><td>Цены, тарифы и карантин</td><td class="num">10</td><td class="num">6</td><td class="num">4</td><td class="num">0</td></tr>
+        <tr><td>Продвижение и реклама</td><td class="num">8</td><td class="num">4</td><td class="num">3</td><td class="num">1</td></tr>
+        <tr><td>Кабинет и служебное</td><td class="num">6</td><td class="num">6</td><td class="num">0</td><td class="num">0</td></tr>
+        </tbody>
+        <tfoot><tr><th>Всего</th><th class="num">165</th><th class="num"></th><th class="num"></th><th class="num"></th></tr></tfoot>
+      </table>
+      </div>
+      <p class="small" style="color:var(--mute);margin-top:20px;max-width:70ch">
+        Курированное ядро выверено на живых кабинетах. Остальное импортировано из спецификаций: пути надёжны, HTTP-глаголы не всегда, считайте такие записи картой для разведки. Официальная документация: <a href="https://yandex.ru/dev/market/partner-api/doc/ru/">yandex.ru/dev/market/partner-api</a>.
+      </p>
+    </div>
+  </section>
+
+  <!-- ОШИБКИ -->
+  <section class="s alt" id="errors">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>Частые ошибки и что они значат</h2>
+      </div>
+      <div class="faq">
+        <div class="faq-item">
+          <h3>Пустой ответ вместо данных</h3>
+          <p>Чаще всего перепутаны идентификатор бизнеса и номер кампании. Ошибки доступа при этом не будет, ответ придёт корректный и пустой.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Ошибка в имени поля</h3>
+          <p>Каталог методов собран из официального OpenAPI-документа, а живой прогон на реальных кабинетах ещё не делался. Неточности в именах полей возможны. <b class="mono">describe_method</b> покажет схему, <b class="mono">call_raw</b> даст поправить запрос на месте.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Метод не находится по названию</h3>
+          <p>Ищите по теме, а не по имени: спросите агента «что ты умеешь по Яндекс Маркету», он покажет разделы и подберёт метод сам.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- В ЧАТЕ -->
+  <section class="s" id="chat">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>То же самое одной фразой</h2>
+        <p>Если разбираться с методами руками не хочется, всё перечисленное выше вызывается из чата обычными словами. Проект и есть MCP-сервер: он отдаёт эти методы ИИ-ассистенту как инструменты, а тот подбирает нужный сам.</p>
+      </div>
+      <div class="usage">
+        <div class="ucard">
+          <h3>Скажите так</h3>
+          <span class="prompt">покажи заказы на Яндекс Маркете за неделю</span>
+          <span class="prompt">какой у меня индекс качества и что его роняет</span>
+          <span class="prompt">собери отчёт по продажам за месяц</span>
+          <span class="prompt">покажи товары в карантине цен</span>
+        </div>
+        <div class="ucard">
+          <h3>Что для этого нужно</h3>
+          <p>Ключи из первого раздела и одна строка установки. Claude Desktop ставится в один клик бандлом <b class="mono">.mcpb</b> из релизов, остальные клиенты строкой <b class="mono">npx -y marketplaces-mcp-ru</b> или <b class="mono">uvx marketplaces-mcp-ru</b>.</p>
+          <p style="margin-top:12px"><a class="btn btn-primary" href="index.html#install">Как установить</a></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="s alt" id="faq">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>Частые вопросы</h2>
+      </div>
+      <div class="faq">
+        <div class="faq-item">
+          <h3>Как получить API-ключ Яндекс Маркета?</h3>
+          <p>partner.market.yandex.ru, раздел Настройки, пункт Доступ к API. Ключ уходит в заголовок Api-Key, хост api.partner.market.yandex.ru.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Почему Partner API возвращает пустой ответ?</h3>
+          <p>Чаще всего перепутаны идентификатор бизнеса и номер кампании. Часть методов адресуется бизнесом, часть кампанией, и подстановка одного вместо другого даёт не ошибку доступа, а корректный пустой ответ.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Сколько методов Яндекс Маркета поддерживает marketplaces-mcp-ru?</h3>
+          <p>165, собранных из официального OpenAPI-документа: заказы, отчёты, поставки, товары, цены, отзывы, чаты и индекс качества. Живой прогон на реальных кабинетах пока не делался, поэтому неточности в именах полей возможны.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="s">
+    <div class="wrap">
+      <div class="oss">
+        <div class="kicker">открытый проект</div>
+        <h2>Каталог методов открыт. Берите, форкайте, улучшайте.</h2>
+        <p>Всё это лежит в репозитории под MIT, включая машиночитаемые каталоги, из которых собраны таблицы на этой странице. Нашли неточность в методе, поправьте или заведите issue.</p>
+        <div class="cta-row">
+          <a class="btn btn-primary" href="https://github.com/ilyautov/marketplaces-mcp-ru">★ Открыть на GitHub</a>
+          <a class="btn btn-ghost" href="https://github.com/ilyautov/marketplaces-mcp-ru/issues">Завести issue</a>
+        </div>
+        <div class="repo-line">github.com/ilyautov/marketplaces-mcp-ru</div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <div>
+      <span class="alpha">alpha</span>
+      &nbsp; Инструмент, а не замена аналитику. Решения по цене и закупкам за вами.
+    </div>
+    <div>
+      <a href="https://github.com/ilyautov/marketplaces-mcp-ru">GitHub</a> ·
+      <a href="https://t.me/gorilla_under_hood">Telegram</a> ·
+      Сделано в <a href="https://aifrontier.tech">AI Frontier</a> · MIT
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
