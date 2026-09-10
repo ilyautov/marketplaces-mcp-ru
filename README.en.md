@@ -44,7 +44,7 @@ Not sure where to start? Say "what can you do with my account". The agent will s
 
 A detailed guide for any audience is in [QUICKSTART.md](QUICKSTART.md). Three ways, one result:
 
-1. **Ask your AI (no terminal).** Open Claude or Cowork and say "install the WB + Ozon MCP". The agent walks the bundled `install-skill/`. In the Cowork sandbox the final click stays with you; in Claude Code it installs fully on its own.
+1. **Ask your AI (no terminal).** Open Claude or Cowork and say "install the WB + Ozon MCP". The agent walks the bundled `marketplace-mcp-install/`. In the Cowork sandbox the final click stays with you; in Claude Code it installs fully on its own.
 2. **Download and click.** Grab `marketplaces-mcp-ru-v<version>.zip` from [GitHub Releases](https://github.com/ilyautov/marketplaces-mcp-ru/releases), unzip, double-click `install.command` (macOS) / `install.bat` (Windows), paste your keys. On Windows the installer can fetch Python via winget if it's missing.
 3. **Terminal.** `git clone https://github.com/ilyautov/marketplaces-mcp-ru`, then `python3 install.py --client <your-client>` (`claude-desktop`, `claude-code`, `codex` or `opencode`).
 4. **npm / PyPI.** `npx -y marketplaces-mcp-ru` — the install line every MCP client documents; no Python setup, the npm launcher fetches `uv` and the pinned PyPI version itself. `uvx marketplaces-mcp-ru` runs the combined WB + Ozon + Ozon Performance + Yandex Market + Avito server straight from PyPI; `wb-mcp` / `ozon-mcp` / `ozon-perf-mcp` / `yandex-mcp` / `avito-mcp` run a single service. Keys via env vars or `*_add_cabinet` from chat.
