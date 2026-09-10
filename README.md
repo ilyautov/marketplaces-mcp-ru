@@ -16,6 +16,18 @@
 [![Install in VS Code](https://img.shields.io/badge/VS_Code-%D0%BF%D0%BE%D1%81%D1%82%D0%B0%D0%B2%D0%B8%D1%82%D1%8C-0098FF?logo=visualstudiocode&logoColor=white)](https://vscode.dev/redirect/mcp/install?name=marketplaces-ru&config=%7B%22command%22%3A%22uvx%22%2C%22args%22%3A%5B%22marketplaces-mcp-ru%22%5D%2C%22env%22%3A%7B%22WB_API_TOKEN%22%3A%22%24%7Binput%3Awb_api_token%7D%22%2C%22OZON_CLIENT_ID%22%3A%22%24%7Binput%3Aozon_client_id%7D%22%2C%22OZON_API_KEY%22%3A%22%24%7Binput%3Aozon_api_key%7D%22%2C%22YANDEX_MARKET_API_KEY%22%3A%22%24%7Binput%3Ayandex_api_key%7D%22%2C%22AVITO_CLIENT_ID%22%3A%22%24%7Binput%3Aavito_client_id%7D%22%2C%22AVITO_CLIENT_SECRET%22%3A%22%24%7Binput%3Aavito_client_secret%7D%22%7D%7D&inputs=%5B%7B%22id%22%3A%22wb_api_token%22%2C%22type%22%3A%22promptString%22%2C%22description%22%3A%22Wildberries%20API%20token%20%28leave%20empty%20if%20you%20don%27t%20sell%20on%20WB%29%22%2C%22password%22%3Atrue%7D%2C%7B%22id%22%3A%22ozon_client_id%22%2C%22type%22%3A%22promptString%22%2C%22description%22%3A%22Ozon%20Client-Id%20%28leave%20empty%20if%20you%20don%27t%20sell%20on%20Ozon%29%22%7D%2C%7B%22id%22%3A%22ozon_api_key%22%2C%22type%22%3A%22promptString%22%2C%22description%22%3A%22Ozon%20Api-Key%22%2C%22password%22%3Atrue%7D%2C%7B%22id%22%3A%22yandex_api_key%22%2C%22type%22%3A%22promptString%22%2C%22description%22%3A%22Yandex%20Market%20Api-Key%20%28leave%20empty%20if%20you%20don%27t%20sell%20there%29%22%2C%22password%22%3Atrue%7D%2C%7B%22id%22%3A%22avito_client_id%22%2C%22type%22%3A%22promptString%22%2C%22description%22%3A%22Avito%20client_id%20%28leave%20empty%20if%20you%20don%27t%20sell%20on%20Avito%29%22%7D%2C%7B%22id%22%3A%22avito_client_secret%22%2C%22type%22%3A%22promptString%22%2C%22description%22%3A%22Avito%20client_secret%22%2C%22password%22%3Atrue%7D%5D)
 [![Install in Cursor](https://img.shields.io/badge/Cursor-%D0%BF%D0%BE%D1%81%D1%82%D0%B0%D0%B2%D0%B8%D1%82%D1%8C-000000?logo=cursor&logoColor=white)](https://cursor.com/en/install-mcp?name=marketplaces-ru&config=eyJjb21tYW5kIjoidXZ4IiwiYXJncyI6WyJtYXJrZXRwbGFjZXMtbWNwLXJ1Il0sImVudiI6eyJXQl9BUElfVE9LRU4iOiIiLCJPWk9OX0NMSUVOVF9JRCI6IiIsIk9aT05fQVBJX0tFWSI6IiIsIllBTkRFWF9NQVJLRVRfQVBJX0tFWSI6IiIsIkFWSVRPX0NMSUVOVF9JRCI6IiIsIkFWSVRPX0NMSUVOVF9TRUNSRVQiOiIifX0=)
 
+<p align="center">
+  <a href="https://marketplaces-mcp-ru.aifrontier.tech/">
+    <img src="assets/social-preview.png" alt="marketplaces-mcp-ru: кабинеты Wildberries, Ozon, Яндекс Маркета и Авито в ИИ-ассистенте. 1022 метода через Seller API, гейт безопасности перед записью" width="760">
+  </a>
+</p>
+
+**Быстрый старт**, без установки в систему:
+
+```bash
+uvx marketplaces-mcp-ru
+```
+
 <!-- social preview: assets/social-preview.png → Settings → Social preview.
      Сайт: marketplaces-mcp-ru.aifrontier.tech (GitHub Pages из docs/). -->
 
