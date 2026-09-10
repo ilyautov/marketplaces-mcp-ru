@@ -164,3 +164,9 @@ footer{border-top:1px solid var(--line);padding:40px 0;color:var(--mute);font-si
   .nums .ne{font-size:22px}
   .wrap{padding:0 18px}
 }
+
+/* FAQ */
+.faq{display:grid;gap:14px}
+.faq-item{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:20px 22px}
+.faq-item h3{font-size:17.5px;margin-bottom:6px;font-family:Inter;font-weight:700;color:var(--ink)}
+.faq-item p{margin:0;color:var(--body);font-size:15.5px}

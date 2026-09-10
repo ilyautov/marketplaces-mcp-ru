@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>marketplaces-mcp-ru — Wildberries, Ozon, Яндекс Маркет и Авито в вашем ИИ-ассистенте</title>
-<meta name="description" content="MCP-сервер для маркетплейсов: подключает ИИ-ассистента (Claude, Cursor, Codex, Cowork) напрямую к кабинетам Wildberries, Ozon, Яндекс Маркета и Авито. Продажи, заказы, остатки, цены, финансы, отзывы — из API с указанием источника, а не выдумка. Перед изменением цены агент просит подтверждение. Без браузера и капчи. Ставится в один клик.">
-<meta property="og:title" content="marketplaces-mcp-ru — Wildberries, Ozon, Яндекс Маркет и Авито в вашем ИИ-ассистенте">
+<title>API Ozon, Wildberries, Яндекс Маркета и Авито в ИИ-ассистенте | marketplaces-mcp-ru</title>
+<meta name="description" content="Открытый MCP-сервер для Seller API Ozon, Wildberries, Яндекс Маркета и Авито: продажи, заказы, остатки, цены, финансы, отзывы и реклама в одном подключении, 1022 метода. Работает по API-ключу кабинета, без парсеров и капчи. Ставится в один клик в Claude, Cursor, Codex и Cowork. Лицензия MIT.">
+<meta property="og:title" content="API Ozon, Wildberries, Яндекс Маркета и Авито в ИИ-ассистенте">
 <meta property="og:description" content="Кабинеты WB, Ozon, Яндекс Маркета и Авито прямо в чате. Цифры из Seller API с источником, а не из воздуха. Safety-гейт перед записью. Ставится в один клик — .mcpb, uvx или Docker.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://marketplaces-mcp-ru.aifrontier.tech/">
@@ -18,6 +18,42 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Lora:wght@500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "marketplaces-mcp-ru",
+  "alternateName": "MCP-сервер для Ozon, Wildberries, Яндекс Маркета и Авито",
+  "description": "Открытый MCP-сервер, подключающий ИИ-ассистента к Seller API Ozon, Wildberries, Яндекс Маркета и Авито: продажи, заказы, остатки, цены, финансы, отзывы и реклама, 1022 метода со схемами и safety-гейтом перед записью.",
+  "applicationCategory": "BusinessApplication",
+  "applicationSubCategory": "Marketplace seller automation",
+  "operatingSystem": "macOS, Windows, Linux",
+  "url": "https://marketplaces-mcp-ru.aifrontier.tech/",
+  "codeRepository": "https://github.com/ilyautov/marketplaces-mcp-ru",
+  "downloadUrl": "https://github.com/ilyautov/marketplaces-mcp-ru/releases",
+  "programmingLanguage": "Python",
+  "license": "https://opensource.org/licenses/MIT",
+  "isAccessibleForFree": true,
+  "inLanguage": "ru",
+  "offers": {"@type": "Offer", "price": "0", "priceCurrency": "RUB"},
+  "author": {"@type": "Person", "name": "Ilya Utov", "url": "https://github.com/ilyautov"}
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {"@type":"Question","name":"Как получить API-ключ Ozon, Wildberries, Яндекс Маркета и Авито?","acceptedAnswer":{"@type":"Answer","text":"Ozon: seller.ozon.ru, раздел Настройки, пункт API-ключи (нужны Client-Id и Api-Key). Wildberries: seller.wildberries.ru, Настройки, Доступ к API. Яндекс Маркет: partner.market.yandex.ru, Настройки, Доступ к API (Api-Key). Авито: avito.ru, Для бизнеса, Интеграции, API (пара client_id и client_secret). Сервер спросит ключи при первом запуске и положит их в ~/.marketplace-mcp/cabinets.json с правами chmod 600."}},
+    {"@type":"Question","name":"Почему API отвечает 401, хотя ключ верный?","acceptedAnswer":{"@type":"Answer","text":"Две частые причины. Первая: активный кабинет в ~/.marketplace-mcp/cabinets.json имеет приоритет над переменными окружения, поэтому проверьте этот файл раньше env. Вторая, для Wildberries: токен уходит в заголовок Authorization без префикса Bearer. Команда uvx marketplaces-mcp-ru doctor --live покажет по каждому маркетплейсу, сколько инструментов загрузилось, найдены ли ключи и отвечает ли кабинет."}},
+    {"@type":"Question","name":"Что такое MCP и зачем он продавцу?","acceptedAnswer":{"@type":"Answer","text":"MCP (Model Context Protocol) это открытый стандарт, по которому ИИ-ассистент подключает внешние инструменты. Проект превращает API Wildberries, Ozon, Яндекс Маркета и Авито в инструменты, которые агент вызывает сам, по вопросу на русском языке."}},
+    {"@type":"Question","name":"Чем это лучше парсеров и браузерных ботов?","acceptedAnswer":{"@type":"Answer","text":"Это прямой Seller API по токену, а не разбор веб-страниц: нет капчи, нет блокировок, данные приходят структурированными. Плюс защита от случайного изменения цены или остатка."}},
+    {"@type":"Question","name":"Это безопасно? Куда уходят ключи?","acceptedAnswer":{"@type":"Answer","text":"Сервер работает там же, где ваш агент, локально. Ключи лежат в ~/.marketplace-mcp/cabinets.json (chmod 600), в репозиторий и в чат не попадают. Любое изменение в кабинете, цена или остаток, происходит только с вашим подтверждением."}},
+    {"@type":"Question","name":"Работает ли с Яндекс Маркетом и Авито?","acceptedAnswer":{"@type":"Answer","text":"Да, с версии 0.5.0. Яндекс Маркет подключается по Api-Key из кабинета партнёра: заказы, товары, остатки, цены, отчёты, чаты, индекс качества. Авито по паре client_id и client_secret из раздела «Интеграции»: заказы Авито Доставки, остатки и цены объявлений, статистика, отзывы, мессенджер, продвижение."}},
+    {"@type":"Question","name":"Это бесплатно?","acceptedAnswer":{"@type":"Answer","text":"Да, открытый код под лицензией MIT. Берите, форкайте, дорабатывайте."}}
+  ]
+}
+</script>
 </head>
 <body>
 
@@ -32,6 +68,7 @@
       <a href="#scenarios">Сценарии</a>
       <a href="#use">Как пользоваться</a>
       <a href="#install">Установка</a>
+      <a href="#faq">Вопросы</a>
       <a class="btn btn-primary" href="https://github.com/ilyautov/marketplaces-mcp-ru">GitHub</a>
     </nav>
   </div>
@@ -214,6 +251,46 @@
         <span class="chip">Gemini — GEMINI.md</span>
       </div>
       <p class="small" style="color:var(--mute);margin-top:16px">Где взять ключи: Wildberries — seller.wildberries.ru → Настройки → Доступ к API; Ozon — seller.ozon.ru → Настройки → API-ключи. Ключи хранятся локально (<b class="mono">chmod 600</b>), в репозиторий и в чат не попадают.</p>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="s" id="faq">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>Частые вопросы</h2>
+        <p>Ключи, ошибки авторизации, безопасность и лицензия.</p>
+      </div>
+      <div class="faq">
+        <div class="faq-item">
+          <h3>Как получить API-ключ Ozon, Wildberries, Яндекс Маркета и Авито?</h3>
+          <p>Ozon: seller.ozon.ru, раздел Настройки, пункт API-ключи (нужны Client-Id и Api-Key). Wildberries: seller.wildberries.ru, Настройки, Доступ к API. Яндекс Маркет: partner.market.yandex.ru, Настройки, Доступ к API (Api-Key). Авито: avito.ru, Для бизнеса, Интеграции, API (пара client_id и client_secret). Сервер спросит ключи при первом запуске и положит их в ~/.marketplace-mcp/cabinets.json с правами chmod 600.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Почему API отвечает 401, хотя ключ верный?</h3>
+          <p>Две частые причины. Первая: активный кабинет в ~/.marketplace-mcp/cabinets.json имеет приоритет над переменными окружения, поэтому проверьте этот файл раньше env. Вторая, для Wildberries: токен уходит в заголовок Authorization без префикса Bearer. Команда uvx marketplaces-mcp-ru doctor --live покажет по каждому маркетплейсу, сколько инструментов загрузилось, найдены ли ключи и отвечает ли кабинет.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Что такое MCP и зачем он продавцу?</h3>
+          <p>MCP (Model Context Protocol) это открытый стандарт, по которому ИИ-ассистент подключает внешние инструменты. Проект превращает API Wildberries, Ozon, Яндекс Маркета и Авито в инструменты, которые агент вызывает сам, по вопросу на русском языке.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Чем это лучше парсеров и браузерных ботов?</h3>
+          <p>Это прямой Seller API по токену, а не разбор веб-страниц: нет капчи, нет блокировок, данные приходят структурированными. Плюс защита от случайного изменения цены или остатка.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Это безопасно? Куда уходят ключи?</h3>
+          <p>Сервер работает там же, где ваш агент, локально. Ключи лежат в ~/.marketplace-mcp/cabinets.json (chmod 600), в репозиторий и в чат не попадают. Любое изменение в кабинете, цена или остаток, происходит только с вашим подтверждением.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Работает ли с Яндекс Маркетом и Авито?</h3>
+          <p>Да, с версии 0.5.0. Яндекс Маркет подключается по Api-Key из кабинета партнёра: заказы, товары, остатки, цены, отчёты, чаты, индекс качества. Авито по паре client_id и client_secret из раздела «Интеграции»: заказы Авито Доставки, остатки и цены объявлений, статистика, отзывы, мессенджер, продвижение.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Это бесплатно?</h3>
+          <p>Да, открытый код под лицензией MIT. Берите, форкайте, дорабатывайте.</p>
+        </div>
+      </div>
     </div>
   </section>
 
