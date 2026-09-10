@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>API Wildberries: токен, 17 хостов, карта методов и ошибки</title>
+<meta name="description" content="Как получить токен API в кабинете продавца Wildberries, почему у WB не один домен, а семнадцать, полная таблица хостов, карта из 307 методов и разбор ошибок: 401 из-за префикса Bearer и лимиты запросов.">
+<meta property="og:title" content="API Wildberries: токен, 17 хостов, карта методов и ошибки">
+<meta property="og:description" content="Как получить токен API в кабинете продавца Wildberries, почему у WB не один домен, а семнадцать, полная таблица хостов, карта из 307 методов и разбор ошибок: 401 из-за префикса Bearer и лимиты запросов.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://marketplaces-mcp-ru.aifrontier.tech/wildberries-api.html">
+<meta property="og:image" content="https://marketplaces-mcp-ru.aifrontier.tech/assets/social-preview.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://marketplaces-mcp-ru.aifrontier.tech/wildberries-api.html">
+<link rel="icon" type="image/png" href="assets/social-preview.png">
+<link rel="apple-touch-icon" href="assets/social-preview.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Lora:wght@500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "marketplaces-mcp-ru",
+      "item": "https://marketplaces-mcp-ru.aifrontier.tech/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "API Wildberries: токен, хосты и ошибки",
+      "item": "https://marketplaces-mcp-ru.aifrontier.tech/wildberries-api.html"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Как получить API-токен Wildberries?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "seller.wildberries.ru, раздел Настройки, пункт Доступ к API. Токен один на все хосты, но при создании выбираются категории доступа: выданный только под контент токен не пустят в статистику."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Почему API Wildberries отвечает 401, хотя токен верный?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Wildberries ждёт raw-токен в заголовке Authorization без префикса Bearer. Вторая частая причина: активный кабинет в ~/.marketplace-mcp/cabinets.json имеет приоритет над переменными окружения и молча затеняет их."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Какой адрес у API Wildberries?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Единого адреса нет. У Wildberries семнадцать хостов по назначению: marketplace-api для сборочных заданий, statistics-api для продаж и остатков, content-api для карточек, discounts-prices-api для цен, seller-analytics-api для аналитики, feedbacks-api для отзывов и так далее. Полная таблица есть на этой странице."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Что делать при «превышен лимит запросов к API Wildberries»?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Лимиты заданы поштучно, у части методов это один запрос в минуту. Лимит привязан к методу, а не к аккаунту, поэтому упереться можно на одном отчёте, пока остальные методы работают. Помогает кэшировать ответ и не дёргать отчёт в цикле."
+      }
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <a class="brand" href="https://marketplaces-mcp-ru.aifrontier.tech/" aria-label="marketplaces-mcp-ru, на главную">
+      <span class="bars" aria-hidden="true"><span></span><span></span><span></span></span>
+      marketplaces-mcp-ru <small>· AI Frontier</small>
+    </a>
+    <nav class="nav-links" aria-label="Основная навигация">
+      <a href="ozon-api.html">Ozon</a>
+      <a href="wildberries-api.html">Wildberries</a>
+      <a href="yandex-market-api.html">Яндекс Маркет</a>
+      <a href="avito-api.html">Авито</a>
+      <a class="btn btn-primary" href="https://github.com/ilyautov/marketplaces-mcp-ru">GitHub</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+  <section class="s">
+    <div class="wrap">
+      <nav class="crumbs" aria-label="Хлебные крошки">
+        <a href="index.html">Главная</a> · API Wildberries: токен, хосты и ошибки
+      </nav>
+      <div class="sec-head">
+        <h1>API Wildberries: токен, хосты и ошибки</h1>
+        <p>Главная засада Wildberries не в токене, а в адресе. Единого <b class="mono">api.wildberries.ru</b> не существует: у каждого назначения свой хост, и запрос на неверный домен выглядит как сломанная авторизация. Ниже полная таблица хостов из каталога, который грузит сервер.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- КЛЮЧИ -->
+  <section class="s alt" id="keys">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>Как получить доступ</h2>
+      </div>
+      <div class="steps">
+        <div class="step">
+          <div>
+            <h3>Где взять токен</h3>
+            <p>Кабинет <b class="mono">seller.wildberries.ru</b>, раздел <b>Настройки</b>, пункт <b>Доступ к API</b>. Токен один на все хосты, но при создании выбираются категории доступа: выданный только под контент токен не пустят в статистику.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div>
+            <h3>Как он уходит в запрос</h3>
+            <p>В заголовок <b class="mono">Authorization</b>, и это важный нюанс: сервер шлёт raw-токен <b>без префикса</b> <b class="mono">Bearer</b>. Подтверждено на практике. Если авторизация падает при верном токене, проверьте это первым.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div>
+            <h3>Где он лежит</h3>
+            <p>В <b class="mono">~/.marketplace-mcp/cabinets.json</b> с правами <b class="mono">chmod 600</b>, локально. В репозиторий и в чат токен не попадает.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- КАРТА МЕТОДОВ -->
+  <section class="s" id="methods">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>Карта методов</h2>
+        <p>Таблицы собраны из того же каталога, который грузит сервер, поэтому они не расходятся с кодом. Колонки показывают, как метод классифицирует safety-гейт: перед записью агент предупреждает, перед необратимым действием требует подтверждения.</p>
+      </div>
+      <div class="tw">
+      <table class="mtable">
+        <caption>Хосты API Wildberries: свой домен на каждое назначение</caption>
+        <thead><tr><th>Хост</th><th class="num">Методов</th><th>За что отвечает</th></tr></thead>
+        <tbody>
+        <tr><td><b class="mono">marketplace-api.wildberries.ru</b></td><td class="num">100</td><td>Сборочные задания и поставки FBS, DBS, DBW, самовывоз</td></tr>
+        <tr><td><b class="mono">seller-analytics-api.wildberries.ru</b></td><td class="num">40</td><td>Аналитика продавца: поисковые запросы, остатки, удержания, платное хранение</td></tr>
+        <tr><td><b class="mono">content-api.wildberries.ru</b></td><td class="num">31</td><td>Карточки товаров, характеристики, категории, медиа, ярлыки</td></tr>
+        <tr><td><b class="mono">advert-api.wildberries.ru</b></td><td class="num">30</td><td>Рекламные кампании, ставки, поисковые кластеры</td></tr>
+        <tr><td><b class="mono">devapi-digital.wildberries.ru</b></td><td class="num">22</td><td>Цифровые товары: контент, предложения, ключи активации</td></tr>
+        <tr><td><b class="mono">feedbacks-api.wildberries.ru</b></td><td class="num">20</td><td>Отзывы, вопросы, закреплённые отзывы</td></tr>
+        <tr><td><b class="mono">discounts-prices-api.wildberries.ru</b></td><td class="num">13</td><td>Цены, скидки, календарь акций</td></tr>
+        <tr><td><b class="mono">common-api.wildberries.ru</b></td><td class="num">10</td><td>Информация о продавце, тарифы, комиссии, новости</td></tr>
+        <tr><td><b class="mono">supplies-api.wildberries.ru</b></td><td class="num">7</td><td>Поставки на склад WB и данные для их формирования</td></tr>
+        <tr><td><b class="mono">finance-api.wildberries.ru</b></td><td class="num">7</td><td>Финансовые отчёты и баланс</td></tr>
+        <tr><td><b class="mono">statistics-api.wildberries.ru</b></td><td class="num">5</td><td>Статистика: продажи, заказы, остатки, отчёт о реализации</td></tr>
+        <tr><td><b class="mono">user-management-api.wildberries.ru</b></td><td class="num">4</td><td>Пользователи продавца и их права</td></tr>
+        <tr><td><b class="mono">advert-media-api.wildberries.ru</b></td><td class="num">4</td><td>Медиа в рекламе и статистика по ним</td></tr>
+        <tr><td><b class="mono">dp-calendar-api.wildberries.ru</b></td><td class="num">4</td><td>Календарь акций и участие в них</td></tr>
+        <tr><td><b class="mono">buyer-chat-api.wildberries.ru</b></td><td class="num">4</td><td>Чат с покупателями</td></tr>
+        <tr><td><b class="mono">documents-api.wildberries.ru</b></td><td class="num">4</td><td>Документы продавца</td></tr>
+        <tr><td><b class="mono">returns-api.wildberries.ru</b></td><td class="num">2</td><td>Возвраты покупателями</td></tr>
+        </tbody>
+      </table>
+      </div>
+      <p class="small" style="color:var(--mute);margin-top:20px;max-width:70ch">
+        Курированное ядро выверено на живых кабинетах. Остальное импортировано из спецификаций: пути надёжны, HTTP-глаголы не всегда, считайте такие записи картой для разведки. Официальная документация: <a href="https://dev.wildberries.ru/">dev.wildberries.ru</a>.
+      </p>
+    </div>
+  </section>
+
+  <!-- ОШИБКИ -->
+  <section class="s alt" id="errors">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>Частые ошибки и что они значат</h2>
+      </div>
+      <div class="faq">
+        <div class="faq-item">
+          <h3>401 при верном токене</h3>
+          <p>Две причины по частоте. Первая: WB ждёт raw-токен в <b class="mono">Authorization</b> без <b class="mono">Bearer</b>. Вторая: активный кабинет в <b class="mono">~/.marketplace-mcp/cabinets.json</b> имеет приоритет над переменными окружения и затеняет то, что вы экспортировали.</p>
+        </div>
+        <div class="faq-item">
+          <h3>404 или пустой ответ на рабочем методе</h3>
+          <p>Проверьте хост. У WB семнадцать доменов по назначению, и статистика на домене контента не отвечает. Таблица хостов выше.</p>
+        </div>
+        <div class="faq-item">
+          <h3>429, превышен лимит запросов</h3>
+          <p>Лимиты у WB заданы поштучно и местами очень жёсткие: у части методов это один запрос в минуту, у отчётов бывает и реже. Лимит привязан к методу, а не к аккаунту целиком, поэтому упереться можно на одном отчёте, пока остальное работает.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- В ЧАТЕ -->
+  <section class="s" id="chat">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>То же самое одной фразой</h2>
+        <p>Если разбираться с методами руками не хочется, всё перечисленное выше вызывается из чата обычными словами. Проект и есть MCP-сервер: он отдаёт эти методы ИИ-ассистенту как инструменты, а тот подбирает нужный сам.</p>
+      </div>
+      <div class="usage">
+        <div class="ucard">
+          <h3>Скажите так</h3>
+          <span class="prompt">покажи продажи на WB за неделю</span>
+          <span class="prompt">вытащи финотчёт реализации за прошлый месяц</span>
+          <span class="prompt">что пора дозаказать, посчитай дни покрытия</span>
+          <span class="prompt">какие товары рискуют уйти в out-of-stock</span>
+        </div>
+        <div class="ucard">
+          <h3>Что для этого нужно</h3>
+          <p>Ключи из первого раздела и одна строка установки. Claude Desktop ставится в один клик бандлом <b class="mono">.mcpb</b> из релизов, остальные клиенты строкой <b class="mono">npx -y marketplaces-mcp-ru</b> или <b class="mono">uvx marketplaces-mcp-ru</b>.</p>
+          <p style="margin-top:12px"><a class="btn btn-primary" href="index.html#install">Как установить</a></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="s alt" id="faq">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>Частые вопросы</h2>
+      </div>
+      <div class="faq">
+        <div class="faq-item">
+          <h3>Как получить API-токен Wildberries?</h3>
+          <p>seller.wildberries.ru, раздел Настройки, пункт Доступ к API. Токен один на все хосты, но при создании выбираются категории доступа: выданный только под контент токен не пустят в статистику.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Почему API Wildberries отвечает 401, хотя токен верный?</h3>
+          <p>Wildberries ждёт raw-токен в заголовке Authorization без префикса Bearer. Вторая частая причина: активный кабинет в ~/.marketplace-mcp/cabinets.json имеет приоритет над переменными окружения и молча затеняет их.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Какой адрес у API Wildberries?</h3>
+          <p>Единого адреса нет. У Wildberries семнадцать хостов по назначению: marketplace-api для сборочных заданий, statistics-api для продаж и остатков, content-api для карточек, discounts-prices-api для цен, seller-analytics-api для аналитики, feedbacks-api для отзывов и так далее. Полная таблица есть на этой странице.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Что делать при «превышен лимит запросов к API Wildberries»?</h3>
+          <p>Лимиты заданы поштучно, у части методов это один запрос в минуту. Лимит привязан к методу, а не к аккаунту, поэтому упереться можно на одном отчёте, пока остальные методы работают. Помогает кэшировать ответ и не дёргать отчёт в цикле.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="s">
+    <div class="wrap">
+      <div class="oss">
+        <div class="kicker">открытый проект</div>
+        <h2>Каталог методов открыт. Берите, форкайте, улучшайте.</h2>
+        <p>Всё это лежит в репозитории под MIT, включая машиночитаемые каталоги, из которых собраны таблицы на этой странице. Нашли неточность в методе, поправьте или заведите issue.</p>
+        <div class="cta-row">
+          <a class="btn btn-primary" href="https://github.com/ilyautov/marketplaces-mcp-ru">★ Открыть на GitHub</a>
+          <a class="btn btn-ghost" href="https://github.com/ilyautov/marketplaces-mcp-ru/issues">Завести issue</a>
+        </div>
+        <div class="repo-line">github.com/ilyautov/marketplaces-mcp-ru</div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <div>
+      <span class="alpha">alpha</span>
+      &nbsp; Инструмент, а не замена аналитику. Решения по цене и закупкам за вами.
+    </div>
+    <div>
+      <a href="https://github.com/ilyautov/marketplaces-mcp-ru">GitHub</a> ·
+      <a href="https://t.me/gorilla_under_hood">Telegram</a> ·
+      Сделано в <a href="https://aifrontier.tech">AI Frontier</a> · MIT
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

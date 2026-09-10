@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>API Авито для бизнеса: client_id, client_secret и карта методов</title>
+<meta name="description" content="Как получить client_id и client_secret в разделе Интеграции на Авито, как работает OAuth2, карта из 64 методов: объявления, заказы Авито Доставки, мессенджер, продвижение, отзывы и остатки.">
+<meta property="og:title" content="API Авито для бизнеса: client_id, client_secret и карта методов">
+<meta property="og:description" content="Как получить client_id и client_secret в разделе Интеграции на Авито, как работает OAuth2, карта из 64 методов: объявления, заказы Авито Доставки, мессенджер, продвижение, отзывы и остатки.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://marketplaces-mcp-ru.aifrontier.tech/avito-api.html">
+<meta property="og:image" content="https://marketplaces-mcp-ru.aifrontier.tech/assets/social-preview.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://marketplaces-mcp-ru.aifrontier.tech/avito-api.html">
+<link rel="icon" type="image/png" href="assets/social-preview.png">
+<link rel="apple-touch-icon" href="assets/social-preview.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Lora:wght@500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "marketplaces-mcp-ru",
+      "item": "https://marketplaces-mcp-ru.aifrontier.tech/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "API Авито: доступ и карта методов",
+      "item": "https://marketplaces-mcp-ru.aifrontier.tech/avito-api.html"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Как получить API-ключ Авито?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "На avito.ru: раздел Для бизнеса, пункт Интеграции, подраздел API. Авито выдаёт не ключ, а пару client_id и client_secret, которая по OAuth2 меняется на токен с ограниченным сроком жизни."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Есть ли у Авито API для объявлений и мессенджера?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Да. В каталоге 64 метода: объявления и статистика, заказы Авито Доставки, мессенджер, продвижение, отзывы и рейтинг, остатки, автозагрузка объявлений файлом, баланс и операции."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Почему API Авито отвечает 403?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Доступ к разделам у Авито выдаётся по заявке и не одинаков у всех аккаунтов. Мессенджер и Авито Доставка открываются не каждому бизнесу."
+      }
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <a class="brand" href="https://marketplaces-mcp-ru.aifrontier.tech/" aria-label="marketplaces-mcp-ru, на главную">
+      <span class="bars" aria-hidden="true"><span></span><span></span><span></span></span>
+      marketplaces-mcp-ru <small>· AI Frontier</small>
+    </a>
+    <nav class="nav-links" aria-label="Основная навигация">
+      <a href="ozon-api.html">Ozon</a>
+      <a href="wildberries-api.html">Wildberries</a>
+      <a href="yandex-market-api.html">Яндекс Маркет</a>
+      <a href="avito-api.html">Авито</a>
+      <a class="btn btn-primary" href="https://github.com/ilyautov/marketplaces-mcp-ru">GitHub</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+  <section class="s">
+    <div class="wrap">
+      <nav class="crumbs" aria-label="Хлебные крошки">
+        <a href="index.html">Главная</a> · API Авито: доступ и карта методов
+      </nav>
+      <div class="sec-head">
+        <h1>API Авито: доступ и карта методов</h1>
+        <p>Авито авторизуется по OAuth2, а не по постоянному ключу: пара <b class="mono">client_id</b> и <b class="mono">client_secret</b> меняется на токен с ограниченным сроком жизни. Обновление токена сервер берёт на себя.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- КЛЮЧИ -->
+  <section class="s alt" id="keys">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>Как получить доступ</h2>
+      </div>
+      <div class="steps">
+        <div class="step">
+          <div>
+            <h3>Где взять пару</h3>
+            <p>На <b class="mono">avito.ru</b>: <b>Для бизнеса</b>, раздел <b>Интеграции</b>, пункт <b>API</b>. Там выдаётся <b class="mono">client_id</b> и <b class="mono">client_secret</b>. Хост запросов <b class="mono">api.avito.ru</b>.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div>
+            <h3>Как это превращается в токен</h3>
+            <p>Пара меняется на access-токен по OAuth2, срок жизни ограничен. Сервер обновляет токен сам, вручную ничего перевыпускать не нужно.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div>
+            <h3>Где всё лежит</h3>
+            <p>В <b class="mono">~/.marketplace-mcp/cabinets.json</b> с правами <b class="mono">chmod 600</b>, локально.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- КАРТА МЕТОДОВ -->
+  <section class="s" id="methods">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>Карта методов</h2>
+        <p>Таблицы собраны из того же каталога, который грузит сервер, поэтому они не расходятся с кодом. Колонки показывают, как метод классифицирует safety-гейт: перед записью агент предупреждает, перед необратимым действием требует подтверждения.</p>
+      </div>
+      <div class="tw">
+      <table class="mtable">
+        <caption>API Авито, 64 метода</caption>
+        <thead><tr><th>Раздел</th><th class="num">Методов</th><th class="num">Чтение</th><th class="num">Запись</th><th class="num">Необратимые</th></tr></thead>
+        <tbody>
+        <tr><td>Мессенджер (чаты с покупателями)</td><td class="num">13</td><td class="num">5</td><td class="num">7</td><td class="num">1</td></tr>
+        <tr><td>Автозагрузка (выгрузка объявлений файлом)</td><td class="num">12</td><td class="num">10</td><td class="num">2</td><td class="num">0</td></tr>
+        <tr><td>Заказы и Авито Доставка</td><td class="num">12</td><td class="num">6</td><td class="num">6</td><td class="num">0</td></tr>
+        <tr><td>Объявления и статистика</td><td class="num">11</td><td class="num">7</td><td class="num">4</td><td class="num">0</td></tr>
+        <tr><td>Продвижение объявлений (реклама)</td><td class="num">7</td><td class="num">6</td><td class="num">1</td><td class="num">0</td></tr>
+        <tr><td>Рейтинг и отзывы</td><td class="num">4</td><td class="num">2</td><td class="num">1</td><td class="num">1</td></tr>
+        <tr><td>Пользователь, баланс и операции</td><td class="num">3</td><td class="num">3</td><td class="num">0</td><td class="num">0</td></tr>
+        <tr><td>Остатки в объявлениях</td><td class="num">2</td><td class="num">1</td><td class="num">1</td><td class="num">0</td></tr>
+        </tbody>
+        <tfoot><tr><th>Всего</th><th class="num">64</th><th class="num"></th><th class="num"></th><th class="num"></th></tr></tfoot>
+      </table>
+      </div>
+      <p class="small" style="color:var(--mute);margin-top:20px;max-width:70ch">
+        Курированное ядро выверено на живых кабинетах. Остальное импортировано из спецификаций: пути надёжны, HTTP-глаголы не всегда, считайте такие записи картой для разведки. Официальная документация: <a href="https://developers.avito.ru/">developers.avito.ru</a>.
+      </p>
+    </div>
+  </section>
+
+  <!-- ОШИБКИ -->
+  <section class="s alt" id="errors">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>Частые ошибки и что они значат</h2>
+      </div>
+      <div class="faq">
+        <div class="faq-item">
+          <h3>401 после того, как всё работало</h3>
+          <p>Токен Авито живёт ограниченное время. Если запрос идёт мимо сервера, своим кодом, токен надо обновлять; через сервер это происходит само.</p>
+        </div>
+        <div class="faq-item">
+          <h3>403 на методе, который есть в документации</h3>
+          <p>У Авито доступ к разделам выдаётся по заявке и не одинаков у всех аккаунтов. Мессенджер и Авито Доставка открываются не каждому бизнесу.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Ошибка в имени поля</h3>
+          <p>Каталог собран из официальных документов, живой прогон на реальных кабинетах ещё не делался. <b class="mono">describe_method</b> покажет схему, <b class="mono">call_raw</b> даст поправить запрос на месте.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- В ЧАТЕ -->
+  <section class="s" id="chat">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>То же самое одной фразой</h2>
+        <p>Если разбираться с методами руками не хочется, всё перечисленное выше вызывается из чата обычными словами. Проект и есть MCP-сервер: он отдаёт эти методы ИИ-ассистенту как инструменты, а тот подбирает нужный сам.</p>
+      </div>
+      <div class="usage">
+        <div class="ucard">
+          <h3>Скажите так</h3>
+          <span class="prompt">покажи статистику по объявлениям за неделю</span>
+          <span class="prompt">какие заказы Авито Доставки в работе</span>
+          <span class="prompt">собери непрочитанные сообщения из мессенджера</span>
+          <span class="prompt">обнови остатки по объявлениям</span>
+        </div>
+        <div class="ucard">
+          <h3>Что для этого нужно</h3>
+          <p>Ключи из первого раздела и одна строка установки. Claude Desktop ставится в один клик бандлом <b class="mono">.mcpb</b> из релизов, остальные клиенты строкой <b class="mono">npx -y marketplaces-mcp-ru</b> или <b class="mono">uvx marketplaces-mcp-ru</b>.</p>
+          <p style="margin-top:12px"><a class="btn btn-primary" href="index.html#install">Как установить</a></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="s alt" id="faq">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>Частые вопросы</h2>
+      </div>
+      <div class="faq">
+        <div class="faq-item">
+          <h3>Как получить API-ключ Авито?</h3>
+          <p>На avito.ru: раздел Для бизнеса, пункт Интеграции, подраздел API. Авито выдаёт не ключ, а пару client_id и client_secret, которая по OAuth2 меняется на токен с ограниченным сроком жизни.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Есть ли у Авито API для объявлений и мессенджера?</h3>
+          <p>Да. В каталоге 64 метода: объявления и статистика, заказы Авито Доставки, мессенджер, продвижение, отзывы и рейтинг, остатки, автозагрузка объявлений файлом, баланс и операции.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Почему API Авито отвечает 403?</h3>
+          <p>Доступ к разделам у Авито выдаётся по заявке и не одинаков у всех аккаунтов. Мессенджер и Авито Доставка открываются не каждому бизнесу.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="s">
+    <div class="wrap">
+      <div class="oss">
+        <div class="kicker">открытый проект</div>
+        <h2>Каталог методов открыт. Берите, форкайте, улучшайте.</h2>
+        <p>Всё это лежит в репозитории под MIT, включая машиночитаемые каталоги, из которых собраны таблицы на этой странице. Нашли неточность в методе, поправьте или заведите issue.</p>
+        <div class="cta-row">
+          <a class="btn btn-primary" href="https://github.com/ilyautov/marketplaces-mcp-ru">★ Открыть на GitHub</a>
+          <a class="btn btn-ghost" href="https://github.com/ilyautov/marketplaces-mcp-ru/issues">Завести issue</a>
+        </div>
+        <div class="repo-line">github.com/ilyautov/marketplaces-mcp-ru</div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <div>
+      <span class="alpha">alpha</span>
+      &nbsp; Инструмент, а не замена аналитику. Решения по цене и закупкам за вами.
+    </div>
+    <div>
+      <a href="https://github.com/ilyautov/marketplaces-mcp-ru">GitHub</a> ·
+      <a href="https://t.me/gorilla_under_hood">Telegram</a> ·
+      Сделано в <a href="https://aifrontier.tech">AI Frontier</a> · MIT
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

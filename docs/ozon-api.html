@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>API Ozon Seller: как получить ключ, карта методов и частые ошибки</title>
+<meta name="description" content="Как получить Client-Id и Api-Key в кабинете Ozon Seller, что умеет Seller API и Performance API, карта из 486 методов по темам и разбор частых ошибок: 401, 404 при дрейфе версий, 405 на импортированных методах.">
+<meta property="og:title" content="API Ozon Seller: как получить ключ, карта методов и частые ошибки">
+<meta property="og:description" content="Как получить Client-Id и Api-Key в кабинете Ozon Seller, что умеет Seller API и Performance API, карта из 486 методов по темам и разбор частых ошибок: 401, 404 при дрейфе версий, 405 на импортированных методах.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://marketplaces-mcp-ru.aifrontier.tech/ozon-api.html">
+<meta property="og:image" content="https://marketplaces-mcp-ru.aifrontier.tech/assets/social-preview.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://marketplaces-mcp-ru.aifrontier.tech/ozon-api.html">
+<link rel="icon" type="image/png" href="assets/social-preview.png">
+<link rel="apple-touch-icon" href="assets/social-preview.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Lora:wght@500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "marketplaces-mcp-ru",
+      "item": "https://marketplaces-mcp-ru.aifrontier.tech/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "API Ozon Seller: ключ, методы и ошибки",
+      "item": "https://marketplaces-mcp-ru.aifrontier.tech/ozon-api.html"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Как получить API-ключ Ozon?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "seller.ozon.ru, раздел Настройки, пункт API-ключи. Ozon выдаёт пару Client-Id и Api-Key, оба нужны. Для рекламы ключи берутся отдельно, в Performance API, и авторизация там по OAuth2."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Чем Seller API отличается от Performance API у Ozon?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Это два разных API с разной авторизацией и разными хостами. Seller API (api-seller.ozon.ru) отвечает за товары, заказы, цены, остатки, финансы и отзывы. Performance API (api-performance.ozon.ru) отвечает только за рекламу. Ключи одного в другом не работают."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Почему API Ozon отвечает 404 на существующий метод?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Ozon дрейфует по версиям путей: список товаров на v3, атрибуты на v4, цены на v5. При 404 проверьте версию в пути раньше всего остального."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Сколько методов Ozon поддерживает marketplaces-mcp-ru?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "486: 441 метод Seller API и 45 методов Performance API. Каждый со схемой параметров и пометкой чтение, запись или необратимое действие."
+      }
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <a class="brand" href="https://marketplaces-mcp-ru.aifrontier.tech/" aria-label="marketplaces-mcp-ru, на главную">
+      <span class="bars" aria-hidden="true"><span></span><span></span><span></span></span>
+      marketplaces-mcp-ru <small>· AI Frontier</small>
+    </a>
+    <nav class="nav-links" aria-label="Основная навигация">
+      <a href="ozon-api.html">Ozon</a>
+      <a href="wildberries-api.html">Wildberries</a>
+      <a href="yandex-market-api.html">Яндекс Маркет</a>
+      <a href="avito-api.html">Авито</a>
+      <a class="btn btn-primary" href="https://github.com/ilyautov/marketplaces-mcp-ru">GitHub</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+  <section class="s">
+    <div class="wrap">
+      <nav class="crumbs" aria-label="Хлебные крошки">
+        <a href="index.html">Главная</a> · API Ozon Seller: ключ, методы и ошибки
+      </nav>
+      <div class="sec-head">
+        <h1>API Ozon Seller: ключ, методы и ошибки</h1>
+        <p>Ozon разводит продавца по двум разным API с разной авторизацией. Seller API отвечает за товары, заказы, цены, финансы и отзывы, Performance API за рекламу. Ниже: где взять ключи для обоих, что внутри каждого раздела и что означают ошибки, на которые уходит больше всего времени.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- КЛЮЧИ -->
+  <section class="s alt" id="keys">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>Как получить доступ</h2>
+      </div>
+      <div class="steps">
+        <div class="step">
+          <div>
+            <h3>Seller API: Client-Id и Api-Key</h3>
+            <p>Зайдите в кабинет <b class="mono">seller.ozon.ru</b>, откройте <b>Настройки</b>, раздел <b>API-ключи</b>. Ozon выдаёт пару: <b class="mono">Client-Id</b> (число) и <b class="mono">Api-Key</b>. Оба уходят в заголовки одноимённых имён, хост запроса <b class="mono">api-seller.ozon.ru</b>.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div>
+            <h3>Performance API: client_id и client_secret</h3>
+            <p>Рекламный кабинет живёт отдельно и авторизуется по OAuth2: пара <b class="mono">client_id</b> и <b class="mono">client_secret</b> меняется на токен, хост <b class="mono">api-performance.ozon.ru</b>. Ключи Seller API там не работают, и наоборот.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div>
+            <h3>Куда положить, чтобы не хранить в открытую</h3>
+            <p>Сервер спросит ключи при первом запуске и положит их в <b class="mono">~/.marketplace-mcp/cabinets.json</b> с правами <b class="mono">chmod 600</b>. В репозиторий и в чат они не попадают. Магазинов можно подключить несколько и переключаться между ними прямо из чата.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- КАРТА МЕТОДОВ -->
+  <section class="s" id="methods">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>Карта методов</h2>
+        <p>Таблицы собраны из того же каталога, который грузит сервер, поэтому они не расходятся с кодом. Колонки показывают, как метод классифицирует safety-гейт: перед записью агент предупреждает, перед необратимым действием требует подтверждения. Отдельная оговорка про Ozon: он использует POST и для чтения тоже, а у методов, импортированных из спецификации, класс выведен из HTTP-глагола. Поэтому часть читающих методов посчитана здесь как запись, и гейт относится к ним строже, чем нужно. Ошибка безопасная, но лишняя.</p>
+      </div>
+      <div class="tw">
+      <table class="mtable">
+        <caption>Seller API, 441 метода</caption>
+        <thead><tr><th>Раздел</th><th class="num">Методов</th><th class="num">Чтение</th><th class="num">Запись</th><th class="num">Необратимые</th></tr></thead>
+        <tbody>
+        <tr><td>Заказы FBS и доставка</td><td class="num">112</td><td class="num">20</td><td class="num">90</td><td class="num">2</td></tr>
+        <tr><td>Заказы FBO и склады</td><td class="num">64</td><td class="num">26</td><td class="num">36</td><td class="num">2</td></tr>
+        <tr><td>Товары и карточки</td><td class="num">55</td><td class="num">15</td><td class="num">39</td><td class="num">1</td></tr>
+        <tr><td>Кросс-док FBP</td><td class="num">45</td><td class="num">8</td><td class="num">34</td><td class="num">3</td></tr>
+        <tr><td>Акции и продвижение</td><td class="num">31</td><td class="num">8</td><td class="num">22</td><td class="num">1</td></tr>
+        <tr><td>Возвраты и отмены</td><td class="num">30</td><td class="num">0</td><td class="num">30</td><td class="num">0</td></tr>
+        <tr><td>Отзывы, вопросы и чаты</td><td class="num">27</td><td class="num">6</td><td class="num">20</td><td class="num">1</td></tr>
+        <tr><td>Финансы и отчёты</td><td class="num">25</td><td class="num">7</td><td class="num">18</td><td class="num">0</td></tr>
+        <tr><td>Кабинет и служебное</td><td class="num">22</td><td class="num">12</td><td class="num">9</td><td class="num">1</td></tr>
+        <tr><td>Цены и остатки</td><td class="num">21</td><td class="num">6</td><td class="num">15</td><td class="num">0</td></tr>
+        <tr><td>Аналитика</td><td class="num">9</td><td class="num">7</td><td class="num">2</td><td class="num">0</td></tr>
+        </tbody>
+        <tfoot><tr><th>Всего</th><th class="num">441</th><th class="num"></th><th class="num"></th><th class="num"></th></tr></tfoot>
+      </table>
+      </div>
+      <div class="tw">
+      <table class="mtable">
+        <caption>Performance API (реклама), 45 методов</caption>
+        <thead><tr><th>Раздел</th><th class="num">Методов</th><th class="num">Чтение</th><th class="num">Запись</th><th class="num">Необратимые</th></tr></thead>
+        <tbody>
+        <tr><td>Статистика рекламы</td><td class="num">16</td><td class="num">16</td><td class="num">0</td><td class="num">0</td></tr>
+        <tr><td>Продвижение в поиске</td><td class="num">11</td><td class="num">4</td><td class="num">6</td><td class="num">1</td></tr>
+        <tr><td>Кампании и объявления</td><td class="num">9</td><td class="num">4</td><td class="num">5</td><td class="num">0</td></tr>
+        <tr><td>Товары в рекламе</td><td class="num">5</td><td class="num">2</td><td class="num">2</td><td class="num">1</td></tr>
+        <tr><td>Вендорская реклама</td><td class="num">4</td><td class="num">4</td><td class="num">0</td><td class="num">0</td></tr>
+        </tbody>
+        <tfoot><tr><th>Всего</th><th class="num">45</th><th class="num"></th><th class="num"></th><th class="num"></th></tr></tfoot>
+      </table>
+      </div>
+      <p class="small" style="color:var(--mute);margin-top:20px;max-width:70ch">
+        Курированное ядро выверено на живых кабинетах. Остальное импортировано из спецификаций: пути надёжны, HTTP-глаголы не всегда, считайте такие записи картой для разведки. Официальная документация: <a href="https://docs.ozon.ru/api/seller/">docs.ozon.ru/api/seller</a>.
+      </p>
+    </div>
+  </section>
+
+  <!-- ОШИБКИ -->
+  <section class="s alt" id="errors">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>Частые ошибки и что они значат</h2>
+      </div>
+      <div class="faq">
+        <div class="faq-item">
+          <h3>401 или «Client-Id should be positive integer», хотя ключ верный</h3>
+          <p>Первым делом смотрите не переменные окружения, а <b class="mono">~/.marketplace-mcp/cabinets.json</b>: активный кабинет в этом файле имеет приоритет над env и молча затеняет то, что вы экспортировали в терминале.</p>
+        </div>
+        <div class="faq-item">
+          <h3>404 на методе, который точно существует</h3>
+          <p>Ozon дрейфует по версиям, и разные разделы живут на разных: список товаров на <b class="mono">v3</b>, атрибуты на <b class="mono">v4</b>, цены на <b class="mono">v5</b>. При 404 проверяйте версию в пути раньше всего остального.</p>
+        </div>
+        <div class="faq-item">
+          <h3>405 Method Not Allowed</h3>
+          <p>Скорее всего это метод, импортированный из спецификации: путь у таких записей надёжный, а HTTP-глагол не всегда. Живая проба находила методы, помеченные GET, которые на деле POST. Сверьтесь с документацией или вызовите через <b class="mono">call_raw</b>.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- В ЧАТЕ -->
+  <section class="s" id="chat">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>То же самое одной фразой</h2>
+        <p>Если разбираться с методами руками не хочется, всё перечисленное выше вызывается из чата обычными словами. Проект и есть MCP-сервер: он отдаёт эти методы ИИ-ассистенту как инструменты, а тот подбирает нужный сам.</p>
+      </div>
+      <div class="usage">
+        <div class="ucard">
+          <h3>Скажите так</h3>
+          <span class="prompt">покажи продажи на Ozon за неделю по дням</span>
+          <span class="prompt">какие товары с красным индексом цены</span>
+          <span class="prompt">вытащи отчёт о начислениях за прошлый месяц</span>
+          <span class="prompt">собери отзывы ниже 4 звёзд и сгруппируй жалобы</span>
+        </div>
+        <div class="ucard">
+          <h3>Что для этого нужно</h3>
+          <p>Ключи из первого раздела и одна строка установки. Claude Desktop ставится в один клик бандлом <b class="mono">.mcpb</b> из релизов, остальные клиенты строкой <b class="mono">npx -y marketplaces-mcp-ru</b> или <b class="mono">uvx marketplaces-mcp-ru</b>.</p>
+          <p style="margin-top:12px"><a class="btn btn-primary" href="index.html#install">Как установить</a></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="s alt" id="faq">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>Частые вопросы</h2>
+      </div>
+      <div class="faq">
+        <div class="faq-item">
+          <h3>Как получить API-ключ Ozon?</h3>
+          <p>seller.ozon.ru, раздел Настройки, пункт API-ключи. Ozon выдаёт пару Client-Id и Api-Key, оба нужны. Для рекламы ключи берутся отдельно, в Performance API, и авторизация там по OAuth2.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Чем Seller API отличается от Performance API у Ozon?</h3>
+          <p>Это два разных API с разной авторизацией и разными хостами. Seller API (api-seller.ozon.ru) отвечает за товары, заказы, цены, остатки, финансы и отзывы. Performance API (api-performance.ozon.ru) отвечает только за рекламу. Ключи одного в другом не работают.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Почему API Ozon отвечает 404 на существующий метод?</h3>
+          <p>Ozon дрейфует по версиям путей: список товаров на v3, атрибуты на v4, цены на v5. При 404 проверьте версию в пути раньше всего остального.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Сколько методов Ozon поддерживает marketplaces-mcp-ru?</h3>
+          <p>486: 441 метод Seller API и 45 методов Performance API. Каждый со схемой параметров и пометкой чтение, запись или необратимое действие.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="s">
+    <div class="wrap">
+      <div class="oss">
+        <div class="kicker">открытый проект</div>
+        <h2>Каталог методов открыт. Берите, форкайте, улучшайте.</h2>
+        <p>Всё это лежит в репозитории под MIT, включая машиночитаемые каталоги, из которых собраны таблицы на этой странице. Нашли неточность в методе, поправьте или заведите issue.</p>
+        <div class="cta-row">
+          <a class="btn btn-primary" href="https://github.com/ilyautov/marketplaces-mcp-ru">★ Открыть на GitHub</a>
+          <a class="btn btn-ghost" href="https://github.com/ilyautov/marketplaces-mcp-ru/issues">Завести issue</a>
+        </div>
+        <div class="repo-line">github.com/ilyautov/marketplaces-mcp-ru</div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <div>
+      <span class="alpha">alpha</span>
+      &nbsp; Инструмент, а не замена аналитику. Решения по цене и закупкам за вами.
+    </div>
+    <div>
+      <a href="https://github.com/ilyautov/marketplaces-mcp-ru">GitHub</a> ·
+      <a href="https://t.me/gorilla_under_hood">Telegram</a> ·
+      Сделано в <a href="https://aifrontier.tech">AI Frontier</a> · MIT
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

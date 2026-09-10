@@ -68,6 +68,7 @@
       <a href="#scenarios">Сценарии</a>
       <a href="#use">Как пользоваться</a>
       <a href="#install">Установка</a>
+      <a href="#api">API</a>
       <a href="#faq">Вопросы</a>
       <a class="btn btn-primary" href="https://github.com/ilyautov/marketplaces-mcp-ru">GitHub</a>
     </nav>
@@ -251,6 +252,34 @@
         <span class="chip">Gemini — GEMINI.md</span>
       </div>
       <p class="small" style="color:var(--mute);margin-top:16px">Где взять ключи: Wildberries — seller.wildberries.ru → Настройки → Доступ к API; Ozon — seller.ozon.ru → Настройки → API-ключи. Ключи хранятся локально (<b class="mono">chmod 600</b>), в репозиторий и в чат не попадают.</p>
+    </div>
+  </section>
+
+  <!-- СТРАНИЦЫ ПО МАРКЕТПЛЕЙСАМ -->
+  <section class="s" id="api">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>API каждого маркетплейса по отдельности</h2>
+        <p>Где взять ключ, что внутри каждого раздела и что означают ошибки, на которые уходит больше всего времени. Карты методов собраны из тех же каталогов, которые грузит сервер.</p>
+      </div>
+      <div class="usage">
+        <div class="ucard">
+          <h3><a href="ozon-api.html">API Ozon Seller</a></h3>
+          <p>486 методов: Seller API и Performance API. Client-Id и Api-Key, дрейф версий v3, v4, v5, разбор 401, 404 и 405.</p>
+        </div>
+        <div class="ucard">
+          <h3><a href="wildberries-api.html">API Wildberries</a></h3>
+          <p>307 методов на 17 хостах. Таблица доменов, токен без префикса Bearer, лимиты запросов вплоть до одного в минуту.</p>
+        </div>
+        <div class="ucard">
+          <h3><a href="yandex-market-api.html">API Яндекс Маркета</a></h3>
+          <p>165 методов Partner API. Api-Key из кабинета партнёра и ловушка с идентификаторами бизнеса и кампании.</p>
+        </div>
+        <div class="ucard">
+          <h3><a href="avito-api.html">API Авито</a></h3>
+          <p>64 метода: объявления, заказы Авито Доставки, мессенджер, продвижение. Пара client_id и client_secret по OAuth2.</p>
+        </div>
+      </div>
     </div>
   </section>
 
