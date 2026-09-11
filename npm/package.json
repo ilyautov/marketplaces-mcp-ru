@@ -1,6 +1,6 @@
 {
   "name": "marketplaces-mcp-ru",
-  "version": "0.5.2",
+  "version": "0.5.3",
   "description": "MCP server for Wildberries, Ozon, Yandex Market and Avito seller APIs — npx launcher for the PyPI package (1022 schema-driven methods, write safety gate). MCP-сервер для кабинетов WB, Ozon, Яндекс Маркета и Авито.",
   "mcpName": "io.github.ilyautov/marketplaces-mcp-ru",
   "bin": {

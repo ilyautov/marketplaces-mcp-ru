@@ -3,6 +3,35 @@
 Формат — [Keep a Changelog](https://keepachangelog.com/ru/1.1.0/),
 версии — [SemVer](https://semver.org/lang/ru/).
 
+## [0.5.3] — 2026-09-11
+
+### Исправлено
+- **Ozon: 75 читающих методов больше не считаются записью.** Классификатор в
+  `scripts/ingest_ozon.py` проверял «мутирующие» слова по всему пути раньше, чем
+  читающие, поэтому `/conditional-cancellation/list` попадал в `write` из-за
+  «cancel» в середине, а `/certificate/rejection_reasons/list` из-за «reject».
+  Теперь последний сегмент пути решает первым: `list|get|info|search|tree|report`
+  в хвосте это чтение. `status` намеренно оставлен в смешанных, там
+  `/order/cancel/status` действительно пишет. В каталоге `ozon_mcp/endpoints.yaml`
+  read 115 → 190, write 315 → 240, `destructive` не изменился (11). На практике
+  это снимает лишние подтверждения на обычных выборках.
+- Регрессия закрыта тестами: `tests/test_safety_catalog.py` проверяет все каталоги
+  на «POST с читающим хвостом, помеченный как запись», плюс отдельные проверки
+  самой функции классификации.
+
+### Добавлено
+- **Страницы под API каждого маркетплейса** в `docs/`: `ozon-api.html`,
+  `wildberries-api.html`, `yandex-market-api.html`, `avito-api.html`. Таблицы
+  методов генерируются из тех же `*/endpoints.yaml`, что грузит сервер
+  (`scripts/build_marketplace_pages.py`, режим `--check` для CI).
+- `docs/robots.txt` и `docs/sitemap.xml`, разметка JSON-LD и блок частых вопросов
+  на главной.
+- `project.urls` в `pyproject.toml`: страница пакета на PyPI больше не ведёт
+  в никуда, оттуда есть ссылки на сайт, репозиторий, issues и этот changelog.
+
+### Изменено
+- Каталог скилла назван по имени скилла: `install-skill` → `marketplace-mcp-install`.
+
 ## [0.5.2] — 2026-09-07
 
 ### Добавлено
