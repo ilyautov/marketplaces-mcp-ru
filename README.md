@@ -74,6 +74,15 @@ uvx marketplaces-mcp-ru
 6. **VS Code / Cursor в один клик.** Кнопки «поставить» над этим текстом открывают редактор и прописывают `uvx marketplaces-mcp-ru` в его конфиг MCP; VS Code сразу спросит ключи, в Cursor их вписывают в открывшийся JSON.
 7. **Docker.** `docker run -i --rm -e WB_API_TOKEN=… -e OZON_CLIENT_ID=… -e OZON_API_KEY=… ghcr.io/ilyautov/marketplaces-mcp-ru` — тот же объединённый сервер по stdio, без Python на машине. Этот образ и указан в [MCP Registry](https://registry.modelcontextprotocol.io/) как OCI-пакет. Для удалённого доступа добавьте `-e MCP_TRANSPORT=http -e MCP_HTTP_HOST=0.0.0.0 -p 8000:8000`: сервер поднимется на `http://…:8000/mcp` (Streamable HTTP). Своей авторизации у HTTP-режима нет, закрывайте его прокси или файрволом.
 
+**Только один маркетплейс.** Если четыре площадки сразу не нужны, рядом лежат отдельные пакеты: тот же сервер и тот же каталог, но один маркетплейс и имя, которым его ищут. Код общий, он приходит зависимостью отсюда.
+
+| маркетплейс | пакет | методов |
+|---|---|---:|
+| Ozon Seller | [`ozon-mcp-ru`](https://github.com/ilyautov/ozon-mcp-ru) | 441 |
+| Wildberries | [`wildberries-mcp-ru`](https://github.com/ilyautov/wildberries-mcp-ru) | 307 |
+| Яндекс Маркет | [`yandex-market-mcp-ru`](https://github.com/ilyautov/yandex-market-mcp-ru) | 165 |
+| Авито | [`avito-mcp-ru`](https://github.com/ilyautov/avito-mcp-ru) | 64 |
+
 Установщик копирует приложение в стабильную папку (`~/.marketplace-mcp/app`) и привязывает конфиг туда, так что исходную папку потом можно перемещать или удалять, ничего не сломается. Ни `pip install`, ни ручной правки JSON: зависимости ставятся сами при первом запуске. От вас нужны только ключи. Поддерживается 4 клиента через `--client`: `claude-desktop` и `opencode` получают готовый конфиг, `claude-code` и `codex` получают готовые команды `mcp add`.
 
 **Где взять ключи.** Wildberries: seller.wildberries.ru → Настройки → Доступ к API. Ozon: seller.ozon.ru → Настройки → API-ключи. Яндекс Маркет: partner.market.yandex.ru → Настройки → Доступ к API (Api-Key). Авито: avito.ru → Для бизнеса → Интеграции → API (client_id + client_secret). Ключи хранятся в `~/.marketplace-mcp/cabinets.json` локально (`chmod 600`), в репозиторий и в чат не попадают. Можно подключить несколько магазинов и переключаться между ними прямо из чата (`*_add_cabinet` / `*_use_cabinet`).

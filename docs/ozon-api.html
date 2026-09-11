@@ -74,6 +74,14 @@
         "@type": "Answer",
         "text": "486: 441 метод Seller API и 45 методов Performance API. Каждый со схемой параметров и пометкой чтение, запись или необратимое действие."
       }
+    },
+    {
+      "@type": "Question",
+      "name": "Можно поставить только Ozon, без остальных маркетплейсов?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Да, для этого есть отдельный пакет ozon-mcp-ru: он поднимает один сервер Ozon, без остальных площадок. Внутри тот же код и тот же каталог, что в marketplaces-mcp-ru, они приходят зависимостью. Строка установки лежит в его репозитории."
+      }
     }
   ]
 }
@@ -228,7 +236,7 @@
         </div>
         <div class="ucard">
           <h3>Что для этого нужно</h3>
-          <p>Ключи из первого раздела и одна строка установки. Claude Desktop ставится в один клик бандлом <b class="mono">.mcpb</b> из релизов, остальные клиенты строкой <b class="mono">npx -y marketplaces-mcp-ru</b> или <b class="mono">uvx marketplaces-mcp-ru</b>.</p>
+          <p>Ключи из первого раздела и одна строка установки. Нужен только Ozon: отдельный пакет <a href="https://github.com/ilyautov/ozon-mcp-ru"><b class="mono">ozon-mcp-ru</b></a>, тот же сервер одним маркетплейсом. Нужны все четыре: <b class="mono">npx -y marketplaces-mcp-ru</b> или <b class="mono">uvx marketplaces-mcp-ru</b>, а в Claude Desktop бандл <b class="mono">.mcpb</b> из релизов ставится в один клик.</p>
           <p style="margin-top:12px"><a class="btn btn-primary" href="index.html#install">Как установить</a></p>
         </div>
       </div>
@@ -258,6 +266,10 @@
           <h3>Сколько методов Ozon поддерживает marketplaces-mcp-ru?</h3>
           <p>486: 441 метод Seller API и 45 методов Performance API. Каждый со схемой параметров и пометкой чтение, запись или необратимое действие.</p>
         </div>
+        <div class="faq-item">
+          <h3>Можно поставить только Ozon, без остальных маркетплейсов?</h3>
+          <p>Да, для этого есть отдельный пакет ozon-mcp-ru: он поднимает один сервер Ozon, без остальных площадок. Внутри тот же код и тот же каталог, что в marketplaces-mcp-ru, они приходят зависимостью. Строка установки лежит в его репозитории.</p>
+        </div>
       </div>
     </div>
   </section>
@@ -270,6 +282,7 @@
         <p>Всё это лежит в репозитории под MIT, включая машиночитаемые каталоги, из которых собраны таблицы на этой странице. Нашли неточность в методе, поправьте или заведите issue.</p>
         <div class="cta-row">
           <a class="btn btn-primary" href="https://github.com/ilyautov/marketplaces-mcp-ru">★ Открыть на GitHub</a>
+          <a class="btn btn-ghost" href="https://github.com/ilyautov/ozon-mcp-ru">Пакет ozon-mcp-ru</a>
           <a class="btn btn-ghost" href="https://github.com/ilyautov/marketplaces-mcp-ru/issues">Завести issue</a>
         </div>
         <div class="repo-line">github.com/ilyautov/marketplaces-mcp-ru</div>

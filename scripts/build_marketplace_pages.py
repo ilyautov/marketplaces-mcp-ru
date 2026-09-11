@@ -110,6 +110,17 @@ WB_HOST_LABELS = {
 
 SAFETY_RU = {"read": "чтение", "write": "запись", "destructive": "необратимые"}
 
+# Отдельные пакеты под каждый маркетплейс: тот же сервер, но имя, которым его
+# ищут. Комбайн остаётся основным, обёртки нужны ровно для поиска и для тех,
+# кому не нужны четыре площадки сразу.
+WRAPPERS = {
+    "ozon-api": ("ozon-mcp-ru", "Ozon"),
+    "wildberries-api": ("wildberries-mcp-ru", "Wildberries"),
+    "yandex-market-api": ("yandex-market-mcp-ru", "Яндекс Маркет"),
+    "avito-api": ("avito-mcp-ru", "Авито"),
+}
+
+
 
 def load(rel: str) -> list[dict]:
     data = yaml.safe_load((ROOT / rel).read_text(encoding="utf-8"))
@@ -489,13 +500,25 @@ def render_host_table(rows):
 
 def build_page(slug: str, cfg: dict, tables_html: str) -> str:
     url = "%s/%s.html" % (SITE, slug)
+    wrap_pkg, wrap_name = WRAPPERS[slug]
+    wrap_repo = "https://github.com/ilyautov/" + wrap_pkg
+    # Вопрос «а можно только один маркетплейс» задают чаще, чем кажется, и
+    # ответ на него это имя пакета. Дописывается здесь, а не в PAGES, чтобы
+    # формулировка на всех четырёх страницах была одна.
+    faq = list(cfg["faq"]) + [(
+        "Можно поставить только %s, без остальных маркетплейсов?" % wrap_name,
+        "Да, для этого есть отдельный пакет %s: он поднимает один сервер %s, без "
+        "остальных площадок. Внутри тот же код и тот же каталог, что в "
+        "marketplaces-mcp-ru, они приходят зависимостью. Строка установки лежит "
+        "в его репозитории." % (wrap_pkg, wrap_name),
+    )]
     faq_ld = {
         "@context": "https://schema.org",
         "@type": "FAQPage",
         "mainEntity": [
             {"@type": "Question", "name": q,
              "acceptedAnswer": {"@type": "Answer", "text": a}}
-            for q, a in cfg["faq"]
+            for q, a in faq
         ],
     }
     crumbs_ld = {
@@ -529,7 +552,7 @@ def build_page(slug: str, cfg: dict, tables_html: str) -> str:
         """        <div class="faq-item">
           <h3>%s</h3>
           <p>%s</p>
-        </div>""" % (esc(q), esc(a)) for q, a in cfg["faq"])
+        </div>""" % (esc(q), esc(a)) for q, a in faq)
 
     doc_url, doc_label = cfg["doc"]
 
@@ -630,7 +653,7 @@ def build_page(slug: str, cfg: dict, tables_html: str) -> str:
         </div>
         <div class="ucard">
           <h3>Что для этого нужно</h3>
-          <p>Ключи из первого раздела и одна строка установки. Claude Desktop ставится в один клик бандлом <b class="mono">.mcpb</b> из релизов, остальные клиенты строкой <b class="mono">npx -y marketplaces-mcp-ru</b> или <b class="mono">uvx marketplaces-mcp-ru</b>.</p>
+          <p>Ключи из первого раздела и одна строка установки. Нужен только {wrap_name}: отдельный пакет <a href="{wrap_repo}"><b class="mono">{wrap_pkg}</b></a>, тот же сервер одним маркетплейсом. Нужны все четыре: <b class="mono">npx -y marketplaces-mcp-ru</b> или <b class="mono">uvx marketplaces-mcp-ru</b>, а в Claude Desktop бандл <b class="mono">.mcpb</b> из релизов ставится в один клик.</p>
           <p style="margin-top:12px"><a class="btn btn-primary" href="index.html#install">Как установить</a></p>
         </div>
       </div>
@@ -657,6 +680,7 @@ def build_page(slug: str, cfg: dict, tables_html: str) -> str:
         <p>Всё это лежит в репозитории под MIT, включая машиночитаемые каталоги, из которых собраны таблицы на этой странице. Нашли неточность в методе, поправьте или заведите issue.</p>
         <div class="cta-row">
           <a class="btn btn-primary" href="{repo}">★ Открыть на GitHub</a>
+          <a class="btn btn-ghost" href="{wrap_repo}">Пакет {wrap_pkg}</a>
           <a class="btn btn-ghost" href="{repo}/issues">Завести issue</a>
         </div>
         <div class="repo-line">github.com/ilyautov/marketplaces-mcp-ru</div>
@@ -678,6 +702,7 @@ def build_page(slug: str, cfg: dict, tables_html: str) -> str:
         keys=keys, tables=tables_html, doc_url=doc_url, doc_label=doc_label,
         methods_note=cfg.get("methods_note", ""),
         errors=errors, prompts=prompts, faq_html=faq_html, repo=REPO,
+        wrap_pkg=wrap_pkg, wrap_name=esc(wrap_name), wrap_repo=wrap_repo,
         footer=FOOTER.format(repo=REPO, business=BUSINESS),
     )
 

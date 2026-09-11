@@ -74,6 +74,14 @@
         "@type": "Answer",
         "text": "Лимиты заданы поштучно, у части методов это один запрос в минуту. Лимит привязан к методу, а не к аккаунту, поэтому упереться можно на одном отчёте, пока остальные методы работают. Помогает кэшировать ответ и не дёргать отчёт в цикле."
       }
+    },
+    {
+      "@type": "Question",
+      "name": "Можно поставить только Wildberries, без остальных маркетплейсов?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Да, для этого есть отдельный пакет wildberries-mcp-ru: он поднимает один сервер Wildberries, без остальных площадок. Внутри тот же код и тот же каталог, что в marketplaces-mcp-ru, они приходят зависимостью. Строка установки лежит в его репозитории."
+      }
     }
   ]
 }
@@ -219,7 +227,7 @@
         </div>
         <div class="ucard">
           <h3>Что для этого нужно</h3>
-          <p>Ключи из первого раздела и одна строка установки. Claude Desktop ставится в один клик бандлом <b class="mono">.mcpb</b> из релизов, остальные клиенты строкой <b class="mono">npx -y marketplaces-mcp-ru</b> или <b class="mono">uvx marketplaces-mcp-ru</b>.</p>
+          <p>Ключи из первого раздела и одна строка установки. Нужен только Wildberries: отдельный пакет <a href="https://github.com/ilyautov/wildberries-mcp-ru"><b class="mono">wildberries-mcp-ru</b></a>, тот же сервер одним маркетплейсом. Нужны все четыре: <b class="mono">npx -y marketplaces-mcp-ru</b> или <b class="mono">uvx marketplaces-mcp-ru</b>, а в Claude Desktop бандл <b class="mono">.mcpb</b> из релизов ставится в один клик.</p>
           <p style="margin-top:12px"><a class="btn btn-primary" href="index.html#install">Как установить</a></p>
         </div>
       </div>
@@ -249,6 +257,10 @@
           <h3>Что делать при «превышен лимит запросов к API Wildberries»?</h3>
           <p>Лимиты заданы поштучно, у части методов это один запрос в минуту. Лимит привязан к методу, а не к аккаунту, поэтому упереться можно на одном отчёте, пока остальные методы работают. Помогает кэшировать ответ и не дёргать отчёт в цикле.</p>
         </div>
+        <div class="faq-item">
+          <h3>Можно поставить только Wildberries, без остальных маркетплейсов?</h3>
+          <p>Да, для этого есть отдельный пакет wildberries-mcp-ru: он поднимает один сервер Wildberries, без остальных площадок. Внутри тот же код и тот же каталог, что в marketplaces-mcp-ru, они приходят зависимостью. Строка установки лежит в его репозитории.</p>
+        </div>
       </div>
     </div>
   </section>
@@ -261,6 +273,7 @@
         <p>Всё это лежит в репозитории под MIT, включая машиночитаемые каталоги, из которых собраны таблицы на этой странице. Нашли неточность в методе, поправьте или заведите issue.</p>
         <div class="cta-row">
           <a class="btn btn-primary" href="https://github.com/ilyautov/marketplaces-mcp-ru">★ Открыть на GitHub</a>
+          <a class="btn btn-ghost" href="https://github.com/ilyautov/wildberries-mcp-ru">Пакет wildberries-mcp-ru</a>
           <a class="btn btn-ghost" href="https://github.com/ilyautov/marketplaces-mcp-ru/issues">Завести issue</a>
         </div>
         <div class="repo-line">github.com/ilyautov/marketplaces-mcp-ru</div>

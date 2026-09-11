@@ -51,6 +51,7 @@
     {"@type":"Question","name":"Чем это лучше парсеров и браузерных ботов?","acceptedAnswer":{"@type":"Answer","text":"Это прямой Seller API по токену, а не разбор веб-страниц: нет капчи, нет блокировок, данные приходят структурированными. Плюс защита от случайного изменения цены или остатка."}},
     {"@type":"Question","name":"Это безопасно? Куда уходят ключи?","acceptedAnswer":{"@type":"Answer","text":"Сервер работает там же, где ваш агент, локально. Ключи лежат в ~/.marketplace-mcp/cabinets.json (chmod 600), в репозиторий и в чат не попадают. Любое изменение в кабинете, цена или остаток, происходит только с вашим подтверждением."}},
     {"@type":"Question","name":"Работает ли с Яндекс Маркетом и Авито?","acceptedAnswer":{"@type":"Answer","text":"Да, с версии 0.5.0. Яндекс Маркет подключается по Api-Key из кабинета партнёра: заказы, товары, остатки, цены, отчёты, чаты, индекс качества. Авито по паре client_id и client_secret из раздела «Интеграции»: заказы Авито Доставки, остатки и цены объявлений, статистика, отзывы, мессенджер, продвижение."}},
+    {"@type":"Question","name":"Можно поставить только один маркетплейс, без остальных?","acceptedAnswer":{"@type":"Answer","text":"Да. Кроме комбайна marketplaces-mcp-ru есть четыре отдельных пакета: ozon-mcp-ru, wildberries-mcp-ru, yandex-market-mcp-ru и avito-mcp-ru. Каждый поднимает один сервер, а код и каталог берёт из основного пакета зависимостью, поэтому правки доезжают до всех сразу."}},
     {"@type":"Question","name":"Это бесплатно?","acceptedAnswer":{"@type":"Answer","text":"Да, открытый код под лицензией MIT. Берите, форкайте, дорабатывайте."}}
   ]
 }
@@ -267,19 +268,19 @@
       <div class="usage">
         <div class="ucard">
           <h3><a href="ozon-api.html">API Ozon Seller</a></h3>
-          <p>486 методов: Seller API и Performance API. Client-Id и Api-Key, дрейф версий v3, v4, v5, разбор 401, 404 и 405.</p>
+          <p>486 методов: Seller API и Performance API. Client-Id и Api-Key, дрейф версий v3, v4, v5, разбор 401, 404 и 405. Отдельным пакетом: <a href="https://github.com/ilyautov/ozon-mcp-ru"><b class="mono">ozon-mcp-ru</b></a>.</p>
         </div>
         <div class="ucard">
           <h3><a href="wildberries-api.html">API Wildberries</a></h3>
-          <p>307 методов на 17 хостах. Таблица доменов, токен без префикса Bearer, лимиты запросов вплоть до одного в минуту.</p>
+          <p>307 методов на 17 хостах. Таблица доменов, токен без префикса Bearer, лимиты запросов вплоть до одного в минуту. Отдельным пакетом: <a href="https://github.com/ilyautov/wildberries-mcp-ru"><b class="mono">wildberries-mcp-ru</b></a>.</p>
         </div>
         <div class="ucard">
           <h3><a href="yandex-market-api.html">API Яндекс Маркета</a></h3>
-          <p>165 методов Partner API. Api-Key из кабинета партнёра и ловушка с идентификаторами бизнеса и кампании.</p>
+          <p>165 методов Partner API. Api-Key из кабинета партнёра и ловушка с идентификаторами бизнеса и кампании. Отдельным пакетом: <a href="https://github.com/ilyautov/yandex-market-mcp-ru"><b class="mono">yandex-market-mcp-ru</b></a>.</p>
         </div>
         <div class="ucard">
           <h3><a href="avito-api.html">API Авито</a></h3>
-          <p>64 метода: объявления, заказы Авито Доставки, мессенджер, продвижение. Пара client_id и client_secret по OAuth2.</p>
+          <p>64 метода: объявления, заказы Авито Доставки, мессенджер, продвижение. Пара client_id и client_secret по OAuth2. Отдельным пакетом: <a href="https://github.com/ilyautov/avito-mcp-ru"><b class="mono">avito-mcp-ru</b></a>.</p>
         </div>
         <div class="ucard">
           <h3><a href="https://business-mcp-ru.aifrontier.tech/">Деловые сервисы: hh.ru, VK, ЭДО, маркировка</a></h3>
@@ -320,6 +321,10 @@
         <div class="faq-item">
           <h3>Работает ли с Яндекс Маркетом и Авито?</h3>
           <p>Да, с версии 0.5.0. Яндекс Маркет подключается по Api-Key из кабинета партнёра: заказы, товары, остатки, цены, отчёты, чаты, индекс качества. Авито по паре client_id и client_secret из раздела «Интеграции»: заказы Авито Доставки, остатки и цены объявлений, статистика, отзывы, мессенджер, продвижение.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Можно поставить только один маркетплейс, без остальных?</h3>
+          <p>Да. Кроме комбайна marketplaces-mcp-ru есть четыре отдельных пакета: ozon-mcp-ru, wildberries-mcp-ru, yandex-market-mcp-ru и avito-mcp-ru. Каждый поднимает один сервер, а код и каталог берёт из основного пакета зависимостью, поэтому правки доезжают до всех сразу.</p>
         </div>
         <div class="faq-item">
           <h3>Это бесплатно?</h3>
