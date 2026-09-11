@@ -11,15 +11,15 @@ Connects an AI assistant (Claude, Cursor, Codex, Cowork and others) directly to 
 
 ## Why
 
-You sell on two marketplaces, but the data lives in two separate dashboards. Sales, stock, prices, finance, reviews — all by hand, through two browsers, one at a time. A generic AI assistant doesn't help much here: it either drives a browser and trips over a captcha, or names confident-sounding numbers pulled out of thin air.
+You sell on several marketplaces, and the data sits in separate dashboards. Sales, stock, prices, finance, reviews — all by hand, through several browsers, one at a time. A generic AI assistant doesn't help much here: it either drives a browser and trips over a captcha, or names confident-sounding numbers pulled out of thin air.
 
-This project takes a different route — it gives the assistant direct access to the Seller API of both accounts:
+This project takes a different route — it gives the assistant direct access to the Seller API of every account you have:
 
-- Numbers come from the actual Wildberries/Ozon response, with source and fields. Not a retelling, not a guess.
+- Numbers come from the marketplace's own API response, with source and fields. Not a retelling, not a guess.
 - Before changing a price or stock level, the agent asks for confirmation. You can't accidentally cut a price threefold.
 - No browser, no captcha — calls go directly with your account token.
 
-Just ask in plain words: "show this week's sales on both", "what should I reorder", "compare my prices to the market" — the agent picks the right method or a ready-made workflow and walks you through it.
+Just ask in plain words: "show this week's sales across all of them", "what should I reorder", "compare my prices to the market" — the agent picks the right method or a ready-made workflow and walks you through it.
 
 > ⚠️ alpha. Helpful for a seller's day-to-day, but it's a tool, not a replacement for an analyst. The hand-checked core (sales, stock, prices, finance, reviews) is verified on real accounts; the rest is imported from specs and serves as a reconnaissance map. See [Caveats](#caveats).
 
@@ -83,6 +83,8 @@ The catalog is built schema-driven from the official OpenAPI specs:
 | Yandex Market (Partner API) | `yandex_mcp/endpoints.yaml` | 165 | 29 |
 | Avito (business API) | `avito_mcp/endpoints.yaml` | 64 | 8 |
 
+**1022 methods in total**, across four marketplaces and one ads API.
+
 The core (sales, stock, prices, finance, reviews) is verified live; the rest is imported from specs, and `call_raw` reaches anything not yet in the catalog.
 
 ## Development
@@ -92,7 +94,7 @@ For anyone who wants to dig into the code, battle-verify methods, or send a PR.
 All shared logic lives in `core/`; the servers are thin wrappers over it:
 
 ```
-core/                shared core of both servers
+core/                shared core of all servers
   client.py          HTTPS client (hosts, headers, retries)
   credentials.py     loads keys from cabinets.json / env
   safety.py          read / write / destructive gate
