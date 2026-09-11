@@ -24,6 +24,10 @@ import yaml
 ROOT = Path(__file__).resolve().parent.parent
 DOCS = ROOT / "docs"
 SITE = "https://marketplaces-mcp-ru.aifrontier.tech"
+# Второй набор серверов, тех же рук и того же устройства. Ссылка стоит в
+# навигации, а не только в подвале: девять серверов на двух поддоменах, и
+# пришедший за API Ozon иначе не узнает, что есть Диадок.
+BUSINESS = "https://business-mcp-ru.aifrontier.tech/"
 REPO = "https://github.com/ilyautov/marketplaces-mcp-ru"
 
 # --- группировка разделов каталога в темы, понятные продавцу ----------------
@@ -428,6 +432,7 @@ NAV = """<header>
       <a href="wildberries-api.html">Wildberries</a>
       <a href="yandex-market-api.html">Яндекс Маркет</a>
       <a href="avito-api.html">Авито</a>
+      <a href="{business}">Деловые сервисы: hh.ru, VK, ЭДО</a>
       <a class="btn btn-primary" href="{repo}">GitHub</a>
     </nav>
   </div>
@@ -441,6 +446,7 @@ FOOTER = """<footer>
     </div>
     <div>
       <a href="{repo}">GitHub</a> ·
+      <a href="{business}">business-mcp-ru</a> ·
       <a href="https://t.me/gorilla_under_hood">Telegram</a> ·
       Сделано в <a href="https://aifrontier.tech">AI Frontier</a> · MIT
     </div>
@@ -668,11 +674,11 @@ def build_page(slug: str, cfg: dict, tables_html: str) -> str:
         title=esc(cfg["title"]), desc=esc(cfg["desc"]), url=url, site=SITE,
         crumbs=json.dumps(crumbs_ld, ensure_ascii=False, indent=2),
         faq_ld=json.dumps(faq_ld, ensure_ascii=False, indent=2),
-        nav=NAV.format(site=SITE, repo=REPO), h1=esc(cfg["h1"]), lead=cfg["lead"],
+        nav=NAV.format(site=SITE, repo=REPO, business=BUSINESS), h1=esc(cfg["h1"]), lead=cfg["lead"],
         keys=keys, tables=tables_html, doc_url=doc_url, doc_label=doc_label,
         methods_note=cfg.get("methods_note", ""),
         errors=errors, prompts=prompts, faq_html=faq_html, repo=REPO,
-        footer=FOOTER.format(repo=REPO),
+        footer=FOOTER.format(repo=REPO, business=BUSINESS),
     )
 
 
