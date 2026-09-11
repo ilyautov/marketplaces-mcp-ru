@@ -8,7 +8,7 @@
     {
       "name": "marketplaces-mcp-ru",
       "source": "./",
-      "description": "Пять MCP-серверов над API Wildberries (307 методов), Ozon (441), Ozon Performance (45), Яндекс Маркета (165) и Авито (64). Числа из реального API, safety-гейт на запись, авто-пагинация, мультикабинет, поиск по-русски. | Two MCP servers over the Wildberries, Ozon, Yandex Market & Avito Seller APIs — 793 schema-driven methods, write safety gate, real-API numbers.",
+      "description": "Пять MCP-серверов над API Wildberries (307 методов), Ozon (441), Ozon Performance (45), Яндекс Маркета (165) и Авито (64). Числа из реального API, safety-гейт на запись, авто-пагинация, мультикабинет, поиск по-русски. | Five MCP servers over the Wildberries, Ozon, Yandex Market and Avito Seller APIs: 1022 schema-driven methods, write safety gate, real-API numbers.",
       "version": "0.5.3",
       "author": {
         "name": "Ilya Utov",
