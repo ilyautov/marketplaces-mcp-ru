@@ -1,0 +1,19 @@
+# marketplaces-mcp-ru
+
+> Открытый MCP-сервер для Seller API Ozon, Wildberries, Яндекс Маркета и Авито: продажи, заказы, остатки, цены, финансы, отзывы и реклама в одном подключении.
+
+Проект лаборатории AI Frontier. Лицензия MIT, код: https://github.com/ilyautov/marketplaces-mcp-ru
+Граница системы: методы вне проверенного ядра надо сверять с текущей документацией API площадки.
+
+## Площадки
+
+- [API Ozon Seller](https://marketplaces-mcp-ru.aifrontier.tech/ozon-api.html): как получить Client-Id и Api-Key, что умеют Seller API и Performance API, карта из 486 методов, разбор частых ошибок.
+- [API Wildberries](https://marketplaces-mcp-ru.aifrontier.tech/wildberries-api.html): как получить токен в кабинете продавца, почему у WB семнадцать доменов, полная таблица хостов, карта из 307 методов.
+- [API Яндекс Маркета для продавцов](https://marketplaces-mcp-ru.aifrontier.tech/yandex-market-api.html): как получить Api-Key в кабинете партнёра, карта из 165 методов: заказы, отчёты, поставки, товары, цены.
+- [API Авито для бизнеса](https://marketplaces-mcp-ru.aifrontier.tech/avito-api.html): client_id и client_secret в разделе Интеграции, как работает OAuth2, карта из 64 методов.
+
+## Прочее
+
+- [Обзор сервера](https://marketplaces-mcp-ru.aifrontier.tech/): установка и общий каталог методов.
+- [Лаборатория AI Frontier](https://aifrontier.tech/sistemy/marketplaces-mcp-ru/): описание системы и её границ.
+- [Все проекты автора](https://ilyautov.github.io/): витрина из 21 открытого проекта.
