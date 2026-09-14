@@ -158,7 +158,8 @@ jobs:
         shell: bash
         env:
           MCP_PUBLISHER_VERSION: "1.8.1"
-          MCP_PUBLISHER_SHA256: "a06c9096dcb9727c13555b6be26c7effa707b01f06a4c561ba7a3635443cf2cc"
+          # Публичная контрольная сумма релиза, не секрет.
+          MCP_PUBLISHER_SHA256: "a06c9096dcb9727c13555b6be26c7effa707b01f06a4c561ba7a3635443cf2cc"  # pragma: allowlist secret
         run: |
           curl -fsSL -o mcp-publisher.tar.gz \
             "https://github.com/modelcontextprotocol/registry/releases/download/v${MCP_PUBLISHER_VERSION}/mcp-publisher_linux_amd64.tar.gz"
