@@ -132,7 +132,7 @@
     },
     {
       "registryType": "oci",
-      "identifier": "ghcr.io/ilyautov/marketplaces-mcp-ru:0.5.3",
+      "identifier": "ghcr.io/ilyautov/marketplaces-mcp-ru:0.6.0",
       "runtimeHint": "docker",
       "transport": {
         "type": "stdio"
