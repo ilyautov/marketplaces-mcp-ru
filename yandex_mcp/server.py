@@ -54,6 +54,7 @@ YANDEX_CONFIG = ServiceConfig(
     whoami=("ym_get_campaigns", []),
     # The Api-Key may only be sent to Yandex Market hosts.
     allowed_host_suffixes=[".market.yandex.ru"],
+    api_docs="https://yandex.ru/dev/market/partner-api/doc/ru/",
 )
 
 mcp = FastMCP("yandex_mcp")

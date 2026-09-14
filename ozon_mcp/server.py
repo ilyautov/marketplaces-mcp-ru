@@ -50,6 +50,7 @@ OZON_CONFIG = ServiceConfig(
             ["name", "company_name", "result.name", "result.company_name"]),
     # Client-Id / Api-Key may only be sent to Ozon hosts.
     allowed_host_suffixes=[".ozon.ru"],
+    api_docs="https://docs.ozon.ru/api/seller/",
 )
 
 mcp = FastMCP("ozon_mcp")

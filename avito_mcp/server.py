@@ -52,6 +52,7 @@ AVITO_CONFIG = ServiceConfig(
     build_headers=_build_headers,
     whoami=("avito_get_user_info_self", ["name", "email"]),
     allowed_host_suffixes=[".avito.ru"],
+    api_docs="https://developers.avito.ru/api-catalog",
     token_url="https://api.avito.ru/token",
     oauth_id_field="client_id",
     oauth_secret_field="client_secret",  # pragma: allowlist secret

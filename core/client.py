@@ -54,6 +54,10 @@ class ServiceConfig:
     # headers to an attacker host via {svc}_call_raw. Empty list = no allowlist
     # (permissive; the real servers always set one).
     allowed_host_suffixes: list[str] = field(default_factory=list)
+    # Адрес официальной документации API. Уходит в описание инструментов,
+    # которые принимают произвольный путь: правила каталога коннекторов Claude
+    # требуют, чтобы такой инструмент называл свой API, а не «делает запрос».
+    api_docs: str = ""
     # --- OAuth2 client_credentials (optional) -------------------------------
     # When token_url is non-empty the client treats this service as OAuth2
     # client_credentials: it POSTs creds to token_url, caches the access_token,

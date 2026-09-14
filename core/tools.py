@@ -18,6 +18,7 @@ client underneath.
 """
 from __future__ import annotations
 
+import inspect
 import json
 from typing import Any, Optional
 
@@ -31,6 +32,26 @@ from .safety import check_gate, infer_safety
 
 def _j(obj: Any) -> str:
     return json.dumps(obj, ensure_ascii=False, indent=2, default=str)
+
+
+def _describing_tool(mcp: FastMCP, subs: dict[str, str]):
+    """`@mcp.tool` с подстановкой в описание.
+
+    FastMCP берёт описание прямо из докстроки, поэтому литерал `{svc}` уезжал к
+    модели как есть: она читала «see {svc}_search_methods» и не могла понять,
+    какой инструмент звать. Здесь плейсхолдеры раскрываются, а отступ докстроки
+    снимается, чтобы описание не приезжало лесенкой.
+    """
+    def tool(**kw):
+        def deco(fn):
+            if "description" not in kw:
+                text = inspect.cleandoc(fn.__doc__ or "")
+                for k, v in subs.items():
+                    text = text.replace(k, v)
+                kw["description"] = text
+            return mcp.tool(**kw)(fn)
+        return deco
+    return tool
 
 
 def register_generic_tools(
@@ -48,7 +69,22 @@ def register_generic_tools(
     entities: EntityIndex instance (optional); enables the *_map tool overview.
     """
 
-    @mcp.tool(
+    # Пример пути берём из самого каталога сервиса: раньше в описании стоял
+    # адрес Wildberries, и его видели пользователи hh.ru, Диадока и СБИС.
+    _reads = [e for e in catalog.all() if e.method.upper() == "GET"]
+    # Пример должен читаться с ходу, поэтому берём самый короткий путь без
+    # подстановок; если у сервиса таких нет, сгодится любой самый короткий.
+    _plain = [e.path for e in _reads if "{" not in e.path]
+    _example_path = min(_plain or [e.path for e in _reads] or ["/"], key=len)
+    _api_docs = getattr(client.config, "api_docs", "") or ""
+    tool = _describing_tool(mcp, {
+        "{svc}": svc,
+        "{example_path}": _example_path,
+        "{api_docs_line}": (f"Target API: {_api_docs}" if _api_docs
+                            else "Target API: the service this server is built for"),
+    })
+
+    @tool(
         name=f"{svc}_check_auth",
         annotations={"title": f"{svc.upper()} check credentials",
                      "readOnlyHint": True, "openWorldHint": False},
@@ -73,7 +109,7 @@ def register_generic_tools(
             "where_to_get_keys": key_help,
         })
 
-    @mcp.tool(
+    @tool(
         name=f"{svc}_list_sections",
         annotations={"title": f"{svc.upper()} list sections",
                      "readOnlyHint": True, "openWorldHint": False},
@@ -82,7 +118,7 @@ def register_generic_tools(
         """List API sections and how many catalog endpoints each contains."""
         return _j({"sections": catalog.sections(), "total_endpoints": len(catalog.all())})
 
-    @mcp.tool(
+    @tool(
         name=f"{svc}_get_section",
         annotations={"title": f"{svc.upper()} get section",
                      "readOnlyHint": True, "openWorldHint": False},
@@ -100,7 +136,7 @@ def register_generic_tools(
                        "available": list(catalog.sections().keys())})
         return _j({"section": section, "endpoints": [s.to_summary_dict() for s in specs]})
 
-    @mcp.tool(
+    @tool(
         name=f"{svc}_search_methods",
         annotations={"title": f"{svc.upper()} search methods",
                      "readOnlyHint": True, "openWorldHint": False},
@@ -118,7 +154,7 @@ def register_generic_tools(
         return _j({"query": query, "count": len(specs),
                    "results": [s.to_summary_dict() for s in specs]})
 
-    @mcp.tool(
+    @tool(
         name=f"{svc}_map",
         annotations={"title": f"{svc.upper()} capabilities map",
                      "readOnlyHint": True, "openWorldHint": False},
@@ -160,7 +196,7 @@ def register_generic_tools(
                         "headline": []})
         return _j({"service": svc, "entities": out})
 
-    @mcp.tool(
+    @tool(
         name=f"{svc}_describe_method",
         annotations={"title": f"{svc.upper()} describe method",
                      "readOnlyHint": True, "openWorldHint": False},
@@ -183,7 +219,7 @@ def register_generic_tools(
             "params": spec.params, "doc": spec.doc,
         })
 
-    @mcp.tool(
+    @tool(
         name=f"{svc}_call_method",
         annotations={"title": f"{svc.upper()} call catalog method",
                      "readOnlyHint": False, "destructiveHint": True,
@@ -198,6 +234,8 @@ def register_generic_tools(
         i_understand_this_modifies_data: bool = False,
     ) -> str:
         """Execute one catalog endpoint by operation_id.
+
+        {api_docs_line}.
 
         Read endpoints run immediately. WRITE endpoints require confirm_write=true.
         DESTRUCTIVE endpoints require confirm_write=true AND
@@ -231,7 +269,7 @@ def register_generic_tools(
         )
         return _j(resp)
 
-    @mcp.tool(
+    @tool(
         name=f"{svc}_call_raw",
         annotations={"title": f"{svc.upper()} call raw path",
                      "readOnlyHint": False, "destructiveHint": True,
@@ -248,12 +286,14 @@ def register_generic_tools(
     ) -> str:
         """Execute ANY endpoint, even ones not in the catalog (full API coverage).
 
+        {api_docs_line}.
+
         Safety is inferred from the HTTP verb: GET=read, POST/PUT/PATCH=write,
         DELETE=destructive. Same confirmation rules as {svc}_call_method.
 
         Args:
             method: HTTP verb (GET/POST/PUT/PATCH/DELETE).
-            path: full path beginning with '/', e.g. "/api/v1/supplier/sales".
+            path: full path beginning with '/', e.g. "{example_path}".
             host: host override; defaults to the service's default host.
             query: query-string parameters.
             body: JSON request body.
@@ -273,7 +313,7 @@ def register_generic_tools(
         )
         return _j(resp)
 
-    @mcp.tool(
+    @tool(
         name=f"{svc}_fetch_all",
         annotations={"title": f"{svc.upper()} fetch all pages",
                      "readOnlyHint": True, "openWorldHint": True},
@@ -414,7 +454,9 @@ def register_cabinet_tools(mcp: FastMCP, *, svc: str, client: MarketplaceClient,
     from chat without editing files. Keys are stored locally (chmod 600)."""
     config = client.config
 
-    @mcp.tool(
+    tool = _describing_tool(mcp, {"{svc}": svc})
+
+    @tool(
         name=f"{svc}_list_cabinets",
         annotations={"title": f"{svc.upper()} list cabinets",
                      "readOnlyHint": True, "openWorldHint": False},
@@ -428,7 +470,7 @@ def register_cabinet_tools(mcp: FastMCP, *, svc: str, client: MarketplaceClient,
         info = config.store.list_cabinets(config.name)
         return _j({**info, "fields_needed": config.fields})
 
-    @mcp.tool(
+    @tool(
         name=f"{svc}_add_cabinet",
         annotations={"title": f"{svc.upper()} add cabinet",
                      "readOnlyHint": False, "destructiveHint": False,
@@ -457,7 +499,7 @@ def register_cabinet_tools(mcp: FastMCP, *, svc: str, client: MarketplaceClient,
             consent=i_understand_key_goes_to_chat)
         return _j(res)
 
-    @mcp.tool(
+    @tool(
         name=f"{svc}_set_key",
         annotations={"title": f"{svc.upper()} set / rotate key",
                      "readOnlyHint": False, "destructiveHint": False,
@@ -488,7 +530,7 @@ def register_cabinet_tools(mcp: FastMCP, *, svc: str, client: MarketplaceClient,
             consent=i_understand_key_goes_to_chat)
         return _j(res)
 
-    @mcp.tool(
+    @tool(
         name=f"{svc}_use_cabinet",
         annotations={"title": f"{svc.upper()} switch cabinet",
                      "readOnlyHint": False, "idempotentHint": True,
@@ -507,7 +549,7 @@ def register_cabinet_tools(mcp: FastMCP, *, svc: str, client: MarketplaceClient,
                        "available": info["cabinets"]})
         return _j({"ok": True, "active": name})
 
-    @mcp.tool(
+    @tool(
         name=f"{svc}_remove_cabinet",
         annotations={"title": f"{svc.upper()} remove cabinet",
                      "readOnlyHint": False, "destructiveHint": True,

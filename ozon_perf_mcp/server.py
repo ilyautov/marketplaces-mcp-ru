@@ -65,6 +65,7 @@ OZON_PERF_CONFIG = ServiceConfig(
     oauth_secret_field="client_secret",
     # OAuth client_secret + bearer may only be sent to Ozon hosts.
     allowed_host_suffixes=[".ozon.ru"],
+    api_docs="https://docs.ozon.ru/api/performance/",
 )
 
 mcp = FastMCP("ozon_perf_mcp")

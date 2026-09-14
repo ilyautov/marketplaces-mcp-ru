@@ -46,6 +46,7 @@ WB_CONFIG = ServiceConfig(
     # WB is multi-host, but every host lives under wildberries.ru. Auth headers
     # (the raw seller token) may only ever be sent there.
     allowed_host_suffixes=[".wildberries.ru"],
+    api_docs="https://dev.wildberries.ru/en/openapi/api-information",
 )
 
 mcp = FastMCP("wb_mcp")
