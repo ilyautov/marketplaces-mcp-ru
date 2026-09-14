@@ -1,7 +1,7 @@
 """Security & reliability hardening for MarketplaceClient — all offline.
 
 Covers regressions found in review:
-  - host allowlist stops credential exfiltration via call_raw host override;
+  - host allowlist stops credential exfiltration via a raw tool's host override;
   - path must start with '/' (blocks host smuggling via path);
   - the OAuth token cache is keyed per-credentials (no cross-cabinet leak);
   - a 401 invalidates the cached bearer;

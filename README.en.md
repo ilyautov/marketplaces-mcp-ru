@@ -69,9 +69,9 @@ The check runs locally; nothing leaves without confirmation. A CI test (`test_sa
 
 ## How it works
 
-Under the hood are five MCP servers (Wildberries, Ozon Seller, Ozon Performance, Yandex Market, Avito) on a shared core. Instead of "one tool per endpoint" (that's 300+ tools the agent drowns in), there are 8 generic meta-tools over a catalog of methods — full API coverage with a small surface.
+Under the hood are five MCP servers (Wildberries, Ozon Seller, Ozon Performance, Yandex Market, Avito) on a shared core. Instead of "one tool per endpoint" (that's 300+ tools the agent drowns in), there are generic meta-tools over a catalog of methods — full API coverage with a small surface.
 
-Meta-tools are the same on every server (prefixed `wb_` / `ozon_` / `ozon_perf_` / `ym_` / `avito_`): `*_check_auth`, `*_search_methods` (search in Russian or English), `*_describe_method`, `*_call_method` (through the safety gate), `*_call_raw` (any path, even outside the catalog — full coverage), `*_fetch_all` (auto-pagination). Plus typed convenience tools (`wb_get_sales`, `ozon_get_prices`, …) and account tools. Selfcheck reports 21 tools for `wb`, 21 for `ozon`, 16 for `ozon-perf`, 22 for `yandex`, 26 for `avito`.
+Meta-tools are the same on every server (prefixed `wb_` / `ozon_` / `ozon_perf_` / `ym_` / `avito_`): `*_check_auth`, `*_search_methods` (search in Russian or English), `*_describe_method`, `*_call_method` (reads, no confirmation), `*_write_method` and `*_delete_method` (confirmation required), `*_get_raw` / `*_write_raw` / `*_delete_raw` (any path, even outside the catalog — full coverage), `*_fetch_all` (auto-pagination). Plus typed convenience tools (`wb_get_sales`, `ozon_get_prices`, …) and account tools. Selfcheck reports 21 tools for `wb`, 21 for `ozon`, 16 for `ozon-perf`, 22 for `yandex`, 26 for `avito`.
 
 The catalog is built schema-driven from the official OpenAPI specs:
 
@@ -85,7 +85,7 @@ The catalog is built schema-driven from the official OpenAPI specs:
 
 **1022 methods in total**, across four marketplaces and one ads API.
 
-The core (sales, stock, prices, finance, reviews) is verified live; the rest is imported from specs, and `call_raw` reaches anything not yet in the catalog.
+The core (sales, stock, prices, finance, reviews) is verified live; the rest is imported from specs, and `get_raw` reaches anything not yet in the catalog.
 
 ## Development
 
@@ -148,10 +148,10 @@ Most useful contributions: battle-verifying HTTP verbs (paths are reliable, verb
 Check against the marketplaces' live docs:
 
 - **WB `Authorization`** — the server sends a raw token without a `Bearer` prefix (confirmed in practice). If auth fails, check this first.
-- **Methods imported from specs: paths are reliable, HTTP verbs aren't always.** A live probe found methods tagged GET that are actually POST (405). Treat such entries as a reconnaissance map: confirm the verb and body against the docs, or call via `call_raw`. The curated core and the live-verified set are reliable.
+- **Methods imported from specs: paths are reliable, HTTP verbs aren't always.** A live probe found methods tagged GET that are actually POST (405). Treat such entries as a reconnaissance map: confirm the verb and body against the docs, or call via the raw tools. The curated core and the live-verified set are reliable.
 - **Ozon drifts across versions** (list v3, attributes v4, prices v5). On a 404, check the version; `ingest_ozon.py` realigns paths.
 - **Ozon Performance** is a catalog artifact plus an OAuth wrapper from the docs; the token-endpoint contract isn't verified live yet (needs ad credentials).
-- **Yandex Market and Avito (new in 0.5.0)** — catalogs come from the official OpenAPI documents and the typed tools follow the spec, but there has been no live run against real accounts yet. Field-name mistakes are possible; `describe_method` and `call_raw` let you fix a request on the spot.
+- **Yandex Market and Avito (new in 0.5.0)** — catalogs come from the official OpenAPI documents and the typed tools follow the spec, but there has been no live run against real accounts yet. Field-name mistakes are possible; `describe_method` and the raw tools let you fix a request on the spot.
 - **An account shadows env vars.** The active account in `cabinets.json` takes priority over environment variables. An unexplained 401 or "Client-Id should be positive integer" — check that file first.
 
 ## License

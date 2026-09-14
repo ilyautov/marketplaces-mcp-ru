@@ -54,7 +54,8 @@ entities = EntityIndex.load()
 catalog = Catalog.from_yaml(CATALOG_PATH, entities=entities)
 client = MarketplaceClient(WB_CONFIG)
 
-# Register the 8 generic schema-driven tools (wb_search_methods, wb_call_method, ...)
+# Register the generic schema-driven tools (wb_search_methods, wb_call_method,
+# wb_write_method, wb_delete_method, wb_get_raw, ...)
 register_generic_tools(
     mcp, svc="wb", client=client, catalog=catalog, entities=entities,
     key_help="seller.wildberries.ru → Settings → Access tokens (one token, "

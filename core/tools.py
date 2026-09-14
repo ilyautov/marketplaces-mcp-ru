@@ -9,9 +9,18 @@ high-leverage tools:
     {svc}_get_section       list endpoints in one section
     {svc}_search_methods    token search across the catalog (RU/EN)
     {svc}_describe_method    full spec for one operation_id
-    {svc}_call_method       execute a catalog endpoint (safety-gated)
-    {svc}_call_raw          execute ANY path (full coverage, verb-gated)
+    {svc}_call_method       run a catalog endpoint that only reads
+    {svc}_write_method      run a catalog endpoint that writes (confirmed)
+    {svc}_delete_method     run a catalog endpoint that destroys (confirmed)
+    {svc}_get_raw           GET/HEAD/OPTIONS on ANY path (full coverage)
+    {svc}_write_raw         POST/PUT/PATCH on ANY path (confirmed)
+    {svc}_delete_raw        DELETE on ANY path (confirmed)
     {svc}_fetch_all         auto-paginate a catalog endpoint
+
+Reads and writes are separate tools on purpose. One tool taking both a GET and
+a DELETE is rejected by the Claude connectors directory, and it also forced a
+confirmation prompt onto plain reads, because the tool had to be annotated
+destructive at all times.
 
 Typed convenience tools live in each service's server.py and call the same
 client underneath.
@@ -25,6 +34,7 @@ from typing import Any, Optional
 from mcp.server.fastmcp import FastMCP
 
 from .client import MarketplaceClient
+from .errors import make_error
 from .paginate import fetch_all as _fetch_all
 from .registry import Catalog
 from .safety import check_gate, infer_safety
@@ -219,13 +229,108 @@ def register_generic_tools(
             "params": spec.params, "doc": spec.doc,
         })
 
+    def _wrong_class(spec, actual: str, wanted: str) -> dict:
+        """Понятный отказ вместо молчаливого исполнения не тем инструментом."""
+        right = {"read": f"{svc}_call_method", "write": f"{svc}_write_method",
+                 "destructive": f"{svc}_delete_method"}[actual]
+        return make_error(
+            "safety_gate",
+            f"{spec.operation_id} is a {actual.upper()} operation, and "
+            f"{svc}_{wanted}_method only runs {wanted.replace('call', 'read')} ones. "
+            f"Call {right} instead. Nothing was sent.",
+            operation_id=spec.operation_id, endpoint=spec.path, retryable=False,
+            details={"use_tool": right, "safety": actual, "http_call_skipped": True},
+        )
+
+    async def _run_spec(operation_id, allowed: str, wanted: str, *, path_values,
+                        query, body, confirm_write=True,
+                        i_understand_this_modifies_data=True) -> str:
+        spec = catalog.get(operation_id)
+        if not spec:
+            hits = catalog.search(operation_id, limit=5)
+            return _j({"error": "not_found", "operation_id": operation_id,
+                       "did_you_mean": [s.operation_id for s in hits]})
+        # Класс берём с полом по глаголу: каталог, ошибочно пометивший DELETE
+        # чтением, не должен протащить удаление в read-only инструмент.
+        actual = infer_safety(spec.method, spec.safety)
+        if actual != allowed:
+            return _j(_wrong_class(spec, actual, wanted))
+        gate = check_gate(
+            actual, confirm_write=confirm_write,
+            i_understand_this_modifies_data=i_understand_this_modifies_data,
+            operation_id=spec.operation_id, endpoint=spec.path,
+        )
+        if gate:
+            return _j(gate)
+        return _j(await client.call_spec(
+            spec, path_values=path_values, query=query, json_body=body))
+
     @tool(
         name=f"{svc}_call_method",
-        annotations={"title": f"{svc.upper()} call catalog method",
+        annotations={"title": f"{svc.upper()} read catalog method",
+                     "readOnlyHint": True, "openWorldHint": True},
+    )
+    async def call_method(
+        operation_id: str,
+        path_values: Optional[dict] = None,
+        query: Optional[dict] = None,
+        body: Optional[dict] = None,
+    ) -> str:
+        """Execute one READ endpoint from the catalog by operation_id.
+
+        {api_docs_line}.
+
+        Reads only: nothing here changes data, so it runs without confirmation.
+        To change data use {svc}_write_method, to delete use {svc}_delete_method.
+
+        Args:
+            operation_id: id from the catalog (see {svc}_search_methods).
+            path_values: values for {placeholders} in the path.
+            query: query-string parameters.
+            body: JSON request body (a few read endpoints take one).
+        Returns JSON: {"ok": true, "status", "data"} or the error envelope.
+        """
+        return await _run_spec(operation_id, "read", "call", path_values=path_values,
+                               query=query, body=body)
+
+    @tool(
+        name=f"{svc}_write_method",
+        annotations={"title": f"{svc.upper()} write catalog method",
+                     "readOnlyHint": False, "destructiveHint": False,
+                     "openWorldHint": True},
+    )
+    async def write_method(
+        operation_id: str,
+        path_values: Optional[dict] = None,
+        query: Optional[dict] = None,
+        body: Optional[dict] = None,
+        confirm_write: bool = False,
+    ) -> str:
+        """Execute one WRITE endpoint from the catalog: create or update data.
+
+        {api_docs_line}.
+
+        Requires confirm_write=true; nothing is sent without it. Irreversible
+        operations live in {svc}_delete_method, reads in {svc}_call_method.
+
+        Args:
+            operation_id: id from the catalog (see {svc}_search_methods).
+            path_values: values for {placeholders} in the path.
+            query: query-string parameters.
+            body: JSON request body.
+            confirm_write: must be true.
+        Returns JSON: {"ok": true, "status", "data"} or the error envelope.
+        """
+        return await _run_spec(operation_id, "write", "write", path_values=path_values,
+                               query=query, body=body, confirm_write=confirm_write)
+
+    @tool(
+        name=f"{svc}_delete_method",
+        annotations={"title": f"{svc.upper()} destructive catalog method",
                      "readOnlyHint": False, "destructiveHint": True,
                      "openWorldHint": True},
     )
-    async def call_method(
+    async def delete_method(
         operation_id: str,
         path_values: Optional[dict] = None,
         query: Optional[dict] = None,
@@ -233,85 +338,149 @@ def register_generic_tools(
         confirm_write: bool = False,
         i_understand_this_modifies_data: bool = False,
     ) -> str:
-        """Execute one catalog endpoint by operation_id.
+        """Execute one DESTRUCTIVE endpoint: deletes or irreversibly changes data.
 
         {api_docs_line}.
 
-        Read endpoints run immediately. WRITE endpoints require confirm_write=true.
-        DESTRUCTIVE endpoints require confirm_write=true AND
-        i_understand_this_modifies_data=true (nothing is sent otherwise).
+        Both confirm_write=true and i_understand_this_modifies_data=true are
+        required; nothing is sent without both.
 
         Args:
             operation_id: id from the catalog (see {svc}_search_methods).
             path_values: values for {placeholders} in the path.
             query: query-string parameters.
             body: JSON request body.
-            confirm_write: required for write/destructive operations.
-            i_understand_this_modifies_data: required for destructive operations.
+            confirm_write: must be true.
+            i_understand_this_modifies_data: must be true.
         Returns JSON: {"ok": true, "status", "data"} or the error envelope.
         """
-        spec = catalog.get(operation_id)
-        if not spec:
-            hits = catalog.search(operation_id, limit=5)
-            return _j({"error": "not_found", "operation_id": operation_id,
-                       "did_you_mean": [s.operation_id for s in hits]})
-        # Defense in depth: never let a catalog `read` weaken the gate below the
-        # HTTP verb's floor (a mislabelled PUT/PATCH/DELETE must still be gated).
+        return await _run_spec(
+            operation_id, "destructive", "delete", path_values=path_values,
+            query=query, body=body, confirm_write=confirm_write,
+            i_understand_this_modifies_data=i_understand_this_modifies_data)
+
+    async def _run_raw(method: str, allowed: str, *, path, host, query, body,
+                       confirm_write=True,
+                       i_understand_this_modifies_data=True) -> str:
+        verb = (method or "").upper()
+        actual = infer_safety(verb, None)
+        if actual != allowed:
+            right = {"read": f"{svc}_get_raw", "write": f"{svc}_write_raw",
+                     "destructive": f"{svc}_delete_raw"}[actual]
+            return _j(make_error(
+                "safety_gate",
+                f"{verb} is a {actual.upper()} verb. Call {right} instead. "
+                "Nothing was sent.",
+                endpoint=path, retryable=False,
+                details={"use_tool": right, "safety": actual,
+                         "http_call_skipped": True}))
         gate = check_gate(
-            infer_safety(spec.method, spec.safety), confirm_write=confirm_write,
+            actual, confirm_write=confirm_write,
             i_understand_this_modifies_data=i_understand_this_modifies_data,
-            operation_id=spec.operation_id, endpoint=spec.path,
-        )
+            endpoint=path)
         if gate:
             return _j(gate)
-        resp = await client.call_spec(
-            spec, path_values=path_values, query=query, json_body=body
-        )
-        return _j(resp)
+        return _j(await client.request(
+            verb, host or catalog.default_host, path, query=query, json_body=body))
 
     @tool(
-        name=f"{svc}_call_raw",
-        annotations={"title": f"{svc.upper()} call raw path",
-                     "readOnlyHint": False, "destructiveHint": True,
+        name=f"{svc}_get_raw",
+        annotations={"title": f"{svc.upper()} read raw path",
+                     "readOnlyHint": True, "openWorldHint": True},
+    )
+    async def get_raw(
+        path: str,
+        method: str = "GET",
+        host: Optional[str] = None,
+        query: Optional[dict] = None,
+        body: Optional[dict] = None,
+    ) -> str:
+        """Read ANY endpoint by path, including ones missing from the catalog.
+
+        {api_docs_line}.
+
+        Safe verbs only (GET, HEAD, OPTIONS). To change data use
+        {svc}_write_raw, to delete use {svc}_delete_raw.
+
+        Args:
+            path: full path beginning with '/', e.g. "{example_path}".
+            method: safe verb, GET by default.
+            host: host override; defaults to the service's default host.
+            query: query-string parameters.
+            body: JSON request body (rare on reads; some APIs want one).
+        Returns JSON: {"ok": true, "status", "data"} or the error envelope.
+        """
+        return await _run_raw(method, "read", path=path, host=host, query=query,
+                              body=body)
+
+    @tool(
+        name=f"{svc}_write_raw",
+        annotations={"title": f"{svc.upper()} write raw path",
+                     "readOnlyHint": False, "destructiveHint": False,
                      "openWorldHint": True},
     )
-    async def call_raw(
+    async def write_raw(
         method: str,
         path: str,
         host: Optional[str] = None,
         query: Optional[dict] = None,
         body: Optional[dict] = None,
         confirm_write: bool = False,
-        i_understand_this_modifies_data: bool = False,
     ) -> str:
-        """Execute ANY endpoint, even ones not in the catalog (full API coverage).
+        """Create or update data at ANY path, including paths not in the catalog.
 
         {api_docs_line}.
 
-        Safety is inferred from the HTTP verb: GET=read, POST/PUT/PATCH=write,
-        DELETE=destructive. Same confirmation rules as {svc}_call_method.
+        POST, PUT and PATCH only; requires confirm_write=true.
 
         Args:
-            method: HTTP verb (GET/POST/PUT/PATCH/DELETE).
-            path: full path beginning with '/', e.g. "{example_path}".
+            method: POST, PUT or PATCH.
+            path: full path beginning with '/'.
             host: host override; defaults to the service's default host.
             query: query-string parameters.
             body: JSON request body.
-            confirm_write / i_understand_this_modifies_data: confirmations.
+            confirm_write: must be true.
         Returns JSON: {"ok": true, "status", "data"} or the error envelope.
         """
-        safety = infer_safety(method, None)
-        gate = check_gate(
-            safety, confirm_write=confirm_write,
-            i_understand_this_modifies_data=i_understand_this_modifies_data,
-            endpoint=path,
-        )
-        if gate:
-            return _j(gate)
-        resp = await client.request(
-            method, host or catalog.default_host, path, query=query, json_body=body
-        )
-        return _j(resp)
+        return await _run_raw(method, "write", path=path, host=host, query=query,
+                              body=body, confirm_write=confirm_write)
+
+    @tool(
+        name=f"{svc}_delete_raw",
+        annotations={"title": f"{svc.upper()} destructive raw path",
+                     "readOnlyHint": False, "destructiveHint": True,
+                     "openWorldHint": True},
+    )
+    async def delete_raw(
+        path: str,
+        method: str = "DELETE",
+        host: Optional[str] = None,
+        query: Optional[dict] = None,
+        body: Optional[dict] = None,
+        confirm_write: bool = False,
+        i_understand_this_modifies_data: bool = False,
+    ) -> str:
+        """Delete data at ANY path, including paths not in the catalog.
+
+        {api_docs_line}.
+
+        DELETE only. Both confirm_write=true and
+        i_understand_this_modifies_data=true are required.
+
+        Args:
+            path: full path beginning with '/'.
+            method: DELETE.
+            host: host override; defaults to the service's default host.
+            query: query-string parameters.
+            body: JSON request body.
+            confirm_write: must be true.
+            i_understand_this_modifies_data: must be true.
+        Returns JSON: {"ok": true, "status", "data"} or the error envelope.
+        """
+        return await _run_raw(
+            method, "destructive", path=path, host=host, query=query, body=body,
+            confirm_write=confirm_write,
+            i_understand_this_modifies_data=i_understand_this_modifies_data)
 
     @tool(
         name=f"{svc}_fetch_all",

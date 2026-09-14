@@ -212,7 +212,8 @@ PAGES = {
              "Скорее всего это метод, импортированный из спецификации: путь у таких "
              "записей надёжный, а HTTP-глагол не всегда. Живая проба находила методы, "
              "помеченные GET, которые на деле POST. Сверьтесь с документацией или "
-             "вызовите через <b class=\"mono\">call_raw</b>."),
+             "вызовите через raw-инструменты "
+             "(<b class=\"mono\">ozon_get_raw</b> и соседние)."),
         ],
         "prompts": [
             "покажи продажи на Ozon за неделю по дням",
@@ -346,7 +347,7 @@ PAGES = {
              "Каталог методов собран из официального OpenAPI-документа, а живой прогон "
              "на реальных кабинетах ещё не делался. Неточности в именах полей возможны. "
              "<b class=\"mono\">describe_method</b> покажет схему, "
-             "<b class=\"mono\">call_raw</b> даст поправить запрос на месте."),
+             "<b class=\"mono\">ym_get_raw</b> даст поправить запрос на месте."),
             ("Метод не находится по названию",
              "Ищите по теме, а не по имени: спросите агента «что ты умеешь по Яндекс "
              "Маркету», он покажет разделы и подберёт метод сам."),
@@ -407,7 +408,7 @@ PAGES = {
             ("Ошибка в имени поля",
              "Каталог собран из официальных документов, живой прогон на реальных "
              "кабинетах ещё не делался. <b class=\"mono\">describe_method</b> покажет "
-             "схему, <b class=\"mono\">call_raw</b> даст поправить запрос на месте."),
+             "схему, <b class=\"mono\">avito_get_raw</b> даст поправить запрос на месте."),
         ],
         "prompts": [
             "покажи статистику по объявлениям за неделю",
@@ -456,9 +457,11 @@ FOOTER = """<footer>
       &nbsp; Инструмент, а не замена аналитику. Решения по цене и закупкам за вами.
     </div>
     <div>
+      <a href="privacy.html">Конфиденциальность</a> ·
       <a href="{repo}">GitHub</a> ·
       <a href="{business}">business-mcp-ru</a> ·
       <a href="https://t.me/gorilla_under_hood">Telegram</a> ·
+      <a href="https://ilyautov.github.io/">Все проекты</a> ·
       Сделано в <a href="https://aifrontier.tech">AI Frontier</a> · MIT
     </div>
   </div>
@@ -759,11 +762,15 @@ def main() -> int:
 
     # sitemap: главная плюс сгенерированные страницы
     today = date.today().isoformat()
-    urls = ["%s/" % SITE] + ["%s/%s.html" % (SITE, s) for s in PAGES]
+    # Политика конфиденциальности меняется редко и веса ей не нужно, но в карте
+    # она обязана быть: каталог коннекторов Claude проверяет её доступность.
+    urls = ([("%s/" % SITE, "weekly", "1.0")]
+            + [("%s/%s.html" % (SITE, s), "weekly", "0.8") for s in PAGES]
+            + [("%s/privacy.html" % SITE, "monthly", "0.3")])
     body = "\n".join(
         "  <url>\n    <loc>%s</loc>\n    <lastmod>%s</lastmod>\n"
-        "    <changefreq>weekly</changefreq>\n    <priority>%s</priority>\n  </url>"
-        % (u, today, "1.0" if i == 0 else "0.8") for i, u in enumerate(urls))
+        "    <changefreq>%s</changefreq>\n    <priority>%s</priority>\n  </url>"
+        % (u, today, freq, pri) for u, freq, pri in urls)
     (DOCS / "sitemap.xml").write_text(
         '<?xml version="1.0" encoding="UTF-8"?>\n'
         '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'

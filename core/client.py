@@ -51,7 +51,7 @@ class ServiceConfig:
     # Host allowlist: a request may only be sent to a host whose name equals or
     # ends with one of these suffixes (e.g. ".ozon.ru", ".wildberries.ru"). This
     # stops a compromised/mis-prompted agent from exfiltrating the cabinet's auth
-    # headers to an attacker host via {svc}_call_raw. Empty list = no allowlist
+    # headers to an attacker host via the raw tools. Empty list = no allowlist
     # (permissive; the real servers always set one).
     allowed_host_suffixes: list[str] = field(default_factory=list)
     # Адрес официальной документации API. Уходит в описание инструментов,

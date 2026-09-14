@@ -184,12 +184,15 @@ def test_servers_register_tools():
     from ozon_mcp.server import mcp as ozon_mcp
     wb_tools = {t.name for t in asyncio.run(wb_mcp.list_tools())}
     ozon_tools = {t.name for t in asyncio.run(ozon_mcp.list_tools())}
-    # 8 generic + typed convenience tools
-    for t in ("wb_search_methods", "wb_call_method", "wb_call_raw",
+    # Исполнители разделены по классу доступа: чтение, запись, удаление.
+    for t in ("wb_search_methods", "wb_call_method", "wb_write_method",
+              "wb_delete_method", "wb_get_raw", "wb_write_raw", "wb_delete_raw",
               "wb_fetch_all", "wb_get_sales", "wb_set_price"):
         assert t in wb_tools, f"missing {t}"
-    for t in ("ozon_search_methods", "ozon_call_method", "ozon_call_raw",
-              "ozon_fetch_all", "ozon_get_products", "ozon_set_price"):
+    for t in ("ozon_search_methods", "ozon_call_method", "ozon_write_method",
+              "ozon_delete_method", "ozon_get_raw", "ozon_write_raw",
+              "ozon_delete_raw", "ozon_fetch_all", "ozon_get_products",
+              "ozon_set_price"):
         assert t in ozon_tools, f"missing {t}"
     # 8 generic + typed + 2 workflow + 4 cabinet
     assert len(wb_tools) >= 19 and len(ozon_tools) >= 19
