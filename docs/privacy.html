@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Политика конфиденциальности marketplaces-mcp-ru</title>
+<meta name="description" content="Сервер работает на вашей машине и ходит только в Seller API Wildberries, Ozon, Яндекс Маркета и Авито. Телеметрии нет, ключи лежат локально в ~/.marketplace-mcp/cabinets.json.">
+<meta property="og:title" content="Политика конфиденциальности marketplaces-mcp-ru">
+<meta property="og:description" content="Сервер работает на вашей машине и ходит только в Seller API Wildberries, Ozon, Яндекс Маркета и Авито. Телеметрии нет, ключи лежат локально в ~/.marketplace-mcp/cabinets.json.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://marketplaces-mcp-ru.aifrontier.tech/privacy.html">
+<meta property="og:image" content="https://marketplaces-mcp-ru.aifrontier.tech/assets/social-preview.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://marketplaces-mcp-ru.aifrontier.tech/privacy.html">
+<link rel="icon" type="image/png" href="assets/social-preview.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Lora:wght@500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Политика конфиденциальности marketplaces-mcp-ru",
+  "description": "Сервер работает на вашей машине и ходит только в Seller API Wildberries, Ozon, Яндекс Маркета и Авито. Телеметрии нет, ключи лежат локально в ~/.marketplace-mcp/cabinets.json.",
+  "url": "https://marketplaces-mcp-ru.aifrontier.tech/privacy.html",
+  "inLanguage": "ru",
+  "dateModified": "2026-09-14",
+  "isPartOf": {"@type": "WebSite", "name": "marketplaces-mcp-ru", "url": "https://marketplaces-mcp-ru.aifrontier.tech/"},
+  "publisher": {"@type": "Person", "name": "Ilya Utov", "url": "https://github.com/ilyautov"}
+}
+</script>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <a class="brand" href="https://marketplaces-mcp-ru.aifrontier.tech/" aria-label="marketplaces-mcp-ru, на главную">
+      <span class="bars" aria-hidden="true"><span></span><span></span><span></span></span>
+      marketplaces-mcp-ru <small>· AI Frontier</small>
+    </a>
+    <nav class="nav-links" aria-label="Основная навигация">
+      <a href="ozon-api.html">Ozon</a>
+      <a href="wildberries-api.html">Wildberries</a>
+      <a href="yandex-market-api.html">Яндекс Маркет</a>
+      <a href="avito-api.html">Авито</a>
+      <a href="https://business-mcp-ru.aifrontier.tech/">Деловые сервисы: hh.ru, VK, ЭДО</a>
+      <a class="btn btn-primary" href="https://github.com/ilyautov/marketplaces-mcp-ru">GitHub</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+  <section class="s">
+    <div class="wrap">
+      <nav class="crumbs" aria-label="Хлебные крошки">
+        <a href="index.html">Главная</a> · Политика конфиденциальности
+      </nav>
+      <div class="sec-head">
+        <h1>Политика конфиденциальности</h1>
+        <p><b>marketplaces-mcp-ru</b> работает на вашей машине. Бэкенда, аналитики и телеметрии у проекта нет: собирать ваши данные попросту нечему.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="s alt" id="where">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>Что обрабатывается и где</h2>
+      </div>
+      <div class="steps">
+        <div class="step">
+          <div>
+            <h3>Ключи</h3>
+            <p>API-ключи кабинетов Wildberries, Ozon, Ozon Performance, Яндекс Маркета и Авито хранятся локально в <b class="mono">~/.marketplace-mcp/cabinets.json</b>: файл с правами <b class="mono">chmod 600</b>, каталог <b class="mono">chmod 700</b>. Они уходят только в заголовке авторизации тех запросов, которые инициирует ваш агент. Хранить на диске не обязательно: то же самое принимается через переменные окружения <b class="mono">WB_API_TOKEN, OZON_CLIENT_ID, OZON_API_KEY, OZON_PERF_CLIENT_ID, OZON_PERF_CLIENT_SECRET, YANDEX_MARKET_API_KEY, AVITO_CLIENT_ID, AVITO_CLIENT_SECRET</b>.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div>
+            <h3>Данные сервиса</h3>
+            <p>продажи, заказы, остатки, цены, финансы, отзывы и рекламные кампании приходят напрямую из API в вашего агента и обрабатываются на вашей машине. Сервер их не сохраняет и никуда не пересылает.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div>
+            <h3>Белый список доменов</h3>
+            <p>Сетевой слой ходит только на <b class="mono">.wildberries.ru, .ozon.ru, .market.yandex.ru и .avito.ru</b>. Запрос на любой другой адрес отклоняется до отправки, так что подменённый в ответе адрес никуда не уведёт.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="s" id="never">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>Чего сервер не делает</h2>
+      </div>
+      <div class="grid2">
+        <div class="card"><h3>Телеметрия</h3><p>Не отправляет ни аналитики, ни счётчиков установок, ни отчётов об ошибках.</p></div>
+        <div class="card"><h3>Звонок домой</h3><p>Внешних сервисов автора не существует, звонить некуда.</p></div>
+        <div class="card"><h3>Передача третьим лицам</h3><p>Ключи и данные не уходят никому, кроме самого сервиса, к которому вы подключаетесь.</p></div>
+        <div class="card"><h3>Утечка в чат и репозиторий</h3><p>Секреты не пишутся ни в конфиг клиента, ни в историю диалога, ни в git.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="s alt" id="third">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>Третьи стороны</h2>
+        <p>Их ровно две, и обе выбираете вы сами.</p>
+      </div>
+      <div class="grid2">
+        <div class="card">
+          <h3>Wildberries, Ozon, Яндекс Маркет и Авито</h3>
+          <p>Запросы идут в API сервиса по вашим ключам, от вашего имени. Что сервис делает с этими обращениями, описано в его собственной политике конфиденциальности, у нас на них влияния нет.</p>
+        </div>
+        <div class="card">
+          <h3>Ваш ИИ-клиент</h3>
+          <p>Claude, Cursor, Codex и другие: текст диалога обрабатывается по политике соответствующего провайдера. Ключ в чат вставлять не нужно, инструменты спроектированы так, чтобы секрет туда не попадал. <b class="mono">wb_check_auth</b> показывает наличие ключа, но не сам ключ.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="s" id="delete">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>Хранение и удаление</h2>
+        <p>Ключи и кабинеты это ваши локальные файлы. Удаляются инструментом <b class="mono">wb_remove_cabinet, ozon_remove_cabinet, ozon_perf_remove_cabinet, yandex_remove_cabinet и avito_remove_cabinet</b> или удалением <b class="mono">~/.marketplace-mcp/cabinets.json</b>. Срок хранения задаёте вы: ничего не истекает само и ничего не копируется на сторону.</p>
+      </div>
+      <p>Политика обновляется вместе с релизами, актуальная версия всегда в <a href="https://github.com/ilyautov/marketplaces-mcp-ru/blob/main/PRIVACY_POLICY.md">репозитории</a>. Вопросы и сообщения о проблемах: <a href="https://github.com/ilyautov/marketplaces-mcp-ru/issues">issues проекта</a>.</p>
+      <p class="mono">Обновлено 14 сентября 2026 года.</p>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <div>
+      <span class="alpha">alpha</span>
+      &nbsp; Инструмент, а не замена аналитику. Решения по цене и закупкам за вами.
+    </div>
+    <div>
+      <a href="https://github.com/ilyautov/marketplaces-mcp-ru">GitHub</a> ·
+      <a href="https://business-mcp-ru.aifrontier.tech/">business-mcp-ru</a> ·
+      <a href="https://t.me/gorilla_under_hood">Telegram</a> ·
+      <a href="https://ilyautov.github.io/">Все проекты</a> ·
+      Сделано в <a href="https://aifrontier.tech">AI Frontier</a> · MIT
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -17,6 +17,7 @@
     "url": "https://github.com/ilyautov/marketplaces-mcp-ru"
   },
   "license": "MIT",
+  "privacy_policies": ["https://marketplaces-mcp-ru.aifrontier.tech/privacy.html"],
   "keywords": [
     "wildberries",
     "ozon",
