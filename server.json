@@ -3,7 +3,7 @@
   "name": "io.github.ilyautov/marketplaces-mcp-ru",
   "title": "Marketplaces MCP (RU) — Wildberries, Ozon, Yandex Market, Avito",
   "description": "Wildberries, Ozon, Yandex Market & Avito seller APIs for AI assistants: schema-driven, safety-gated.",
-  "version": "0.5.3",
+  "version": "0.6.0",
   "repository": {
     "url": "https://github.com/ilyautov/marketplaces-mcp-ru",
     "source": "github"
@@ -14,7 +14,7 @@
       "registryType": "npm",
       "registryBaseUrl": "https://registry.npmjs.org",
       "identifier": "marketplaces-mcp-ru",
-      "version": "0.5.3",
+      "version": "0.6.0",
       "runtimeHint": "npx",
       "transport": {
         "type": "stdio"
@@ -74,7 +74,7 @@
       "registryType": "pypi",
       "registryBaseUrl": "https://pypi.org",
       "identifier": "marketplaces-mcp-ru",
-      "version": "0.5.3",
+      "version": "0.6.0",
       "runtimeHint": "uvx",
       "transport": {
         "type": "stdio"
