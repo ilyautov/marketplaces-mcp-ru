@@ -1,10 +1,10 @@
 {
   "name": "marketplaces-mcp-ru",
-  "description": "MCP-серверы для кабинетов Wildberries, Ozon, Яндекс Маркета и Авито: продажи, заказы, остатки, цены, финансы, отзывы через API напрямую, без браузера. 1022 метода schema-driven, safety-гейт на запись, авто-пагинация, мультикабинет, поиск по-русски. | MCP servers for Wildberries, Ozon, Yandex Market & Avito seller accounts: 1022 schema-driven API methods, write safety gate, auto-pagination, Russian-language search.",
+  "displayName": "Marketplaces RU: Wildberries, Ozon, Yandex Market, Avito (unofficial)",
   "version": "0.6.1",
+  "description": "MCP-серверы для кабинетов Wildberries, Ozon, Яндекс Маркета и Авито: продажи, заказы, остатки, цены, финансы, отзывы через API напрямую, без браузера. 1022 метода schema-driven, safety-гейт на запись, авто-пагинация, мультикабинет, поиск по-русски. | MCP servers for Wildberries, Ozon, Yandex Market & Avito seller accounts: 1022 schema-driven API methods, write safety gate, auto-pagination, Russian-language search.",
   "author": {
     "name": "Ilya Utov",
-    "email": "ilyautov@gmail.com",
     "url": "https://github.com/ilyautov"
   },
   "homepage": "https://github.com/ilyautov/marketplaces-mcp-ru",
@@ -24,5 +24,66 @@
     "avito",
     "yandex-market-api",
     "avito-api"
-  ]
+  ],
+  "privacyPolicyUrl": "https://marketplaces-mcp-ru.aifrontier.tech/privacy.html",
+  "supportUrl": "https://github.com/ilyautov/marketplaces-mcp-ru/issues",
+  "documentationUrl": "https://github.com/ilyautov/marketplaces-mcp-ru#readme",
+  "userConfig": {
+    "wb_api_token": {
+      "type": "string",
+      "title": "Wildberries API-токен",
+      "description": "seller.wildberries.ru → Настройки → Доступ к API. Один токен, выберите нужные категории. Оставьте пустым, если не торгуете на WB.",
+      "required": false,
+      "sensitive": true
+    },
+    "ozon_client_id": {
+      "type": "string",
+      "title": "Ozon Client ID",
+      "description": "seller.ozon.ru → Настройки → API-ключи. Оставьте пустым, если не торгуете на Ozon.",
+      "required": false,
+      "sensitive": false
+    },
+    "ozon_api_key": {
+      "type": "string",
+      "title": "Ozon API-ключ",
+      "description": "Пара к Ozon Client ID из того же раздела API-ключей.",
+      "required": false,
+      "sensitive": true
+    },
+    "ozon_perf_client_id": {
+      "type": "string",
+      "title": "Ozon Performance Client ID",
+      "description": "Только для рекламного API Ozon (performance.ozon.ru). Опционально.",
+      "required": false,
+      "sensitive": false
+    },
+    "ozon_perf_client_secret": {
+      "type": "string",
+      "title": "Ozon Performance Client Secret",
+      "description": "Пара к Performance Client ID. Опционально.",
+      "required": false,
+      "sensitive": true
+    },
+    "yandex_api_key": {
+      "type": "string",
+      "title": "Яндекс Маркет Api-Key",
+      "description": "partner.market.yandex.ru → Настройки → Доступ к API. Оставьте пустым, если не торгуете на Маркете.",
+      "required": false,
+      "sensitive": true
+    },
+    "avito_client_id": {
+      "type": "string",
+      "title": "Avito client_id",
+      "description": "avito.ru → Для бизнеса → Интеграции → API. Оставьте пустым, если не торгуете на Авито.",
+      "required": false,
+      "sensitive": false
+    },
+    "avito_client_secret": {
+      "type": "string",
+      "title": "Avito client_secret",
+      "description": "Пара к Avito client_id из того же раздела.",
+      "required": false,
+      "sensitive": true
+    }
+  }
 }

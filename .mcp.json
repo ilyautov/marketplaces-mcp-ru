@@ -2,15 +2,56 @@
   "mcpServers": {
     "wildberries": {
       "command": "python3",
-      "args": ["${CLAUDE_PLUGIN_ROOT}/serve.py", "wb"]
+      "args": [
+        "${CLAUDE_PLUGIN_ROOT}/serve.py",
+        "wb"
+      ],
+      "env": {
+        "WB_API_TOKEN": "${user_config.wb_api_token}"
+      }
     },
     "ozon": {
       "command": "python3",
-      "args": ["${CLAUDE_PLUGIN_ROOT}/serve.py", "ozon"]
+      "args": [
+        "${CLAUDE_PLUGIN_ROOT}/serve.py",
+        "ozon"
+      ],
+      "env": {
+        "OZON_CLIENT_ID": "${user_config.ozon_client_id}",
+        "OZON_API_KEY": "${user_config.ozon_api_key}"
+      }
     },
     "ozon-perf": {
       "command": "python3",
-      "args": ["${CLAUDE_PLUGIN_ROOT}/serve.py", "ozon-perf"]
+      "args": [
+        "${CLAUDE_PLUGIN_ROOT}/serve.py",
+        "ozon-perf"
+      ],
+      "env": {
+        "OZON_PERF_CLIENT_ID": "${user_config.ozon_perf_client_id}",
+        "OZON_PERF_CLIENT_SECRET": "${user_config.ozon_perf_client_secret}"
+      }
+    },
+    "yandex-market": {
+      "command": "python3",
+      "args": [
+        "${CLAUDE_PLUGIN_ROOT}/serve.py",
+        "yandex"
+      ],
+      "env": {
+        "YANDEX_MARKET_API_KEY": "${user_config.yandex_api_key}"
+      }
+    },
+    "avito": {
+      "command": "python3",
+      "args": [
+        "${CLAUDE_PLUGIN_ROOT}/serve.py",
+        "avito"
+      ],
+      "env": {
+        "AVITO_CLIENT_ID": "${user_config.avito_client_id}",
+        "AVITO_CLIENT_SECRET": "${user_config.avito_client_secret}"
+      }
     }
   }
 }
