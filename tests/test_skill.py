@@ -14,7 +14,7 @@ ROOT = Path(__file__).resolve().parents[1]
 SKILL = ROOT / "skills" / "marketplaces-mcp" / "SKILL.md"
 
 CATALOGS = {
-    "ozon_mcp/endpoints.yaml": 441,
+    "ozon_mcp/endpoints.yaml": 443,
     "wb_mcp/endpoints.yaml": 307,
     "yandex_mcp/endpoints.yaml": 165,
     "avito_mcp/endpoints.yaml": 64,

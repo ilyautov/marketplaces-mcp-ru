@@ -277,6 +277,22 @@ endpoints:
   - заказы фбс
   - отправления
   items_path: result.postings
+- operation_id: ozon_fbs_list_v4
+  section: orders_fbs
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v4/posting/fbs/list
+  scope: seller
+  safety: read
+  pagination: cursor
+  summary: Current FBS shipments for a bounded period.
+  params:
+    body: '{filter:{since,to,statuses},limit,cursor,sort_dir,with:{analytics_data,financial_data,legal_info,barcodes}}'
+  doc: https://docs.ozon.ru/api/seller/#operation/PostingAPI_PostingFbsListV4
+  keywords:
+  - заказы фбс
+  - отправления
+  items_path: postings
 - operation_id: ozon_fbs_get
   section: orders_fbs
   method: POST
@@ -342,6 +358,22 @@ endpoints:
   - заказы фбо
   - отправления фбо
   items_path: result
+- operation_id: ozon_fbo_list_v3
+  section: orders_fbo
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v3/posting/fbo/list
+  scope: seller
+  safety: read
+  pagination: cursor
+  summary: Current FBO shipments for a bounded period.
+  params:
+    body: '{filter:{since,to,statuses},limit,cursor,sort_dir,with:{analytics_data,financial_data,legal_info}}'
+  doc: https://docs.ozon.ru/api/seller/#operation/PostingAPI_PostingFboList
+  keywords:
+  - заказы фбо
+  - отправления фбо
+  items_path: postings
 - operation_id: ozon_fbo_get
   section: orders_fbo
   method: POST
@@ -2735,7 +2767,7 @@ endpoints:
   host: api-seller.ozon.ru
   path: /v1/supply-order/bundle
   scope: seller
-  safety: write
+  safety: read
   summary: Состав поставки или заявки на поставку
   doc: ''
   items_path: items
