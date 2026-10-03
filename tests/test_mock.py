@@ -36,6 +36,25 @@ def test_catalogs_load_and_are_nonempty():
             assert s.safety in {"read", "write", "destructive"}
 
 
+def test_ozon_current_product_flow_reads_are_catalogued():
+    ozon = Catalog.from_yaml(OZON_YAML)
+    expected = {
+        "ozon_fbs_list_v4": ("POST", "/v4/posting/fbs/list", "cursor", "postings"),
+        "ozon_fbo_list_v3": ("POST", "/v3/posting/fbo/list", "cursor", "postings"),
+        "ozon_post_v1_supply_order_bundle": (
+            "POST",
+            "/v1/supply-order/bundle",
+            "last_id",
+            "items",
+        ),
+    }
+    for operation_id, binding in expected.items():
+        spec = ozon.get(operation_id)
+        assert spec is not None
+        assert (spec.method, spec.path, spec.pagination, spec.items_path) == binding
+        assert spec.safety == "read"
+
+
 def test_search_ru_and_en():
     wb = Catalog.from_yaml(WB_YAML)
     assert any("stocks" in s.operation_id for s in wb.search("остатки"))
