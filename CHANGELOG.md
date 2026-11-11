@@ -3,7 +3,7 @@
 Формат — [Keep a Changelog](https://keepachangelog.com/ru/1.1.0/),
 версии — [SemVer](https://semver.org/lang/ru/).
 
-## [Unreleased]
+## [0.7.0] — 2026-11-11
 
 ### Изменено (Ozon, сверка с API на 2026-11-11)
 - **Убраны 28 методов, которые Ozon уже отключил.** Они возвращали ошибку, а

@@ -1,7 +1,7 @@
 {
   "name": "marketplaces-mcp-ru",
   "displayName": "Marketplaces RU: Wildberries, Ozon, Yandex Market, Avito (unofficial)",
-  "version": "0.6.1",
+  "version": "0.7.0",
   "description": "MCP-серверы для кабинетов Wildberries, Ozon, Яндекс Маркета и Авито: продажи, заказы, остатки, цены, финансы, отзывы через API напрямую, без браузера. 1072 методов schema-driven, safety-гейт на запись, авто-пагинация, мультикабинет, поиск по-русски. | MCP servers for Wildberries, Ozon, Yandex Market & Avito seller accounts: 1072 schema-driven API methods, write safety gate, auto-pagination, Russian-language search.",
   "author": {
     "name": "Ilya Utov",
