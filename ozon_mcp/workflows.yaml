@@ -39,16 +39,21 @@ workflows:
     category: finance
     when_to_use: Understand real per-order profitability after Ozon fees.
     steps:
-      - operation_id: ozon_finance_transactions
-        why: Per-order accruals, commissions, logistics, returns (result.operations).
+      - operation_id: ozon_finance_accrual_by_day
+        why: All accruals for one day (sales, commissions, logistics, returns), paged by last_id.
+      - operation_id: ozon_finance_accrual_postings
+        why: Accruals for specific postings (up to 200 posting_numbers per call).
+      - operation_id: ozon_finance_accrual_types
+        why: Dictionary that turns type_id into a human-readable accrual name.
       - operation_id: ozon_prices_get
         why: Per-SKU commission percentages and current prices.
     interpret: >
-      Net = sale amount − sales commission − logistics − returns − ads. Pull one
-      month at a time (API caps the window). Join transactions to SKU via
-      posting_number. Watch fbo vs fbs commission differences.
+      Net = sale amount − sales commission − logistics − returns − ads. Walk the
+      period day by day with accrual/by-day, resolve type_id via accrual/types,
+      and join to SKU via posting_number. Watch fbo vs fbs commission differences.
     common_mistakes:
-      - Requesting more than one month per call (API rejects it).
+      - Using /v3/finance/transaction/list — Ozon switched it off on 2026-09-08.
+      - Paging by-day with last_id but a different date (API returns 400).
       - Forgetting returns and storage fees in the net.
 
   - name: catalog_sync
@@ -99,8 +104,8 @@ workflows:
     category: communications
     when_to_use: Track review sentiment and seller rating trend.
     steps:
-      - operation_id: ozon_list_9
-        why: Review list (filter by status/rating) — requires the reviews subscription.
+      - operation_id: ozon_reviews_list_v2
+        why: Review list (filter by sku/status/published dates, paged by last_id) — requires the reviews subscription.
       - operation_id: ozon_get_seller_rating_info_for_period
         why: Seller rating dynamics over a period to see if sentiment is moving.
     interpret: >

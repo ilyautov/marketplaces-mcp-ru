@@ -3,6 +3,39 @@
 Формат — [Keep a Changelog](https://keepachangelog.com/ru/1.1.0/),
 версии — [SemVer](https://semver.org/lang/ru/).
 
+## [0.7.0] — 2026-11-11
+
+### Изменено (Ozon, сверка с API на 2026-11-11)
+- **Убраны 28 методов, которые Ozon уже отключил.** Они возвращали ошибку, а
+  каталог продолжал их предлагать. Среди них: старые этикетки FBS
+  (`/v1|v2/posting/fbs/package-label*`, отключены 2 ноября под этикетки scanit),
+  акции v1 (`/v1/actions/candidates|products|products/activate|products/deactivate`,
+  19 октября), `/v3/finance/transaction/list|totals` (8 сентября),
+  `/v3/posting/fbs/list|unfulfilled/list` и `/v2/posting/fbo/list` (31 августа),
+  `/v1/cargoes-label/file/{file_guid}` (22 октября).
+- **Добавлены 76 актуальных методов.** Новые этикетки
+  (`/v3/posting/fbs/package-label/create`, `/v2/posting/fbs/package-label/get`),
+  акции v2 и автодобавление (`/v2/actions/*`, `/v1/actions/products/update`),
+  отзывы v2 (`/v2/review/*`), начисления (`/v1/finance/accrual/by-day|postings|types`),
+  грузоместа FBS и FBO (`/v1/carriage/container/*`, `/v1/cargoes/transport/*`,
+  `/v2/cargoes/*`), акты поставки (`/v1/supply-order/act/*`),
+  `/v1/barcode/delete`, `/v1/return/box/get-by-barcode`, `/v1/order/code/get` и др.
+  Каталог Ozon 443 → 491, всего методов 1072.
+- **Инструмент `ozon_get_fbs_unfulfilled` переведён на v4.** Параметр `offset`
+  заменён на `cursor`: v4 листает курсором, а v3 отключён.
+- **Workflow `unit_economics` считает по начислениям** (`accrual/by-day` +
+  `accrual/types`) вместо отключённого `transaction/list`; `reviews_pulse`
+  читает `/v2/review/list`.
+- Методы, которые ещё работают, но устаревают (`/v1/review/*`,
+  `/v1/actions/discounts-task/list`, `/v1/polygon/bind`,
+  `/v2/analytics/stock_on_warehouses`), помечены `DEPRECATED` в описании.
+  У `/v3/product/list`, `/v4/product/info/stocks` и `/v5/product/info/prices`
+  отметка, что поле `total` уходит 23 ноября 2026 (читать `total_items`).
+
+### Исправлено
+- Общее число методов в README, на сайте и в манифестах было 1022 при реальных
+  1024, `build_marketplace_pages.py` из-за этого падал. Теперь 1072 везде.
+
 ## [0.6.1] — 2026-09-14
 
 ### Исправлено

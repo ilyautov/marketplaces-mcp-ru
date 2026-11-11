@@ -55,6 +55,36 @@ def test_ozon_current_product_flow_reads_are_catalogued():
         assert spec.safety == "read"
 
 
+def test_ozon_switched_off_methods_are_gone_and_replaced():
+    """Ozon отключил эти методы к ноябрю 2026: вызов вернёт ошибку, а workflow
+    или инструмент, который на них ссылается, сломается молча."""
+    ozon = Catalog.from_yaml(OZON_YAML)
+    paths = {(s.method, s.path) for s in ozon.all()}
+    dead = [
+        "/v3/finance/transaction/list", "/v3/finance/transaction/totals",
+        "/v3/posting/fbs/unfulfilled/list", "/v3/posting/fbs/list", "/v2/posting/fbo/list",
+        "/v2/posting/fbs/package-label", "/v2/posting/fbs/package-label/create",
+        "/v1/posting/fbs/package-label/create", "/v1/posting/fbs/package-label/get",
+        "/v1/actions/candidates", "/v1/actions/products",
+        "/v1/actions/products/activate", "/v1/actions/products/deactivate",
+    ]
+    for p in dead:
+        assert ("POST", p) not in paths, p
+    replacements = {
+        "ozon_fbs_unfulfilled_v4": "/v4/posting/fbs/unfulfilled/list",
+        "ozon_fbs_package_label_create_v3": "/v3/posting/fbs/package-label/create",
+        "ozon_fbs_package_label_get_v2": "/v2/posting/fbs/package-label/get",
+        "ozon_finance_accrual_by_day": "/v1/finance/accrual/by-day",
+        "ozon_reviews_list_v2": "/v2/review/list",
+        "ozon_actions_products_v2": "/v2/actions/products",
+        "ozon_actions_candidates_v2": "/v2/actions/candidates",
+    }
+    for oid, path in replacements.items():
+        spec = ozon.get(oid)
+        assert spec is not None and spec.path == path, oid
+    assert ozon.get("ozon_actions_products_v2").safety == "read"
+
+
 def test_search_ru_and_en():
     wb = Catalog.from_yaml(WB_YAML)
     assert any("stocks" in s.operation_id for s in wb.search("остатки"))

@@ -83,7 +83,7 @@ The catalog is built schema-driven from the official OpenAPI specs:
 | Yandex Market (Partner API) | `yandex_mcp/endpoints.yaml` | 165 | 29 |
 | Avito (business API) | `avito_mcp/endpoints.yaml` | 64 | 8 |
 
-**1022 methods in total**, across four marketplaces and one ads API.
+**1072 methods in total**, across four marketplaces and one ads API.
 
 The core (sales, stock, prices, finance, reviews) is verified live; the rest is imported from specs, and `get_raw` reaches anything not yet in the catalog.
 
