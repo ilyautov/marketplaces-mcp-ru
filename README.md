@@ -9,7 +9,7 @@
 [![PyPI](https://img.shields.io/pypi/v/marketplaces-mcp-ru?label=pypi&color=B5491F)](https://pypi.org/project/marketplaces-mcp-ru/)
 [![MCP Registry](https://img.shields.io/badge/MCP-Registry-2D7D4F)](https://registry.modelcontextprotocol.io/)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-[![Методов](https://img.shields.io/badge/%D0%BC%D0%B5%D1%82%D0%BE%D0%B4%D0%BE%D0%B2-1022-2D7D4F)](#как-это-устроено)
+[![Методов](https://img.shields.io/badge/%D0%BC%D0%B5%D1%82%D0%BE%D0%B4%D0%BE%D0%B2-1072-2D7D4F)](#как-это-устроено)
 [![Сайт](https://img.shields.io/badge/%D1%81%D0%B0%D0%B9%D1%82-aifrontier.tech-9A3E1A)](https://marketplaces-mcp-ru.aifrontier.tech/)
 [![Звёзды](https://img.shields.io/github/stars/ilyautov/marketplaces-mcp-ru?style=flat&label=%D0%B7%D0%B2%D1%91%D0%B7%D0%B4%D1%8B&color=B5491F&logo=github&logoColor=white)](https://github.com/ilyautov/marketplaces-mcp-ru/stargazers)
 [![Docker](https://img.shields.io/badge/docker-ghcr.io-2D7D4F?logo=docker&logoColor=white)](https://github.com/ilyautov/marketplaces-mcp-ru/pkgs/container/marketplaces-mcp-ru)
@@ -18,7 +18,7 @@
 
 <p align="center">
   <a href="https://marketplaces-mcp-ru.aifrontier.tech/">
-    <img src="assets/social-preview.png" alt="marketplaces-mcp-ru: кабинеты Wildberries, Ozon, Яндекс Маркета и Авито в ИИ-ассистенте. 1022 метода через Seller API, гейт безопасности перед записью" width="760">
+    <img src="assets/social-preview.png" alt="marketplaces-mcp-ru: кабинеты Wildberries, Ozon, Яндекс Маркета и Авито в ИИ-ассистенте. 1072 методов через Seller API, гейт безопасности перед записью" width="760">
   </a>
 </p>
 

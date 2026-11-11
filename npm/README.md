@@ -1,6 +1,6 @@
 # marketplaces-mcp-ru (npm launcher)
 
-MCP server for **Wildberries, Ozon, Yandex Market and Avito** seller APIs: 1022 schema-driven methods, Russian-language search, a safety gate on every write. This npm package is a thin launcher: the server is Python and lives on PyPI as `marketplaces-mcp-ru`; `npx` fetches `uv` once (verified download from the official uv release) and runs the pinned PyPI version. No Python setup on your side.
+MCP server for **Wildberries, Ozon, Yandex Market and Avito** seller APIs: 1072 schema-driven methods, Russian-language search, a safety gate on every write. This npm package is a thin launcher: the server is Python and lives on PyPI as `marketplaces-mcp-ru`; `npx` fetches `uv` once (verified download from the official uv release) and runs the pinned PyPI version. No Python setup on your side.
 
 ```json
 {

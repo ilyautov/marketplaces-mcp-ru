@@ -723,8 +723,8 @@ def main() -> int:
     av = load("avito_mcp/endpoints.yaml")
 
     total = len(ozon) + len(perf) + len(wb) + len(ya) + len(av)
-    if total != 1022:
-        raise SystemExit("Всего методов %d, а README обещает 1022. Сверь цифру." % total)
+    if total != 1072:
+        raise SystemExit("Всего методов %d, а README обещает 1072. Сверь цифру." % total)
 
     # у Авито и Яндекса разделы уже названы по-русски, группировать нечего
     av_themes = {s: [s] for s in sorted({e["section"] for e in av})}

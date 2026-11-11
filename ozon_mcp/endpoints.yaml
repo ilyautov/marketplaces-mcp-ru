@@ -8,7 +8,8 @@ endpoints:
   scope: seller
   safety: read
   pagination: last_id
-  summary: Paginated product list. Filter by offer_id/product_id/visibility.
+  summary: result.total is removed 2026-11-23, read result.total_items. Paginated
+    product list. Filter by offer_id/product_id/visibility.
   params:
     body: '{filter:{visibility:''ALL''}, limit, last_id}'
   doc: https://docs.ozon.ru/api/seller/
@@ -67,18 +68,6 @@ endpoints:
     body: '{task_id}'
   doc: https://docs.ozon.ru/api/seller/
   items_path: result.items
-  pagination: none
-- operation_id: ozon_product_pictures_import
-  section: products
-  method: POST
-  host: api-seller.ozon.ru
-  path: /v1/product/pictures/import
-  scope: seller
-  safety: write
-  summary: Set/replace product images (images[], images360, color_image).
-  params:
-    body: '{product_id, images:[]}'
-  doc: https://docs.ozon.ru/api/seller/
   pagination: none
 - operation_id: ozon_product_archive
   section: products
@@ -155,7 +144,8 @@ endpoints:
   scope: seller
   safety: read
   pagination: cursor
-  summary: Prices + commissions + price indexes (<=1000/req). v5 is current.
+  summary: total is removed 2026-11-23, read total_items. Prices + commissions + price
+    indexes (<=1000/req). v5 is current.
   params:
     body: '{filter:{visibility:''ALL''}, limit, cursor}'
   doc: https://docs.ozon.ru/api/seller/
@@ -203,7 +193,8 @@ endpoints:
   scope: seller
   safety: read
   pagination: cursor
-  summary: Available + reserved quantity per product. v4 is current.
+  summary: total is removed 2026-11-23, read total_items. Available + reserved quantity
+    per product. v4 is current.
   params:
     body: '{filter:{visibility:''ALL''}, limit, last_id}'
   doc: https://docs.ozon.ru/api/seller/
@@ -231,52 +222,6 @@ endpoints:
   - склад фбс
   items_path: result
   pagination: none
-- operation_id: ozon_stocks_by_warehouse_fbs
-  section: stocks
-  method: POST
-  host: api-seller.ozon.ru
-  path: /v1/product/info/stocks-by-warehouse/fbs
-  scope: seller
-  safety: read
-  summary: FBS stock broken down by seller warehouse.
-  params:
-    body: '{sku:[]}'
-  doc: https://docs.ozon.ru/api/seller/
-  pagination: none
-- operation_id: ozon_fbs_unfulfilled
-  section: orders_fbs
-  method: POST
-  host: api-seller.ozon.ru
-  path: /v3/posting/fbs/unfulfilled/list
-  scope: seller
-  safety: read
-  pagination: offset
-  summary: New/unprocessed FBS shipments awaiting assembly.
-  params:
-    body: '{filter:{cutoff_from, cutoff_to}, limit, offset}'
-  doc: https://docs.ozon.ru/api/seller/
-  keywords:
-  - новые заказы
-  - необработанные
-  - сборка
-  - фбс
-  items_path: postings
-- operation_id: ozon_fbs_list
-  section: orders_fbs
-  method: POST
-  host: api-seller.ozon.ru
-  path: /v3/posting/fbs/list
-  scope: seller
-  safety: read
-  pagination: offset
-  summary: FBS shipments for a period (<=1yr), filter by status.
-  params:
-    body: '{filter:{since, to, status}, limit, offset, with:{}}'
-  doc: https://docs.ozon.ru/api/seller/
-  keywords:
-  - заказы фбс
-  - отправления
-  items_path: result.postings
 - operation_id: ozon_fbs_list_v4
   section: orders_fbs
   method: POST
@@ -318,18 +263,6 @@ endpoints:
     body: '{posting_number, packages:[], with:{}}'
   doc: https://docs.ozon.ru/api/seller/
   pagination: none
-- operation_id: ozon_fbs_package_label
-  section: orders_fbs
-  method: POST
-  host: api-seller.ozon.ru
-  path: /v2/posting/fbs/package-label
-  scope: seller
-  safety: read
-  summary: PDF label for up to 20 shipments (returns application/pdf).
-  params:
-    body: '{posting_number:[]}'
-  doc: https://docs.ozon.ru/api/seller/
-  pagination: none
 - operation_id: ozon_fbs_cancel
   section: orders_fbs
   method: POST
@@ -342,22 +275,6 @@ endpoints:
     body: '{posting_number, cancel_reason_id, cancel_reason_message}'
   doc: https://docs.ozon.ru/api/seller/
   pagination: none
-- operation_id: ozon_fbo_list
-  section: orders_fbo
-  method: POST
-  host: api-seller.ozon.ru
-  path: /v2/posting/fbo/list
-  scope: seller
-  safety: read
-  pagination: offset
-  summary: FBO shipments for a period.
-  params:
-    body: '{filter:{since, to, status}, limit, offset, with:{}}'
-  doc: https://docs.ozon.ru/api/seller/
-  keywords:
-  - заказы фбо
-  - отправления фбо
-  items_path: result
 - operation_id: ozon_fbo_list_v3
   section: orders_fbo
   method: POST
@@ -413,7 +330,8 @@ endpoints:
   scope: seller
   safety: read
   pagination: offset
-  summary: FBO stock & movement per Ozon warehouse. v2 (not v1).
+  summary: 'DEPRECATED: use /v1/analytics/stocks. FBO stock & movement per Ozon warehouse.
+    v2 (not v1).'
   params:
     body: '{limit, offset, warehouse_type:''ALL''}'
   doc: https://docs.ozon.ru/api/seller/
@@ -436,36 +354,6 @@ endpoints:
   - дни запаса
   pagination: offset
   items_path: items
-- operation_id: ozon_finance_transactions
-  section: finance
-  method: POST
-  host: api-seller.ozon.ru
-  path: /v3/finance/transaction/list
-  scope: seller
-  safety: read
-  pagination: page
-  summary: Detailed financial transactions (<=1 month/req). v3.
-  params:
-    body: '{filter:{date:{from,to}, operation_type:[]}, page, page_size}'
-  doc: https://docs.ozon.ru/api/seller/
-  keywords:
-  - финансы
-  - транзакции
-  - начисления
-  - деньги
-  items_path: result.operations
-- operation_id: ozon_finance_totals
-  section: finance
-  method: POST
-  host: api-seller.ozon.ru
-  path: /v3/finance/transaction/totals
-  scope: seller
-  safety: read
-  summary: Aggregated financial totals for a period. v3.
-  params:
-    body: '{date:{from,to}, transaction_type}'
-  doc: https://docs.ozon.ru/api/seller/
-  pagination: none
 - operation_id: ozon_finance_realization
   section: finance
   method: POST
@@ -482,18 +370,6 @@ endpoints:
   - финотчёт
   pagination: none
   items_path: result.rows
-- operation_id: ozon_stock
-  section: analytics
-  method: POST
-  host: api-seller.ozon.ru
-  path: /v1/analytics/manage/stocks
-  scope: seller
-  safety: write
-  summary: Stock (auto-imported from go-client; UNVERIFIED — confirm body/params in
-    docs).
-  doc: https://docs.ozon.ru/api/seller/
-  items_path: items
-  pagination: offset
 - operation_id: ozon_get_product_queries
   section: analytics
   method: POST
@@ -734,17 +610,6 @@ endpoints:
     in docs).
   doc: https://docs.ozon.ru/api/seller/
   items_path: result
-  pagination: none
-- operation_id: ozon_add_for_products
-  section: certificates
-  method: POST
-  host: api-seller.ozon.ru
-  path: /v1/product/certificate/create
-  scope: seller
-  safety: write
-  summary: AddForProducts (auto-imported from go-client; UNVERIFIED — confirm body/params
-    in docs).
-  doc: https://docs.ozon.ru/api/seller/
   pagination: none
 - operation_id: ozon_list_4
   section: chats
@@ -1112,41 +977,6 @@ endpoints:
     body/params in docs).
   doc: https://docs.ozon.ru/api/seller/
   pagination: none
-- operation_id: ozon_create_act
-  section: fbs
-  method: POST
-  host: api-seller.ozon.ru
-  path: /v2/posting/fbs/act/create
-  scope: seller
-  safety: write
-  summary: CreateAct (auto-imported from go-client; UNVERIFIED — confirm body/params
-    in docs).
-  doc: https://docs.ozon.ru/api/seller/
-  pagination: none
-- operation_id: ozon_get_labeling
-  section: fbs
-  method: POST
-  host: api-seller.ozon.ru
-  path: /v1/posting/fbs/package-label/get
-  scope: seller
-  safety: read
-  summary: GetLabeling (auto-imported from go-client; UNVERIFIED — confirm body/params
-    in docs).
-  doc: https://docs.ozon.ru/api/seller/
-  items_path: result.unprinted_postings
-  pagination: none
-- operation_id: ozon_create_task_for_generating_label
-  section: fbs
-  method: POST
-  host: api-seller.ozon.ru
-  path: /v2/posting/fbs/package-label/create
-  scope: seller
-  safety: write
-  summary: CreateTaskForGeneratingLabel (auto-imported from go-client; UNVERIFIED
-    — confirm body/params in docs).
-  doc: https://docs.ozon.ru/api/seller/
-  items_path: result.tasks
-  pagination: none
 - operation_id: ozon_get_drop_off_point_restrictions
   section: fbs
   method: POST
@@ -1235,39 +1065,6 @@ endpoints:
   scope: seller
   safety: write
   summary: PartialPackOrder (auto-imported from go-client; UNVERIFIED — confirm body/params
-    in docs).
-  doc: https://docs.ozon.ru/api/seller/
-  pagination: none
-- operation_id: ozon_available_freights_list
-  section: fbs
-  method: POST
-  host: api-seller.ozon.ru
-  path: /v1/posting/carriage-available/list
-  scope: seller
-  safety: read
-  summary: AvailableFreightsList (auto-imported from go-client; UNVERIFIED — confirm
-    body/params in docs).
-  doc: https://docs.ozon.ru/api/seller/
-  pagination: none
-- operation_id: ozon_generate_act
-  section: fbs
-  method: POST
-  host: api-seller.ozon.ru
-  path: /v2/posting/fbs/digital/act/check-status
-  scope: seller
-  safety: write
-  summary: GenerateAct (auto-imported from go-client; UNVERIFIED — confirm body/params
-    in docs).
-  doc: https://docs.ozon.ru/api/seller/
-  pagination: none
-- operation_id: ozon_get_digital_act
-  section: fbs
-  method: POST
-  host: api-seller.ozon.ru
-  path: /v2/posting/fbs/digital/act/get-pdf
-  scope: seller
-  safety: write
-  summary: GetDigitalAct (auto-imported from go-client; UNVERIFIED — confirm body/params
     in docs).
   doc: https://docs.ozon.ru/api/seller/
   pagination: none
@@ -1688,8 +1485,8 @@ endpoints:
   path: /v1/polygon/bind
   scope: seller
   safety: write
-  summary: Link (auto-imported from go-client; UNVERIFIED — confirm body/params in
-    docs).
+  summary: 'DEPRECATED: use /v2/polygon/bind. Link (auto-imported from go-client;
+    UNVERIFIED — confirm body/params in docs).'
   doc: https://docs.ozon.ru/api/seller/
   pagination: none
 - operation_id: ozon_update_stocks
@@ -1882,54 +1679,6 @@ endpoints:
   doc: https://docs.ozon.ru/api/seller/
   items_path: result
   pagination: none
-- operation_id: ozon_add_to_promotion
-  section: promotions
-  method: POST
-  host: api-seller.ozon.ru
-  path: /v1/actions/products/activate
-  scope: seller
-  safety: write
-  summary: AddToPromotion (auto-imported from go-client; UNVERIFIED — confirm body/params
-    in docs).
-  doc: https://docs.ozon.ru/api/seller/
-  items_path: result.product_ids
-  pagination: none
-- operation_id: ozon_products_available_for_promotion
-  section: promotions
-  method: POST
-  host: api-seller.ozon.ru
-  path: /v1/actions/candidates
-  scope: seller
-  safety: write
-  summary: ProductsAvailableForPromotion (auto-imported from go-client; UNVERIFIED
-    — confirm body/params in docs).
-  doc: https://docs.ozon.ru/api/seller/
-  items_path: result.products
-  pagination: last_id
-- operation_id: ozon_products_in_promotion
-  section: promotions
-  method: POST
-  host: api-seller.ozon.ru
-  path: /v1/actions/products
-  scope: seller
-  safety: write
-  summary: ProductsInPromotion (auto-imported from go-client; UNVERIFIED — confirm
-    body/params in docs).
-  doc: https://docs.ozon.ru/api/seller/
-  items_path: result.products
-  pagination: last_id
-- operation_id: ozon_remove_product
-  section: promotions
-  method: POST
-  host: api-seller.ozon.ru
-  path: /v1/actions/products/deactivate
-  scope: seller
-  safety: write
-  summary: RemoveProduct (auto-imported from go-client; UNVERIFIED — confirm body/params
-    in docs).
-  doc: https://docs.ozon.ru/api/seller/
-  items_path: result.product_ids
-  pagination: none
 - operation_id: ozon_list_discount_requests
   section: promotions
   method: POST
@@ -1937,8 +1686,8 @@ endpoints:
   path: /v1/actions/discounts-task/list
   scope: seller
   safety: read
-  summary: ListDiscountRequests (auto-imported from go-client; UNVERIFIED — confirm
-    body/params in docs).
+  summary: 'DEPRECATED: use /v2/actions/discounts-task/list. ListDiscountRequests
+    (auto-imported from go-client; UNVERIFIED — confirm body/params in docs).'
   doc: https://docs.ozon.ru/api/seller/
   items_path: result
   pagination: page
@@ -2310,8 +2059,8 @@ endpoints:
   path: /v1/review/comment/delete
   scope: seller
   safety: write
-  summary: DeleteComment (auto-imported from go-client; UNVERIFIED — confirm body/params
-    in docs).
+  summary: 'DEPRECATED: use /v2/review/comment/delete. DeleteComment (auto-imported
+    from go-client; UNVERIFIED — confirm body/params in docs).'
   doc: https://docs.ozon.ru/api/seller/
   pagination: none
 - operation_id: ozon_list_comments
@@ -2333,8 +2082,8 @@ endpoints:
   path: /v1/review/change-status
   scope: seller
   safety: write
-  summary: ChangeStatus (auto-imported from go-client; UNVERIFIED — confirm body/params
-    in docs).
+  summary: 'DEPRECATED: use /v2/review/change-status. ChangeStatus (auto-imported
+    from go-client; UNVERIFIED — confirm body/params in docs).'
   doc: https://docs.ozon.ru/api/seller/
   pagination: none
 - operation_id: ozon_count
@@ -2344,8 +2093,8 @@ endpoints:
   path: /v1/review/count
   scope: seller
   safety: write
-  summary: Count (auto-imported from go-client; UNVERIFIED — confirm body/params in
-    docs).
+  summary: 'DEPRECATED: use /v2/review/count. Count (auto-imported from go-client;
+    UNVERIFIED — confirm body/params in docs).'
   doc: https://docs.ozon.ru/api/seller/
   pagination: none
 - operation_id: ozon_get_3
@@ -2355,8 +2104,8 @@ endpoints:
   path: /v1/review/info
   scope: seller
   safety: read
-  summary: Get (auto-imported from go-client; UNVERIFIED — confirm body/params in
-    docs).
+  summary: 'DEPRECATED: use /v2/review/info. Get (auto-imported from go-client; UNVERIFIED
+    — confirm body/params in docs).'
   doc: https://docs.ozon.ru/api/seller/
   items_path: photos
   pagination: none
@@ -2367,8 +2116,8 @@ endpoints:
   path: /v1/review/list
   scope: seller
   safety: read
-  summary: List (auto-imported from go-client; UNVERIFIED — confirm body/params in
-    docs).
+  summary: 'DEPRECATED: use /v2/review/list. List (auto-imported from go-client; UNVERIFIED
+    — confirm body/params in docs).'
   doc: https://docs.ozon.ru/api/seller/
   items_path: reviews
   pagination: last_id
@@ -2510,30 +2259,6 @@ endpoints:
     in docs).
   doc: https://docs.ozon.ru/api/seller/
   pagination: none
-- operation_id: ozon_get_list_of_warehouses
-  section: warehouses
-  method: POST
-  host: api-seller.ozon.ru
-  path: /v1/warehouse/list
-  scope: seller
-  safety: read
-  summary: GetListOfWarehouses (auto-imported from go-client; UNVERIFIED — confirm
-    body/params in docs).
-  doc: https://docs.ozon.ru/api/seller/
-  items_path: result
-  pagination: offset
-- operation_id: ozon_get_list_of_delivery_methods
-  section: warehouses
-  method: POST
-  host: api-seller.ozon.ru
-  path: /v1/delivery-method/list
-  scope: seller
-  safety: read
-  summary: GetListOfDeliveryMethods (auto-imported from go-client; UNVERIFIED — confirm
-    body/params in docs).
-  doc: https://docs.ozon.ru/api/seller/
-  items_path: result
-  pagination: offset
 - operation_id: ozon_list_for_shipping
   section: warehouses
   method: POST
@@ -2643,17 +2368,6 @@ endpoints:
   doc: ''
   items_path: result
   pagination: none
-- operation_id: ozon_post_v1_product_certification_list
-  section: CertificationAPI
-  method: POST
-  host: api-seller.ozon.ru
-  path: /v1/product/certification/list
-  scope: seller
-  safety: read
-  summary: Список сертифицируемых категорий
-  doc: ''
-  items_path: result.certification
-  pagination: page
 - operation_id: ozon_post_v1_product_certificate_product_status_list
   section: CertificationAPI
   method: POST
@@ -2793,17 +2507,6 @@ endpoints:
   summary: Информация о заявке на поставку
   doc: ''
   items_path: orders
-  pagination: none
-- operation_id: ozon_post_v1_supply_order_timeslot_get
-  section: FBO
-  method: POST
-  host: api-seller.ozon.ru
-  path: /v1/supply-order/timeslot/get
-  scope: seller
-  safety: read
-  summary: Интервалы поставки
-  doc: ''
-  items_path: timeslots
   pagination: none
 - operation_id: ozon_post_v1_supply_order_timeslot_status
   section: FBO
@@ -3014,17 +2717,6 @@ endpoints:
   doc: ''
   items_path: errors.error_reasons
   pagination: none
-- operation_id: ozon_get_v1_cargoes_label_file_file_guid
-  section: FboSupplyRequest
-  method: GET
-  host: api-seller.ozon.ru
-  path: /v1/cargoes-label/file/{file_guid}
-  scope: seller
-  safety: write
-  summary: Получить PDF с этикетками грузовых мест
-  doc: ''
-  items_path: details
-  pagination: none
 - operation_id: ozon_post_v1_supply_order_content_update
   section: FboSupplyRequest
   method: POST
@@ -3110,17 +2802,6 @@ endpoints:
   safety: write
   summary: Подтверждение отгрузки
   doc: ''
-  pagination: none
-- operation_id: ozon_post_v1_carriage_delivery_list
-  section: DeliveryFBS
-  method: POST
-  host: api-seller.ozon.ru
-  path: /v1/carriage/delivery/list
-  scope: seller
-  safety: read
-  summary: Список методов доставки и отгрузок
-  doc: ''
-  items_path: result
   pagination: none
 - operation_id: ozon_post_v2_carriage_delivery_list
   section: DeliveryFBS
@@ -3210,16 +2891,6 @@ endpoints:
   doc: ''
   items_path: products
   pagination: offset
-- operation_id: ozon_post_v1_posting_fbs_package_label_create
-  section: FBS
-  method: POST
-  host: api-seller.ozon.ru
-  path: /v1/posting/fbs/package-label/create
-  scope: seller
-  safety: write
-  summary: Создать задание на выгрузку этикеток
-  doc: ''
-  pagination: none
 - operation_id: ozon_post_v1_returns_rfbs_action_set
   section: RFBSReturnsAPI
   method: POST
@@ -3506,17 +3177,6 @@ endpoints:
   doc: ''
   items_path: exemplars_by_sku
   pagination: none
-- operation_id: ozon_post_v1_posting_digital_list
-  section: Digital
-  method: POST
-  host: api-seller.ozon.ru
-  path: /v1/posting/digital/list
-  scope: seller
-  safety: read
-  summary: Получить список отправлений
-  doc: ''
-  items_path: result
-  pagination: offset
 - operation_id: ozon_post_v1_product_digital_stocks_import
   section: Digital
   method: POST
@@ -4982,3 +4642,747 @@ endpoints:
   doc: ''
   items_path: invalid_postings
   pagination: none
+- operation_id: ozon_post_v2_product_pictures_import
+  section: products
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v2/product/pictures/import
+  scope: seller
+  safety: write
+  summary: Загрузить или обновить изображения товара
+  doc: ''
+- operation_id: ozon_post_v1_product_info_stocks_by_warehouse_fbo
+  section: products
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/product/info/stocks-by-warehouse/fbo
+  scope: seller
+  safety: read
+  summary: Получить информацию о стоках на складах FBO
+  doc: ''
+- operation_id: ozon_post_v1_barcode_delete
+  section: barcodes
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/barcode/delete
+  scope: seller
+  safety: destructive
+  summary: Отвязать штрихкод от товара
+  doc: ''
+- operation_id: ozon_actions_candidates_v2
+  section: promotions
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v2/actions/candidates
+  scope: seller
+  safety: read
+  summary: Получить список товаров, которые могут участвовать в акции
+  doc: https://docs.ozon.ru/api/seller/
+  keywords:
+  - акции
+  - кандидаты в акцию
+- operation_id: ozon_actions_products_v2
+  section: promotions
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v2/actions/products
+  scope: seller
+  safety: read
+  summary: Получить список товаров, которые участвуют в акции
+  doc: https://docs.ozon.ru/api/seller/
+  keywords:
+  - акции
+  - товары в акции
+- operation_id: ozon_actions_products_update
+  section: promotions
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/actions/products/update
+  scope: seller
+  safety: write
+  summary: Добавить или обновить товар в акции
+  doc: https://docs.ozon.ru/api/seller/
+  keywords:
+  - акции
+  - добавить в акцию
+- operation_id: ozon_actions_products_deactivate_v2
+  section: promotions
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v2/actions/products/deactivate
+  scope: seller
+  safety: write
+  summary: Удалить товары из акции «Промокоды»
+  doc: https://docs.ozon.ru/api/seller/
+  keywords:
+  - акции
+  - убрать из акции
+- operation_id: ozon_post_v2_actions_auto_add_products_list
+  section: promotions
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v2/actions/auto-add/products/list
+  scope: seller
+  safety: read
+  summary: Получить список товаров из автодобавления в акцию
+  doc: ''
+- operation_id: ozon_post_v2_actions_auto_add_products_candidates
+  section: promotions
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v2/actions/auto-add/products/candidates
+  scope: seller
+  safety: read
+  summary: Получить список доступных товаров для автодобавления в акцию
+  doc: ''
+- operation_id: ozon_post_v2_actions_auto_add_products_delete
+  section: promotions
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v2/actions/auto-add/products/delete
+  scope: seller
+  safety: destructive
+  summary: Удалить товары из автодобавления в акцию
+  doc: ''
+- operation_id: ozon_post_v2_actions_auto_add_products_update
+  section: promotions
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v2/actions/auto-add/products/update
+  scope: seller
+  safety: write
+  summary: Добавить или обновить товары в автодобавлении в акцию
+  doc: ''
+- operation_id: ozon_fbs_unfulfilled_v4
+  section: fbs
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v4/posting/fbs/unfulfilled/list
+  scope: seller
+  safety: read
+  summary: Получить список необработанных отправлений
+  doc: https://docs.ozon.ru/api/seller/
+  pagination: cursor
+  items_path: postings
+  params:
+    body: '{filter:{cutoff_from,cutoff_to | delivering_date_from,delivering_date_to,
+      statuses, warehouse_ids},limit,cursor,sort_dir,with:{analytics_data,financial_data,legal_info,barcodes}}'
+  keywords:
+  - необработанные отправления
+  - заказы фбс
+  - сборка
+- operation_id: ozon_fbs_package_label_create_v3
+  section: fbs
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v3/posting/fbs/package-label/create
+  scope: seller
+  safety: write
+  summary: Создать задание на формирование этикеток
+  doc: https://docs.ozon.ru/api/seller/
+  params:
+    body: '{posting_numbers:[...]} (<=1000). Returns tasks[{task_id,task_type}]'
+  keywords:
+  - этикетки
+  - этикетка фбс
+  - scanit
+- operation_id: ozon_fbs_package_label_get_v2
+  section: fbs
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v2/posting/fbs/package-label/get
+  scope: seller
+  safety: read
+  summary: Получить файл с этикетками
+  doc: https://docs.ozon.ru/api/seller/
+  params:
+    body: '{task_id} from /v3/posting/fbs/package-label/create'
+  keywords:
+  - этикетки
+  - этикетка фбс
+  - scanit
+- operation_id: ozon_post_v2_supply_order_timeslot_list
+  section: FboSupplyRequest
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v2/supply-order/timeslot/list
+  scope: seller
+  safety: read
+  summary: Получить список доступных интервалов поставки
+  doc: ''
+- operation_id: ozon_post_v1_supply_order_shipment_plan_compliance_get
+  section: FboSupplyRequest
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/supply-order/shipment-plan-compliance/get
+  scope: seller
+  safety: read
+  summary: Получить информацию о выполнении плана отгрузок
+  doc: ''
+- operation_id: ozon_post_v1_carriage_courier_contact_set
+  section: DeliveryFBS
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/carriage/courier-contact/set
+  scope: seller
+  safety: write
+  summary: Добавить или обновить контактные данные продавца для курьера
+  doc: ''
+- operation_id: ozon_post_v1_carriage_courier_contact_get
+  section: DeliveryFBS
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/carriage/courier-contact/get
+  scope: seller
+  safety: read
+  summary: Получить контактные данные продавца для курьера
+  doc: ''
+- operation_id: ozon_post_v2_review_comment_delete
+  section: reviews
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v2/review/comment/delete
+  scope: seller
+  safety: destructive
+  summary: Удалить комментарий на отзыв
+  doc: ''
+- operation_id: ozon_post_v2_review_change_status
+  section: reviews
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v2/review/change-status
+  scope: seller
+  safety: write
+  summary: Изменить статус отзывов
+  doc: ''
+- operation_id: ozon_post_v2_review_count
+  section: reviews
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v2/review/count
+  scope: seller
+  safety: read
+  summary: Получить количество отзывов по статусам
+  doc: ''
+- operation_id: ozon_post_v2_review_info
+  section: reviews
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v2/review/info
+  scope: seller
+  safety: read
+  summary: Получить информацию по отзыву
+  doc: ''
+- operation_id: ozon_reviews_list_v2
+  section: reviews
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v2/review/list
+  scope: seller
+  safety: read
+  summary: Получить список отзывов
+  doc: https://docs.ozon.ru/api/seller/
+  pagination: last_id
+  items_path: reviews
+  params:
+    body: '{filters:{sku,status,order_status,published_from,published_to},limit,last_id,sort_dir}'
+  keywords:
+  - отзывы
+- operation_id: ozon_post_v1_analytics_decommissioned_goods
+  section: analytics
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/analytics/decommissioned-goods
+  scope: seller
+  safety: read
+  summary: Получить отчёт о списанных товарах
+  doc: ''
+- operation_id: ozon_post_v1_analytics_category_comparison
+  section: analytics
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/analytics/category/comparison
+  scope: seller
+  safety: read
+  summary: Получить информацию о сравнении категорий
+  doc: ''
+- operation_id: ozon_post_v2_posting_digital_list
+  section: Digital
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v2/posting/digital/list
+  scope: seller
+  safety: read
+  summary: Получить список отправлений
+  doc: ''
+- operation_id: ozon_finance_accrual_postings
+  section: finance
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/finance/accrual/postings
+  scope: seller
+  safety: read
+  summary: Получить начисления по отправлениям
+  doc: https://docs.ozon.ru/api/seller/
+  items_path: posting_accruals
+  params:
+    body: '{posting_numbers:[...]} (1..200)'
+  keywords:
+  - начисления по отправлениям
+  - юнит-экономика
+- operation_id: ozon_finance_accrual_types
+  section: finance
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/finance/accrual/types
+  scope: seller
+  safety: read
+  summary: Получить справочник начислений
+  doc: https://docs.ozon.ru/api/seller/
+  params:
+    body: '{}'
+  keywords:
+  - типы начислений
+- operation_id: ozon_finance_accrual_by_day
+  section: finance
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/finance/accrual/by-day
+  scope: seller
+  safety: read
+  summary: Получить начисления за день
+  doc: https://docs.ozon.ru/api/seller/
+  pagination: last_id
+  items_path: accruals
+  params:
+    body: '{date:''YYYY-MM-DD'', last_id:''''} — pass the same date with last_id when
+      paging'
+  keywords:
+  - начисления
+  - финансы
+  - комиссии
+- operation_id: ozon_post_v1_product_visibility_info
+  section: products
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/product/visibility/info
+  scope: seller
+  safety: read
+  summary: Получить информацию о видимости товара
+  doc: ''
+- operation_id: ozon_post_v1_posting_fbp_get
+  section: DeliveryFBP
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/posting/fbp/get
+  scope: seller
+  safety: read
+  summary: Получить информацию об отправлении по идентификатору
+  doc: ''
+- operation_id: ozon_post_v1_report_realization_posting_create
+  section: reports
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/report/realization/posting/create
+  scope: seller
+  safety: write
+  summary: Получить позаказный отчёт о реализации товаров
+  doc: ''
+- operation_id: ozon_post_v2_product_certification_options
+  section: certificates
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v2/product/certification/options
+  scope: seller
+  safety: read
+  summary: Получить параметры для создания сертификата качества
+  doc: ''
+- operation_id: ozon_post_v2_product_certification_params
+  section: certificates
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v2/product/certification/params
+  scope: seller
+  safety: read
+  summary: Получить обязательные параметры для создания сертификата качества
+  doc: ''
+- operation_id: ozon_post_v2_product_certificate_create
+  section: certificates
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v2/product/certificate/create
+  scope: seller
+  safety: write
+  summary: Создать сертификат качества
+  doc: ''
+- operation_id: ozon_post_v1_description_category_dependent_attributes
+  section: categories
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/description-category/dependent-attributes
+  scope: seller
+  safety: read
+  summary: Получить зависимые характеристики
+  doc: ''
+- operation_id: ozon_post_v1_description_category_dependent_attributes_value
+  section: categories
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/description-category/dependent-attributes/values
+  scope: seller
+  safety: read
+  summary: Получить возможные значения дочерней характеристики
+  doc: ''
+- operation_id: ozon_post_v1_analytics_local_sale_total
+  section: analytics
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/analytics/local-sale/total
+  scope: seller
+  safety: read
+  summary: Получить общую информацию о локальности продаж
+  doc: ''
+- operation_id: ozon_post_v1_analytics_local_sale_clusters_items_info
+  section: analytics
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/analytics/local-sale/clusters-items/info
+  scope: seller
+  safety: read
+  summary: Получить информацию о локальности продаж по кластерам
+  doc: ''
+- operation_id: ozon_post_v1_analytics_local_sale_items_clusters_info
+  section: analytics
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/analytics/local-sale/items-clusters/info
+  scope: seller
+  safety: read
+  summary: Получить информацию о локальности продаж товара по кластерам
+  doc: ''
+- operation_id: ozon_post_v1_warehouse_rfbs_return_point_list
+  section: rFBSWarehouseSetup
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/warehouse/rfbs/return-point/list
+  scope: seller
+  safety: read
+  summary: Получить список пунктов возврата для склада rFBS
+  doc: ''
+- operation_id: ozon_post_v2_cargoes_get
+  section: FboSupplyRequest
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v2/cargoes/get
+  scope: seller
+  safety: read
+  summary: Получить информацию о грузоместах
+  doc: ''
+- operation_id: ozon_post_v2_cargoes_delete
+  section: FboSupplyRequest
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v2/cargoes/delete
+  scope: seller
+  safety: destructive
+  summary: Удалить грузоместа и транспортные грузоместа в заявке на поставку
+  doc: ''
+- operation_id: ozon_post_v2_cargoes_delete_status
+  section: FboSupplyRequest
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v2/cargoes/delete/status
+  scope: seller
+  safety: read
+  summary: Получить информацию о статусе удаления грузомест и транспортных грузомест
+  doc: ''
+- operation_id: ozon_post_v1_cargoes_transport_activate
+  section: FboSupplyRequest
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/cargoes/transport/activate
+  scope: seller
+  safety: write
+  summary: Включить или отключить транспортные грузоместа в поставке
+  doc: ''
+- operation_id: ozon_post_v1_cargoes_transport_activate_status
+  section: FboSupplyRequest
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/cargoes/transport/activate/status
+  scope: seller
+  safety: read
+  summary: Получить статус включения или отключения транспортных грузомест
+  doc: ''
+- operation_id: ozon_post_v1_cargoes_transport_create
+  section: FboSupplyRequest
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/cargoes/transport/create
+  scope: seller
+  safety: write
+  summary: Создать транспортное грузоместо
+  doc: ''
+- operation_id: ozon_post_v1_cargoes_transport_create_status
+  section: FboSupplyRequest
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/cargoes/transport/create/status
+  scope: seller
+  safety: read
+  summary: Получить статус создания транспортного грузоместа
+  doc: ''
+- operation_id: ozon_post_v1_cargoes_transport_bind
+  section: FboSupplyRequest
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/cargoes/transport/bind
+  scope: seller
+  safety: write
+  summary: Связать или отвязать грузоместа и транспортные грузоместа
+  doc: ''
+- operation_id: ozon_post_v1_cargoes_transport_bind_status
+  section: FboSupplyRequest
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/cargoes/transport/bind/status
+  scope: seller
+  safety: read
+  summary: Получить статус связывания или отвязывания грузомест и транспортных грузомест
+  doc: ''
+- operation_id: ozon_post_v1_cargoes_supplies_get
+  section: FboSupplyRequest
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/cargoes/supplies/get
+  scope: seller
+  safety: read
+  summary: Получить информацию о грузоместах в поставках
+  doc: ''
+- operation_id: ozon_post_v1_cargoes_label_transport_by_order_create
+  section: FboSupplyRequest
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/cargoes/label/transport-by-order/create
+  scope: seller
+  safety: write
+  summary: Сгенерировать этикетки для транспортных грузомест по идентификатору поставки
+  doc: ''
+- operation_id: ozon_post_v1_cargoes_label_transport_by_order_status
+  section: FboSupplyRequest
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/cargoes/label/transport-by-order/status
+  scope: seller
+  safety: read
+  summary: Получить статус генерации этикеток для транспортных грузомеcт по идентификатору
+    поставки
+  doc: ''
+- operation_id: ozon_post_v1_cargoes_label_transport_create
+  section: FboSupplyRequest
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/cargoes/label/transport/create
+  scope: seller
+  safety: write
+  summary: Сгенерировать этикетки транспортных грузомест по идентификатору грузоместа
+  doc: ''
+- operation_id: ozon_post_v1_cargoes_label_transport_status
+  section: FboSupplyRequest
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/cargoes/label/transport/status
+  scope: seller
+  safety: read
+  summary: Получить статус генерации этикеток транспортных грузомест по идентификатору
+    грузоместа
+  doc: ''
+- operation_id: ozon_post_v1_fbp_order_direct_tpl_dlv_edit
+  section: DraftDirectFBP
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/fbp/order/direct/tpl-dlv/edit
+  scope: seller
+  safety: write
+  summary: Обновить информацию о доставке сторонней транспортной компанией
+  doc: ''
+- operation_id: ozon_post_v1_posting_fbp_list
+  section: DeliveryFBP
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/posting/fbp/list
+  scope: seller
+  safety: read
+  summary: Получить список отправлений
+  doc: ''
+- operation_id: ozon_post_v1_carriage_container_create
+  section: DeliveryFBS
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/carriage/container/create
+  scope: seller
+  safety: write
+  summary: Создать грузоместо
+  doc: ''
+- operation_id: ozon_post_v1_carriage_container_fill
+  section: DeliveryFBS
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/carriage/container/fill
+  scope: seller
+  safety: write
+  summary: Наполнить грузоместо отправлениями
+  doc: ''
+- operation_id: ozon_post_v1_carriage_container_approve
+  section: DeliveryFBS
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/carriage/container/approve
+  scope: seller
+  safety: write
+  summary: Подтвердить состав грузоместа
+  doc: ''
+- operation_id: ozon_post_v1_carriage_container_place_into
+  section: DeliveryFBS
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/carriage/container/place-into
+  scope: seller
+  safety: write
+  summary: Разместить коробки на палете
+  doc: ''
+- operation_id: ozon_post_v1_carriage_container_remove_postings
+  section: DeliveryFBS
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/carriage/container/remove-postings
+  scope: seller
+  safety: write
+  summary: Убрать отправления из грузоместа
+  doc: ''
+- operation_id: ozon_post_v1_carriage_container_remove_from
+  section: DeliveryFBS
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/carriage/container/remove-from
+  scope: seller
+  safety: write
+  summary: Убрать коробки с палеты
+  doc: ''
+- operation_id: ozon_post_v1_carriage_container_cancel
+  section: DeliveryFBS
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/carriage/container/cancel
+  scope: seller
+  safety: write
+  summary: Отменить грузоместо
+  doc: ''
+- operation_id: ozon_post_v1_carriage_container_list
+  section: DeliveryFBS
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/carriage/container/list
+  scope: seller
+  safety: read
+  summary: Получить список грузомест
+  doc: ''
+- operation_id: ozon_post_v1_carriage_container_get
+  section: DeliveryFBS
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/carriage/container/get
+  scope: seller
+  safety: read
+  summary: Получить информацию о грузоместах
+  doc: ''
+- operation_id: ozon_post_v1_carriage_container_status_get
+  section: DeliveryFBS
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/carriage/container/status/get
+  scope: seller
+  safety: read
+  summary: Получить статус грузомест FBS
+  doc: ''
+- operation_id: ozon_post_v1_carriage_container_task_info
+  section: DeliveryFBS
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/carriage/container/task/info
+  scope: seller
+  safety: read
+  summary: Получить статус задачи грузового места
+  doc: ''
+- operation_id: ozon_post_v1_carriage_container_document_get
+  section: DeliveryFBS
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/carriage/container/document/get
+  scope: seller
+  safety: read
+  summary: Получить документы по грузоместам — ТрН и лист отгрузки
+  doc: ''
+- operation_id: ozon_post_v1_carriage_container_label_get
+  section: DeliveryFBS
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/carriage/container/label/get
+  scope: seller
+  safety: read
+  summary: Получить этикетку по грузоместам
+  doc: ''
+- operation_id: ozon_post_v1_supply_order_act_summary_get
+  section: FboSupplyRequest
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/supply-order/act/summary/get
+  scope: seller
+  safety: read
+  summary: Получить информацию об акте
+  doc: ''
+- operation_id: ozon_post_v1_supply_order_act_product_get
+  section: FboSupplyRequest
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/supply-order/act/product/get
+  scope: seller
+  safety: read
+  summary: Получить информацию о товарах в акте
+  doc: ''
+- operation_id: ozon_post_v1_supply_order_act_accept
+  section: FboSupplyRequest
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/supply-order/act/accept
+  scope: seller
+  safety: write
+  summary: Согласовать акт
+  doc: ''
+- operation_id: ozon_post_v1_supply_order_act_accept_status
+  section: FboSupplyRequest
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/supply-order/act/accept/status
+  scope: seller
+  safety: read
+  summary: Получить статус согласования акта
+  doc: ''
+- operation_id: ozon_post_v1_return_box_get_by_barcode
+  section: returns
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/return/box/get-by-barcode
+  scope: seller
+  safety: read
+  summary: Return box info by its barcode (beta, 2026-11-05).
+  doc: ''
+- operation_id: ozon_post_v1_order_code_get
+  section: OrderAPI
+  method: POST
+  host: api-seller.ozon.ru
+  path: /v1/order/code/get
+  scope: seller
+  safety: read
+  summary: Order code for an order created via /v2/order/create (2026-11-06).
+  doc: ''
